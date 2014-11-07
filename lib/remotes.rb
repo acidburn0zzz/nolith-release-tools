@@ -10,4 +10,13 @@ module Remotes
   def dev_ce_repo
     'git@dev.gitlab.org:gitlab/gitlabhq.git'
   end
+
+  def test_ce_repo
+    'git@dev.gitlab.org:samples/test-release-tools.git'
+  end
+
+  def all_remotes
+    #[github_ce_repo, gitlab_ce_repo, dev_ce_repo]
+    [test_ce_repo]
+  end
 end

@@ -13,7 +13,7 @@ class Git
 
   def create_stable(branch_name)
     execute do
-      system *%W(git checkout -b #{branch_name})
+      system *%W(git branch #{branch_name})
     end
   end
 
@@ -25,6 +25,7 @@ class Git
 
   def execute
     Dir.chdir(@path) do
+      system *%W(git checkout master)
       yield
     end
   end
@@ -34,6 +35,12 @@ class Git
       File.write(file, content)
       system *%W(git add -A)
       system *%W(git commit -m #{message})
+    end
+  end
+
+  def push(remote, ref)
+    execute do
+      system *%W(git push #{remote} #{ref}:#{ref})
     end
   end
 end

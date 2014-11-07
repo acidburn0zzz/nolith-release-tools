@@ -5,7 +5,7 @@
 
 How to use:
 
-  bundle exec rake release:rc1["7.5.0"]
+    bundle exec rake release:rc1["7.5.0"]
 
 What it does?
 

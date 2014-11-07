@@ -11,4 +11,8 @@ class Version
   def self.rc1(version)
     version + '.rc1'
   end
+
+  def self.tag_rc1(version)
+    'v' + rc1(version)
+  end
 end

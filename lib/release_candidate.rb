@@ -8,19 +8,40 @@ class ReleaseCandidate
   def initialize(version)
     @version = version
     @rc_version = Version.rc1(version)
+    @stable_branch = Version.branch_name(version)
+    @tag_rc1 = Version.tag_rc1(version)
     @git = Git.new('/tmp/gitlabhq')
   end
 
   def execute
+
+
     Dir.chdir("/tmp") do
-      system *%W(git clone --depth=5 #{dev_ce_repo})
+      system *%W(git clone #{dev_ce_repo})
 
       @git = Git.new('/tmp/gitlabhq')
       @git.add_remote 'gl', gitlab_ce_repo
       @git.add_remote 'gh', github_ce_repo
       @git.commit('VERSION', @rc_version, "Version #{@rc_version}")
+
+      # Push version bump
+      all_remotes.each do |remote|
+        @git.push(remote, 'master')
+      end
+
       @git.create_tag
-      @git.create_stable(Version.branch_name(@version))
+
+      # Push tags
+      all_remotes.each do |remote|
+        @git.push(remote, @tag_rc1)
+      end
+
+      @git.create_stable(@stable_branch)
+
+      # Push stable branches
+      all_remotes.each do |remote|
+        @git.push(remote, @stable_branch)
+      end
     end
   end
 end
