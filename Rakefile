@@ -8,10 +8,15 @@ require_relative 'lib/release_candidate'
 namespace :release do
   desc "Create RC1 from master"
   task :rc1, [:version] do |t, args|
-
     version = args[:version]
+
     unless Version.valid?(version)
       puts 'You should pass version argument in next format: 7.5.0'
+      exit 1
+    end
+
+    unless Version.minor_release?(version)
+      puts 'You can not create release candidate for patch version'
       exit 1
     end
 

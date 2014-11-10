@@ -10,16 +10,14 @@ class ReleaseCandidate
     @rc_version = Version.rc1(version)
     @stable_branch = Version.branch_name(version)
     @tag_rc1 = Version.tag_rc1(version)
-    @git = Git.new('/tmp/gitlabhq')
+    @dir_name = 'gitlabhq-' + @rc_version
+    @git = Git.new(File.join('/tmp', @dir_name))
   end
 
   def execute
-
-
     Dir.chdir("/tmp") do
-      system *%W(git clone #{dev_ce_repo})
+      system *%W(git clone #{dev_ce_repo} #{@dir_name})
 
-      @git = Git.new('/tmp/gitlabhq')
       @git.add_remote 'gl', gitlab_ce_repo
       @git.add_remote 'gh', github_ce_repo
       @git.commit('VERSION', @rc_version, "Version #{@rc_version}")
