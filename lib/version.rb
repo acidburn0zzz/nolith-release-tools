@@ -1,7 +1,7 @@
 class Version
   class << self
     def valid?(version)
-      version =~ /\A\d\.\d\.\d\Z/
+      release?(version) || rc?(version)
     end
 
     def branch_name(version)
@@ -9,16 +9,16 @@ class Version
       minor_version.gsub('.', '-') + '-stable'
     end
 
-    def rc1(version)
-      version + '.rc1'
+    def release?(version)
+      version =~ /\A\d\.\d\.\d\Z/
     end
 
-    def tag_rc1(version)
-      'v' + rc1(version)
+    def rc?(version)
+      version =~ /\A\d+\.\d+\.\d+\.rc\d+/
     end
 
-    def minor_release?(version)
-      version =~ /\A\d\.\d\.0\Z/
+    def tag(version)
+      'v' + version
     end
   end
 end

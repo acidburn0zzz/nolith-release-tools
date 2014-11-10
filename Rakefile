@@ -3,24 +3,17 @@ require 'bundler/setup'
 require 'fileutils'
 
 require_relative 'lib/version'
-require_relative 'lib/release_candidate'
+require_relative 'lib/release'
 
-namespace :release do
-  desc "Create RC1 from master"
-  task :rc1, [:version] do |t, args|
-    version = args[:version]
+desc "Create release"
+task :release, [:version] do |t, args|
+  version = args[:version]
 
-    unless Version.valid?(version)
-      puts 'You should pass version argument in next format: 7.5.0'
-      exit 1
-    end
-
-    unless Version.minor_release?(version)
-      puts 'You can not create release candidate for patch version'
-      exit 1
-    end
-
-    release = ReleaseCandidate.new(version)
-    release.execute
+  unless Version.valid?(version)
+    puts 'You should pass version argument in next format: 7.5.0.rc1 or 7.6.2'
+    exit 1
   end
+
+  release = Release.new(version)
+  release.execute
 end

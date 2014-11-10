@@ -11,12 +11,27 @@ module Remotes
     'git@dev.gitlab.org:gitlab/gitlabhq.git'
   end
 
-  def test_ce_repo
-    'git@dev.gitlab.org:samples/test-release-tools.git'
+  def gitlab_ee_repo
+    'git@gitlab.com:subscribers/gitlab-ee.git'
+  end
+
+  def dev_ee_repo
+    'git@dev.gitlab.org:gitlab/gitlab-ee.git'
+  end
+
+  def test_repo
+    'git@dev.gitlab.org:samples/test-release-tool.git'
+  end
+
+  def ce_remotes
+    [dev_ce_repo, github_ce_repo, gitlab_ce_repo]
+  end
+
+  def ee_remotes
+    [dev_ee_repo, gitlab_ee_repo]
   end
 
   def all_remotes
-    #[github_ce_repo, gitlab_ce_repo, dev_ce_repo]
-    [test_ce_repo]
+    ce_remotes + ee_remotes
   end
 end
