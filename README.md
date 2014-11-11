@@ -69,3 +69,8 @@ In this case everything will be executed as usual except git push command will b
 
 
     TEST=true be rake release['7.2.4']
+
+## Sync CE master between different remotes and sync EE master between EE remotes
+
+ 
+    be rake sync
