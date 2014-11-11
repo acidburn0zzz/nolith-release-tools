@@ -14,17 +14,25 @@ class Release
     puts "Prepare repository...".colorize(:green)
     prepare_repo
 
-    # CE release
-    puts "\nCE release".colorize(:blue)
-    prepare_branch(branch, 'ce-0', ce_remotes)
-    bump_version(version, branch, ce_remotes)
-    create_tag(tag, branch, ce_remotes)
+    unless ENV['CE'] == 'false'
+      # CE release
+      puts "\nCE release".colorize(:blue)
+      prepare_branch(branch, 'ce-0', ce_remotes)
+      bump_version(version, branch, ce_remotes)
+      create_tag(tag, branch, ce_remotes)
+    else
+      puts 'Skipping release for CE'.colorize(:red)
+    end
 
-    # EE release
-    puts "\nEE release".colorize(:blue)
-    prepare_branch(branch_ee, 'ee-0', ee_remotes)
-    bump_version(version_ee, branch_ee, ee_remotes)
-    create_tag(tag_ee, branch_ee, ee_remotes)
+    unless ENV['EE'] == 'false'
+      # EE release
+      puts "\nEE release".colorize(:blue)
+      prepare_branch(branch_ee, 'ee-0', ee_remotes)
+      bump_version(version_ee, branch_ee, ee_remotes)
+      create_tag(tag_ee, branch_ee, ee_remotes)
+    else
+      puts 'Skipping release for EE'.colorize(:red)
+    end
   end
 
   def prepare_branch(branch, base_remote, remotes)

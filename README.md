@@ -52,10 +52,20 @@ What it does?
 * change version to 7.5.1-ee and push all remotes
 * create git tag v7.5.1-ee and push to all remotes
 
+
+## CE or EE only
+
+You can skip release for Community Edition or Enterprise Edition. 
+Just set ENV variable with software you want to skip. For example command 
+below will create patch release for EE only.
+
+    CE=false be rake release['7.2.4']
+
+
 ## Developemnt & Test
 
 If you need to test tool before use with push to official remotes - set TEST env. 
 In this case everything will be executed as usual except git push command will be ignored. 
 
 
-  TEST=true be rake release['7.2.4']
+    TEST=true be rake release['7.2.4']
