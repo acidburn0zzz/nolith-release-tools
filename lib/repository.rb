@@ -68,6 +68,7 @@ class Repository
 
   def push(remote, ref)
     if ENV['TEST']
+      puts 'Push ignored because TEST env'.colorize(:yellow)
       true
     else
       run %W(git push #{remote} #{ref}:#{ref})
