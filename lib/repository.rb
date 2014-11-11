@@ -70,7 +70,7 @@ class Repository
     if ENV['TEST']
       true
     else
-      #run %W(git push #{remote} #{ref}:#{ref})
+      run %W(git push #{remote} #{ref}:#{ref})
     end
   end
 
