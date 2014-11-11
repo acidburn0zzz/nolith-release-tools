@@ -4,6 +4,7 @@ require 'fileutils'
 
 require_relative 'lib/version'
 require_relative 'lib/release'
+require_relative 'lib/sync'
 
 desc "Create release"
 task :release, [:version] do |t, args|
@@ -16,4 +17,9 @@ task :release, [:version] do |t, args|
 
   release = Release.new(version)
   release.execute
+end
+
+desc "Sync master branch in remotes"
+task :sync do
+  Sync.new.execute
 end

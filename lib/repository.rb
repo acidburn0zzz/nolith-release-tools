@@ -1,6 +1,6 @@
 class Repository
-  def self.get(url)
-    path = File.join('/tmp', 'gitlab-release-repo')
+  def self.get(url, path = nil)
+    path ||= File.join('/tmp', 'gitlab-release-repo')
 
     unless File.exists?(path)
       system(*%W(git clone #{url} #{path}))
@@ -34,7 +34,7 @@ class Repository
     run %W(git fetch --all)
   end
 
-  def pull(branch, remote)
+  def pull(remote, branch)
     run %W(git pull #{remote} #{branch})
   end
 
