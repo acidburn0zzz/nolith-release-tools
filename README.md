@@ -49,3 +49,11 @@ What it does?
 * checkout 7-5-stable-ee (creates from EE master if not exists)
 * change version to 7.5.1-ee and push all remotes
 * create git tag v7.5.1-ee and push to all remotes
+
+## Developemnt & Test
+
+If you need to test tool before use with push to official remotes - set TEST env. 
+In this case everything will be executed as usual except git push command will be ignored. 
+
+
+  TEST=true be rake release['7.2.4']
