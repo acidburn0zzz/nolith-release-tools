@@ -1,12 +1,14 @@
 # Release tools
 
-## !!! Before using this tool make sure you synced CE and EE
-
-
 ## Clone this repo
 
     git clone git@dev.gitlab.org:gitlab/release-tools.git
     cd release-tools
+
+## Requirements
+
+* EE master has latest changes from CE master
+* If x-x-stable branch exists make sure EE x-x-stable-ee has latest changes from CE x-x-stable 
 
 ## Release candidate
 
