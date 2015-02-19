@@ -1,12 +1,12 @@
 class Repository
-  def self.get(url, path = nil)
-    path ||= File.join('/tmp', 'gitlab-release-repo')
+  def self.get(url, path)
+    full_path = File.join('/tmp', path)
 
-    unless File.exists?(path)
-      system(*%W(git clone #{url} #{path}))
+    unless File.exists?(full_path)
+      system(*%W(git clone #{url} #{full_path}))
     end
 
-    Repository.new(path)
+    Repository.new(full_path)
   end
 
   def initialize(path)

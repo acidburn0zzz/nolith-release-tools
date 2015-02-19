@@ -17,12 +17,23 @@
 
 What it does?
 
+CE
+
 * checkout 7-5-stable (creates from master if not exists)
 * change version to 7.5.0.rc1 and push all remotes
 * create git tag v7.5.0.rc1 and push to all remotes
+
+EE
+
 * checkout 7-5-stable-ee (creates from EE master if not exists)
 * change version to 7.5.0.rc1-ee and push all remotes
 * create git tag v7.5.0.rc1-ee and push to all remotes
+
+CI
+
+* checkout 7-5-stable (creates from CI master if not exists)
+* change version to 7.5.0.rc1 and push all remotes
+* create git tag v7.5.0.rc1 and push to all remotes
 
 
 ## Release
@@ -31,12 +42,23 @@ What it does?
 
 What it does?
 
+CE
+
 * checkout 7-5-stable (creates from master if not exists)
 * change version to 7.5.0 and push all remotes
 * create git tag v7.5.0 and push to all remotes
+
+EE
+
 * checkout 7-5-stable-ee (creates from EE master if not exists)
 * change version to 7.5.0-ee and push all remotes
 * create git tag v7.5.0-ee and push to all remotes
+
+CI
+
+* checkout 7-5-stable (creates from CI master if not exists)
+* change version to 7.5.0 and push all remotes
+* create git tag v7.5.0 and push to all remotes
 
 ## Patch release
 
@@ -45,15 +67,26 @@ What it does?
 
 What it does?
 
+CE
+
 * checkout 7-5-stable (creates from master if not exists)
 * change version to 7.5.1 and push all remotes
 * create git tag v7.5.1 and push to all remotes
+
+EE
+
 * checkout 7-5-stable-ee (creates from EE master if not exists)
 * change version to 7.5.1-ee and push all remotes
 * create git tag v7.5.1-ee and push to all remotes
 
+CI
 
-## CE or EE only
+* checkout 7-5-stable (creates from CI master if not exists)
+* change version to 7.5.1 and push all remotes
+* create git tag v7.5.1 and push to all remotes
+
+
+## CE or EE or CI only
 
 You can skip release for Community Edition or Enterprise Edition. 
 Just set ENV variable with software you want to skip. For example command 
@@ -70,7 +103,8 @@ In this case everything will be executed as usual except git push command will b
 
     TEST=true be rake release['7.2.4']
 
-## Sync CE master between different remotes and sync EE master between EE remotes
+
+## Sync CE master between different remotes and sync EE master between EE remotes and same for CI
 
  
     be rake sync

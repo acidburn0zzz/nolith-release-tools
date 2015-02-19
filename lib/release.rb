@@ -4,35 +4,19 @@ require_relative 'repository'
 require 'colorize'
 
 class Release
-  include Remotes
+  attr_reader :version, :remotes
 
-  def initialize(version)
+  def initialize(version, remotes)
     @version = version
+    @remotes = remotes
   end
 
   def execute
     puts "Prepare repository...".colorize(:green)
-    prepare_repo
-
-    unless ENV['CE'] == 'false'
-      # CE release
-      puts "\nCE release".colorize(:blue)
-      prepare_branch(branch, 'ce-0', ce_remotes)
-      bump_version(version, branch, ce_remotes)
-      create_tag(tag, branch, ce_remotes)
-    else
-      puts 'Skipping release for CE'.colorize(:red)
-    end
-
-    unless ENV['EE'] == 'false'
-      # EE release
-      puts "\nEE release".colorize(:blue)
-      prepare_branch(branch_ee, 'ee-0', ee_remotes)
-      bump_version(version_ee, branch_ee, ee_remotes)
-      create_tag(tag_ee, branch_ee, ee_remotes)
-    else
-      puts 'Skipping release for EE'.colorize(:red)
-    end
+    prepare_repo(remotes)
+    prepare_branch(branch, 'remote-0', remotes)
+    bump_version(version, branch, remotes)
+    create_tag(tag, branch, remotes)
   end
 
   def prepare_branch(branch, base_remote, remotes)
@@ -63,7 +47,11 @@ class Release
   end
 
   def repository
-    @repository ||= Repository.get(dev_ce_repo)
+    @repository ||= Repository.get(remotes.first, path)
+  end
+
+  def path
+    remotes.first.split('/').last.sub(/\.git\Z/, '')
   end
 
   def version
@@ -78,25 +66,9 @@ class Release
     Version.branch_name(@version)
   end
 
-  def version_ee
-    version + '-ee'
-  end
-
-  def tag_ee
-    Version.tag(version) + '-ee'
-  end
-
-  def branch_ee
-    branch + '-ee'
-  end
-
-  def prepare_repo
-    ce_remotes.each_with_index do |remote, i|
-      repository.add_remote("ce-#{i}", remote)
-    end
-
-    ee_remotes.each_with_index do |remote, i|
-      repository.add_remote("ee-#{i}", remote)
+  def prepare_repo(remotes)
+    remotes.each_with_index do |remote, i|
+      repository.add_remote("remote-#{i}", remote)
     end
 
     repository.fetch
