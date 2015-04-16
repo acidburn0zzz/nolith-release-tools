@@ -5,7 +5,7 @@ class Version
     end
 
     def branch_name(version)
-      minor_version = version.match(/\A\d\.\d/).to_s
+      minor_version = version.match(/\A\d+\.\d+/).to_s
 
       if version.end_with?('-ee')
         minor_version.gsub('.', '-') + '-stable-ee'
@@ -15,7 +15,7 @@ class Version
     end
 
     def release?(version)
-      version =~ /\A\d\.\d\.\d\Z/
+      version =~ /\A\d+\.\d+\.\d+\Z/
     end
 
     def rc?(version)
