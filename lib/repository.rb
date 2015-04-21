@@ -1,12 +1,18 @@
+require 'fileutils'
+
 class Repository
   def self.get(url, path)
     full_path = File.join('/tmp', path)
 
-    unless File.exists?(full_path)
-      system(*%W(git clone #{url} #{full_path}))
+    if File.exists?(full_path)
+      FileUtils.rm_r(full_path)
     end
 
-    Repository.new(full_path)
+    if system(*%W(git clone #{url} #{full_path}))
+      Repository.new(full_path)
+    else
+      raise "Failed to clone #{url} to #{full_path}"
+    end
   end
 
   def initialize(path)
