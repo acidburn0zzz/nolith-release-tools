@@ -62,7 +62,7 @@ class Repository
   def commit(file, content, message, branch)
     checkout_branch(branch)
     execute { File.write(file, content) }
-    run %W(git add -A)
+    run %W(git add VERSION)
     run %W(git commit -m #{message})
   end
 
