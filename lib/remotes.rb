@@ -11,7 +11,7 @@ module Remotes
 
   def ee_remotes
     [
-      'git@gitlab.com:subscribers/gitlab-ee.git',
+      'git@gitlab.com:gitlab-org/gitlab-ee.git',
       'git@dev.gitlab.org:gitlab/gitlab-ee.git'
     ]
   end
