@@ -1,4 +1,24 @@
-# Release tools
+# GitLab Release Tools
+
+This repository contains instructions and tools for releasing new versions of
+GitLab Community Edition (CE), Enterprise Edition (EE), and Continuous
+Integration (CI).
+
+## Guides
+
+- [How to merge CE into EE](doc/merge-ce-into-ee.md)
+- [How to create release candidates for new major versions of GitLab](doc/release-candidates.md)
+- [How to push to multiple remotes at once](doc/push-to-multiple-remotes.md)
+- [How to remove packages from packages.gitlab.com](doc/remove-packages.md)
+
+## TODO
+
+- [How to release new major versions of GitLab each month]()
+- [How to release patch versions of GitLab]()
+- [How to report or release critical security fixes for GitLab]()
+- [How to create "Update Guides" for upgrading from a previous version of GitLab]()
+
+# OLD CONTENT
 
 ## Clone this repo
 
