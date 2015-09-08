@@ -47,7 +47,7 @@ latest changes from CE into EE.
 1. Now perform the merge:
 
     ```sh
-    git merge origin/master ce-to-ee
+    git merge --no-ff ce/master ce-to-ee
     ```
 
 1. At this point it's not uncommon to encounter a merge conflict. Resolve it
@@ -73,8 +73,9 @@ release, we need to merge any changes from CE's stable branch for that version
 into EE's.
 
 In this example, we'll be releasing the first patch version of 7.14, 7.14.1.
-Both CE and EE already have branches called `7-14-stable` and `7-14-stable-ee`,
-respectively, which were created during the Release Candidate process.
+Both CE and EE should already have branches called `7-14-stable` and
+`7-14-stable-ee`, respectively, which were created during the Release Candidate
+process.
 
 1. Checkout a local branch, tracking the remote one:
 
@@ -86,7 +87,7 @@ respectively, which were created during the Release Candidate process.
     git checkout 7-14-stable-ee
     ```
 
-1. Make sure your branch has all the latest changes:
+1. Make sure your local branch has all the latest changes:
 
     ```sh
     git pull origin 7-14-stable-ee
@@ -101,7 +102,7 @@ respectively, which were created during the Release Candidate process.
 1. Now perform the merge:
 
     ```sh
-    git merge origin/7-14-stable 7-14-stable-ee
+    git merge --no-ff ce/7-14-stable 7-14-stable-ee
     ```
 
 1. At this point there will be a merge conflict, but likely only on the
