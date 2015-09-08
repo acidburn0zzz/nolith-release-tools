@@ -39,3 +39,7 @@ Attempting to yank package at gitlab/gitlab-ce/el/6/gitlab-ce-7.10.2~omnibus-1.x
 
 [packages.gitlab.com]: https://packages.gitlab.com/
 [packagecloud documentation]: https://packagecloud.io/docs#yank_pkg
+
+---
+
+[Return to Guides](../README.md#guides)

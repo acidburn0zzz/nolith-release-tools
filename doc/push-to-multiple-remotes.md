@@ -52,3 +52,7 @@ gpa feature-1
 [dev.gitlab.org]: https://dev.gitlab.org/gitlab/
 [github.com]:     https://github.com/gitlabhq/
 [hub]:            https://github.com/github/hub
+
+---
+
+[Return to Guides](../README.md#guides)

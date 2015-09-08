@@ -113,3 +113,7 @@ process.
     ```sh
     git push origin 7-14-stable-ee
     ```
+
+---
+
+[Return to Guides](../README.md#guides)
