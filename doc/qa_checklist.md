@@ -1,5 +1,9 @@
 # GitLab QA
 
+***TODO (rspeicher):*** Upon publishing this document, the
+[manual_testing.md](https://dev.gitlab.org/gitlab/gitlab-ee/blob/master/doc/release/manual_testing.md)
+document can be removed from `gitlab-ee`.
+
 ## Login
 
 - [ ] Regular account login
@@ -7,39 +11,44 @@
 
 ## Forks
 
-- [ ] fork group project
-- [ ] push changes to fork
-- [ ] submit merge request to origin project
-- [ ] accept merge request
+- [ ] Fork group project
+- [ ] Push changes to fork
+- [ ] Submit merge request to origin project
+- [ ] Accept merge request
 
 ## Git
 
-- [ ] add, remove ssh key
-- [ ] git clone, git push over ssh
-- [ ] git clone, git push over http with regular account
-- [ ] git clone, git push over http with LDAP account
+- [ ] Add SSH key
+- [ ] Remove SSH key
+- [ ] `git clone`, `git push` over SSH
+- [ ] `git clone`, `git push` over HTTP with regular account
+- [ ] `git clone`, `git push` over HTTP with LDAP account
 
 ## Project
 
-- [ ] create project
-- [ ] create project using import repo
-- [ ] transfer project
-- [ ] rename repo path
-- [ ] add/remove project member
-- [ ] remove project
-- [ ] create git branch with UI
-- [ ] create git tag with UI
+- [ ] Create project
+- [ ] Create project via repository import
+- [ ] Transfer project to new owner
+- [ ] Rename project's repository path
+- [ ] Add project member
+- [ ] Remove project member
+- [ ] Remove project
+- [ ] Create branch via UI
+- [ ] Create tag via UI
 
 ## Web editor
 
-- [ ] create, edit, remove file in web UI
+- [ ] Create a new file via UI
+- [ ] Edit a file via UI
+- [ ] Remove a file via UI
 
 ## Group
 
-- [ ] create group
-- [ ] create project in group
-- [ ] add/remove group member
-- [ ] remove group
+- [ ] Create group
+- [ ] Create project in group's namespace
+- [ ] Add group member
+- [ ] Remove group member
+- [ ] Remove group
 
 ## Markdown
 
@@ -48,7 +57,7 @@
 - [ ] Click on a [directory link] and see if it correctly takes to the tree view
 - [ ] Click on a [file link] and see if it correctly takes to the blob view
 - [ ] Check if the links in the `README` when viewed as a [blob] are correct
-- [ ] Select the "markdown" branch and check if all links point to the files within the markdown branch
+- [ ] Select the `markdown` branch and check if all links point to the files within the `markdown` branch
 
 ## Syntax highlighting
 
