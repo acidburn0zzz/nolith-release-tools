@@ -40,6 +40,8 @@ document can be removed from `gitlab-ee`.
 
 - [ ] Create a new file via UI
 - [ ] Edit a file via UI
+- [ ] Upload a new file via UI
+- [ ] Replace a file via UI
 - [ ] Remove a file via UI
 
 ## Group
