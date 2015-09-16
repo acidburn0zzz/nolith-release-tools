@@ -10,6 +10,7 @@ Integration (CI).
 - [How to create release candidates for new major versions of GitLab](doc/release-candidates.md)
 - [How to push to multiple remotes at once](doc/push-to-multiple-remotes.md)
 - [How to remove packages from packages.gitlab.com](doc/remove-packages.md)
+- [Manual QA testing checklist](doc/qa_checklist.md)
 
 ## TODO
 
