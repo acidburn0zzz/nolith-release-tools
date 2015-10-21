@@ -16,15 +16,7 @@ module Remotes
     ]
   end
 
-  def ci_remotes
-    [
-      'git@dev.gitlab.org:gitlab/gitlab-ci.git',
-      'git@github.com:gitlabhq/gitlab-ci.git',
-      'git@gitlab.com:gitlab-org/gitlab-ci.git'
-    ]
-  end
-
   def all_remotes
-    ce_remotes + ee_remotes + ci_remotes
+    ce_remotes + ee_remotes
   end
 end

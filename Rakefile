@@ -30,18 +30,10 @@ task :release, [:version] do |t, args|
   else
     puts 'Skipping release for EE'.colorize(:red)
   end
-
-  unless ENV['CI'] == 'false'
-    puts "CI release".colorize(:blue)
-    Release.new(version, Remotes.ci_remotes).execute
-  else
-    puts 'Skipping release for CI'.colorize(:red)
-  end
 end
 
 desc "Sync master branch in remotes"
 task :sync do
   Sync.new(Remotes.ce_remotes).execute
   Sync.new(Remotes.ee_remotes).execute
-  Sync.new(Remotes.ci_remotes).execute
 end
