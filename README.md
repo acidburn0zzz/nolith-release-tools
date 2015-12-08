@@ -1,8 +1,7 @@
 # GitLab Release Tools
 
 This repository contains instructions and tools for releasing new versions of
-GitLab Community Edition (CE), Enterprise Edition (EE), and Continuous
-Integration (CI).
+GitLab Community Edition (CE) and Enterprise Edition (EE).
 
 ## Guides
 
