@@ -42,6 +42,12 @@ describe Version do
     end
   end
 
+  describe '.to_patch' do
+    it 'returns the patch version' do
+      expect(described_class.to_patch('1.23.4.rc1')).to eq '1.23.4'
+    end
+  end
+
   describe '.valid?' do
     it { expect(described_class.valid?('1.2.3')).to be_truthy }
     it { expect(described_class.valid?('11.22.33')).to be_truthy }

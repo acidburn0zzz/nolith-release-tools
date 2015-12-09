@@ -19,6 +19,10 @@ class Version < String
     new(version).to_minor
   end
 
+  def self.to_patch(version)
+    new(version).to_patch
+  end
+
   def self.valid?(version)
     new(version).valid?
   end
@@ -32,7 +36,7 @@ class Version < String
   end
 
   def rc?
-    self =~ /\A\d+\.\d+\.\d+\.rc\d+/
+    self =~ /\A\d+\.\d+\.\d+\.rc\d+\z/
   end
 
   def release?
@@ -45,6 +49,10 @@ class Version < String
 
   def to_minor
     self.match(/\A\d+\.\d+/).to_s
+  end
+
+  def to_patch
+    self.match(/\A\d+\.\d+\.\d+/).to_s
   end
 
   def valid?

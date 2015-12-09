@@ -57,7 +57,7 @@ class MonthlyPost
   end
 
   def rc1_version
-    "#{version}.rc1"
+    "#{version.to_patch}.rc1"
   end
 
   def stable_branch(ee: false)
