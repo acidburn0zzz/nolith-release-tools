@@ -1,14 +1,14 @@
 # Creating Release Candidates
 
 Release Candidates (RCs) are pre-release versions of the next major version of
-GitLab CE and EE. The first RC (RC1) is typically created [six days before the
-official release] and is used for [manual QA testing].
+GitLab CE and EE. The first RC (RC1) is typically created [six working days
+before the official release] and is used for [manual QA testing].
 
 Every release must have at least one RC. It's not uncommon to have a second or
 even a third.
 
-[six days before the official release]: monthly.md
-[manual QA testing]: qa_checklist.md
+[six working days before the official release]: TODO
+[manual QA testing]: qa-checklist.md
 
 ## Guides
 
@@ -103,7 +103,7 @@ release to the EE version of the same release.
 The `release` Rake task included in the `release-tools` project will:
 
 1. Create the `X-Y-stable` and `X-Y-stable-ee` branches off the current
-   `master`s for CE and EE, respectively.
+   `master`s for CE and EE, respectively, if they don't yet exist.
 1. Create the `vX.Y.0.rcZ` and `vX.Y.0.rcZ-ee` tags, pointing to the respective
    branches created above.
 

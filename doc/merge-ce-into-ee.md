@@ -9,7 +9,6 @@ etc.) into the corresponding GitLab EE branch (`master`, `8-0-stable-ee`, etc.).
 
     ```sh
     git clone git@gitlab.com:gitlab-org/gitlab-ee.git
-
     cd gitlab-ee
     ```
 
@@ -23,8 +22,8 @@ etc.) into the corresponding GitLab EE branch (`master`, `8-0-stable-ee`, etc.).
 
 ### Merging CE `master` into EE `master`
 
-Before [releasing a new Release Candidate] of GitLab, we need to merge the
-latest changes from CE into EE.
+Before [releasing a new Release Candidate](release-candidates.md) of GitLab, we
+need to merge the latest changes from CE into EE.
 
 1. Make sure your EE repository has all the latest changes:
 
@@ -68,18 +67,18 @@ latest changes from CE into EE.
 
 ### Merging a CE stable branch into its EE counterpart
 
-Before releasing a new stable version of GitLab, be it a major release or patch
-release, we need to merge any changes from CE's stable branch for that version
-into EE's.
+Before releasing a new stable version of GitLab, we need to merge any changes
+from CE's stable branch for that version into EE's.
 
 In this example, we'll be releasing the first patch version of 7.14, 7.14.1.
 Both CE and EE should already have branches called `7-14-stable` and
-`7-14-stable-ee`, respectively, which were created during the Release Candidate
-process.
+`7-14-stable-ee`, respectively, which were created during the
+[RC1 release](release-candidates.md#tag-the-rc-version).
 
 1. Checkout a local branch, tracking the remote one:
 
     ```sh
+    # NOTE: This command is an example! Update it to reflect new version numbers.
     git checkout --track origin/7-14-stable-ee
 
     # The command above will fail if you've already checked out the stable
@@ -90,6 +89,7 @@ process.
 1. Make sure your local branch has all the latest changes:
 
     ```sh
+    # NOTE: This command is an example! Update it to reflect new version numbers.
     git pull origin 7-14-stable-ee
     ```
 
@@ -102,6 +102,7 @@ process.
 1. Now perform the merge:
 
     ```sh
+    # NOTE: This command is an example! Update it to reflect new version numbers.
     git merge --no-ff ce/7-14-stable 7-14-stable-ee
     ```
 
@@ -111,6 +112,7 @@ process.
 1. Push the updated branch to `origin`:
 
     ```sh
+    # NOTE: This command is an example! Update it to reflect new version numbers.
     git push origin 7-14-stable-ee
     ```
 
