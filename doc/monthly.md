@@ -12,6 +12,7 @@ should begin the monthly release process *no later than* the 9th.
 ## Process
 
 1. [Create an issue to track the release](#create-an-issue-to-track-the-release)
+1. [Complete the daily release tasks](#complete-the-daily-release-tasks)
 
 ## Tasks
 
@@ -30,13 +31,20 @@ update it as we progress.
     bundle exec rake "monthly_post[8.2.0]"
     ```
 
-1. Assign the issue to the **release manager**.
-1. Add the issue to the milestone of the release (e.g., **8.2**).
+1. Assign the issue to **yourself**.
+1. Assign the issue to the release's milestone (e.g., **8.2**).
 1. Add the **release** label to the issue.
-1. It's a good idea to **bookmark** the issue until it's closed at the end of
-   the release cycle.
+1. You may want to **bookmark** the issue until it's closed at the end of the
+   release cycle.
 
 [GitLab CE issue tracker]: https://gitlab.com/gitlab-org/gitlab-ce/issues
+
+# Complete the daily release tasks
+
+Once the release schedule begins, each work day has something that needs to be
+done. Perform the tasks and mark them as complete in the issue as you progress.
+
+If you're not sure what to do for any task, [check the guides](../README.md#guides).
 
 ---
 
