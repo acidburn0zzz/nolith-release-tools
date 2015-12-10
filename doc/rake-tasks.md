@@ -59,3 +59,7 @@ the release process, you can safely skip this task.
 ```bash
 bundle exec rake sync
 ```
+
+---
+
+[Return to Guides](../README.md#guides)

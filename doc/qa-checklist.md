@@ -84,3 +84,7 @@ document can be removed from `gitlab-ee`.
 [file link]: https://dev.gitlab.org/samples/relative-links/blob/master/documents/0.md
 [blob]: https://dev.gitlab.org/samples/relative-links/blob/master/README.md
 [language highlight repository]: https://dev.gitlab.org/samples/languages-highlight
+
+---
+
+[Return to Guides](../README.md#guides)

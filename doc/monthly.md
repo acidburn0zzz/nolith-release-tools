@@ -36,3 +36,7 @@ update it as we progress.
    the release cycle.
 
 [GitLab CE issue tracker]: https://gitlab.com/gitlab-org/gitlab-ce/issues
+
+---
+
+[Return to Guides](../README.md#guides)
