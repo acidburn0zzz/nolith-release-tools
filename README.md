@@ -5,6 +5,7 @@ GitLab Community Edition (CE) and Enterprise Edition (EE).
 
 ## Guides
 
+- [What is a release manager?](doc/release-manager.md)
 - [How to merge CE into EE](doc/merge-ce-into-ee.md)
 - [How to create release candidates for new major versions of GitLab](doc/release-candidates.md)
 - [How to release new major versions of GitLab each month](doc/monthly.md)

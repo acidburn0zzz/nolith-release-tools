@@ -1,13 +1,13 @@
 # Monthly Release
 
-GitLab releases a new minor version (`X.Y`) every month on the 22nd. The reasons
-and history of this release schedule can be found [on the blog].
+GitLab releases a new minor version (`X.Y`) every month on the 22nd. The history
+and reasoning behind this schedule can be found [on the blog].
 
 The process begins seven **working days** before the 22nd. The [release manager]
 should begin the monthly release process *no later than* the 9th.
 
 [on the blog]: https://about.gitlab.com/2015/12/07/why-we-shift-objectives-and-not-release-dates-at-gitlab/
-[release manager]: TODO
+[release manager]: release-manager.md
 
 ## Process
 
