@@ -100,14 +100,7 @@ release to the EE version of the same release.
 
 ### Tag the RC version
 
-The `release` Rake task included in the `release-tools` project will:
-
-1. Create the `X-Y-stable` and `X-Y-stable-ee` branches off the current
-   `master`s for CE and EE, respectively, if they don't yet exist.
-1. Create the `vX.Y.0.rcZ` and `vX.Y.0.rcZ-ee` tags, pointing to the respective
-   branches created above.
-
-As an example, let's tag RC1 for an upcoming 8.2 release:
+Use the [`release[version]`](rake-tasks.md#release-version) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.
