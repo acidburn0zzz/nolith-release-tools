@@ -31,7 +31,7 @@ This task will:
 1. Update the `VERSION` file in both `stable` branches created above.
 1. Create the `v[version]` and `v[version]-ee` tags, pointing to the respective
    branches created above.
-1. Pushes all newly-created branches and tags to all remotes.
+1. Push all newly-created branches and tags to all remotes.
 
 ### Configuration
 
