@@ -9,6 +9,24 @@ describe Version do
     it { expect(described_class.branch_name('1.23.45-ee')).to eq '1-23-stable-ee' }
   end
 
+  describe '.patch?' do
+    it 'is true for patch releases' do
+      expect(described_class.patch?('1.2.3')).to be_truthy
+    end
+
+    it 'is false for pre-releases' do
+      expect(described_class.patch?('1.2.0.rc1')).to be_falsey
+    end
+
+    it 'is false for minor releases' do
+      expect(described_class.patch?('1.2.0')).to be_falsey
+    end
+
+    it 'is false for invalid releases' do
+      expect(described_class.patch?('wow.1')).to be_falsey
+    end
+  end
+
   describe '.rc?' do
     it 'is true for pre-release versions' do
       expect(described_class.rc?('1.2.3.rc1')).to be_truthy
@@ -16,6 +34,10 @@ describe Version do
 
     it 'is false for release versions' do
       expect(described_class.rc?('1.2.3')).to be_falsey
+    end
+
+    it 'is false for invalid versions' do
+      expect(described_class.rc?('wow.rc1')).to be_falsey
     end
   end
 
@@ -26,6 +48,10 @@ describe Version do
 
     it 'is false for pre-release versions' do
       expect(described_class.release?('1.2.3.rc1')).to be_falsey
+    end
+
+    it 'is false for invalid versions' do
+      expect(described_class.release?('wow.1')).to be_falsey
     end
   end
 

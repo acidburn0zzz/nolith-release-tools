@@ -3,6 +3,10 @@ class Version < String
     new(version).branch_name
   end
 
+  def self.patch?(version)
+    new(version).patch?
+  end
+
   def self.rc?(version)
     new(version).rc?
   end
@@ -33,6 +37,10 @@ class Version < String
     else
       to_minor.gsub('.', '-') + '-stable'
     end
+  end
+
+  def patch?
+    release? && /\.(\d+)$/.match(self)[1].to_i > 0
   end
 
   def rc?
