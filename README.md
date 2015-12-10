@@ -7,6 +7,7 @@ GitLab Community Edition (CE) and Enterprise Edition (EE).
 
 - [How to merge CE into EE](doc/merge-ce-into-ee.md)
 - [How to create release candidates for new major versions of GitLab](doc/release-candidates.md)
+- [How to perform manual QA testing](doc/qa-checklist.md)
 - [How to push to multiple remotes at once](doc/push-to-multiple-remotes.md)
 - [How to remove packages from packages.gitlab.com](doc/remove-packages.md)
 - [Rake tasks](doc/rake-tasks.md)

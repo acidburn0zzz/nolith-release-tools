@@ -4,19 +4,21 @@
 [manual_testing.md](https://dev.gitlab.org/gitlab/gitlab-ee/blob/master/doc/release/manual_testing.md)
 document can be removed from `gitlab-ee`.
 
-## Login
+## QA Checklist
+
+### Login
 
 - [ ] Regular account login
 - [ ] LDAP login (Use the [support document] for the LDAP settings)
 
-## Forks
+### Forks
 
 - [ ] Fork group project
 - [ ] Push changes to fork
 - [ ] Submit merge request to origin project
 - [ ] Accept merge request
 
-## Git
+### Git
 
 - [ ] Add SSH key
 - [ ] Remove SSH key
@@ -24,7 +26,7 @@ document can be removed from `gitlab-ee`.
 - [ ] `git clone`, `git push` over HTTP with regular account
 - [ ] `git clone`, `git push` over HTTP with LDAP account
 
-## Project
+### Project
 
 - [ ] Create project
 - [ ] Create project via repository import
@@ -36,7 +38,7 @@ document can be removed from `gitlab-ee`.
 - [ ] Create branch via UI
 - [ ] Create tag via UI
 
-## Web editor
+### Web editor
 
 - [ ] Create a new file via UI
 - [ ] Edit a file via UI
@@ -44,7 +46,7 @@ document can be removed from `gitlab-ee`.
 - [ ] Replace a file via UI
 - [ ] Remove a file via UI
 
-## Group
+### Group
 
 - [ ] Create group
 - [ ] Create project in group's namespace
@@ -52,7 +54,7 @@ document can be removed from `gitlab-ee`.
 - [ ] Remove group member
 - [ ] Remove group
 
-## Markdown
+### Markdown
 
 - [ ] Visit / clone [relative links repository] and see if the links are linking to the correct documents in the repository
 - [ ] Check if images are rendered in the repository's `README`
@@ -61,17 +63,17 @@ document can be removed from `gitlab-ee`.
 - [ ] Check if the links in the `README` when viewed as a [blob] are correct
 - [ ] Select the `markdown` branch and check if all links point to the files within the `markdown` branch
 
-## Syntax highlighting
+### Syntax highlighting
 
 - [ ] Visit/clone [language highlight repository]
 - [ ] Check for obvious errors in highlighting
 
-## Upgrader
+### Upgrader
 
 - [ ] Upgrade from the previous release
 - [ ] Run the upgrader script in this release (it should not break)
 
-## Rake tasks
+### Rake tasks
 
 - [ ] Check if `rake gitlab:check` is updated and works
 - [ ] Check if `rake gitlab:env:info` is updated and works
