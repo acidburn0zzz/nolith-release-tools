@@ -22,7 +22,8 @@ up to the final release, we create an issue on the [GitLab CE issue tracker] and
 update it as we progress.
 
 1. Create an issue titled **Release X.Y** (e.g., **Release 8.2**).
-1. Generate issue description:
+1. Generate the issue description using the
+   [`monthly_post`](rake-tasks.md#monthly-post-version) Rake task:
 
     ```sh
     # NOTE: This command is an example! Update it to reflect new version numbers.

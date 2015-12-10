@@ -100,7 +100,7 @@ release to the EE version of the same release.
 
 ### Tag the RC version
 
-Use the [`release[version]`](rake-tasks.md#release-version) Rake task:
+Use the [`release`](rake-tasks.md#release-version) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.

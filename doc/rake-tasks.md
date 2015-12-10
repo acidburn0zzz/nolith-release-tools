@@ -11,6 +11,17 @@ Install the required dependencies with Bundler:
 bundle install
 ```
 
+## `monthly_post[version]`
+
+This task will generate the description body to be used for the [monthly
+release](monthly.md#create-an-issue-to-track-the-release) issue.
+
+### Examples
+
+```sh
+bundle exec rake "monthly_post[8.3.0]"
+```
+
 ## `release[version]`
 
 This task will:
