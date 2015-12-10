@@ -1,13 +1,12 @@
 # Creating Release Candidates
 
 Release Candidates (RCs) are pre-release versions of the next major version of
-GitLab CE and EE. The first RC (RC1) is typically created [six working days
-before the official release] and is used for [manual QA testing].
+GitLab CE and EE. The first RC (RC1) is typically created six **working days**
+before the official release and is used for [manual QA testing].
 
-Every release must have at least one RC. It's not uncommon to have a second or
-even a third.
+Every release must have at least one RC. It's not uncommon to have a second, and
+sometimes even a third.
 
-[six working days before the official release]: TODO
 [manual QA testing]: qa-checklist.md
 
 ## Guides
@@ -33,10 +32,10 @@ guide.*
 ***Note:*** *This only needs to be done for the GitLab CE repository. Changes
 will be merged into GitLab EE.*
 
-1. Update the name of the `stable` branch in [**Clone the Source**](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/install/installation.md#clone-the-source).
+1. Update the name of the `stable` branch in **Clone the Source**.
    There are two occurrences.
-1. Ensure the `gitlab-workhorse` version in [**Install gitlab-workhorse**](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/install/installation.md#install-gitlab-workhorse)
-   matches the [required version][GITLAB_WORKHORSE_VERSION].
+1. Ensure the `gitlab-workhorse` version in **Install gitlab-workhorse** matches
+   the [required version][GITLAB_WORKHORSE_VERSION].
 1. Depending on changes in the upcoming release, you may need to add or remove
    sections. For example, in GitLab 8.0 we had to add the section about
    installing `gitlab-workhorse` (called `gitlab-git-http-server` at the time).
@@ -77,7 +76,8 @@ will be merged into GitLab EE.*
 1. Add any special instructions specific to this version. For example, maybe
    this version adds a new external dependency not in the previous version.
 1. Read through the entire guide to make sure it makes sense. For example, maybe
-   previous version required special steps that no longer apply this version.
+   the previous version required special steps that no longer apply this
+   version.
 
 #### GitLab EE
 
