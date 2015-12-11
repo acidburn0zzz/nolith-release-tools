@@ -18,4 +18,3 @@ GitLab Community Edition (CE) and Enterprise Edition (EE).
 
 - [How to release patch versions of GitLab]()
 - [How to report or release critical security fixes for GitLab]()
-- [How to create "Update Guides" for upgrading from a previous version of GitLab]()
