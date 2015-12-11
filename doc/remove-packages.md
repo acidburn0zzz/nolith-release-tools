@@ -11,9 +11,8 @@ from [packages.gitlab.com] by following the [packagecloud documentation].
     sudo gem install package_cloud
     ```
 
-1. Have an email and password for [packages.gitlab.com].
-
-    ***TODO (rspeicher):*** Add details about how to find/create a login if you don't have one?
+1. Have an email and password for [packages.gitlab.com]. Credentials are
+   available in the **Release** 1Password vault.
 
 ## Example
 
