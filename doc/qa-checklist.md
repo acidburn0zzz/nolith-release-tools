@@ -1,15 +1,11 @@
 # GitLab QA
 
-***TODO (rspeicher):*** Upon publishing this document, the
-[manual_testing.md](https://dev.gitlab.org/gitlab/gitlab-ee/blob/master/doc/release/manual_testing.md)
-document can be removed from `gitlab-ee`.
-
 ## QA Checklist
 
 ### Login
 
 - [ ] Regular account login
-- [ ] LDAP login (Use the [support document] for the LDAP settings)
+- [ ] LDAP login - *Credentials are in the **Support** 1Password vault*
 
 ### Forks
 
@@ -56,12 +52,14 @@ document can be removed from `gitlab-ee`.
 
 ### Markdown
 
-- [ ] Visit / clone [relative links repository] and see if the links are linking to the correct documents in the repository
+- [ ] Visit / clone [relative links repository] and see if the links are linking
+  to the correct documents in the repository
 - [ ] Check if images are rendered in the repository's `README`
-- [ ] Click on a [directory link] and see if it correctly takes to the tree view
-- [ ] Click on a [file link] and see if it correctly takes to the blob view
-- [ ] Check if the links in the `README` when viewed as a [blob] are correct
-- [ ] Select the `markdown` branch and check if all links point to the files within the `markdown` branch
+- [ ] Click on a directory link and see if it correctly takes to the tree view
+- [ ] Click on a file link and see if it correctly takes to the blob view
+- [ ] Check if the links in the `README` when viewed as a blob are correct
+- [ ] Select the `markdown` branch and check if all links point to the files
+  within the `markdown` branch
 
 ### Syntax highlighting
 
@@ -78,11 +76,7 @@ document can be removed from `gitlab-ee`.
 - [ ] Check if `rake gitlab:check` is updated and works
 - [ ] Check if `rake gitlab:env:info` is updated and works
 
-[support document]: https://docs.google.com/document/d/1cAHvbdFE6zR5WY-zhn3HsDcACssJE8Cav6WeYq3oCkM/edit#heading=h.2x3u50ukp87w
 [relative links repository]: https://dev.gitlab.org/samples/relative-links/tree/master
-[directory link]: https://dev.gitlab.org/samples/relative-links/tree/master/documents
-[file link]: https://dev.gitlab.org/samples/relative-links/blob/master/documents/0.md
-[blob]: https://dev.gitlab.org/samples/relative-links/blob/master/README.md
 [language highlight repository]: https://dev.gitlab.org/samples/languages-highlight
 
 ---
