@@ -21,8 +21,8 @@ class Release
 
   attr_reader :version, :remotes
 
-  def initialize(version, remotes)
-    @version = version
+  def initialize(version_string, remotes)
+    @version = Version.new(version_string)
     @remotes = remotes
   end
 
@@ -74,11 +74,11 @@ class Release
   end
 
   def tag
-    Version.tag(version)
+    version.tag
   end
 
   def branch
-    Version.branch_name(@version)
+    version.branch_name
   end
 
   def prepare_repo(remotes)

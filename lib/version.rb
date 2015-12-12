@@ -1,34 +1,34 @@
 class Version < String
-  def self.branch_name(version)
-    new(version).branch_name
+  def self.branch_name(version_string)
+    new(version_string).branch_name
   end
 
-  def self.patch?(version)
-    new(version).patch?
+  def self.patch?(version_string)
+    new(version_string).patch?
   end
 
-  def self.rc?(version)
-    new(version).rc?
+  def self.rc?(version_string)
+    new(version_string).rc?
   end
 
-  def self.release?(version)
-    new(version).release?
+  def self.release?(version_string)
+    new(version_string).release?
   end
 
-  def self.tag(version)
-    new(version).tag
+  def self.tag(version_string)
+    new(version_string).tag
   end
 
-  def self.to_minor(version)
-    new(version).to_minor
+  def self.to_minor(version_string)
+    new(version_string).to_minor
   end
 
-  def self.to_patch(version)
-    new(version).to_patch
+  def self.to_patch(version_string)
+    new(version_string).to_patch
   end
 
-  def self.valid?(version)
-    new(version).valid?
+  def self.valid?(version_string)
+    new(version_string).valid?
   end
 
   def branch_name(force_ee: false)
