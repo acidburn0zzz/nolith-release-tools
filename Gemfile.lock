@@ -36,6 +36,7 @@ GEM
     rspec-support (3.4.1)
     terminal-table (1.5.2)
     thread_safe (0.3.5)
+    timecop (0.8.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     weekdays (1.0.2)
@@ -50,6 +51,7 @@ DEPENDENCIES
   gitlab (~> 3.6.0)
   rake
   rspec (~> 3.4.0)
+  timecop (~> 0.8.0)
   weekdays (~> 1.0.0)
 
 BUNDLED WITH
