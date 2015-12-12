@@ -52,10 +52,6 @@ class MonthlyIssue
       .ordinalize
   end
 
-  def rc1_version
-    "#{version.to_patch}.rc1"
-  end
-
   def stable_branch(ee: false)
     version.branch_name(force_ee: ee)
   end

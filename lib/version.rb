@@ -27,6 +27,10 @@ class Version < String
     new(version_string).to_patch
   end
 
+  def self.to_rc(version_string, number = 1)
+    new(version_string).to_rc(number)
+  end
+
   def self.valid?(version_string)
     new(version_string).valid?
   end
@@ -61,6 +65,10 @@ class Version < String
 
   def to_patch
     self.match(/\A\d+\.\d+\.\d+/).to_s
+  end
+
+  def to_rc(number = 1)
+    "#{to_patch}-rc#{number}"
   end
 
   def valid?

@@ -74,6 +74,19 @@ describe Version do
     end
   end
 
+  describe '.to_rc' do
+    it 'defaults to rc1' do
+      aggregate_failures do
+        expect(described_class.to_rc('8.3.0')).to eq '8.3.0-rc1'
+        expect(described_class.to_rc('8.3.0.rc2')).to eq '8.3.0-rc1'
+      end
+    end
+
+    it 'accepts an optional number' do
+      expect(described_class.to_rc('8.3.0', 3)).to eq '8.3.0-rc3'
+    end
+  end
+
   describe '.valid?' do
     it { expect(described_class.valid?('1.2.3')).to be_truthy }
     it { expect(described_class.valid?('11.22.33')).to be_truthy }
