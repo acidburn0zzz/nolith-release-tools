@@ -52,10 +52,6 @@ class MonthlyIssue
       .ordinalize
   end
 
-  def stable_branch(ee: false)
-    version.branch_name(force_ee: ee)
-  end
-
   private
 
   def template

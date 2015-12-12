@@ -78,7 +78,7 @@ class Release
   end
 
   def branch
-    version.branch_name
+    version.stable_branch
   end
 
   def prepare_repo(remotes)

@@ -1,8 +1,4 @@
 class Version < String
-  def self.branch_name(version_string)
-    new(version_string).branch_name
-  end
-
   def self.patch?(version_string)
     new(version_string).patch?
   end
@@ -13,6 +9,10 @@ class Version < String
 
   def self.release?(version_string)
     new(version_string).release?
+  end
+
+  def self.stable_branch(version_string)
+    new(version_string).stable_branch
   end
 
   def self.tag(version_string)
@@ -35,14 +35,6 @@ class Version < String
     new(version_string).valid?
   end
 
-  def branch_name(force_ee: false)
-    if force_ee || self.end_with?('-ee')
-      to_minor.gsub('.', '-') + '-stable-ee'
-    else
-      to_minor.gsub('.', '-') + '-stable'
-    end
-  end
-
   def patch?
     release? && /\.(\d+)$/.match(self)[1].to_i > 0
   end
@@ -53,6 +45,14 @@ class Version < String
 
   def release?
     self =~ /\A\d+\.\d+\.\d+\Z/
+  end
+
+  def stable_branch(ee: false)
+    if ee || self.end_with?('-ee')
+      to_minor.gsub('.', '-') << '-stable-ee'
+    else
+      to_minor.gsub('.', '-') << '-stable'
+    end
   end
 
   def tag

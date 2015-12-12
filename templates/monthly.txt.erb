@@ -43,7 +43,7 @@
 
 ### <%= ordinal_date(3) %>: (3 working days before the 22nd)
 
-- [ ] Merge `<%= stable_branch %>` into `<%= stable_branch(ee: true) %>`
+- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
 - [ ] Check that everyone is mentioned on the [blog post] using `@all`
 
 ### <%= ordinal_date(2) %>: (2 working days before the 22nd)
@@ -52,7 +52,7 @@
 
 ### <%= ordinal_date(1) %>: (1 working day before the 22nd)
 
-- [ ] Merge `<%= stable_branch %>` into `<%= stable_branch(ee: true) %>`
+- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
 - [ ] Create CE and EE release candidates
 - [ ] Create Omnibus tags and build packages for the latest release candidates
 - [ ] Update GitLab.com with the latest RC
@@ -63,7 +63,7 @@ Release before 1200 CET / 2AM PST, to make sure the majority of our users
 get the new version on the 22nd and there is sufficient time in the European
 workday to quickly fix any issues.
 
-- [ ] Merge `<%= stable_branch %>` into `<%= stable_branch(ee: true) %>`
+- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
 - [ ] Create the '<%= version.to_patch %>' tag with the [release tools](https://dev.gitlab.org/gitlab/release-tools)
 - [ ] Create the '<%= version.to_patch %>' version on version.gitlab.com
 - [ ] Try to do before 1100 CET: Create and push Omnibus tags for <%= version.to_patch %> (will auto-release the packages)
