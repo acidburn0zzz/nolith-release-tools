@@ -9,7 +9,9 @@ require 'active_support/core_ext/integer'
 require 'active_support/core_ext/numeric'
 require 'weekdays'
 
-# MonthlyPost
+require_relative 'release'
+
+# MonthlyIssue
 #
 # Handles chores related to monthly releases of GitLab CE and EE.
 #
@@ -18,16 +20,16 @@ require 'weekdays'
 #   version = Version.new('8.3.0')
 #
 #   # Uses the 22nd of the current month as the release date by default
-#   post = MonthlyPost.new(version)
-#   post.release_date.to_s       # => "2015-12-22"
-#   post.rc1_version             # => "8.3.0.rc1"
-#   post.stable_branch           # => "8-3-stable"
-#   post.stable_branch(ee: true) # => "8-3-stable-ee"
+#   issue = MonthlyIssue.new(version)
+#   issue.release_date.to_s       # => "2015-12-22"
+#   issue.rc1_version             # => "8.3.0.rc1"
+#   issue.stable_branch           # => "8-3-stable"
+#   issue.stable_branch(ee: true) # => "8-3-stable-ee"
 #
 #   # Override the default release date
-#   post = MonthlyPost.new(version, Date.new(2015, 11, 22))
-#   post.release_date.to_s # => "2015-11-22"
-class MonthlyPost
+#   issue = MonthlyIssue.new(version, Date.new(2015, 11, 22))
+#   issue.release_date.to_s # => "2015-11-22"
+class MonthlyIssue
   attr_reader :release_date, :version
 
   def initialize(version, release_date = Release.next_release_date)
@@ -35,11 +37,11 @@ class MonthlyPost
     @release_date = release_date
   end
 
-  def post_title
+  def title
     "Release #{version.to_minor}"
   end
 
-  def render
+  def description
     ERB.new(template).result(binding)
   end
 

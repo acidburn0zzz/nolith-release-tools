@@ -4,7 +4,7 @@ require 'fileutils'
 require 'colorize'
 
 require_relative 'lib/version'
-require_relative 'lib/monthly_post'
+require_relative 'lib/monthly_issue'
 require_relative 'lib/release'
 require_relative 'lib/remotes'
 require_relative 'lib/sync'
@@ -45,10 +45,10 @@ task :sync do
   Sync.new(Remotes.ee_remotes).execute
 end
 
-desc "Display monthly release post template"
-task :monthly_post, [:version] do |t, args|
+desc "Display monthly release issue template"
+task :monthly_issue, [:version] do |t, args|
   version = get_version(args)
-  post = MonthlyPost.new(version)
+  issue = MonthlyIssue.new(version)
 
-  puts post.render
+  puts issue.description
 end
