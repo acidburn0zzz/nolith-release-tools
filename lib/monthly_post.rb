@@ -28,15 +28,9 @@ require 'weekdays'
 #   post = MonthlyPost.new(version, Date.new(2015, 11, 22))
 #   post.release_date.to_s # => "2015-11-22"
 class MonthlyPost
-  def self.next_release_date
-    today = Date.today
-
-    Date.new(today.year, today.month, 22)
-  end
-
   attr_reader :release_date, :version
 
-  def initialize(version, release_date = self.class.next_release_date)
+  def initialize(version, release_date = Release.next_release_date)
     @version      = version
     @release_date = release_date
   end
