@@ -40,7 +40,7 @@ class Version < String
   end
 
   def rc?
-    self =~ /\A\d+\.\d+\.\d+\.rc\d+\z/
+    self =~ /\A\d+\.\d+\.\d+[\.-]rc\d+\z/
   end
 
   def release?

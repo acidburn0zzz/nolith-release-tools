@@ -22,7 +22,10 @@ describe Version do
 
   describe '.rc?' do
     it 'is true for pre-release versions' do
-      expect(described_class.rc?('1.2.3.rc1')).to be_truthy
+      aggregate_failures do
+        expect(described_class.rc?('1.2.3.rc1')).to be_truthy
+        expect(described_class.rc?('1.2.3-rc1')).to be_truthy
+      end
     end
 
     it 'is false for release versions' do
