@@ -59,6 +59,6 @@ class MonthlyIssue
   end
 
   def template_path
-    File.expand_path('../templates/monthly.txt.erb', __dir__)
+    File.expand_path('../templates/monthly.md.erb', __dir__)
   end
 end
