@@ -10,7 +10,7 @@ class Release
   # is half over.
   #
   # Returns a Date
-  def self.next_release_date
+  def self.next_date
     today = Date.today
 
     next_date = Date.new(today.year, today.month, 22)
