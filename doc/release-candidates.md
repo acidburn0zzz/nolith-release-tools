@@ -94,7 +94,7 @@ into EE](merge-ce-into-ee.md#merging-ce-master-into-ee-master) guide.
 
 #### 4. Tag the RC1 version
 
-Use the [`release`](rake-tasks.md#release-version) Rake task:
+Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.
@@ -113,7 +113,7 @@ guide.
 
 #### 2. Tag the RC version
 
-Use the [`release`](rake-tasks.md#release-version) Rake task:
+Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.
