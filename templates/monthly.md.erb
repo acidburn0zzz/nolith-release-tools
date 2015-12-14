@@ -5,9 +5,11 @@
 ### <%= ordinal_date(6) %>: (6 working days before the 22nd)
 
 - [ ] Determine QA person and notify this person
-- [ ] Check the tasks in [how to rc1 guide](https://dev.gitlab.org/gitlab/gitlabhq/blob/master/doc/release/howto_rc1.md) and delegate tasks if necessary
-- [ ] Merge CE `master` into EE `master` via merge request (#LINK)
-- [ ] Create CE and EE RC1 versions (#LINK)
+- Follow the [Creating RC1] guide:
+  - [ ] Update the "Installation from Source" guide
+  - [ ] Create the Update guides
+  - [ ] Merge CE `master` into EE `master` via merge request
+  - [ ] Tag the RC1 version
 - [ ] Build RC1 packages
 
 ### <%= ordinal_date(5) %>: (5 working days before the 22nd)
@@ -72,6 +74,7 @@ workday to quickly fix any issues.
 - [ ] Schedule a second Tweet of the release announcement with the same text at 1800 CET / 8AM PST
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
+[Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [blog post]: LINK_TO_WIP_BLOG_POST
 [release tools]: https://gitlab.com/gitlab-org/release-tools
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
