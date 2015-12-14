@@ -73,7 +73,7 @@ from CE's stable branch for that version into EE's.
 In this example, we'll be releasing the first patch version of 7.14, 7.14.1.
 Both CE and EE should already have branches called `7-14-stable` and
 `7-14-stable-ee`, respectively, which were created during the
-[RC1 release](release-candidates.md#tag-the-rc-version).
+[RC1 release](release-candidates.md#4-tag-the-rc1-version).
 
 1. Checkout a local branch, tracking the remote one:
 

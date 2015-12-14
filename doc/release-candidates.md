@@ -11,23 +11,12 @@ sometimes even a third.
 
 ## Guides
 
+- [Creating RC1](#creating-rc1)
+- [Creating subsequent RCs](#creating-subsequent-rcs)
+
 ### Creating RC1
 
-***Note:*** *Before proceeding, ensure that CE's `master` branch is merged into
-EE's. See the [Merge GitLab CE into EE](merge-ce-into-ee.md#merging-ce-master-into-ee-master)
-guide.*
-
-1. [Update the "Installation from Source" guide](#update-the-installation-from-source-guide)
-1. [Create the Update guide](#create-the-update-guide)
-1. [Tag the RC version](#tag-the-rc-version)
-
-### Creating subsequent RCs
-
-1. [Tag the RC version](#tag-the-rc-version)
-
-## Tasks
-
-### Update the "Installation from Source" guide
+#### 1. Update the "Installation from Source" guide
 
 ***Note:*** *This only needs to be done for the GitLab CE repository. Changes
 will be merged into GitLab EE.*
@@ -40,7 +29,7 @@ will be merged into GitLab EE.*
    sections. For example, in GitLab 8.0 we had to add the section about
    installing `gitlab-workhorse` (called `gitlab-git-http-server` at the time).
 
-### Create the Update guide
+#### 2. Create the Update guides
 
 Each major release of GitLab needs a corresponding [update guide](https://gitlab.com/gitlab-org/gitlab-ce/tree/master/doc/update)
 with instructions on how to manually upgrade from the previous major release.
@@ -51,7 +40,7 @@ Make sure to do both!*
 ***Note:*** *For the examples below, we're going to be using GitLab 8.2 as an
 example of the upcoming release, and 8.1 as an example of the previous release.*
 
-#### GitLab CE
+##### GitLab CE
 
 ***Note:*** *This only needs to be done for the GitLab CE repository. Changes
 will be merged into GitLab EE.*
@@ -79,7 +68,7 @@ will be merged into GitLab EE.*
    the previous version required special steps that no longer apply this
    version.
 
-#### GitLab EE
+##### GitLab EE
 
 GitLab EE releases include guides to migrate from the CE version of a major
 release to the EE version of the same release.
@@ -98,13 +87,37 @@ release to the EE version of the same release.
 1. Update the version number in **Things went south?** and the name of the
    `stable` branch in **Revert the code to the previous version**.
 
-### Tag the RC version
+#### 3. Merge CE `master` into EE `master`
+
+Ensure that CE's `master` branch is merged into EE's. See the [Merge GitLab CE
+into EE](merge-ce-into-ee.md#merging-ce-master-into-ee-master) guide.
+
+#### 4. Tag the RC1 version
 
 Use the [`release`](rake-tasks.md#release-version) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.
 bundle exec rake "release[8.2.0.rc1]"
+```
+
+---
+
+### Creating subsequent RCs
+
+#### 1. Merge CE `stable` into EE `stable`
+
+Ensure that CE's `X-Y-stable` branch is merged into EE's `X-Y-stable-ee`. See
+the [Merge GitLab CE into EE](merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart)
+guide.
+
+#### 2. Tag the RC version
+
+Use the [`release`](rake-tasks.md#release-version) Rake task:
+
+```sh
+# NOTE: This command is an example! Update it to reflect new version numbers.
+bundle exec rake "release[8.2.0.rc2]"
 ```
 
 [GITLAB_SHELL_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_SHELL_VERSION
