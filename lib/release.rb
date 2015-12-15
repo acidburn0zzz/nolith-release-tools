@@ -1,7 +1,8 @@
-require_relative 'version'
+require 'colorize'
+
 require_relative 'remotes'
 require_relative 'repository'
-require 'colorize'
+require_relative 'version'
 
 class Release
   # Get the Date of the next release
