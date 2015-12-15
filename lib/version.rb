@@ -7,6 +7,10 @@ class Version < String
     release? && /\.(\d+)$/.match(self)[1].to_i > 0
   end
 
+  def rc
+    self.match(/[\.-](rc\d+)\z/).captures.first if rc?
+  end
+
   def rc?
     self =~ /\A\d+\.\d+\.\d+[\.-]rc\d+\z/
   end
@@ -29,6 +33,13 @@ class Version < String
 
   def to_minor
     self.match(/\A\d+\.\d+/).to_s
+  end
+
+  def to_omnibus(ee: false)
+    str = "#{to_patch}+"
+    str << "#{rc}." if rc?
+    str << (ee ? 'ee' : 'ce')
+    str << '.0'
   end
 
   def to_patch
