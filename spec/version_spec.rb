@@ -2,99 +2,109 @@ require 'spec_helper'
 require_relative '../lib/version'
 
 describe Version do
-  describe '.patch?' do
-    it 'is true for patch releases' do
-      expect(described_class.patch?('1.2.3')).to be_truthy
-    end
+  def version(version_string)
+    described_class.new(version_string)
+  end
 
-    it 'is false for pre-releases' do
-      expect(described_class.patch?('1.2.0.rc1')).to be_falsey
-    end
-
-    it 'is false for minor releases' do
-      expect(described_class.patch?('1.2.0')).to be_falsey
-    end
-
-    it 'is false for invalid releases' do
-      expect(described_class.patch?('wow.1')).to be_falsey
+  describe '#milestone_name' do
+    it 'returns the milestone name' do
+      expect(version('8.3.2').milestone_name).to eq '8.3'
     end
   end
 
-  describe '.rc?' do
+  describe '#patch?' do
+    it 'is true for patch releases' do
+      expect(version('1.2.3').patch?).to be_truthy
+    end
+
+    it 'is false for pre-releases' do
+      expect(version('1.2.0.rc1').patch?).to be_falsey
+    end
+
+    it 'is false for minor releases' do
+      expect(version('1.2.0').patch?).to be_falsey
+    end
+
+    it 'is false for invalid releases' do
+      expect(version('wow.1').patch?).to be_falsey
+    end
+  end
+
+  describe '#rc?' do
     it 'is true for pre-release versions' do
       aggregate_failures do
-        expect(described_class.rc?('1.2.3.rc1')).to be_truthy
-        expect(described_class.rc?('1.2.3-rc1')).to be_truthy
+        expect(version('1.2.3.rc1').rc?).to be_truthy
+        expect(version('1.2.3-rc1').rc?).to be_truthy
       end
     end
 
     it 'is false for release versions' do
-      expect(described_class.rc?('1.2.3')).to be_falsey
+      expect(version('1.2.3').rc?).to be_falsey
     end
 
     it 'is false for invalid versions' do
-      expect(described_class.rc?('wow.rc1')).to be_falsey
+      expect(version('wow.rc1').rc?).to be_falsey
     end
   end
 
-  describe '.release?' do
+  describe '#release?' do
     it 'is true for release versions' do
-      expect(described_class.release?('1.2.3')).to be_truthy
+      expect(version('1.2.3').release?).to be_truthy
     end
 
     it 'is false for pre-release versions' do
-      expect(described_class.release?('1.2.3.rc1')).to be_falsey
+      expect(version('1.2.3.rc1').release?).to be_falsey
     end
 
     it 'is false for invalid versions' do
-      expect(described_class.release?('wow.1')).to be_falsey
+      expect(version('wow.1').release?).to be_falsey
     end
   end
 
-  describe '.stable_branch' do
-    it { expect(described_class.stable_branch('1.2.3')).to eq '1-2-stable' }
-    it { expect(described_class.stable_branch('1.23.45')).to eq '1-23-stable' }
-    it { expect(described_class.stable_branch('1.23.45.rc67')).to eq '1-23-stable' }
-    it { expect(described_class.stable_branch('1.23.45-ee')).to eq '1-23-stable-ee' }
+  describe '#stable_branch' do
+    it { expect(version('1.2.3').stable_branch).to eq '1-2-stable' }
+    it { expect(version('1.23.45').stable_branch).to eq '1-23-stable' }
+    it { expect(version('1.23.45.rc67').stable_branch).to eq '1-23-stable' }
+    it { expect(version('1.23.45-ee').stable_branch).to eq '1-23-stable-ee' }
   end
 
-  describe '.tag' do
+  describe '#tag' do
     it 'returns a tag name' do
-      expect(described_class.tag('1.2.3.rc1')).to eq 'v1.2.3.rc1'
-      expect(described_class.tag('1.2.3')).to eq 'v1.2.3'
+      expect(version('1.2.3.rc1').tag).to eq 'v1.2.3.rc1'
+      expect(version('1.2.3').tag).to eq 'v1.2.3'
     end
   end
 
-  describe '.to_minor' do
+  describe '#to_minor' do
     it 'returns the minor version' do
-      expect(described_class.to_minor('1.23.4')).to eq '1.23'
+      expect(version('1.23.4').to_minor).to eq '1.23'
     end
   end
 
-  describe '.to_patch' do
+  describe '#to_patch' do
     it 'returns the patch version' do
-      expect(described_class.to_patch('1.23.4.rc1')).to eq '1.23.4'
+      expect(version('1.23.4.rc1').to_patch).to eq '1.23.4'
     end
   end
 
-  describe '.to_rc' do
+  describe '#to_rc' do
     it 'defaults to rc1' do
       aggregate_failures do
-        expect(described_class.to_rc('8.3.0')).to eq '8.3.0-rc1'
-        expect(described_class.to_rc('8.3.0.rc2')).to eq '8.3.0-rc1'
+        expect(version('8.3.0').to_rc).to eq '8.3.0-rc1'
+        expect(version('8.3.0.rc2').to_rc).to eq '8.3.0-rc1'
       end
     end
 
     it 'accepts an optional number' do
-      expect(described_class.to_rc('8.3.0', 3)).to eq '8.3.0-rc3'
+      expect(version('8.3.0').to_rc(3)).to eq '8.3.0-rc3'
     end
   end
 
-  describe '.valid?' do
-    it { expect(described_class.valid?('1.2.3')).to be_truthy }
-    it { expect(described_class.valid?('11.22.33')).to be_truthy }
-    it { expect(described_class.valid?('2.2.3.rc1')).to be_truthy }
-    it { expect(described_class.valid?('1.2.3.4')).to be_falsey }
-    it { expect(described_class.valid?('wow')).to be_falsey }
+  describe '#valid?' do
+    it { expect(version('1.2.3').valid?).to be_truthy }
+    it { expect(version('11.22.33').valid?).to be_truthy }
+    it { expect(version('2.2.3.rc1').valid?).to be_truthy }
+    it { expect(version('1.2.3.4').valid?).to be_falsey }
+    it { expect(version('wow').valid?).to be_falsey }
   end
 end

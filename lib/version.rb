@@ -1,38 +1,6 @@
 class Version < String
-  def self.patch?(version_string)
-    new(version_string).patch?
-  end
-
-  def self.rc?(version_string)
-    new(version_string).rc?
-  end
-
-  def self.release?(version_string)
-    new(version_string).release?
-  end
-
-  def self.stable_branch(version_string)
-    new(version_string).stable_branch
-  end
-
-  def self.tag(version_string)
-    new(version_string).tag
-  end
-
-  def self.to_minor(version_string)
-    new(version_string).to_minor
-  end
-
-  def self.to_patch(version_string)
-    new(version_string).to_patch
-  end
-
-  def self.to_rc(version_string, number = 1)
-    new(version_string).to_rc(number)
-  end
-
-  def self.valid?(version_string)
-    new(version_string).valid?
+  def milestone_name
+    to_minor
   end
 
   def patch?
