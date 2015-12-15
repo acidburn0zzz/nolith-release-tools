@@ -6,8 +6,7 @@ require 'version'
 describe MonthlyIssue do
   describe '#title' do
     it "returns the issue title" do
-      version = Version.new('8.3.5.rc1')
-      issue = described_class.new(version)
+      issue = described_class.new(Version.new('8.3.5.rc1'))
 
       expect(issue.title).to eq 'Release 8.3'
     end
@@ -32,8 +31,7 @@ describe MonthlyIssue do
     end
 
     it "includes the RC version" do
-      version = Version.new('8.3.0')
-      issue = described_class.new(version)
+      issue = described_class.new(Version.new('8.3.0'))
 
       content = issue.description
 
@@ -41,8 +39,7 @@ describe MonthlyIssue do
     end
 
     it "includes stable branch names" do
-      version = Version.new('8.3.0.rc1')
-      issue = described_class.new(version)
+      issue = described_class.new(Version.new('8.3.0.rc1'))
 
       content = issue.description
 
@@ -50,8 +47,7 @@ describe MonthlyIssue do
     end
 
     it "includes the version number" do
-      version = Version.new('8.3.0')
-      issue = described_class.new(version)
+      issue = described_class.new(Version.new('8.3.0'))
 
       content = issue.description
 
@@ -59,6 +55,24 @@ describe MonthlyIssue do
         expect(content).to include("Create the '8.3.0' tag")
         expect(content).to include("Create the '8.3.0' version")
       end
+    end
+  end
+
+  describe '#labels' do
+    it 'returns a list of labels' do
+      issue = described_class.new(double)
+
+      expect(issue.labels).to eq 'release'
+    end
+  end
+
+  describe '#create' do
+    it 'calls Client.create_issue' do
+      issue = described_class.new(double)
+
+      expect(Client).to receive(:create_issue).with(issue)
+
+      issue.create
     end
   end
 

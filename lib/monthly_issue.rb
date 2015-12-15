@@ -9,26 +9,9 @@ require 'active_support/core_ext/integer'
 require 'active_support/core_ext/numeric'
 require 'weekdays'
 
+require_relative 'client'
 require_relative 'release'
 
-# MonthlyIssue
-#
-# Handles chores related to monthly releases of GitLab CE and EE.
-#
-# Example:
-#
-#   version = Version.new('8.3.0')
-#
-#   # Uses the 22nd of the current month as the release date by default
-#   issue = MonthlyIssue.new(version)
-#   issue.release_date.to_s       # => "2015-12-22"
-#   issue.rc1_version             # => "8.3.0.rc1"
-#   issue.stable_branch           # => "8-3-stable"
-#   issue.stable_branch(ee: true) # => "8-3-stable-ee"
-#
-#   # Override the default release date
-#   issue = MonthlyIssue.new(version, Date.new(2015, 11, 22))
-#   issue.release_date.to_s # => "2015-11-22"
 class MonthlyIssue
   attr_reader :release_date, :version
 
@@ -43,6 +26,14 @@ class MonthlyIssue
 
   def description
     ERB.new(template).result(binding)
+  end
+
+  def labels
+    'release'
+  end
+
+  def create
+    Client.create_issue(self)
   end
 
   def ordinal_date(weekdays_before_release)
