@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require 'regression_issue'
+require 'version'
 
 describe RegressionIssue do
   describe '#title' do
