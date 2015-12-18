@@ -28,7 +28,8 @@ class Client
   end
 
   def self.ce_milestone(title)
-    ce_milestones.detect { |m| m.title == title } || MissingMilestone.new
+    ce_milestones.
+      detect { |m| m.title == title } || MissingMilestone.new
   end
 
   # Create an issue in the CE project based on the provided issue
@@ -51,5 +52,17 @@ class Client
       milestone_id: milestone.id,
       labels:       issue.labels
     })
+  end
+
+  # Find an open issue in the CE project based on the provided issue
+  #
+  # issue - An object that responds to the following messages:
+  #         :title  - Issue title String
+  #         :labels - Comma-separated String of label names
+  #
+  # Returns a Gitlab::ObjectifiedHash object, or nil
+  def self.find_open_issue(issue)
+    ce_issues(labels: issue.labels, state: 'opened').
+      detect { |i| i.title == issue.title }
   end
 end

@@ -1,0 +1,611 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: "[GITLAB_API_ENDPOINT]/projects/13083/issues?labels=release&state=opened"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 18 Dec 2015 21:15:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '5233'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"b2f74420753d5c040f025624f479109a"
+      Link:
+      - <[GITLAB_API_ENDPOINT]/projects/13083/issues?page=1&per_page=0>; rel="first",
+        <[GITLAB_API_ENDPOINT]/projects/13083/issues?page=1&per_page=0>; rel="last"
+      Status:
+      - 200 OK
+      Vary:
+      - Origin
+      X-Request-Id:
+      - 8ea3be86-e574-4e14-a71a-543e79ba70a2
+      X-Runtime:
+      - '0.168793'
+    body:
+      encoding: UTF-8
+      string: '[{"id":832887,"iid":4033,"project_id":13083,"title":"Release 8.2.4","description":"-
+        Picked into respective `stable` branches:\r\n  - [ ] CE: gitlab-org/gitlab-ce!2084\r\n-
+        [ ] Merge `8-2-stable` into `8-2-stable-ee`\r\n- [ ] release-tools: `8.2.4`\r\n-
+        gitlab-omnibus\r\n  - [ ] `8.2.4+ee.0`\r\n  - [ ] `8.2.4+ce.0`\r\n- [ ] Deploy\r\n-
+        [ ] Add patch notice to [8.2 regressions](https://gitlab.com/gitlab-org/gitlab-ce/issues/3530)\r\n-
+        [ ] [Blog post]\r\n- [ ] [Tweet]\r\n- [ ] Add entry to version.gitlab.com","state":"opened","created_at":"2015-12-12T17:39:30.119Z","updated_at":"2015-12-12T17:41:14.881Z","labels":["release"],"milestone":{"id":23878,"iid":16,"project_id":13083,"title":"8.2","description":"","state":"active","created_at":"2015-09-10T13:14:08.087Z","updated_at":"2015-09-10T13:14:08.087Z","due_date":"2015-11-22"},"assignee":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"},"author":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"}},{"id":809579,"iid":3977,"project_id":13083,"title":"Release
+        8.3","description":"### 11th: (7 working days before the 22nd)\n\n- [x] Triage
+        the [Omnibus milestone]\n\n### 14th: (6 working days before the 22nd)\n\n-
+        [x] Determine QA person and notify this person\n- [x] Check the tasks in [how
+        to rc1 guide](https://dev.gitlab.org/gitlab/gitlabhq/blob/master/doc/release/howto_rc1.md)
+        and delegate tasks if necessary\n- [x] Merge CE `master` into EE `master`
+        via merge request - gitlab-org/gitlab-ee!77\n- [x] Create CE and EE RC1 versions\n-
+        [x] Build RC1 packages\n\n### 15th: (5 working days before the 22nd)\n\n-
+        [x] Do QA and fix anything coming out of it (gitlab-org/gitlab-ce#4047)\n-
+        [x] Close the [Omnibus milestone]\n- [x] Prepare the [blog post]\n\n### 16th:
+        (4 working days before the 22nd)\n\n- [x] Update GitLab.com with RC1\n- [x]
+        Create the regression issue in the CE issue tracker:\n\n    ```\n    This
+        is a meta issue to index possible regressions in this monthly release\n    and
+        any patch versions.\n\n    Please do not raise or discuss issues directly
+        in this issue but link to\n    issues that might warrant a patch release.
+        If there is a Merge Request\n    that fixes the issue, please link to that
+        as well.\n\n    Please only post one regression issue and/or merge request
+        per comment.\n    Comments will be updated by the release manager as they
+        are addressed.\n    ```\n\n- [x] Tweet about RC1 release:\n\n    ```\n    GitLab
+        8.3.0.rc1 is available: https://packages.gitlab.com/gitlab/unstable\n    Use
+        at your own risk. Please link regressions issues from\n    LINK_TO_REGRESSION_ISSUE\n    ```\n\n###
+        17th: (3 working days before the 22nd)\n\n- [x] Merge `8-3-stable` into `8-3-stable-ee`\n-
+        [x] Check that everyone is mentioned on the [blog post] using `@all`\n\n###
+        18th: (2 working days before the 22nd)\n\n- [x] Check that MVP is added to
+        the [MVP page]\n\n### 21st: (1 working day before the 22nd)\n\n- [ ] Merge
+        `8-3-stable` into `8-3-stable-ee`\n- [ ] Create CE and EE release candidates\n-
+        [ ] Create Omnibus tags and build packages for the latest release candidates\n-
+        [ ] Update GitLab.com with the latest RC\n\n### 22nd before 1200 CET:\n\nRelease
+        before 1200 CET / 2AM PST, to make sure the majority of our users\nget the
+        new version on the 22nd and there is sufficient time in the European\nworkday
+        to quickly fix any issues.\n\n- [ ] Merge `8-3-stable` into `8-3-stable-ee`\n-
+        [ ] Create the ''8.3.0'' tag with the [release tools](https://dev.gitlab.org/gitlab/release-tools)\n-
+        [ ] Create the ''8.3.0'' version on version.gitlab.com\n- [ ] Try to do before
+        1100 CET: Create and push Omnibus tags for 8.3.0 (will auto-release the packages)\n-
+        [ ] Try to do before 1200 CET: Publish the release [blog post]\n- [ ] Tweet
+        about the release\n- [ ] Schedule a second Tweet of the release announcement
+        with the same text at 1800 CET / 8AM PST\n\n[Omnibus milestone]: https://gitlab.com/gitlab-org/omnibus-gitlab/milestones/25\n[blog
+        post]: https://gitlab.com/gitlab-com/www-gitlab-com/merge_requests/1181\n[MVP
+        page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html","state":"opened","created_at":"2015-12-09T20:18:38.691Z","updated_at":"2015-12-18T17:07:25.084Z","labels":["release"],"milestone":{"id":23879,"iid":17,"project_id":13083,"title":"8.3","description":"","state":"active","created_at":"2015-09-10T13:14:22.692Z","updated_at":"2015-09-10T13:14:22.692Z","due_date":"2015-12-22"},"assignee":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"},"author":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"}}]'
+    http_version: 
+  recorded_at: Fri, 18 Dec 2015 21:15:14 GMT
+- request:
+    method: get
+    uri: "[GITLAB_API_ENDPOINT]/projects/13083/issues?labels=release"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 18 Dec 2015 21:18:11 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '14578'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"fe8e04870e4666b1c919fb3f1fabf4e0"
+      Link:
+      - <[GITLAB_API_ENDPOINT]/projects/13083/issues?page=1&per_page=0>; rel="first",
+        <[GITLAB_API_ENDPOINT]/projects/13083/issues?page=1&per_page=0>; rel="last"
+      Status:
+      - 200 OK
+      Vary:
+      - Origin
+      X-Request-Id:
+      - 1a788cbc-c0f6-4301-8030-1500a3aec7b0
+      X-Runtime:
+      - '0.250319'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        W3siaWQiOjgzMjg4NywiaWlkIjo0MDMzLCJwcm9qZWN0X2lkIjoxMzA4Mywi
+        dGl0bGUiOiJSZWxlYXNlIDguMi40IiwiZGVzY3JpcHRpb24iOiItIFBpY2tl
+        ZCBpbnRvIHJlc3BlY3RpdmUgYHN0YWJsZWAgYnJhbmNoZXM6XHJcbiAgLSBb
+        IF0gQ0U6IGdpdGxhYi1vcmcvZ2l0bGFiLWNlITIwODRcclxuLSBbIF0gTWVy
+        Z2UgYDgtMi1zdGFibGVgIGludG8gYDgtMi1zdGFibGUtZWVgXHJcbi0gWyBd
+        IHJlbGVhc2UtdG9vbHM6IGA4LjIuNGBcclxuLSBnaXRsYWItb21uaWJ1c1xy
+        XG4gIC0gWyBdIGA4LjIuNCtlZS4wYFxyXG4gIC0gWyBdIGA4LjIuNCtjZS4w
+        YFxyXG4tIFsgXSBEZXBsb3lcclxuLSBbIF0gQWRkIHBhdGNoIG5vdGljZSB0
+        byBbOC4yIHJlZ3Jlc3Npb25zXShodHRwczovL2dpdGxhYi5jb20vZ2l0bGFi
+        LW9yZy9naXRsYWItY2UvaXNzdWVzLzM1MzApXHJcbi0gWyBdIFtCbG9nIHBv
+        c3RdXHJcbi0gWyBdIFtUd2VldF1cclxuLSBbIF0gQWRkIGVudHJ5IHRvIHZl
+        cnNpb24uZ2l0bGFiLmNvbSIsInN0YXRlIjoib3BlbmVkIiwiY3JlYXRlZF9h
+        dCI6IjIwMTUtMTItMTJUMTc6Mzk6MzAuMTE5WiIsInVwZGF0ZWRfYXQiOiIy
+        MDE1LTEyLTEyVDE3OjQxOjE0Ljg4MVoiLCJsYWJlbHMiOlsicmVsZWFzZSJd
+        LCJtaWxlc3RvbmUiOnsiaWQiOjIzODc4LCJpaWQiOjE2LCJwcm9qZWN0X2lk
+        IjoxMzA4MywidGl0bGUiOiI4LjIiLCJkZXNjcmlwdGlvbiI6IiIsInN0YXRl
+        IjoiYWN0aXZlIiwiY3JlYXRlZF9hdCI6IjIwMTUtMDktMTBUMTM6MTQ6MDgu
+        MDg3WiIsInVwZGF0ZWRfYXQiOiIyMDE1LTA5LTEwVDEzOjE0OjA4LjA4N1oi
+        LCJkdWVfZGF0ZSI6IjIwMTUtMTEtMjIifSwiYXNzaWduZWUiOnsibmFtZSI6
+        IlJvYmVydCBTcGVpY2hlciIsInVzZXJuYW1lIjoicnNwZWljaGVyIiwiaWQi
+        OjE1MTM5LCJzdGF0ZSI6ImFjdGl2ZSIsImF2YXRhcl91cmwiOiJodHRwczov
+        L3NlY3VyZS5ncmF2YXRhci5jb20vYXZhdGFyLzE5YzkyOGJjNjBjN2IwZDEw
+        ZTcwOGM0MjllMzg5NTIzP3M9ODBcdTAwMjZkPWlkZW50aWNvbiIsIndlYl91
+        cmwiOiJodHRwczovL2dpdGxhYi5jb20vdS9yc3BlaWNoZXIifSwiYXV0aG9y
+        Ijp7Im5hbWUiOiJSb2JlcnQgU3BlaWNoZXIiLCJ1c2VybmFtZSI6InJzcGVp
+        Y2hlciIsImlkIjoxNTEzOSwic3RhdGUiOiJhY3RpdmUiLCJhdmF0YXJfdXJs
+        IjoiaHR0cHM6Ly9zZWN1cmUuZ3JhdmF0YXIuY29tL2F2YXRhci8xOWM5Mjhi
+        YzYwYzdiMGQxMGU3MDhjNDI5ZTM4OTUyMz9zPTgwXHUwMDI2ZD1pZGVudGlj
+        b24iLCJ3ZWJfdXJsIjoiaHR0cHM6Ly9naXRsYWIuY29tL3UvcnNwZWljaGVy
+        In19LHsiaWQiOjgwOTU3OSwiaWlkIjozOTc3LCJwcm9qZWN0X2lkIjoxMzA4
+        MywidGl0bGUiOiJSZWxlYXNlIDguMyIsImRlc2NyaXB0aW9uIjoiIyMjIDEx
+        dGg6ICg3IHdvcmtpbmcgZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0gW3hd
+        IFRyaWFnZSB0aGUgW09tbmlidXMgbWlsZXN0b25lXVxuXG4jIyMgMTR0aDog
+        KDYgd29ya2luZyBkYXlzIGJlZm9yZSB0aGUgMjJuZClcblxuLSBbeF0gRGV0
+        ZXJtaW5lIFFBIHBlcnNvbiBhbmQgbm90aWZ5IHRoaXMgcGVyc29uXG4tIFt4
+        XSBDaGVjayB0aGUgdGFza3MgaW4gW2hvdyB0byByYzEgZ3VpZGVdKGh0dHBz
+        Oi8vZGV2LmdpdGxhYi5vcmcvZ2l0bGFiL2dpdGxhYmhxL2Jsb2IvbWFzdGVy
+        L2RvYy9yZWxlYXNlL2hvd3RvX3JjMS5tZCkgYW5kIGRlbGVnYXRlIHRhc2tz
+        IGlmIG5lY2Vzc2FyeVxuLSBbeF0gTWVyZ2UgQ0UgYG1hc3RlcmAgaW50byBF
+        RSBgbWFzdGVyYCB2aWEgbWVyZ2UgcmVxdWVzdCAtIGdpdGxhYi1vcmcvZ2l0
+        bGFiLWVlITc3XG4tIFt4XSBDcmVhdGUgQ0UgYW5kIEVFIFJDMSB2ZXJzaW9u
+        c1xuLSBbeF0gQnVpbGQgUkMxIHBhY2thZ2VzXG5cbiMjIyAxNXRoOiAoNSB3
+        b3JraW5nIGRheXMgYmVmb3JlIHRoZSAyMm5kKVxuXG4tIFt4XSBEbyBRQSBh
+        bmQgZml4IGFueXRoaW5nIGNvbWluZyBvdXQgb2YgaXQgKGdpdGxhYi1vcmcv
+        Z2l0bGFiLWNlIzQwNDcpXG4tIFt4XSBDbG9zZSB0aGUgW09tbmlidXMgbWls
+        ZXN0b25lXVxuLSBbeF0gUHJlcGFyZSB0aGUgW2Jsb2cgcG9zdF1cblxuIyMj
+        IDE2dGg6ICg0IHdvcmtpbmcgZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0g
+        W3hdIFVwZGF0ZSBHaXRMYWIuY29tIHdpdGggUkMxXG4tIFt4XSBDcmVhdGUg
+        dGhlIHJlZ3Jlc3Npb24gaXNzdWUgaW4gdGhlIENFIGlzc3VlIHRyYWNrZXI6
+        XG5cbiAgICBgYGBcbiAgICBUaGlzIGlzIGEgbWV0YSBpc3N1ZSB0byBpbmRl
+        eCBwb3NzaWJsZSByZWdyZXNzaW9ucyBpbiB0aGlzIG1vbnRobHkgcmVsZWFz
+        ZVxuICAgIGFuZCBhbnkgcGF0Y2ggdmVyc2lvbnMuXG5cbiAgICBQbGVhc2Ug
+        ZG8gbm90IHJhaXNlIG9yIGRpc2N1c3MgaXNzdWVzIGRpcmVjdGx5IGluIHRo
+        aXMgaXNzdWUgYnV0IGxpbmsgdG9cbiAgICBpc3N1ZXMgdGhhdCBtaWdodCB3
+        YXJyYW50IGEgcGF0Y2ggcmVsZWFzZS4gSWYgdGhlcmUgaXMgYSBNZXJnZSBS
+        ZXF1ZXN0XG4gICAgdGhhdCBmaXhlcyB0aGUgaXNzdWUsIHBsZWFzZSBsaW5r
+        IHRvIHRoYXQgYXMgd2VsbC5cblxuICAgIFBsZWFzZSBvbmx5IHBvc3Qgb25l
+        IHJlZ3Jlc3Npb24gaXNzdWUgYW5kL29yIG1lcmdlIHJlcXVlc3QgcGVyIGNv
+        bW1lbnQuXG4gICAgQ29tbWVudHMgd2lsbCBiZSB1cGRhdGVkIGJ5IHRoZSBy
+        ZWxlYXNlIG1hbmFnZXIgYXMgdGhleSBhcmUgYWRkcmVzc2VkLlxuICAgIGBg
+        YFxuXG4tIFt4XSBUd2VldCBhYm91dCBSQzEgcmVsZWFzZTpcblxuICAgIGBg
+        YFxuICAgIEdpdExhYiA4LjMuMC5yYzEgaXMgYXZhaWxhYmxlOiBodHRwczov
+        L3BhY2thZ2VzLmdpdGxhYi5jb20vZ2l0bGFiL3Vuc3RhYmxlXG4gICAgVXNl
+        IGF0IHlvdXIgb3duIHJpc2suIFBsZWFzZSBsaW5rIHJlZ3Jlc3Npb25zIGlz
+        c3VlcyBmcm9tXG4gICAgTElOS19UT19SRUdSRVNTSU9OX0lTU1VFXG4gICAg
+        YGBgXG5cbiMjIyAxN3RoOiAoMyB3b3JraW5nIGRheXMgYmVmb3JlIHRoZSAy
+        Mm5kKVxuXG4tIFt4XSBNZXJnZSBgOC0zLXN0YWJsZWAgaW50byBgOC0zLXN0
+        YWJsZS1lZWBcbi0gW3hdIENoZWNrIHRoYXQgZXZlcnlvbmUgaXMgbWVudGlv
+        bmVkIG9uIHRoZSBbYmxvZyBwb3N0XSB1c2luZyBgQGFsbGBcblxuIyMjIDE4
+        dGg6ICgyIHdvcmtpbmcgZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0gW3hd
+        IENoZWNrIHRoYXQgTVZQIGlzIGFkZGVkIHRvIHRoZSBbTVZQIHBhZ2VdXG5c
+        biMjIyAyMXN0OiAoMSB3b3JraW5nIGRheSBiZWZvcmUgdGhlIDIybmQpXG5c
+        bi0gWyBdIE1lcmdlIGA4LTMtc3RhYmxlYCBpbnRvIGA4LTMtc3RhYmxlLWVl
+        YFxuLSBbIF0gQ3JlYXRlIENFIGFuZCBFRSByZWxlYXNlIGNhbmRpZGF0ZXNc
+        bi0gWyBdIENyZWF0ZSBPbW5pYnVzIHRhZ3MgYW5kIGJ1aWxkIHBhY2thZ2Vz
+        IGZvciB0aGUgbGF0ZXN0IHJlbGVhc2UgY2FuZGlkYXRlc1xuLSBbIF0gVXBk
+        YXRlIEdpdExhYi5jb20gd2l0aCB0aGUgbGF0ZXN0IFJDXG5cbiMjIyAyMm5k
+        IGJlZm9yZSAxMjAwIENFVDpcblxuUmVsZWFzZSBiZWZvcmUgMTIwMCBDRVQg
+        LyAyQU0gUFNULCB0byBtYWtlIHN1cmUgdGhlIG1ham9yaXR5IG9mIG91ciB1
+        c2Vyc1xuZ2V0IHRoZSBuZXcgdmVyc2lvbiBvbiB0aGUgMjJuZCBhbmQgdGhl
+        cmUgaXMgc3VmZmljaWVudCB0aW1lIGluIHRoZSBFdXJvcGVhblxud29ya2Rh
+        eSB0byBxdWlja2x5IGZpeCBhbnkgaXNzdWVzLlxuXG4tIFsgXSBNZXJnZSBg
+        OC0zLXN0YWJsZWAgaW50byBgOC0zLXN0YWJsZS1lZWBcbi0gWyBdIENyZWF0
+        ZSB0aGUgJzguMy4wJyB0YWcgd2l0aCB0aGUgW3JlbGVhc2UgdG9vbHNdKGh0
+        dHBzOi8vZGV2LmdpdGxhYi5vcmcvZ2l0bGFiL3JlbGVhc2UtdG9vbHMpXG4t
+        IFsgXSBDcmVhdGUgdGhlICc4LjMuMCcgdmVyc2lvbiBvbiB2ZXJzaW9uLmdp
+        dGxhYi5jb21cbi0gWyBdIFRyeSB0byBkbyBiZWZvcmUgMTEwMCBDRVQ6IENy
+        ZWF0ZSBhbmQgcHVzaCBPbW5pYnVzIHRhZ3MgZm9yIDguMy4wICh3aWxsIGF1
+        dG8tcmVsZWFzZSB0aGUgcGFja2FnZXMpXG4tIFsgXSBUcnkgdG8gZG8gYmVm
+        b3JlIDEyMDAgQ0VUOiBQdWJsaXNoIHRoZSByZWxlYXNlIFtibG9nIHBvc3Rd
+        XG4tIFsgXSBUd2VldCBhYm91dCB0aGUgcmVsZWFzZVxuLSBbIF0gU2NoZWR1
+        bGUgYSBzZWNvbmQgVHdlZXQgb2YgdGhlIHJlbGVhc2UgYW5ub3VuY2VtZW50
+        IHdpdGggdGhlIHNhbWUgdGV4dCBhdCAxODAwIENFVCAvIDhBTSBQU1Rcblxu
+        W09tbmlidXMgbWlsZXN0b25lXTogaHR0cHM6Ly9naXRsYWIuY29tL2dpdGxh
+        Yi1vcmcvb21uaWJ1cy1naXRsYWIvbWlsZXN0b25lcy8yNVxuW2Jsb2cgcG9z
+        dF06IGh0dHBzOi8vZ2l0bGFiLmNvbS9naXRsYWItY29tL3d3dy1naXRsYWIt
+        Y29tL21lcmdlX3JlcXVlc3RzLzExODFcbltNVlAgcGFnZV06IGh0dHBzOi8v
+        Z2l0bGFiLmNvbS9naXRsYWItY29tL3d3dy1naXRsYWItY29tL2Jsb2IvbWFz
+        dGVyL3NvdXJjZS9tdnAvaW5kZXguaHRtbCIsInN0YXRlIjoib3BlbmVkIiwi
+        Y3JlYXRlZF9hdCI6IjIwMTUtMTItMDlUMjA6MTg6MzguNjkxWiIsInVwZGF0
+        ZWRfYXQiOiIyMDE1LTEyLTE4VDE3OjA3OjI1LjA4NFoiLCJsYWJlbHMiOlsi
+        cmVsZWFzZSJdLCJtaWxlc3RvbmUiOnsiaWQiOjIzODc5LCJpaWQiOjE3LCJw
+        cm9qZWN0X2lkIjoxMzA4MywidGl0bGUiOiI4LjMiLCJkZXNjcmlwdGlvbiI6
+        IiIsInN0YXRlIjoiYWN0aXZlIiwiY3JlYXRlZF9hdCI6IjIwMTUtMDktMTBU
+        MTM6MTQ6MjIuNjkyWiIsInVwZGF0ZWRfYXQiOiIyMDE1LTA5LTEwVDEzOjE0
+        OjIyLjY5MloiLCJkdWVfZGF0ZSI6IjIwMTUtMTItMjIifSwiYXNzaWduZWUi
+        OnsibmFtZSI6IlJvYmVydCBTcGVpY2hlciIsInVzZXJuYW1lIjoicnNwZWlj
+        aGVyIiwiaWQiOjE1MTM5LCJzdGF0ZSI6ImFjdGl2ZSIsImF2YXRhcl91cmwi
+        OiJodHRwczovL3NlY3VyZS5ncmF2YXRhci5jb20vYXZhdGFyLzE5YzkyOGJj
+        NjBjN2IwZDEwZTcwOGM0MjllMzg5NTIzP3M9ODBcdTAwMjZkPWlkZW50aWNv
+        biIsIndlYl91cmwiOiJodHRwczovL2dpdGxhYi5jb20vdS9yc3BlaWNoZXIi
+        fSwiYXV0aG9yIjp7Im5hbWUiOiJSb2JlcnQgU3BlaWNoZXIiLCJ1c2VybmFt
+        ZSI6InJzcGVpY2hlciIsImlkIjoxNTEzOSwic3RhdGUiOiJhY3RpdmUiLCJh
+        dmF0YXJfdXJsIjoiaHR0cHM6Ly9zZWN1cmUuZ3JhdmF0YXIuY29tL2F2YXRh
+        ci8xOWM5MjhiYzYwYzdiMGQxMGU3MDhjNDI5ZTM4OTUyMz9zPTgwXHUwMDI2
+        ZD1pZGVudGljb24iLCJ3ZWJfdXJsIjoiaHR0cHM6Ly9naXRsYWIuY29tL3Uv
+        cnNwZWljaGVyIn19LHsiaWQiOjc1Nzk2MCwiaWlkIjozODA5LCJwcm9qZWN0
+        X2lkIjoxMzA4MywidGl0bGUiOiJSZWxlYXNlIDguMi4zIiwiZGVzY3JpcHRp
+        b24iOiItIFBpY2tlZCBpbnRvIHJlc3BlY3RpdmUgYHN0YWJsZWAgYnJhbmNo
+        ZXM6XHJcbiAgLSBbeF0gZ2l0bGFiLW9yZy9naXRsYWItY2UhMTkzNlxyXG4g
+        IC0gW3hdIGdpdGxhYi1vcmcvZ2l0bGFiLWNlITE5NTJcclxuICAtIFt4XSBn
+        aXRsYWItb3JnL2dpdGxhYi1jZSExOTcyXHJcbiAgLSBbeF0gZ2l0bGFiLW9y
+        Zy9naXRsYWItY2UhMTk4M1xyXG4gIC0gW3hdIGdpdGxhYi1vcmcvZ2l0bGFi
+        LWNlITE5ODhcclxuICAtIFt4XSBnaXRsYWItb3JnL2dpdGxhYi1jZSExOTg5
+        XHJcbiAgLSBbeF0gZ2l0bGFiLW9yZy9naXRsYWItY2UhMjA0NFxyXG4gIC0g
+        W3hdIGh0dHBzOi8vZGV2LmdpdGxhYi5vcmcvZ2l0bGFiL2dpdGxhYmhxL21l
+        cmdlX3JlcXVlc3RzLzE5NDFcclxuLSBbeF0gTWVyZ2UgYDgtMi1zdGFibGVg
+        IGludG8gYDgtMi1zdGFibGUtZWVgXHJcbi0gW3hdIHJlbGVhc2UtdG9vbHM6
+        IGA4LjIuM2BcclxuLSBnaXRsYWItb21uaWJ1c1xyXG4gIC0gW3hdIGA4LjIu
+        MytlZS4wYFxyXG4gIC0gW3hdIGA4LjIuMytjZS4wYFxyXG4tIFt4XSBEZXBs
+        b3lcclxuLSBbeF0gQWRkIHBhdGNoIG5vdGljZSB0byBbOC4yIHJlZ3Jlc3Np
+        b25zXShodHRwczovL2dpdGxhYi5jb20vZ2l0bGFiLW9yZy9naXRsYWItY2Uv
+        aXNzdWVzLzM1MzApXHJcbi0gW3hdIFtCbG9nIHBvc3RdKGh0dHBzOi8vZ2l0
+        bGFiLmNvbS9naXRsYWItY29tL3d3dy1naXRsYWItY29tL21lcmdlX3JlcXVl
+        c3RzLzEyMDYpXHJcbi0gW3hdIFtUd2VldF0oaHR0cHM6Ly90d2l0dGVyLmNv
+        bS9naXRsYWIvc3RhdHVzLzY3NTA1MTM2Mjc4NzQzNDQ5NilcclxuLSBbeF0g
+        QWRkIGVudHJ5IHRvIHZlcnNpb24uZ2l0bGFiLmNvbSIsInN0YXRlIjoiY2xv
+        c2VkIiwiY3JlYXRlZF9hdCI6IjIwMTUtMTItMDJUMTk6Mzg6NDIuMTY5WiIs
+        InVwZGF0ZWRfYXQiOiIyMDE1LTEyLTEwVDIwOjU4OjQzLjk4N1oiLCJsYWJl
+        bHMiOlsicmVsZWFzZSJdLCJtaWxlc3RvbmUiOnsiaWQiOjIzODc4LCJpaWQi
+        OjE2LCJwcm9qZWN0X2lkIjoxMzA4MywidGl0bGUiOiI4LjIiLCJkZXNjcmlw
+        dGlvbiI6IiIsInN0YXRlIjoiYWN0aXZlIiwiY3JlYXRlZF9hdCI6IjIwMTUt
+        MDktMTBUMTM6MTQ6MDguMDg3WiIsInVwZGF0ZWRfYXQiOiIyMDE1LTA5LTEw
+        VDEzOjE0OjA4LjA4N1oiLCJkdWVfZGF0ZSI6IjIwMTUtMTEtMjIifSwiYXNz
+        aWduZWUiOnsibmFtZSI6IlJvYmVydCBTcGVpY2hlciIsInVzZXJuYW1lIjoi
+        cnNwZWljaGVyIiwiaWQiOjE1MTM5LCJzdGF0ZSI6ImFjdGl2ZSIsImF2YXRh
+        cl91cmwiOiJodHRwczovL3NlY3VyZS5ncmF2YXRhci5jb20vYXZhdGFyLzE5
+        YzkyOGJjNjBjN2IwZDEwZTcwOGM0MjllMzg5NTIzP3M9ODBcdTAwMjZkPWlk
+        ZW50aWNvbiIsIndlYl91cmwiOiJodHRwczovL2dpdGxhYi5jb20vdS9yc3Bl
+        aWNoZXIifSwiYXV0aG9yIjp7Im5hbWUiOiJSb2JlcnQgU3BlaWNoZXIiLCJ1
+        c2VybmFtZSI6InJzcGVpY2hlciIsImlkIjoxNTEzOSwic3RhdGUiOiJhY3Rp
+        dmUiLCJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9zZWN1cmUuZ3JhdmF0YXIuY29t
+        L2F2YXRhci8xOWM5MjhiYzYwYzdiMGQxMGU3MDhjNDI5ZTM4OTUyMz9zPTgw
+        XHUwMDI2ZD1pZGVudGljb24iLCJ3ZWJfdXJsIjoiaHR0cHM6Ly9naXRsYWIu
+        Y29tL3UvcnNwZWljaGVyIn19LHsiaWQiOjczNzE2MywiaWlkIjozNjc2LCJw
+        cm9qZWN0X2lkIjoxMzA4MywidGl0bGUiOiJSZWxlYXNlIDguMi4yIiwiZGVz
+        Y3JpcHRpb24iOiItIFBpY2tlZCBpbnRvIHJlc3BlY3RpdmUgYHN0YWJsZWAg
+        YnJhbmNoZXM6XHJcbiAgLSBbeF0gQ0U6IGdpdGxhYi1vcmcvZ2l0bGFiLWNl
+        ITE4ODJcclxuICAtIFt4XSBDRTogZ2l0bGFiLW9yZy9naXRsYWItY2UhMTkw
+        NVxyXG4gIC0gW3hdIENFOiBnaXRsYWItb3JnL2dpdGxhYi1jZSExOTA2XHJc
+        biAgLSBbeF0gQ0U6IGdpdGxhYi1vcmcvZ2l0bGFiLWNlITE5MDlcclxuICAt
+        IFt4XSBDRTogZ2l0bGFiLW9yZy9naXRsYWItY2UhMTkxNlxyXG4gIC0gW3hd
+        IENFOiBnaXRsYWItb3JnL2dpdGxhYi1jZSExOTE5XHJcbiAgLSBbeF0gQ0U6
+        IGdpdGxhYi1vcmcvZ2l0bGFiLWNlITE5MzJcclxuICAtIFt4XSBFRTogZ2l0
+        bGFiLW9yZy9naXRsYWItZWUhNjJcclxuLSBbeF0gTWVyZ2UgYDgtMi1zdGFi
+        bGVgIGludG8gYDgtMi1zdGFibGUtZWVgXHJcbi0gW3hdIHJlbGVhc2UtdG9v
+        bHM6IGA4LjIuMmBcclxuLSBnaXRsYWItb21uaWJ1c1xyXG4gIC0gW3hdIGA4
+        LjIuMitlZS4wYFxyXG4gIC0gW3hdIGA4LjIuMitjZS4wYFxyXG4tIFt4XSBE
+        ZXBsb3lcclxuLSBbeF0gQWRkIHBhdGNoIG5vdGljZSB0byBbOC4yIHJlZ3Jl
+        c3Npb25zXShodHRwczovL2dpdGxhYi5jb20vZ2l0bGFiLW9yZy9naXRsYWIt
+        Y2UvaXNzdWVzLzM1MzApXHJcbi0gW3hdIFtCbG9nIHBvc3RdKGh0dHBzOi8v
+        Z2l0bGFiLmNvbS9naXRsYWItY29tL3d3dy1naXRsYWItY29tL21lcmdlX3Jl
+        cXVlc3RzLzExNTMpXHJcbi0gW3hdIFtUd2VldF1cclxuLSBbeF0gQWRkIGVu
+        dHJ5IHRvIHZlcnNpb24uZ2l0bGFiLmNvbSIsInN0YXRlIjoiY2xvc2VkIiwi
+        Y3JlYXRlZF9hdCI6IjIwMTUtMTEtMjVUMTg6MDM6NDUuNTAyWiIsInVwZGF0
+        ZWRfYXQiOiIyMDE1LTEyLTAyVDE5OjM1OjQ5LjIxMVoiLCJsYWJlbHMiOlsi
+        cmVsZWFzZSJdLCJtaWxlc3RvbmUiOnsiaWQiOjIzODc4LCJpaWQiOjE2LCJw
+        cm9qZWN0X2lkIjoxMzA4MywidGl0bGUiOiI4LjIiLCJkZXNjcmlwdGlvbiI6
+        IiIsInN0YXRlIjoiYWN0aXZlIiwiY3JlYXRlZF9hdCI6IjIwMTUtMDktMTBU
+        MTM6MTQ6MDguMDg3WiIsInVwZGF0ZWRfYXQiOiIyMDE1LTA5LTEwVDEzOjE0
+        OjA4LjA4N1oiLCJkdWVfZGF0ZSI6IjIwMTUtMTEtMjIifSwiYXNzaWduZWUi
+        OnsibmFtZSI6IlJvYmVydCBTcGVpY2hlciIsInVzZXJuYW1lIjoicnNwZWlj
+        aGVyIiwiaWQiOjE1MTM5LCJzdGF0ZSI6ImFjdGl2ZSIsImF2YXRhcl91cmwi
+        OiJodHRwczovL3NlY3VyZS5ncmF2YXRhci5jb20vYXZhdGFyLzE5YzkyOGJj
+        NjBjN2IwZDEwZTcwOGM0MjllMzg5NTIzP3M9ODBcdTAwMjZkPWlkZW50aWNv
+        biIsIndlYl91cmwiOiJodHRwczovL2dpdGxhYi5jb20vdS9yc3BlaWNoZXIi
+        fSwiYXV0aG9yIjp7Im5hbWUiOiJSb2JlcnQgU3BlaWNoZXIiLCJ1c2VybmFt
+        ZSI6InJzcGVpY2hlciIsImlkIjoxNTEzOSwic3RhdGUiOiJhY3RpdmUiLCJh
+        dmF0YXJfdXJsIjoiaHR0cHM6Ly9zZWN1cmUuZ3JhdmF0YXIuY29tL2F2YXRh
+        ci8xOWM5MjhiYzYwYzdiMGQxMGU3MDhjNDI5ZTM4OTUyMz9zPTgwXHUwMDI2
+        ZD1pZGVudGljb24iLCJ3ZWJfdXJsIjoiaHR0cHM6Ly9naXRsYWIuY29tL3Uv
+        cnNwZWljaGVyIn19LHsiaWQiOjczMTU4MywiaWlkIjozNjM3LCJwcm9qZWN0
+        X2lkIjoxMzA4MywidGl0bGUiOiJSZWxlYXNlIDguMi4xIiwiZGVzY3JpcHRp
+        b24iOiItIFBpY2tlZCBpbnRvIHJlc3BlY3RpdmUgYHN0YWJsZWAgYnJhbmNo
+        ZXM6XG4gIC0gW3hdIENFOiBnaXRsYWItb3JnL2dpdGxhYi1jZSExODU1XG4g
+        IC0gW3hdIENFOiBnaXRsYWItb3JnL2dpdGxhYi1jZSExODY5XG4gIC0gW3hd
+        IENFOiBnaXRsYWItb3JnL2dpdGxhYi1jZSExODcwXG4gIC0gW3hdIENFOiBn
+        aXRsYWItb3JnL2dpdGxhYi1jZSExODczXG4gIC0gW3hdIENFOiBnaXRsYWIt
+        b3JnL2dpdGxhYi1jZSExODgwXG4tIFt4XSBNZXJnZSBgOC0yLXN0YWJsZWAg
+        aW50byBgOC0yLXN0YWJsZS1lZWBcbi0gWyBdIHJlbGVhc2UtdG9vbHM6IGA4
+        LjIuMWBcbi0gZ2l0bGFiLW9tbmlidXNcbiAgLSBbIF0gYDguMi4xK2VlLjBg
+        XG4gIC0gWyBdIGA4LjIuMStjZS4wYFxuLSBbIF0gRGVwbG95XG4tIFsgXSBB
+        ZGQgcGF0Y2ggbm90aWNlIHRvIFs4LjIgcmVncmVzc2lvbnNdKGh0dHBzOi8v
+        Z2l0bGFiLmNvbS9naXRsYWItb3JnL2dpdGxhYi1jZS9pc3N1ZXMvMzUzMClc
+        bi0gWyBdIFtCbG9nIHBvc3RdXG4tIFsgXSBbVHdlZXRdXG4tIFsgXSBBZGQg
+        ZW50cnkgdG8gdmVyc2lvbi5naXRsYWIuY29tIiwic3RhdGUiOiJjbG9zZWQi
+        LCJjcmVhdGVkX2F0IjoiMjAxNS0xMS0yM1QyMToyMDo0My42OTRaIiwidXBk
+        YXRlZF9hdCI6IjIwMTUtMTEtMjVUMTg6MDI6NDIuMTY1WiIsImxhYmVscyI6
+        WyJyZWxlYXNlIl0sIm1pbGVzdG9uZSI6eyJpZCI6MjM4NzgsImlpZCI6MTYs
+        InByb2plY3RfaWQiOjEzMDgzLCJ0aXRsZSI6IjguMiIsImRlc2NyaXB0aW9u
+        IjoiIiwic3RhdGUiOiJhY3RpdmUiLCJjcmVhdGVkX2F0IjoiMjAxNS0wOS0x
+        MFQxMzoxNDowOC4wODdaIiwidXBkYXRlZF9hdCI6IjIwMTUtMDktMTBUMTM6
+        MTQ6MDguMDg3WiIsImR1ZV9kYXRlIjoiMjAxNS0xMS0yMiJ9LCJhc3NpZ25l
+        ZSI6eyJuYW1lIjoiUm9iZXJ0IFNwZWljaGVyIiwidXNlcm5hbWUiOiJyc3Bl
+        aWNoZXIiLCJpZCI6MTUxMzksInN0YXRlIjoiYWN0aXZlIiwiYXZhdGFyX3Vy
+        bCI6Imh0dHBzOi8vc2VjdXJlLmdyYXZhdGFyLmNvbS9hdmF0YXIvMTljOTI4
+        YmM2MGM3YjBkMTBlNzA4YzQyOWUzODk1MjM/cz04MFx1MDAyNmQ9aWRlbnRp
+        Y29uIiwid2ViX3VybCI6Imh0dHBzOi8vZ2l0bGFiLmNvbS91L3JzcGVpY2hl
+        ciJ9LCJhdXRob3IiOnsibmFtZSI6IlJvYmVydCBTcGVpY2hlciIsInVzZXJu
+        YW1lIjoicnNwZWljaGVyIiwiaWQiOjE1MTM5LCJzdGF0ZSI6ImFjdGl2ZSIs
+        ImF2YXRhcl91cmwiOiJodHRwczovL3NlY3VyZS5ncmF2YXRhci5jb20vYXZh
+        dGFyLzE5YzkyOGJjNjBjN2IwZDEwZTcwOGM0MjllMzg5NTIzP3M9ODBcdTAw
+        MjZkPWlkZW50aWNvbiIsIndlYl91cmwiOiJodHRwczovL2dpdGxhYi5jb20v
+        dS9yc3BlaWNoZXIifX0seyJpZCI6NjU1MTYxLCJpaWQiOjM0MTYsInByb2pl
+        Y3RfaWQiOjEzMDgzLCJ0aXRsZSI6IlJlbGVhc2UgOC4yIiwiZGVzY3JpcHRp
+        b24iOiJJbiBOb3ZlbWJlciwgdGhlIDIybmQgaXMgYSBTdW5kYXksIHNvIG91
+        ciBzY2hlZHVsZSBpcyBzbGlnaHRseSBhY2NlbGVyYXRlZCBpbiBvcmRlciB0
+        byBiZSBhYmxlIHRvIHJlbGVhc2Ugb24gYSB3b3JrZGF5LlxuXG5gYGBcbnJz
+        cGVpY2hlciBbMjoxMyBQTV0gXG5Aam9iOiBAc3l0c2U6IFRoZSAyMm5kIGlz
+        IG9uIGEgU3VuZGF5IHRoaXMgbW9udGguIERvIHlvdSByZW1lbWJlciBob3cg
+        d2UgZGVjaWRlZCB0byBoYW5kbGUgdGhhdD9cblxuam9iIFsyOjI3IFBNXSBc
+        bkByc3BlaWNoZXI6IHllcCwgd2UgbWFrZSBzdXJlIGV2ZXJ5dGhpbmcgaXMg
+        ZG9uZSBvbiB0aGUgZnJpZGF5IGJlZm9yZVxuXG5qb2IgWzI6MjggUE1dXG50
+        aGVuIHNvbWUgcGVvcGxlIChJ4oCZbGwgYmUgdGhlcmUpIHdpbGwgZG8gdGhl
+        IGxhc3QgYml0cyBvbiBzdW5kYXlcblxucnNwZWljaGVyIFsyOjI4IFBNXSBc
+        bnNvIEknbGwgbW92ZSBldmVyeXRoaW5nIHVwIGEgd29ya2luZyBkYXlcblxu
+        c3l0c2UgWzI6MzYgUE1dIFxuQHJzcGVpY2hlcjogcGxlYXNlIGRvLCBJJ20g
+        T0sgd2l0aCBwdWJsaXNoaW5nIHBhY2thZ2VzIG9uIEZyaWRheSwganVzdCB0
+        aGUgYmxvZyBhbmQgdHdlZXQgb24gU3VuZGF5XG5gYGBcblxuIyMjIDEydGg6
+        ICg3IHdvcmtpbmcgZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0gW3hdIFRy
+        aWFnZSB0aGUgW09tbmlidXMgbWlsZXN0b25lXVxuXG4jIyMgMTN0aDogKDYg
+        d29ya2luZyBkYXlzIGJlZm9yZSB0aGUgMjJuZClcblxuLSBbeF0gTWVyZ2Ug
+        Q0UgYG1hc3RlcmAgaW50byBFRSBgbWFzdGVyYCB2aWEgbWVyZ2UgcmVxdWVz
+        dCAtIGdpdGxhYi1vcmcvZ2l0bGFiLWVlITU0XG4tIFt4XSBEZXRlcm1pbmUg
+        UUEgcGVyc29uIGFuZCBub3RpZnkgdGhpcyBwZXJzb25cbi0gW3hdIENoZWNr
+        IHRoZSB0YXNrcyBpbiBbaG93IHRvIHJjMSBndWlkZV0oaHR0cHM6Ly9kZXYu
+        Z2l0bGFiLm9yZy9naXRsYWIvZ2l0bGFiaHEvYmxvYi9tYXN0ZXIvZG9jL3Jl
+        bGVhc2UvaG93dG9fcmMxLm1kKSBhbmQgZGVsZWdhdGUgdGFza3MgaWYgbmVj
+        ZXNzYXJ5XG4tIFt4XSBDcmVhdGUgQ0UgYW5kIEVFIFJDMSB2ZXJzaW9ucyAo
+        I0xJTkspXG4tIFt4XSBCdWlsZCBSQzEgcGFja2FnZXNcblxuIyMjIDE2dGg6
+        ICg1IHdvcmtpbmcgZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0gW3hdIERv
+        IFFBIGFuZCBmaXggYW55dGhpbmcgY29taW5nIG91dCBvZiBpdCAoI0xJTksp
+        XG4tIFt4XSBDbG9zZSB0aGUgW09tbmlidXMgbWlsZXN0b25lXVxuLSBbeF0g
+        UHJlcGFyZSB0aGUgW2Jsb2cgcG9zdF1cblxuIyMjIDE3dGg6ICg0IHdvcmtp
+        bmcgZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0gW3hdIFVwZGF0ZSBHaXRM
+        YWIuY29tIHdpdGggUkMxXG4tIFt4XSBDcmVhdGUgdGhlIHJlZ3Jlc3Npb24g
+        aXNzdWUgaW4gdGhlIENFIGlzc3VlIHRyYWNrZXI6XG5cbiAgICBgYGBcbiAg
+        ICBUaGlzIGlzIGEgbWV0YSBpc3N1ZSB0byBpbmRleCBwb3NzaWJsZSByZWdy
+        ZXNzaW9ucyBpbiB0aGlzIG1vbnRobHkgcmVsZWFzZVxuICAgIGFuZCBhbnkg
+        cGF0Y2ggdmVyc2lvbnMuXG5cbiAgICBQbGVhc2UgZG8gbm90IHJhaXNlIG9y
+        IGRpc2N1c3MgaXNzdWVzIGRpcmVjdGx5IGluIHRoaXMgaXNzdWUgYnV0IGxp
+        bmsgdG9cbiAgICBpc3N1ZXMgdGhhdCBtaWdodCB3YXJyYW50IGEgcGF0Y2gg
+        cmVsZWFzZS4gSWYgdGhlcmUgaXMgYSBNZXJnZSBSZXF1ZXN0XG4gICAgdGhh
+        dCBmaXhlcyB0aGUgaXNzdWUsIHBsZWFzZSBsaW5rIHRvIHRoYXQgYXMgd2Vs
+        bC5cblxuICAgIFBsZWFzZSBvbmx5IHBvc3Qgb25lIHJlZ3Jlc3Npb24gaXNz
+        dWUgYW5kL29yIG1lcmdlIHJlcXVlc3QgcGVyIGNvbW1lbnQuXG4gICAgQ29t
+        bWVudHMgd2lsbCBiZSB1cGRhdGVkIGJ5IHRoZSByZWxlYXNlIG1hbmFnZXIg
+        YXMgdGhleSBhcmUgYWRkcmVzc2VkLlxuICAgIGBgYFxuXG4tIFt4XSBUd2Vl
+        dCBhYm91dCBSQzEgcmVsZWFzZTpcblxuICAgIGBgYFxuICAgIEdpdExhYiB4
+        LnkuMC5yYzEgaXMgYXZhaWxhYmxlOiBodHRwczovL3BhY2thZ2VzLmdpdGxh
+        Yi5jb20vZ2l0bGFiL3Vuc3RhYmxlXG4gICAgVXNlIGF0IHlvdXIgb3duIHJp
+        c2suIFBsZWFzZSBsaW5rIHJlZ3Jlc3Npb25zIGlzc3VlcyBmcm9tXG4gICAg
+        TElOS19UT19SRUdSRVNTSU9OX0lTU1VFXG4gICAgYGBgXG5cbiMjIyAxOHRo
+        OiAoMyB3b3JraW5nIGRheXMgYmVmb3JlIHRoZSAyMm5kKVxuXG4tIFt4XSBN
+        ZXJnZSBgeC15LXN0YWJsZWAgaW50byBgeC15LXN0YWJsZS1lZWBcbi0gW3hd
+        IENoZWNrIHRoYXQgZXZlcnlvbmUgaXMgbWVudGlvbmVkIG9uIHRoZSBbYmxv
+        ZyBwb3N0XSB1c2luZyBgQGFsbGBcblxuIyMjIDE5dGg6ICgyIHdvcmtpbmcg
+        ZGF5cyBiZWZvcmUgdGhlIDIybmQpXG5cbi0gWyBdIENoZWNrIHRoYXQgTVZQ
+        IGlzIGFkZGVkIHRvIHRoZSBbTVZQIHBhZ2VdXG5cbiMjIyAyMHRoOiAoMSB3
+        b3JraW5nIGRheSBiZWZvcmUgdGhlIDIybmQpXG5cbi0gW3hdIE1lcmdlIGB4
+        LXktc3RhYmxlYCBpbnRvIGB4LXktc3RhYmxlLWVlYFxuLSBbeF0gQ3JlYXRl
+        IENFIGFuZCBFRSByZWxlYXNlIGNhbmRpZGF0ZXNcbi0gW3hdIENyZWF0ZSBP
+        bW5pYnVzIHRhZ3MgYW5kIGJ1aWxkIHBhY2thZ2VzIGZvciB0aGUgbGF0ZXN0
+        IHJlbGVhc2UgY2FuZGlkYXRlc1xuLSBbeF0gVXBkYXRlIEdpdExhYi5jb20g
+        d2l0aCB0aGUgbGF0ZXN0IFJDXG5cbiMjIyAyMm5kIGJlZm9yZSAxMjAwIENF
+        VDpcblxuUmVsZWFzZSBiZWZvcmUgMTIwMCBDRVQgLyAyQU0gUFNULCB0byBt
+        YWtlIHN1cmUgdGhlIG1ham9yaXR5IG9mIG91ciB1c2Vyc1xuZ2V0IHRoZSBu
+        ZXcgdmVyc2lvbiBvbiB0aGUgMjJuZCBhbmQgdGhlcmUgaXMgc3VmZmljaWVu
+        dCB0aW1lIGluIHRoZSBFdXJvcGVhblxud29ya2RheSB0byBxdWlja2x5IGZp
+        eCBhbnkgaXNzdWVzLlxuXG4tIFt4XSBNZXJnZSBgeC15LXN0YWJsZWAgaW50
+        byBgeC15LXN0YWJsZS1lZWBcbi0gW3hdIENyZWF0ZSB0aGUgJ3gueS4wJyB0
+        YWcgd2l0aCB0aGUgW3JlbGVhc2UgdG9vbHNdKGh0dHBzOi8vZGV2LmdpdGxh
+        Yi5vcmcvZ2l0bGFiL3JlbGVhc2UtdG9vbHMpXG4tIFt4XSBDcmVhdGUgdGhl
+        ICd4LnkuMCcgdmVyc2lvbiBvbiB2ZXJzaW9uLmdpdGxhYi5jb21cbi0gW3hd
+        IFRyeSB0byBkbyBiZWZvcmUgMTEwMCBDRVQ6IENyZWF0ZSBhbmQgcHVzaCBP
+        bW5pYnVzIHRhZ3MgZm9yIHgueS4wICh3aWxsIGF1dG8tcmVsZWFzZSB0aGUg
+        cGFja2FnZXMpXG4tIFt4XSBUcnkgdG8gZG8gYmVmb3JlIDEyMDAgQ0VUOiBQ
+        dWJsaXNoIHRoZSByZWxlYXNlIFtibG9nIHBvc3RdXG4tIFt4XSBUd2VldCBh
+        Ym91dCB0aGUgcmVsZWFzZVxuLSBbeF0gU2NoZWR1bGUgYSBzZWNvbmQgVHdl
+        ZXQgb2YgdGhlIHJlbGVhc2UgYW5ub3VuY2VtZW50IHdpdGggdGhlIHNhbWUg
+        dGV4dCBhdCAxODAwIENFVCAvIDhBTSBQU1RcblxuW09tbmlidXMgbWlsZXN0
+        b25lXTogaHR0cHM6Ly9naXRsYWIuY29tL2dpdGxhYi1vcmcvb21uaWJ1cy1n
+        aXRsYWIvbWlsZXN0b25lcy8yNFxuW2Jsb2cgcG9zdF06IGh0dHBzOi8vZ2l0
+        bGFiLmNvbS9naXRsYWItY29tL3d3dy1naXRsYWItY29tL21lcmdlX3JlcXVl
+        c3RzLzEwOTlcbltNVlAgcGFnZV06IGh0dHBzOi8vZ2l0bGFiLmNvbS9naXRs
+        YWItY29tL3d3dy1naXRsYWItY29tL2Jsb2IvbWFzdGVyL3NvdXJjZS9tdnAv
+        aW5kZXguaHRtbCIsInN0YXRlIjoiY2xvc2VkIiwiY3JlYXRlZF9hdCI6IjIw
+        MTUtMTEtMDlUMTk6MjE6MDkuNTM2WiIsInVwZGF0ZWRfYXQiOiIyMDE1LTEx
+        LTIyVDIyOjI1OjIzLjMwMVoiLCJsYWJlbHMiOlsicmVsZWFzZSJdLCJtaWxl
+        c3RvbmUiOnsiaWQiOjIzODc4LCJpaWQiOjE2LCJwcm9qZWN0X2lkIjoxMzA4
+        MywidGl0bGUiOiI4LjIiLCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlIjoiYWN0
+        aXZlIiwiY3JlYXRlZF9hdCI6IjIwMTUtMDktMTBUMTM6MTQ6MDguMDg3WiIs
+        InVwZGF0ZWRfYXQiOiIyMDE1LTA5LTEwVDEzOjE0OjA4LjA4N1oiLCJkdWVf
+        ZGF0ZSI6IjIwMTUtMTEtMjIifSwiYXNzaWduZWUiOnsibmFtZSI6IlJvYmVy
+        dCBTcGVpY2hlciIsInVzZXJuYW1lIjoicnNwZWljaGVyIiwiaWQiOjE1MTM5
+        LCJzdGF0ZSI6ImFjdGl2ZSIsImF2YXRhcl91cmwiOiJodHRwczovL3NlY3Vy
+        ZS5ncmF2YXRhci5jb20vYXZhdGFyLzE5YzkyOGJjNjBjN2IwZDEwZTcwOGM0
+        MjllMzg5NTIzP3M9ODBcdTAwMjZkPWlkZW50aWNvbiIsIndlYl91cmwiOiJo
+        dHRwczovL2dpdGxhYi5jb20vdS9yc3BlaWNoZXIifSwiYXV0aG9yIjp7Im5h
+        bWUiOiJSb2JlcnQgU3BlaWNoZXIiLCJ1c2VybmFtZSI6InJzcGVpY2hlciIs
+        ImlkIjoxNTEzOSwic3RhdGUiOiJhY3RpdmUiLCJhdmF0YXJfdXJsIjoiaHR0
+        cHM6Ly9zZWN1cmUuZ3JhdmF0YXIuY29tL2F2YXRhci8xOWM5MjhiYzYwYzdi
+        MGQxMGU3MDhjNDI5ZTM4OTUyMz9zPTgwXHUwMDI2ZD1pZGVudGljb24iLCJ3
+        ZWJfdXJsIjoiaHR0cHM6Ly9naXRsYWIuY29tL3UvcnNwZWljaGVyIn19XQ==
+    http_version: 
+  recorded_at: Fri, 18 Dec 2015 21:18:11 GMT
+- request:
+    method: get
+    uri: "[GITLAB_API_ENDPOINT]/projects/13083/issues?labels=regression&state=opened"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 18 Dec 2015 21:43:20 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '12416'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"07b2eac0430f94fa198b34823d1cda79"
+      Link:
+      - <[GITLAB_API_ENDPOINT]/projects/13083/issues?page=1&per_page=0>; rel="first",
+        <[GITLAB_API_ENDPOINT]/projects/13083/issues?page=1&per_page=0>; rel="last"
+      Status:
+      - 200 OK
+      Vary:
+      - Origin
+      X-Request-Id:
+      - 5781e14d-904d-4c12-916f-4c720a193874
+      X-Runtime:
+      - '0.251162'
+    body:
+      encoding: UTF-8
+      string: '[{"id":869334,"iid":4127,"project_id":13083,"title":"8.3 Regressions","description":"This
+        is a meta issue to index possible regressions in this monthly release\nand
+        any patch versions.\n\nPlease do not raise or discuss issues directly in this
+        issue but link to\nissues that might warrant a patch release. If there is
+        a Merge Request\nthat fixes the issue, please link to that as well.\n\nPlease
+        only post one regression issue and/or merge request per comment.\nComments
+        will be updated by the release manager as they are addressed.\n","state":"opened","created_at":"2015-12-16T17:30:51.517Z","updated_at":"2015-12-16T17:30:51.517Z","labels":["regression"],"milestone":{"id":23879,"iid":17,"project_id":13083,"title":"8.3","description":"","state":"active","created_at":"2015-09-10T13:14:22.692Z","updated_at":"2015-09-10T13:14:22.692Z","due_date":"2015-12-22"},"assignee":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"},"author":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"}},{"id":812715,"iid":3988,"project_id":13083,"title":"Regression:
+        Home page url setting to redirect non logged in users doesn''t work","description":"Dev:
+        https://dev.gitlab.org/gitlab/gitlabhq/issues/2476\r\n\r\nPatricio\r\n\r\n\u003e
+        ## Description of issue\r\n\r\n\u003e The `Home page url` setting to redirect
+        non logged in users to a different URL no longer works with 7.12. I can confirm
+        that it was working on 7.11.4\r\n\r\n\u003e ## Result of replication\r\n\r\n\u003e
+        I used 7.12.2 to replicate this and it doesn''t redirect to the specified
+        URL, it goes to `/users/sign_in`.\r\n\r\n\u003e ## Concrete questions / Next
+        steps\r\n\r\n@job this is clearly a bug, and a regression, since it was working
+        on 7.11. Can you schedule it?\r\n\r\nJacob\r\n\r\n\u003e linked as a 7.12
+        regression in https://gitlab.com/gitlab-org/gitlab-ce/issues/1810#note_1590938\r\n\r\nRobert\r\n\r\n\u003e
+        jacobvosmaer patricio This was fixed in CE by gitlab-org/gitlab-ce!928\r\n\r\n\u003e
+        I confirmed it''s broken in EE, but applied the change manually and it works
+        as expected. So this issue will be fixed by ce-to-ee merge.\r\n\r\nJacob\r\n\r\n\u003e  so
+        this is fixed on master but not in 7-12-stable?\r\n\r\n\r\nRobert\r\n\r\n\u003e  I
+        believe so.\r\n\r\nPatricio\r\n\r\n\u003e I see the fix for this in on 7.13.
+        Are we planning on releasing for 7.12 as well, or not anymore?\r\n\r\nValery\r\n\r\n\u003e
+        dzaporozhets What do you think? How important is it? I''m busy with approvals,
+        I need to ship it with 7.13. So I''d prefer to do patch release if it''s really
+        worth it.\r\n\r\nDmitriy\r\n\r\n\u003e rspeicher can you fix this one?\r\n\r\nJacob\r\n\r\n\u003e
+        dzaporozhets it is fixed in master, the fix is going into 7.13. The question
+        is whether this fix should be back-ported into 7-12-stable. (Right @valery
+        ?)\r\n\r\nDmitriy\r\n\r\n\u003e jacobvosmaer I think 7.13 is enough\r\n\r\nSytse\r\n\r\n\u003e
+        job What is the status of this?\r\n\r\nJob\r\n\r\n\u003e fixed in 7.13. Not
+        back ported to 7.12.\r\nI''m in the middle about back porting it. It''s an
+        annoying bug and 7.13 upgrade requires downtime. @patricio can you ask the
+        customer whether upgrading to 7.13 is acceptable?\r\n\r\nSytse\r\n\r\n\u003e
+        job OK, I missed comment about this being fixed.\r\n\r\nPatricio\r\n\r\n\u003e
+        job I asked the customer if upgrading is acceptable. I''ll report back when
+        he answers.\r\n\r\nPatricio\r\n\r\n\u003ejob he is OK with upgrading to 7.13.
+        Since this has been fixed, the customer is aware of the fix and it is already
+        on the RC for 7.13, I will close this ticket.\r\n\r\nSytse\r\n\r\n\u003e Does
+        the fix for this maybe cause ERR_TOO_MANY_REDIRECTS when logging out? https://about.gitlab.com/2015/07/22/gitlab-7-13-released/#comment-2151061212\r\n\r\nRobert\r\n\r\n\u003e
+        sytse It looks like the root cause of the linked issue was the user setting
+        their home_page_url setting to the root URL of their installation, resulting
+        in a redirect loop for signed-out users.\r\nWe could either check if this
+        condition is present before doing the redirect, or prevent the user from entering
+        their root URL as their home page URL in the admin settings preemptively.\r\n\r\nSytse\r\n\r\n\u003e
+        rspeicher Thanks! I''m fine with either solution for https://gitlab.com/gitlab-org/gitlab-ce/issues/2057\r\n\r\nJob\r\n\r\n\u003e
+        The issue mentioned above is separate from the initial regression, but should
+        be fixed none the less. Therefore 7.14.\r\n\r\n\u003e Unclear issue, not further
+        linked complaints.\r\nThere is a suggested fix here, but not high priority:
+        https://gitlab.com/gitlab-org/gitlab-ce/issues/2057#note_1669362\r\nMoving
+        up.\r\n\r\ncc/ @dzaporozhets @sytses @jacobvosmaer @vsizov @JobV @patricio
+        @rspeicher ","state":"opened","created_at":"2015-12-10T11:53:08.291Z","updated_at":"2015-12-10T11:53:08.291Z","labels":["customer","regression"],"milestone":{"id":23879,"iid":17,"project_id":13083,"title":"8.3","description":"","state":"active","created_at":"2015-09-10T13:14:22.692Z","updated_at":"2015-09-10T13:14:22.692Z","due_date":"2015-12-22"},"assignee":null,"author":{"name":"Kelvin
+        Mutuma","username":"kelvinmutuma","id":55219,"state":"active","avatar_url":"https://gitlab.com/uploads/user/avatar/55219/kev.jpeg","web_url":"https://gitlab.com/u/kelvinmutuma"}},{"id":689069,"iid":3530,"project_id":13083,"title":"8.2
+        Regressions","description":"This is a meta issue to index possible regressions
+        in this monthly release\r\nand any patch versions.\r\n\r\nPlease do not raise
+        or discuss issues directly in this issue but link to\r\nissues that might
+        warrant a patch release. If there is a Merge Request\r\nthat fixes the issue,
+        please link to that as well.\r\n\r\nPlease only post one regression issue
+        and/or merge request per comment.\r\nComments will be updated by the release
+        manager as they are addressed.","state":"opened","created_at":"2015-11-17T15:52:06.106Z","updated_at":"2015-11-17T15:52:06.106Z","labels":["regression"],"milestone":{"id":23878,"iid":16,"project_id":13083,"title":"8.2","description":"","state":"active","created_at":"2015-09-10T13:14:08.087Z","updated_at":"2015-09-10T13:14:08.087Z","due_date":"2015-11-22"},"assignee":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"},"author":{"name":"Robert
+        Speicher","username":"rspeicher","id":15139,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/rspeicher"}},{"id":543968,"iid":2727,"project_id":13083,"title":"Git
+        over HTTP will receive an empty repo if  `giltab-git-http-server` is not properly
+        configured","description":"If for some reason `gitlab-git-http-server` is
+        not properly configured, or you are using a custom nginx or Apache proxy that
+        forwards directly to Unicorn and you attempt to clone via HTTP, the request
+        succeeds, you receive a 200 and an empty repo.\r\n\r\nThis very much affects
+        CI.\r\n\r\n```\r\ngitlab-ci-multi-runner 0.5.5-1-g69bc934 (69bc934) \r\nUsing
+        Shell executor... \r\nRunning on ciworker01...\r\n\r\nCloning repository...
+        \r\nCloning into ''builds/996c2f68/0/nms/project''... \r\nwarning: You appear
+        to have cloned an empty repository. \r\nChecking out 1b50f515 as dev... \r\nfatal:
+        reference is not a tree: 1b50f5157b357f4c006ceccf0e36085bad300180\r\n\r\nERROR:
+        Build failed with: exit status 128\r\n```\r\n\r\nWhen this happens, the error
+        should be more descriptive. Maybe mention that `gitlab-git-http-server` seems
+        to not be running or something like that. It should also not respond with
+        a 200.\r\n\r\n/cc @ayufan @jacobvosmaer ","state":"opened","created_at":"2015-09-23T22:27:02.222Z","updated_at":"2015-10-17T09:19:31.901Z","labels":["regression"],"milestone":null,"assignee":null,"author":{"name":"Patricio
+        Cano","username":"patricio","id":60611,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/75d673b95bccab6ff0a5ff3ad9e36b4f?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/patricio"}},{"id":541764,"iid":2706,"project_id":13083,"title":"Password
+        reset link redirects to `ci` endpoint","description":"When a user is already
+        logged in to GitLab.com, clicking the ''Click here to set your password''
+        link in an email redirects to `https://gitlab.com/ci/user_sessions/callback?code=abcd1234`
+        and produces a 404 error. \r\n\r\nThe initial link in the email is https://gitlab.com/users/password/edit?reset_password_token=abcd1234","state":"opened","created_at":"2015-09-23T13:15:58.471Z","updated_at":"2015-09-23T13:53:16.482Z","labels":["regression"],"milestone":null,"assignee":null,"author":{"name":"Drew
+        Blessing","username":"dblessing","id":13356,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/b5bf44866b4eeafa2d8114bfe15da02f?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/dblessing"}},{"id":525388,"iid":2577,"project_id":13083,"title":"Issue
+        state label color doesn''t match new design","description":"Look the following
+        screenshot:\r\n\r\n![Screenshot_2015-09-18_09.44.54](https://gitlab.com/gitlab-org/gitlab-ce/uploads/250f3ba8f2d9e6a57e1112db73ca0991/Screenshot_2015-09-18_09.44.54.png)\r\n\r\nThe
+        issue state label `Open` has a very different green than for example the `Add
+        Comment` button. This does not match the new theme.\r\n\r\n/cc @skyruler ","state":"opened","created_at":"2015-09-18T07:48:04.896Z","updated_at":"2015-09-30T11:48:23.535Z","labels":["regression"],"milestone":{"id":20976,"iid":14,"project_id":13083,"title":"8.1","description":"","state":"active","created_at":"2015-08-11T20:45:33.855Z","updated_at":"2015-08-11T20:45:33.855Z","due_date":"2015-10-22"},"assignee":null,"author":{"name":"Robert
+        Schilling","username":"razer6","id":2900,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/0adbac358390f76344618df9ef9e933e?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/razer6"}},{"id":352376,"iid":1989,"project_id":13083,"title":"Reinstate
+        option to force lowercase project/repository names on creation","description":"It
+        appears after a (not so?) recent upgrade, GitLab no longer lowercases repository
+        names on creation.\r\n\r\nChanging this functionality has been discussed at
+        length:\r\n* https://github.com/gitlabhq/gitlabhq/issues/2687\r\n* http://feedback.gitlab.com/forums/176466-general/suggestions/4023462-allow-camelcase-pascalcase-repo-names\r\n\r\nI
+        understand why people want this, and I am not asking for it to be reverted,
+        but can we have the option to re-instate the functionality that existed previously
+        (before the change)?. Switching this option to ''fix'' the issue for one set
+        of users has broken it for another.","state":"opened","created_at":"2015-07-16T07:06:28.099Z","updated_at":"2015-07-16T07:10:26.100Z","labels":["feature
+        proposal","regression"],"milestone":null,"assignee":null,"author":{"name":"PixelDrift.NET","username":"pixdrift","id":91651,"state":"active","avatar_url":"https://gitlab.com/uploads/user/avatar/91651/measure.png","web_url":"https://gitlab.com/u/pixdrift"}},{"id":212078,"iid":1473,"project_id":13083,"title":"Comment
+        text remains in text box after submitting it (Comment and close)","description":"###
+        Description\r\n\r\nComment box remains the same text after submitting comment
+        via `Comment and Close`\r\n\r\n### Steps to reproduce\r\n\r\n1. Create a comment\r\n1.
+        Click on `Comment and Close`\r\n\r\n### Expected behaviour\r\n\r\n1. Issue/MR
+        is closed and comment is posted\r\n1. Comment box is empty\r\n\r\n### Observed
+        behaviour \r\n\r\n1. Issue/MR is closed and comment is posted\r\n1. Comment
+        box still shows the posted comment\r\n\r\n","state":"opened","created_at":"2015-04-22T06:45:00.903Z","updated_at":"2015-08-15T10:18:36.605Z","labels":["regression","reproduced
+        on gitlab.com"],"milestone":null,"assignee":null,"author":{"name":"Robert
+        Schilling","username":"razer6","id":2900,"state":"active","avatar_url":"https://secure.gravatar.com/avatar/0adbac358390f76344618df9ef9e933e?s=80\u0026d=identicon","web_url":"https://gitlab.com/u/razer6"}}]'
+    http_version: 
+  recorded_at: Fri, 18 Dec 2015 21:43:20 GMT
+recorded_with: VCR 2.9.3
