@@ -1,7 +1,6 @@
 require 'erb'
 
 require_relative 'client'
-require_relative 'version'
 
 class RegressionIssue
   attr_reader :version
