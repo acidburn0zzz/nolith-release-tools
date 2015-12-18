@@ -1,5 +1,4 @@
 require 'date'
-require 'erb'
 
 require 'active_support'
 require 'active_support/inflector'
@@ -9,10 +8,10 @@ require 'active_support/core_ext/integer'
 require 'active_support/core_ext/numeric'
 require 'weekdays'
 
-require_relative 'client'
+require_relative 'base_issue'
 require_relative 'release'
 
-class MonthlyIssue
+class MonthlyIssue < BaseIssue
   attr_reader :release_date, :version
 
   def initialize(version, release_date = Release.next_date)
@@ -24,32 +23,8 @@ class MonthlyIssue
     "Release #{version.to_minor}"
   end
 
-  def description
-    ERB.new(template).result(binding)
-  end
-
   def labels
     'release'
-  end
-
-  def create
-    Client.create_issue(self)
-  end
-
-  def exists?
-    !remote_issue.nil?
-  end
-
-  def remote_issue
-    @remote_issue ||= Client.find_open_issue(self)
-  end
-
-  def url
-    if exists?
-      Client.issue_url(remote_issue)
-    else
-      ''
-    end
   end
 
   def ordinal_date(weekdays_before_release)
@@ -59,11 +34,7 @@ class MonthlyIssue
       .ordinalize
   end
 
-  private
-
-  def template
-    File.read(template_path)
-  end
+  protected
 
   def template_path
     File.expand_path('../templates/monthly.md.erb', __dir__)
