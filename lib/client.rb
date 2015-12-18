@@ -65,4 +65,8 @@ class Client
     ce_issues(labels: issue.labels, state: 'opened').
       detect { |i| i.title == issue.title }
   end
+
+  def self.issue_url(issue)
+    "https://gitlab.com/gitlab-org/gitlab-ce/issues/#{issue.iid}"
+  end
 end
