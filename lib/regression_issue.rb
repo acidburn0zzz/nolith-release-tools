@@ -25,6 +25,14 @@ class RegressionIssue
     Client.create_issue(self)
   end
 
+  def exists?
+    !remote_issue.nil?
+  end
+
+  def remote_issue
+    @remote_issue ||= Client.find_open_issue(self)
+  end
+
   private
 
   def template

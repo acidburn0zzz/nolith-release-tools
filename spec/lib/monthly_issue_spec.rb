@@ -76,10 +76,38 @@ describe MonthlyIssue do
     end
   end
 
+  describe '#exists?' do
+    it 'is true when issue exists' do
+      issue = described_class.new(double)
+
+      allow(issue).to receive(:remote_issue).and_return(double)
+
+      expect(issue.exists?).to be_truthy
+    end
+
+    it 'is false when issue is missing' do
+      issue = described_class.new(double)
+
+      allow(issue).to receive(:remote_issue).and_return(nil)
+
+      expect(issue.exists?).to be_falsey
+    end
+  end
+
+  describe '#remote_issue' do
+    it 'delegates to Client' do
+      issue = described_class.new(double)
+
+      expect(Client).to receive(:find_open_issue).with(issue)
+
+      issue.remote_issue
+    end
+  end
+
   describe '#ordinal_date' do
     it "returns an ordinal date string" do
       time = Time.new(2015, 12, 22)
-      issue = MonthlyIssue.new(double, time)
+      issue = described_class.new(double, time)
 
       expect(issue.ordinal_date(5)).to eq '15th'
     end
