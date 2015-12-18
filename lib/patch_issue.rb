@@ -23,6 +23,22 @@ class PatchIssue
     Client.create_issue(self)
   end
 
+  def exists?
+    !remote_issue.nil?
+  end
+
+  def remote_issue
+    @remote_issue ||= Client.find_open_issue(self)
+  end
+
+  def url
+    if exists?
+      Client.issue_url(remote_issue)
+    else
+      ''
+    end
+  end
+
   def regression_issue
     @regression_issue ||= RegressionIssue.new(version)
   end
