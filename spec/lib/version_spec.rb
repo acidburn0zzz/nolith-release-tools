@@ -1,5 +1,6 @@
 require 'spec_helper'
-require_relative '../lib/version'
+
+require 'version'
 
 describe Version do
   def version(version_string)
