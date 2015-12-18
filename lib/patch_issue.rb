@@ -19,12 +19,12 @@ class PatchIssue
     'release'
   end
 
-  def regression_link
-    '[](TODO)'
-  end
-
   def create
     Client.create_issue(self)
+  end
+
+  def regression_issue
+    @regression_issue ||= RegressionIssue.new(version)
   end
 
   private

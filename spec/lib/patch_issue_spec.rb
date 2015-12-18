@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require 'patch_issue'
+require 'regression_issue'
 require 'version'
 
 describe PatchIssue do
@@ -16,6 +17,7 @@ describe PatchIssue do
     it 'includes the stable branch names' do
       issue = described_class.new(Version.new('8.3.1'))
 
+      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       aggregate_failures do
@@ -27,6 +29,7 @@ describe PatchIssue do
     it 'includes the full version' do
       issue = described_class.new(Version.new('8.3.1'))
 
+      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include '8.3.1'
@@ -35,6 +38,7 @@ describe PatchIssue do
     it 'includes the Omnibus versions' do
       issue = described_class.new(Version.new('8.3.1'))
 
+      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       aggregate_failures do
@@ -46,9 +50,11 @@ describe PatchIssue do
     it 'includes a link to the regression issue' do
       issue = described_class.new(Version.new('8.3.1'))
 
+      allow(issue).to receive(:regression_issue).
+        and_return(double(title: '8.3 Regressions', url: 'https://example.com'))
       content = issue.description
 
-      expect(content).to include "Add patch notice to [](TODO)"
+      expect(content).to include "Add patch notice to [8.3 Regressions](https://example.com)"
     end
   end
 
@@ -57,6 +63,16 @@ describe PatchIssue do
       issue = described_class.new(double)
 
       expect(issue.labels).to eq 'release'
+    end
+  end
+
+  describe '#regression_issue' do
+    it 'returns a RegressionIssue object' do
+      version = Version.new('8.3.1')
+      issue = described_class.new(version)
+
+      expect(RegressionIssue).to receive(:new).with(version).and_call_original
+      expect(issue.regression_issue).to be_kind_of(RegressionIssue)
     end
   end
 
