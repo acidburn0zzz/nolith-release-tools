@@ -44,6 +44,14 @@ class MonthlyIssue
     @remote_issue ||= Client.find_open_issue(self)
   end
 
+  def url
+    if exists?
+      Client.issue_url(remote_issue)
+    else
+      ''
+    end
+  end
+
   def ordinal_date(weekdays_before_release)
     weekdays_before_release
       .weekdays_ago(release_date)

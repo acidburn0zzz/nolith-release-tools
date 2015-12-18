@@ -33,6 +33,14 @@ class RegressionIssue
     @remote_issue ||= Client.find_open_issue(self)
   end
 
+  def url
+    if exists?
+      Client.issue_url(remote_issue)
+    else
+      ''
+    end
+  end
+
   private
 
   def template

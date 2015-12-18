@@ -65,4 +65,25 @@ describe RegressionIssue do
       issue.remote_issue
     end
   end
+
+  describe '#url' do
+    it 'returns a blank string when remote issue does not exist' do
+      issue = described_class.new(double)
+
+      allow(issue).to receive(:remote_issue).and_return(nil)
+
+      expect(Client).not_to receive(:issue_url)
+      expect(issue.url).to eq ''
+    end
+
+    it 'returns the remote_issue url' do
+      remote = double
+      issue = described_class.new(double)
+
+      allow(issue).to receive(:remote_issue).and_return(remote)
+
+      expect(Client).to receive(:issue_url).with(remote).and_return('https://example.com/')
+      expect(issue.url).to eq 'https://example.com/'
+    end
+  end
 end
