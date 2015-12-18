@@ -11,15 +11,70 @@ Install the required dependencies with Bundler:
 bundle install
 ```
 
-## `monthly_post[version]`
+## `monthly_issue[version]`
 
-This task will generate the description body to be used for the [monthly
-release](monthly.md#create-an-issue-to-track-the-release) issue.
+This task will either return the URL of a monthly release issue if one already
+exists for `version`, or it will create a new one and return the URL.
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "Release X.Y" (e.g., "Release 8.3")
+- Its description is the monthly release issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "release"
 
 ### Examples
 
 ```sh
-bundle exec rake "monthly_post[8.3.0]"
+bundle exec rake "monthly_issue[8.3.0]"
+
+--> Issue "Release 8.3" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/1234
+```
+
+## `patch_issue[version]`
+
+This task will either return the URL of a patch issue if one already exists for
+`version`, or it will create a new one and return the URL.
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
+- Its description is the patch release issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "release"
+
+### Examples
+
+```sh
+bundle exec rake "patch_issue[8.3.1]"
+
+--> Issue "Release 8.3.1" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/2345
+```
+
+## `regression_issue[version]`
+
+This task will either return the URL of a regression issue if one already exists
+for `version`, or it will create a new one and return the URL.
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "X.Y Regressions" (e.g., "8.3 Regressions")
+- Its description is the regression issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "regression"
+
+### Examples
+
+```sh
+bundle exec rake "regression_issue[8.3.0]"
+
+--> Issue "8.3 Regressions" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/3456
 ```
 
 ## `release[version]`

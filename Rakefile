@@ -5,6 +5,8 @@ require 'colorize'
 
 require_relative 'lib/version'
 require_relative 'lib/monthly_issue'
+require_relative 'lib/patch_issue'
+require_relative 'lib/regression_issue'
 require_relative 'lib/release'
 require_relative 'lib/remotes'
 require_relative 'lib/sync'
@@ -18,6 +20,18 @@ def get_version(args)
   end
 
   version
+end
+
+def create_or_show_issue(issue)
+  if issue.exists?
+    puts "--> Issue \"#{issue.title}\" already exists.".red
+    puts "    #{issue.url}"
+    exit 1
+  else
+    remote = issue.create
+    puts "--> Issue \"#{issue.title}\" created.".green
+    puts "    #{Client.issue_url(remote)}"
+  end
 end
 
 desc "Create release"
@@ -45,10 +59,26 @@ task :sync do
   Sync.new(Remotes.ee_remotes).execute
 end
 
-desc "Display monthly release issue template"
+desc "Create the monthly release issue"
 task :monthly_issue, [:version] do |t, args|
   version = get_version(args)
   issue = MonthlyIssue.new(version)
 
-  puts issue.description
+  create_or_show_issue(issue)
+end
+
+desc "Create the regression tracking issue"
+task :regression_issue, [:version] do |t, args|
+  version = get_version(args)
+  issue = RegressionIssue.new(version)
+
+  create_or_show_issue(issue)
+end
+
+desc "Create a patch issue"
+task :patch_issue, [:version] do |t, args|
+  version = get_version(args)
+  issue = PatchIssue.new(version)
+
+  create_or_show_issue(issue)
 end
