@@ -66,6 +66,11 @@ best judgement to determine when a patch release is warranted. We strive to
 continue releasing patches until all known regressions for that release are
 addressed.
 
+## Further Reading
+
+- ["Release Manager - The invisible hero"](https://about.gitlab.com/2015/06/25/release-manager-the-invisible-hero/) (2015-06-25)
+- ["How we managed 49 monthly releases"](https://about.gitlab.com/2015/12/17/gitlab-release-process/) (2015-12-17)
+
 [monthly release]: monthly.md
 [patch releases]: patch.md
 [security releases]: security.md
