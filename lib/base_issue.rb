@@ -16,7 +16,7 @@ class BaseIssue
   end
 
   def remote_issue
-    @remote_issue ||= Client.find_open_issue(self)
+    Client.find_open_issue(self)
   end
 
   def url

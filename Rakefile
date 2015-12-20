@@ -28,9 +28,9 @@ def create_or_show_issue(issue)
     puts "    #{issue.url}"
     exit 1
   else
-    remote = issue.create
+    issue.create
     puts "--> Issue \"#{issue.title}\" created.".green
-    puts "    #{Client.issue_url(remote)}"
+    puts "    #{issue.url}"
   end
 end
 
