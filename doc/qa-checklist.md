@@ -5,7 +5,8 @@
 ### Login
 
 - [ ] Regular account login
-- [ ] LDAP login - *Credentials are in the **Support** 1Password vault*
+- [ ] LDAP login - _Credentials are in the **Support** 1Password vault_
+- [ ] SAML login - _Credentials and instructions are in the **Support** 1Password vault_
 
 ### Forks
 
