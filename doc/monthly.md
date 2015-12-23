@@ -11,12 +11,7 @@ should begin the monthly release process *no later than* the 9th.
 
 ## Process
 
-1. [Create an issue to track the release](#create-an-issue-to-track-the-release)
-1. [Complete the daily release tasks](#complete-the-daily-release-tasks)
-
-## Tasks
-
-### Create an issue to track the release
+### 1. Create an issue to track the release
 
 In order to keep track of the various tasks that need to happen each day leading
 up to the final release, we create an issue on the [GitLab CE issue tracker] and
@@ -35,7 +30,7 @@ update it as we progress.
 
 [GitLab CE issue tracker]: https://gitlab.com/gitlab-org/gitlab-ce/issues
 
-# Complete the daily release tasks
+### 2. Complete the daily release tasks
 
 Once the release schedule begins, each work day has something that needs to be
 done. Perform the tasks and mark them as complete in the issue as you progress.
