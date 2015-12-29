@@ -6,7 +6,7 @@
 
 - [ ] Regular account login
 - [ ] LDAP login - _Credentials are in the **Support** 1Password vault_
-- [ ] SAML login - _Credentials and instructions are in the **Support** 1Password vault_
+- [ ] SAML login - _Credentials are in the **Support** 1Password vault, instructions are [here](saml-qa-instructions.md)_
 
 ### Forks
 
