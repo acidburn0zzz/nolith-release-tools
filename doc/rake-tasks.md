@@ -5,11 +5,21 @@ process.
 
 ## Setup
 
-Install the required dependencies with Bundler:
+1. Install the required dependencies with Bundler:
 
-```sh
-bundle install
-```
+    ```sh
+    bundle install
+    ```
+
+1. Several of the tasks require API access to a GitLab instance. We store the
+   endpoint and private token data in the `.env` file which is not added to
+   source control. Copy the `.env.example` file:
+
+    ```sh
+    cp .env.example .env
+    ```
+
+1. Edit `.env` to add the API endpoint and your personal API access token.
 
 ## `monthly_issue[version]`
 
