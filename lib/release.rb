@@ -1,13 +1,29 @@
-require_relative 'version'
-require_relative 'remotes'
-require_relative 'repository'
 require 'colorize'
 
+require_relative 'remotes'
+require_relative 'repository'
+require_relative 'version'
+
 class Release
+  # Get the Date of the next release
+  #
+  # Defaults to the 22nd of the current month, or next month if the current one
+  # is half over.
+  #
+  # Returns a Date
+  def self.next_date
+    today = Date.today
+
+    next_date = Date.new(today.year, today.month, 22)
+    next_date = next_date.next_month if today.day >= 15
+
+    next_date
+  end
+
   attr_reader :version, :remotes
 
-  def initialize(version, remotes)
-    @version = version
+  def initialize(version_string, remotes)
+    @version = Version.new(version_string)
     @remotes = remotes
   end
 
@@ -59,11 +75,11 @@ class Release
   end
 
   def tag
-    Version.tag(version)
+    version.tag
   end
 
   def branch
-    Version.branch_name(@version)
+    version.stable_branch
   end
 
   def prepare_repo(remotes)

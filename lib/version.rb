@@ -1,29 +1,56 @@
-class Version
-  class << self
-    def valid?(version)
-      release?(version) || rc?(version)
-    end
+class Version < String
+  def milestone_name
+    to_minor
+  end
 
-    def branch_name(version)
-      minor_version = version.match(/\A\d+\.\d+/).to_s
+  def patch?
+    release? && /\.(\d+)$/.match(self)[1].to_i > 0
+  end
 
-      if version.end_with?('-ee')
-        minor_version.gsub('.', '-') + '-stable-ee'
-      else
-        minor_version.gsub('.', '-') + '-stable'
-      end
-    end
+  def rc
+    self.match(/[\.-](rc\d+)\z/).captures.first if rc?
+  end
 
-    def release?(version)
-      version =~ /\A\d+\.\d+\.\d+\Z/
-    end
+  def rc?
+    self =~ /\A\d+\.\d+\.\d+[\.-]rc\d+\z/
+  end
 
-    def rc?(version)
-      version =~ /\A\d+\.\d+\.\d+\.rc\d+/
-    end
+  def release?
+    self =~ /\A\d+\.\d+\.\d+\Z/
+  end
 
-    def tag(version)
-      'v' + version
+  def stable_branch(ee: false)
+    if ee || self.end_with?('-ee')
+      to_minor.gsub('.', '-') << '-stable-ee'
+    else
+      to_minor.gsub('.', '-') << '-stable'
     end
+  end
+
+  def tag
+    "v#{self}"
+  end
+
+  def to_minor
+    self.match(/\A\d+\.\d+/).to_s
+  end
+
+  def to_omnibus(ee: false)
+    str = "#{to_patch}+"
+    str << "#{rc}." if rc?
+    str << (ee ? 'ee' : 'ce')
+    str << '.0'
+  end
+
+  def to_patch
+    self.match(/\A\d+\.\d+\.\d+/).to_s
+  end
+
+  def to_rc(number = 1)
+    "#{to_patch}-rc#{number}"
+  end
+
+  def valid?
+    release? || rc?
   end
 end

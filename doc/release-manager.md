@@ -8,7 +8,7 @@ The release manager oversees the [monthly release] of GitLab as well as any
 ### Pre-release
 
 The release manager's job begins with creating and tracking the [release
-issue](monthly.md#create-an-issue-to-track-the-release).
+issue](monthly.md#1-create-an-issue-to-track-the-release).
 
 Any task can be delegated to any member of the team who can perform it. When
 delegating a task, be sure to mention a person directly rather than asking

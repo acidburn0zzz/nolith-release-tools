@@ -1,0 +1,86 @@
+### <%= ordinal_date(7) %>: (7 working days before the 22nd)
+
+- [ ] Triage the [Omnibus milestone]
+
+### <%= ordinal_date(6) %>: (6 working days before the 22nd)
+
+- [ ] Determine QA person and notify this person
+- Follow the [Creating RC1] guide:
+  - [ ] Update the "Installation from Source" guide
+  - [ ] Create the Update guides
+  - [ ] Merge CE `master` into EE `master` via merge request
+  - [ ] Tag the RC1 version
+- [ ] Build RC1 packages
+
+### <%= ordinal_date(5) %>: (5 working days before the 22nd)
+
+- [ ] Do QA and fix anything coming out of it (#LINK)
+- [ ] Close the [Omnibus milestone]
+- [ ] Prepare the [blog post]
+
+### <%= ordinal_date(4) %>: (4 working days before the 22nd)
+
+- [ ] Update GitLab.com with RC1
+- [ ] Create the regression issue in the CE issue tracker:
+
+    ```
+    This is a meta issue to index possible regressions in this monthly release
+    and any patch versions.
+
+    Please do not raise or discuss issues directly in this issue but link to
+    issues that might warrant a patch release. If there is a Merge Request
+    that fixes the issue, please link to that as well.
+
+    Please only post one regression issue and/or merge request per comment.
+    Comments will be updated by the release manager as they are addressed.
+    ```
+
+- [ ] Tweet about RC1 release:
+
+    ```
+    GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk. Please link regressions issues from
+    LINK_TO_REGRESSION_ISSUE
+    ```
+
+### <%= ordinal_date(3) %>: (3 working days before the 22nd)
+
+- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
+- [ ] Check that everyone is mentioned on the [blog post] using `@all`:
+
+    ```
+    Hello @all, this is the monthly release post that will go out on the 22nd,
+    announcing the new GitLab version. Look through it to see if we can make any
+    changes and feel free to comment with suggestions or questions!
+    ```
+
+### <%= ordinal_date(2) %>: (2 working days before the 22nd)
+
+- [ ] Check that MVP is added to the [MVP page]
+
+### <%= ordinal_date(1) %>: (1 working day before the 22nd)
+
+- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
+- [ ] Create CE and EE release candidates
+- [ ] Create Omnibus tags and build packages for the latest release candidates
+- [ ] Update GitLab.com with the latest RC
+
+### 22nd before 1200 CET:
+
+Release before 1200 CET / 2AM PST, to make sure the majority of our users
+get the new version on the 22nd and there is sufficient time in the European
+workday to quickly fix any issues.
+
+- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
+- [ ] Create the '<%= version.to_patch %>' tag with the [release tools]
+- [ ] Try to do before 1100 CET: Create and push Omnibus tags for <%= version.to_patch %> (will auto-release the packages)
+- [ ] Try to do before 1200 CET: Publish the release [blog post]
+- [ ] Create the '<%= version.to_patch %>' version on version.gitlab.com
+- [ ] Tweet about the release
+- [ ] Schedule a second Tweet of the release announcement with the same text at 1800 CET / 8AM PST
+
+[Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
+[Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
+[blog post]: LINK_TO_WIP_BLOG_POST
+[release tools]: https://gitlab.com/gitlab-org/release-tools
+[MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html

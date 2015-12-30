@@ -1,7 +1,5 @@
 module Remotes
-  extend self
-
-  def ce_remotes
+  def self.ce_remotes
     [
       'git@dev.gitlab.org:gitlab/gitlabhq.git',
       'git@github.com:gitlabhq/gitlabhq.git',
@@ -9,14 +7,10 @@ module Remotes
     ]
   end
 
-  def ee_remotes
+  def self.ee_remotes
     [
       'git@gitlab.com:gitlab-org/gitlab-ee.git',
       'git@dev.gitlab.org:gitlab/gitlab-ee.git'
     ]
-  end
-
-  def all_remotes
-    ce_remotes + ee_remotes
   end
 end
