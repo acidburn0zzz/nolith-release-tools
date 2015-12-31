@@ -17,7 +17,7 @@ In order to keep track of the various tasks that need to happen each day leading
 up to the final release, we create an issue on the [GitLab CE issue tracker] and
 update it as we progress.
 
-1. Generate the issue description using the
+1. Create the issue using the
    [`monthly_issue`](rake-tasks.md#monthly_issueversion) Rake task:
 
     ```sh

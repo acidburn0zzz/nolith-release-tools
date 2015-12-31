@@ -17,11 +17,11 @@ to perform a task, ask someone else, or ask Job or a previous release manager to
 find someone. The monthly releases are a company-wide effort, and should not
 fall entirely on the release manager's shoulders.
 
-Once the **regressions issue** is created four working days before the release,
-the release manager is responsible for tracking and managing it. This usually
-involves checking the reported issues and any available fixes for those issues,
-and ensuring they are included either in the next release candidate or the final
-release.
+Once the [regressions issue is created](rake-tasks.md#regression_issueversion)
+four working days before the release, the release manager is responsible for
+tracking and managing it. This usually involves checking the reported issues and
+any available fixes for those issues, and ensuring they are included either in
+the next release candidate or the final release.
 
 A "best practice" we've developed is editing the notes to reflect their status
 as they are addressed. For example, a regression note might look like this after
