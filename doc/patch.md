@@ -82,9 +82,9 @@ missing commits.
    a note in the merge request's discussion, both as a reminder to yourself of
    what's already been done and to update anyone else interested:
 
-   ```
-   Picked into `8-3-stable`
-   ```
+    ```
+    Picked into `8-3-stable`
+    ```
 
 1. [Update any notes](release-manager.md#pre-release) from the regression issue
    to reflect their latest status.
