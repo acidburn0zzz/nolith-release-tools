@@ -17,10 +17,10 @@ tracker] and update it as we progress.
 1. Create the issue using the [`patch_issue`](rake-tasks.md#patch_issueversion)
    Rake task:
 
-   ```sh
-   # NOTE: This command is an example! Update it to reflect new version numbers.
-   bundle exec rake "patch_issue[version]"
-   ```
+    ```sh
+    # NOTE: This command is an example! Update it to reflect new version numbers.
+    bundle exec rake "patch_issue[version]"
+    ```
 
 1. You may want to **bookmark** the issue until it's closed at the end of the
    release cycle.
