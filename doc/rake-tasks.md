@@ -42,7 +42,7 @@ An issue created with this Rake task has the following properties:
 bundle exec rake "monthly_issue[8.3.0]"
 
 --> Issue "Release 8.3" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/1234
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/3977
 ```
 
 ## `patch_issue[version]`
@@ -64,7 +64,7 @@ An issue created with this Rake task has the following properties:
 bundle exec rake "patch_issue[8.3.1]"
 
 --> Issue "Release 8.3.1" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/2345
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
 ## `regression_issue[version]`
@@ -86,7 +86,7 @@ An issue created with this Rake task has the following properties:
 bundle exec rake "regression_issue[8.3.0]"
 
 --> Issue "8.3 Regressions" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/3456
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/4127
 ```
 
 ## `release[version]`
