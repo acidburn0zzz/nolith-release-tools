@@ -19,7 +19,9 @@ process.
     cp .env.example .env
     ```
 
-1. Edit `.env` to add the API endpoint and your personal API access token.
+1. Edit `.env` to add the API endpoint (you probably want
+   `https://gitlab.com/api/v3`) and your personal API access token (**Profile
+   Settings** > **Account**).
 
 ## `monthly_issue[version]`
 
