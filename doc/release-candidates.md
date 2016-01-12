@@ -52,6 +52,7 @@ will be merged into GitLab EE.*
     cp doc/update/8.0-to-8.1.md doc/update/8.1-to-8.2.md
     ```
 
+1. Update the versions in the top-level header.
 1. Update the name of the `X-Y-stable[-ee]` branches in **Get latest code**.
    There are two occurrences.
 1. Ensure the `gitlab-shell` version in **Update gitlab-shell** matches the
