@@ -102,6 +102,20 @@ Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 bundle exec rake "release[8.2.0.rc1]"
 ```
 
+#### 5. Re-open `master` for ongoing development
+
+Once the `X-Y-stable` branch is created, it is the sole source of future
+releases for that version. Meaning `master` can and will contain patches
+intended for releases beyond the current one.
+
+From this point, as merges are made into `master` intended for the current
+release, they will either need to be cherry-picked into the `stable` branch by
+the release manager, or a second merge request should be opened with the
+`stable` branch as the target instead of `master.
+
+Developers are responsible for notifying the release manager that a merge
+request is ready to be moved into `stable`.
+
 ---
 
 ### Creating subsequent RCs
