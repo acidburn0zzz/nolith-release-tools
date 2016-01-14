@@ -55,8 +55,23 @@ end
 
 desc "Sync master branch in remotes"
 task :sync do
-  Sync.new(Remotes.ce_remotes).execute
-  Sync.new(Remotes.ee_remotes).execute
+  unless ENV['CE'] == 'false'
+    Sync.new(Remotes.ce_remotes).execute
+  else
+    puts 'Skipping sync for CE'.colorize(:yellow)
+  end
+
+  unless ENV['EE'] == 'false'
+    Sync.new(Remotes.ee_remotes).execute
+  else
+    puts 'Skipping sync for EE'.colorize(:yellow)
+  end
+
+  unless ENV['OG'] == 'false'
+    Sync.new(Remotes.omnibus_gitlab_remotes).execute
+  else
+    puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
+  end
 end
 
 desc "Create the monthly release issue"
