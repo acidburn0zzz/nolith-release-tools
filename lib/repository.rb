@@ -65,11 +65,14 @@ class Repository
     end
   end
 
-  def commit(file, content, message, branch)
+  def commit(file, message)
+    run %W(git add #{file})
+    run %W(git commit -m #{message})
+  end
+
+  def checkout_and_write(branch, file, content)
     checkout_branch(branch)
     execute { File.write(file, content) }
-    run %W(git add VERSION)
-    run %W(git commit -m #{message})
   end
 
   def push(remote, ref)
