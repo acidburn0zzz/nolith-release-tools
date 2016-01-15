@@ -104,8 +104,8 @@ This task will:
 
 | Option      | Purpose                        |
 | ------      | -------                        |
-| `CE=false`  | Skip CE repository             |
-| `EE=false`  | Skip EE repository             |
+| `CE=false`  | Skip CE release                |
+| `EE=false`  | Skip EE release                |
 | `TEST=true` | Don't push anything to remotes |
 
 ### Examples
@@ -131,6 +131,15 @@ between all the remotes.
 
 If you manually [push to multiple remotes](push-to-multiple-remotes.md) during
 the release process, you can safely skip this task.
+
+### Configuration
+
+| Option      | Purpose                        |
+| ------      | -------                        |
+| `CE=false`  | Skip CE repository             |
+| `EE=false`  | Skip EE repository             |
+| `OG=false`  | Skip omnibus-gitlab repository |
+| `TEST=true` | Don't push anything to remotes |
 
 ### Examples
 
