@@ -15,12 +15,16 @@ class Version < String
     self =~ /\A\d+\.\d+\.\d+[\.-]rc\d+\z/
   end
 
+  def ee?
+    self.end_with?('-ee')
+  end
+
   def release?
     self =~ /\A\d+\.\d+\.\d+\Z/
   end
 
   def stable_branch(ee: false)
-    if ee || self.end_with?('-ee')
+    if ee || self.ee?
       to_minor.gsub('.', '-') << '-stable-ee'
     else
       to_minor.gsub('.', '-') << '-stable'

@@ -102,7 +102,7 @@ class Release
     prepare_branch(branch, 'remote-0', remotes)
     if set_revisions?(repository_path)
       bump_version_files(branch, remotes)
-      create_tag(version.to_omnibus(ee: version.end_with?('-ee')), branch, remotes)
+      create_tag(version.to_omnibus(ee: version.ee?), branch, remotes)
     end
   end
 
