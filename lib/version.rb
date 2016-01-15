@@ -1,4 +1,8 @@
 class Version < String
+  def ee?
+    self.end_with?('-ee')
+  end
+
   def milestone_name
     to_minor
   end
@@ -13,10 +17,6 @@ class Version < String
 
   def rc?
     self =~ /\A\d+\.\d+\.\d+[\.-]rc\d+\z/
-  end
-
-  def ee?
-    self.end_with?('-ee')
   end
 
   def release?

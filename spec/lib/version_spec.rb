@@ -7,6 +7,16 @@ describe Version do
     described_class.new(version_string)
   end
 
+  describe '#ee?' do
+    it 'returns true when EE' do
+      expect(version('8.3.2-ee')).to be_ee
+    end
+
+    it 'returns false when not EE' do
+      expect(version('8.3.2')).not_to be_ee
+    end
+  end
+
   describe '#milestone_name' do
     it 'returns the milestone name' do
       expect(version('8.3.2').milestone_name).to eq '8.3'
