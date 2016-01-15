@@ -11,6 +11,17 @@ require_relative 'lib/release'
 require_relative 'lib/remotes'
 require_relative 'lib/sync'
 
+
+begin
+  require 'rspec/core/rake_task'
+
+  RSpec::Core::RakeTask.new(:spec)
+
+  task default: :spec
+rescue LoadError
+  # no rspec available
+end
+
 def get_version(args)
   version = Version.new(args[:version])
 
