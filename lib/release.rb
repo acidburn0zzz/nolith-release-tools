@@ -116,11 +116,7 @@ class Release
   end
 
   def set_revisions?(repository_path)
-    if prepare_component_versions(repository_path).nil?
-      nil
-    else
-      true
-    end
+    prepare_component_versions(repository_path).nil?
   end
 
   def bump_version_files(branch, remotes)
