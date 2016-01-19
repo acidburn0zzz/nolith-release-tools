@@ -1,4 +1,8 @@
 class Version < String
+  def ee?
+    self.end_with?('-ee')
+  end
+
   def milestone_name
     to_minor
   end
@@ -8,11 +12,11 @@ class Version < String
   end
 
   def rc
-    self.match(/[\.-](rc\d+)\z/).captures.first if rc?
+    self.match(/-(rc\d+)\z/).captures.first if rc?
   end
 
   def rc?
-    self =~ /\A\d+\.\d+\.\d+[\.-]rc\d+\z/
+    self =~ /\A\d+\.\d+\.\d+-rc\d+\z/
   end
 
   def release?
@@ -20,7 +24,7 @@ class Version < String
   end
 
   def stable_branch(ee: false)
-    if ee || self.end_with?('-ee')
+    if ee || self.ee?
       to_minor.gsub('.', '-') << '-stable-ee'
     else
       to_minor.gsub('.', '-') << '-stable'
