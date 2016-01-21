@@ -59,14 +59,25 @@ class Release
   end
 
   def create_tag(tag, branch, remotes)
-    puts "Create git tag #{tag}".colorize(:green)
-    repository.create_tag(branch)
+    tagged = repository.create_tag(branch)
+    puts "Created git tag #{tagged}".colorize(:green)
 
     remotes.each do |remote|
       puts "Push tag #{tag} to #{remote}".colorize(:green)
       repository.push(remote, tag)
     end
   end
+
+  def create_omnibus_tag(tag, branch, remotes)
+    tagged = repository.create_tag(branch, tag)
+
+    puts "Created git tag #{tagged}".colorize(:green)
+    remotes.each do |remote|
+      puts "Push tag #{tag} to #{remote}".colorize(:green)
+      repository.push(remote, tag)
+    end
+  end
+
 
   def repository
     @repository ||= Repository.get(remotes.first, path)
@@ -102,7 +113,7 @@ class Release
     prepare_branch(branch, 'remote-0', remotes)
     if set_revisions?(repository_path)
       bump_version_files(branch, remotes)
-      create_tag(version.to_omnibus(ee: version.ee?), branch, remotes)
+      create_omnibus_tag(version.to_omnibus(ee: version.ee?), branch, remotes)
     end
   end
 

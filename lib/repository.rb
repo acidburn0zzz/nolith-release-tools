@@ -44,11 +44,19 @@ class Repository
     run %W(git pull #{remote} #{branch})
   end
 
-  def create_tag(branch)
+  def create_tag(branch, tag = nil)
     checkout_branch(branch)
-    version = execute { File.read('VERSION').strip }
+
+    if tag
+      version = tag
+    else
+      version = execute { File.read('VERSION').strip }
+      version.prepend("v") if version[0] != "v"
+    end
+
     message = "Version #{version}"
-    run %W(git tag -a v#{version} -m #{message})
+    run %W(git tag -a #{version} -m #{message})
+    version
   end
 
   def create_branch(branch, from = 'master')
