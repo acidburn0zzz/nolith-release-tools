@@ -12,11 +12,11 @@ class Version < String
   end
 
   def rc
-    self.match(/-(rc\d+)\z/).captures.first if rc?
+    self.match(/-(rc\d+)(-ee)?\z/).captures.first if rc?
   end
 
   def rc?
-    self =~ /\A\d+\.\d+\.\d+-rc\d+\z/
+    self =~ /\A\d+\.\d+\.\d+-rc\d+(-ee)?\z/
   end
 
   def release?
