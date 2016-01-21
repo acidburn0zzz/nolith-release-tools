@@ -116,7 +116,7 @@ class Release
   end
 
   def set_revisions?(repository_path)
-    prepare_component_versions(repository_path).nil?
+    !prepare_component_versions(repository_path).nil?
   end
 
   def bump_version_files(branch, remotes)
@@ -133,6 +133,8 @@ class Release
       updated = update_version_file(repository_path, f)
       return nil if updated.nil?
     end
+
+    true
   end
 
   def read_version_file(repository_path, file_name)
