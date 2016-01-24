@@ -18,6 +18,7 @@ Manager](doc/release-manager.md).
 - [How to push to multiple remotes at once](doc/push-to-multiple-remotes.md)
 - [How to remove packages from packages.gitlab.com](doc/remove-packages.md)
 - [Rake tasks](doc/rake-tasks.md)
+- [Pro tips](doc/pro-tips.md)
 
 ## TODO
 

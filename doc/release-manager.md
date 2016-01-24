@@ -23,27 +23,6 @@ tracking and managing it. This usually involves checking the reported issues and
 any available fixes for those issues, and ensuring they are included either in
 the next release candidate or the final release.
 
-A "best practice" we've developed is editing the notes to reflect their status
-as they are addressed. For example, a regression note might look like this after
-being reported:
-
-```text
-#3531 - User profile pages are timing out - Fix in !1234
-```
-
-After being addressed, the release manager might edit it to look like this:
-
-```text
-~~#3531 - User profile pages are timing out - Fix in !1234~~
-
-**rspeicher:** Merged, to be included in RC2.
-```
-
-The strikethrough formatting makes it easier to scan through the list to find
-issues that still need to be addressed, and the added note from the release
-manager (**rspeicher**, in this case) gives anyone following the issue a clear
-indication of when the fix will be released.
-
 ### Release
 
 After performing all of his or her pre-release tasks, and releasing the final
