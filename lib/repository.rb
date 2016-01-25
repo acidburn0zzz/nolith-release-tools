@@ -40,8 +40,10 @@ class Repository
     run %W(git fetch --all)
   end
 
-  def pull(remote, branch)
-    run %W(git pull #{remote} #{branch})
+  def pull(remotes, branch)
+    remotes.each do |remote|
+      run %W(git pull #{remote} #{branch})
+    end
   end
 
   def create_tag(branch, tag = nil)

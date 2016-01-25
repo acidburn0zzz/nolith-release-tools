@@ -38,9 +38,7 @@ class Release
 
   def prepare_branch(branch, base_remote, remotes)
     repository.ensure_branch_exists(branch, base_remote)
-    remotes.each do |remote|
-      repository.pull(remote, branch)
-    end
+    repository.pull(remotes, branch)
   end
 
   def bump_version(version, branch, remotes)
