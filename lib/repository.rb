@@ -63,6 +63,15 @@ class Repository
     run %W(git branch #{branch} #{from})
   end
 
+  # Given an Array of remotes, add each one to the repository, then fetch
+  def add_remotes(remotes)
+    remotes.each_with_index do |remote, i|
+      add_remote("remote-#{i}", remote)
+    end
+
+    fetch
+  end
+
   def add_remote(key, url)
     run %W(git remote add #{key} #{url})
   end
