@@ -52,7 +52,7 @@ class Repository
     if tag
       version = tag
     else
-      version = execute { File.read('VERSION').strip }
+      version = in_path { File.read('VERSION').strip }
       version.prepend("v") if version[0] != "v"
     end
 
@@ -78,12 +78,6 @@ class Repository
     run %W(git remote add #{key} #{url})
   end
 
-  def execute(branch = nil)
-    Dir.chdir(@path) do
-      yield
-    end
-  end
-
   def commit(file, message)
     run %W(git add #{file})
     run %W(git commit -m #{message})
@@ -91,7 +85,7 @@ class Repository
 
   def checkout_and_write(branch, file, content)
     checkout_branch(branch)
-    execute { File.write(file, content) }
+    in_path { File.write(file, content) }
   end
 
   def push(remote, ref)
@@ -105,8 +99,14 @@ class Repository
 
   private
 
+  def in_path
+    Dir.chdir(@path) do
+      yield
+    end
+  end
+
   def run(args)
-    execute do
+    in_path do
       system(*args)
     end
   end
