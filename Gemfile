@@ -9,6 +9,7 @@ gem 'rake'
 gem 'weekdays', '~> 1.0.0'
 
 group :development, :test do
+  gem 'pry'
   gem 'rspec',   '~> 3.4.0'
   gem 'timecop', '~> 0.8.0'
   gem 'vcr',     '~> 2.9.0'

@@ -8,6 +8,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    coderay (1.1.0)
     colorize (0.5.8)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -22,8 +23,13 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.3)
+    method_source (0.8.2)
     minitest (5.8.3)
     multi_xml (0.5.5)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rake (10.3.2)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
@@ -39,6 +45,7 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     safe_yaml (1.0.4)
+    slop (3.6.0)
     terminal-table (1.5.2)
     thread_safe (0.3.5)
     timecop (0.8.0)
@@ -59,6 +66,7 @@ DEPENDENCIES
   colorize
   dotenv (~> 2.0.0)
   gitlab (~> 3.6.0)
+  pry
   rake
   rspec (~> 3.4.0)
   timecop (~> 0.8.0)
@@ -67,4 +75,4 @@ DEPENDENCIES
   weekdays (~> 1.0.0)
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
