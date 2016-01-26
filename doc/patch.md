@@ -81,8 +81,9 @@ missing commits.
 1. Switch back to the `master` branch and update `CHANGELOG` to include changes
    for the patch version. Commit and push.
 
-1. As merges are picked and stable branches updated, it can be helpful to post
-   a note in the merge request's discussion. See the [pro tip](pro-tips.md#leave-notes-to-yourself).
+1. As merges are picked and stable branches updated, it can be helpful to
+   [post a note]((pro-tips.md#leave-notes-to-yourself) in the merge request's
+   discussion.
 
 1. [Update any notes](pro-tips.md#update-the-regression-issue) from the
    regression issue to reflect their latest status.
