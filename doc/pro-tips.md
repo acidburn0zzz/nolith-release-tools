@@ -8,7 +8,7 @@ requirements. Feel free to contribute your own!
 
 As merge requests get accepted into master, you're responsible for making sure
 they make it into the appropriate `stable` branch. Currently the preferred way
-of doing this is via `git cherry-pick`s of the merge commit. As you'll be doing
+of doing this is via [Git cherry picks] of the merge commit. As you'll be doing
 this a lot, it's helpful to have a [Git alias] to cut down on typing.
 
 ```ini
@@ -22,6 +22,7 @@ git cp <SHA> -m 1
 ```
 
 [Git alias]: https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
+[Git cherry picks]: https://git-scm.com/docs/git-cherry-pick
 
 ## Leave notes to yourself
 

@@ -25,14 +25,14 @@ tracker] and update it as we progress.
 1. You may want to **bookmark** the issue until it's closed at the end of the
    release cycle.
 
-Generally, you should create a new patch issue immediately after the current
+It's a good idea to create a new patch issue immediately after the current
 monthly release or previous patch release is completed.
 
 ### 2. Pick specific changes into the `stable` branches
 
 A patch release is made up of one or more merge requests that have been merged
-into the `master` branch of GitLab CE or EE, and which then need to be [cherry
-picked] into the respective `stable` branches.
+into the `master` branch of GitLab CE or EE, and which then need to be
+[cherry picked] into the respective `stable` branches.
 
 We cherry pick the single **merge commit** that results from accepting a merge
 request and which may have been made up of more than one commit. This means we
@@ -75,19 +75,16 @@ missing commits.
     git push origin 8-3-stable
     ```
 
+   _**Note:** You'll probably want to push the stable branch to all of our
+   remotes. See [Pushing to multiple remotes](push-to-multiple-remotes.md)._
+
 1. Switch back to the `master` branch and update `CHANGELOG` to include changes
    for the patch version. Commit and push.
 
 1. As merges are picked and stable branches updated, it can be helpful to post
-   a note in the merge request's discussion, both as a reminder to yourself of
-   what's already been done and to update anyone else interested:
-
-    ```
-    Picked into `8-3-stable`
-    ```
-
-1. [Update any notes](release-manager.md#pre-release) from the regression issue
-   to reflect their latest status.
+   a note in the merge request's discussion. See the [pro tip](pro-tips.md#leave-notes-to-yourself).
+1. [Update any notes](pro-tips.md#update-the-regression-issue) from the
+   regression issue to reflect their latest status.
 
 ### 3. Complete the patch release tasks
 
@@ -97,7 +94,7 @@ tasks as you complete them.
 [monthly release]: monthly.md
 [release manager]: release-manager.md
 [GitLab CE issue tracker]: https://gitlab.com/gitlab-org/gitlab-ce/issues
-[cherry picked]: https://git-scm.com/docs/git-cherry-pick
+[cherry picked]: pro-tips.md#add-a-git-cherry-pick-alias
 
 ---
 
