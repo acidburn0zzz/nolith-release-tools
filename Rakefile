@@ -38,34 +38,35 @@ desc "Create release"
 task :release, [:version] do |t, args|
   version = get_version(args)
 
-  if skip?('ce')
-    puts 'Skipping release for CE'.colorize(:red)
-  else
-    puts "CE release".colorize(:blue)
-    Release.new(version, Remotes.ce_remotes).execute
-  end
-
   if skip?('ee')
     puts 'Skipping release for EE'.colorize(:red)
   else
     puts "EE release".colorize(:blue)
     Release.new(version + '-ee', Remotes.ee_remotes).execute
   end
+
+  if skip?('ce')
+    puts 'Skipping release for CE'.colorize(:red)
+  else
+    puts "CE release".colorize(:blue)
+    Release.new(version, Remotes.ce_remotes).execute
+  end
 end
 
 desc "Sync master branch in remotes"
 task :sync do
+  if skip?('ee')
+    puts 'Skipping sync for EE'.colorize(:yellow)
+  else
+    Sync.new(Remotes.ee_remotes).execute
+  end
+
   if skip?('ce')
     puts 'Skipping sync for CE'.colorize(:yellow)
   else
     Sync.new(Remotes.ce_remotes).execute
   end
 
-  if skip?('ee')
-    puts 'Skipping sync for EE'.colorize(:yellow)
-  else
-    Sync.new(Remotes.ee_remotes).execute
-  end
 
   if skip?('og')
     puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
