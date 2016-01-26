@@ -82,7 +82,7 @@ missing commits.
    for the patch version. Commit and push.
 
 1. As merges are picked and stable branches updated, it can be helpful to
-   [post a note]((pro-tips.md#leave-notes-to-yourself) in the merge request's
+   [post a note](pro-tips.md#leave-notes-to-yourself) in the merge request's
    discussion.
 
 1. [Update any notes](pro-tips.md#update-the-regression-issue) from the
