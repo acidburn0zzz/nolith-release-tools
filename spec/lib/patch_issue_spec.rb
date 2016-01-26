@@ -34,18 +34,6 @@ describe PatchIssue do
       expect(content).to include '8.3.1'
     end
 
-    it 'includes the Omnibus versions' do
-      issue = described_class.new(Version.new('8.3.1'))
-
-      allow(issue).to receive(:regression_issue).and_return(spy)
-      content = issue.description
-
-      aggregate_failures do
-        expect(content).to include '`8.3.1+ee.0`'
-        expect(content).to include '`8.3.1+ce.0`'
-      end
-    end
-
     it 'includes a link to the regression issue' do
       issue = described_class.new(Version.new('8.3.1'))
 
