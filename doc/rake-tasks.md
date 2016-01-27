@@ -112,7 +112,7 @@ This task will:
 
 ```sh
 # Release 8.2 RC1:
-bundle exec rake "release[8.2.0.rc1]"
+bundle exec rake "release[8.2.0-rc1]"
 
 # Release 8.2.3, but not for CE:
 CE=false bundle exec rake "release[8.2.3]"

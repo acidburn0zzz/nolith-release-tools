@@ -99,7 +99,7 @@ Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.
-bundle exec rake "release[8.2.0.rc1]"
+bundle exec rake "release[8.2.0-rc1]"
 ```
 
 #### 5. Re-open `master` for ongoing development
@@ -132,7 +132,7 @@ Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
 ```sh
 # NOTE: This command is an example! Update it to reflect new version numbers.
-bundle exec rake "release[8.2.0.rc2]"
+bundle exec rake "release[8.2.0-rc2]"
 ```
 
 [GITLAB_SHELL_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_SHELL_VERSION

@@ -6,7 +6,7 @@ require 'version'
 describe MonthlyIssue do
   describe '#title' do
     it "returns the issue title" do
-      issue = described_class.new(Version.new('8.3.5.rc1'))
+      issue = described_class.new(Version.new('8.3.5-rc1'))
 
       expect(issue.title).to eq 'Release 8.3'
     end
@@ -39,7 +39,7 @@ describe MonthlyIssue do
     end
 
     it "includes stable branch names" do
-      issue = described_class.new(Version.new('8.3.0.rc1'))
+      issue = described_class.new(Version.new('8.3.0-rc1'))
 
       content = issue.description
 
