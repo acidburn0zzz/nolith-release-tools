@@ -1,31 +1,77 @@
-### <%= ordinal_date(7) %>: (7 working days before the 22nd)
+### <%= ordinal_date(9) %>: (9 working days before the 22nd)
 
 - [ ] Triage the [Omnibus milestone]
 
-### <%= ordinal_date(6) %>: (6 working days before the 22nd)
+### <%= ordinal_date(8) %>: (8 working days before the 22nd)
 
 - [ ] Determine QA person and notify this person
 - Follow the [Creating RC1] guide:
   - [ ] Update the "Installation from Source" guide
   - [ ] Create the Update guides
   - [ ] Merge CE `master` into EE `master` via merge request
-  - [ ] Tag the RC1 version
-- [ ] Build RC1 packages
+  - [ ] In `#operations` (be sure to mention people than can deploy to GitLab.com):
+
+    ```
+    We’re starting the release tasks for <%= version.to_rc %>. Will anyone be able/available to
+    deploy when the packages are out?
+    ```
+  - [ ] In `#development`:
+
+    ```
+    @here: We're about to release <%= version.to_rc %>. We will still merge
+    `master` into `<%= version.stable_branch %>` for a few days (ideally no
+    later than the <%= ordinal_date(4) %>), but after that we will switch to the
+    picking strategy documented here:
+    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+
+    Please become familiar with this “process". Thanks in advance!
+    
+    Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
+    ```
+  - [ ] Tag and build the <%= version.to_rc %> version using the [release tools]
+- [ ] Build <%= version.to_rc %> packages
+- [ ] Update GitLab.com with <%= version.to_rc %>
+- [ ] Create the regression issue in the CE issue tracker
+- [ ] Tweet about <%= version.to_rc %> release:
+
+    ```
+    GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk. Please link regressions issues from
+    LINK_TO_REGRESSION_ISSUE
+    ```
+- [ ] Do QA and fix anything coming out of it (#LINK)
+- [ ] Close the [Omnibus milestone]
+
+### <%= ordinal_date(6) %>: (6 working days before the 22nd)
+
+- Create <%= version.to_rc(2) %>, following the [Creating subsequent RCs] guide:
+  - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
+  - [ ] Tag the <%= version.to_rc(2) %> version
+- [ ] Build <%= version.to_rc(2) %> packages
+- [ ] Update GitLab.com with <%= version.to_rc(2) %>
+- [ ] Tweet about <%= version.to_rc(2) %> release:
+
+    ```
+    GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk. Please link regressions issues from
+    LINK_TO_REGRESSION_ISSUE
+    ```
 
 ### <%= ordinal_date(5) %>: (5 working days before the 22nd)
 
-- [ ] Do QA and fix anything coming out of it (#LINK)
-- [ ] Close the [Omnibus milestone]
 - [ ] Prepare the [blog post]
 
 ### <%= ordinal_date(4) %>: (4 working days before the 22nd)
 
-- [ ] Update GitLab.com with RC1
-- [ ] Create the regression issue in the CE issue tracker
-- [ ] Tweet about RC1 release:
+- Create <%= version.to_rc(3) %>, following the [Creating subsequent RCs] guide:
+  - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
+  - [ ] Tag the <%= version.to_rc(3) %> version
+- [ ] Build <%= version.to_rc(3) %> packages
+- [ ] Update GitLab.com with <%= version.to_rc(3) %>
+- [ ] Tweet about <%= version.to_rc(3) %> release:
 
     ```
-    GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
+    GitLab <%= version.to_rc(3) %> is available: https://packages.gitlab.com/gitlab/unstable
     Use at your own risk. Please link regressions issues from
     LINK_TO_REGRESSION_ISSUE
     ```
@@ -56,10 +102,17 @@
 
 ### <%= ordinal_date(1) %>: (1 working day before the 22nd)
 
-- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
-- [ ] Create CE and EE release candidates
-- [ ] Create Omnibus tags and build packages for the latest release candidates
-- [ ] Update GitLab.com with the latest RC
+- Create <%= version.to_rc(4) %>, following the [Creating subsequent RCs] guide:
+  - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
+  - [ ] Tag the <%= version.to_rc(4) %> version
+- [ ] Build <%= version.to_rc(4) %> packages
+- [ ] Update GitLab.com with <%= version.to_rc(4) %>
+- [ ] Tweet about <%= version.to_rc(4) %> release:
+
+    ```
+    GitLab <%= version.to_rc(4) %> is available: https://packages.gitlab.com/gitlab/unstable
+    Please link regressions issues from LINK_TO_REGRESSION_ISSUE
+    ```
 
 ### 22nd before 1200 CET:
 
@@ -77,6 +130,7 @@ workday to quickly fix any issues.
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
+[Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
 [blog post]: LINK_TO_WIP_BLOG_POST
 [release tools]: https://gitlab.com/gitlab-org/release-tools
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
