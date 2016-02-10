@@ -25,11 +25,10 @@
     https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 
     Please become familiar with this “process". Thanks in advance!
-    
+
     Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
     ```
-  - [ ] Tag and build the <%= version.to_rc %> version using the [release tools]
-- [ ] Build <%= version.to_rc %> packages
+  - [ ] Tag and build the <%= version.to_rc %> version using the [release tools] (will auto-release the packages)
 - [ ] Update GitLab.com with <%= version.to_rc %>
 - [ ] Create the regression issue in the CE issue tracker
 - [ ] Tweet about <%= version.to_rc %> release:
@@ -46,8 +45,7 @@
 
 - Create <%= version.to_rc(2) %>, following the [Creating subsequent RCs] guide:
   - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
-  - [ ] Tag the <%= version.to_rc(2) %> version
-- [ ] Build <%= version.to_rc(2) %> packages
+  - [ ] Tag and build the <%= version.to_rc(2) %> version using the [release tools] (will auto-release the packages)
 - [ ] Update GitLab.com with <%= version.to_rc(2) %>
 - [ ] Tweet about <%= version.to_rc(2) %> release:
 
@@ -65,8 +63,7 @@
 
 - Create <%= version.to_rc(3) %>, following the [Creating subsequent RCs] guide:
   - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
-  - [ ] Tag the <%= version.to_rc(3) %> version
-- [ ] Build <%= version.to_rc(3) %> packages
+  - [ ] Tag and build the <%= version.to_rc(3) %> version using the [release tools] (will auto-release the packages)
 - [ ] Update GitLab.com with <%= version.to_rc(3) %>
 - [ ] Tweet about <%= version.to_rc(3) %> release:
 
@@ -104,8 +101,7 @@
 
 - Create <%= version.to_rc(4) %>, following the [Creating subsequent RCs] guide:
   - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
-  - [ ] Tag the <%= version.to_rc(4) %> version
-- [ ] Build <%= version.to_rc(4) %> packages
+  - [ ] Tag and build the <%= version.to_rc(4) %> version using the [release tools] (will auto-release the packages)
 - [ ] Update GitLab.com with <%= version.to_rc(4) %>
 - [ ] Tweet about <%= version.to_rc(4) %> release:
 
@@ -121,10 +117,9 @@ get the new version on the 22nd and there is sufficient time in the European
 workday to quickly fix any issues.
 
 - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>`
-- [ ] Create the '<%= version.to_patch %>' tag with the [release tools]
-- [ ] Try to do before 1100 CET: Create and push Omnibus tags for <%= version.to_patch %> (will auto-release the packages)
+- [ ] Try to do before 1100 CET: Tag and build the <%= version.to_patch %> version using the [release tools] (will auto-release the packages)
 - [ ] Try to do before 1200 CET: Publish the release [blog post]
-- [ ] Create the '<%= version.to_patch %>' version on version.gitlab.com
+- [ ] Create the `<%= version.to_patch %>` version on version.gitlab.com
 - [ ] Tweet about the release
 - [ ] Schedule a second Tweet of the release announcement with the same text at 1800 CET / 8AM PST
 
