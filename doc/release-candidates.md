@@ -25,6 +25,8 @@ will be merged into GitLab EE.*
    There are two occurrences.
 1. Ensure the `gitlab-workhorse` version in **Install gitlab-workhorse** matches
    the [required version][GITLAB_WORKHORSE_VERSION].
+1. Update the names of the `X-Y-stable` branches in **Update configuration
+   files**. There are five occurrences.
 1. Depending on changes in the upcoming release, you may need to add or remove
    sections. For example, in GitLab 8.0 we had to add the section about
    installing `gitlab-workhorse` (called `gitlab-git-http-server` at the time).
