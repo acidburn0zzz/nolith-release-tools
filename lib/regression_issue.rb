@@ -12,7 +12,7 @@ class RegressionIssue < BaseIssue
   end
 
   def labels
-    'regression'
+    'Release'
   end
 
   protected

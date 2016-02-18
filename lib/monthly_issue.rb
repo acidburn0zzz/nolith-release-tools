@@ -24,7 +24,7 @@ class MonthlyIssue < BaseIssue
   end
 
   def labels
-    'release'
+    'Release'
   end
 
   def ordinal_date(weekdays_before_release)

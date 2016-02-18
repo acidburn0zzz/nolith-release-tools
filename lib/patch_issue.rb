@@ -13,7 +13,7 @@ class PatchIssue < BaseIssue
   end
 
   def labels
-    'release'
+    'Release'
   end
 
   def regression_issue
