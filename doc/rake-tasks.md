@@ -34,7 +34,7 @@ An issue created with this Rake task has the following properties:
 - Its description is the monthly release issue template
 - It is assigned to the authenticated user
 - It is assigned to the release's milestone
-- It is labeled "release"
+- It is labeled "Release"
 
 ### Examples
 
@@ -56,7 +56,7 @@ An issue created with this Rake task has the following properties:
 - Its description is the patch release issue template
 - It is assigned to the authenticated user
 - It is assigned to the release's milestone
-- It is labeled "release"
+- It is labeled "Release"
 
 ### Examples
 
@@ -78,7 +78,7 @@ An issue created with this Rake task has the following properties:
 - Its description is the regression issue template
 - It is assigned to the authenticated user
 - It is assigned to the release's milestone
-- It is labeled "regression"
+- It is labeled "Release"
 
 ### Examples
 
