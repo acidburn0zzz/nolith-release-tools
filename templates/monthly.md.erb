@@ -1,37 +1,45 @@
-### <%= ordinal_date(9) %>: (9 working days before the 22nd)
+### <%= ordinal_date(16) %>: (16 working days before the 22nd)
 
 - [ ] Triage the [Omnibus milestone]
-- [ ] Determine QA person and notify this person: TO_BE_DEFINED
 
-### <%= ordinal_date(8) %>: (8 working days before the 22nd)
+### <%= ordinal_date(15) %>: (15 working days before the 22nd)
 
-- [ ] Ensure omnibus-gitlab is ready to build packages by asking the Omnibus maintainers
+- [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
 - Follow the [Creating RC1] guide:
   - [ ] Update the "Installation from Source" guide
   - [ ] Create the Update guides
-  - [ ] Merge CE `master` into EE `master` via merge request: REFERENCE_TO_CE_EE_MR
+  - [ ] [Merge GitLab CE
+  into EE] via merge request: REFERENCE_TO_CE_EE_MR
   - [ ] In `#operations` (be sure to mention people than can deploy to GitLab.com):
 
     ```
-    We’re starting the release tasks for `<%= version.to_rc %>`. Will anyone be able/available to
-    deploy when the packages are out?
+    I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE). Will anyone be
+    available to deploy it to GitLab.com when the packages are built?
     ```
   - [ ] In `#development`:
 
     ```
-    @here: We're about to release `<%= version.to_rc %>`. We will still merge
-    `master` into `<%= version.stable_branch %>` for a few days (ideally no
-    later than the <%= ordinal_date(4) %>), but after that we will switch to the
-    picking strategy documented here:
+    I am about to tag `<%= version.to_rc %>`. I will still merge `master` into
+    `<%= version.stable_branch %>` until the <%= ordinal_date(5) %>. After that,
+    please follow the "Change for stable release" process:
     https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-
-    Please become familiar with this “process". Thanks in advance!
+    (TL;DR: Ensure the milestone and the `Pick to Stable` label are set, no need
+    to ping me)
 
     Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
     ```
-  - [ ] Tag and build the `<%= version.to_rc %>` version using the [release tools] (will auto-release the packages)
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [release tools]:
+
+  ```sh
+  bundle exec rake "release[<%= version.to_rc %>]"
+  ```
+- [ ] Create the regression issue in the CE issue tracker using the [release tools]:
+
+  ```sh
+  bundle exec rake "release[<%= version.to_rc %>]"
+  ```
+  REFERENCE_TO_REGRESSION_ISSUE
 - [ ] Update GitLab.com with `<%= version.to_rc %>`
-- [ ] Create the regression issue in the CE issue tracker: REFERENCE_TO_REGRESSION_ISSUE
 - [ ] Tweet about `<%= version.to_rc %>` release:
 
     ```
@@ -44,6 +52,7 @@
 
 ### <%= ordinal_date(6) %>: (6 working days before the 22nd)
 
+- [ ] Determine QA person and notify this person: MENTION_THIS_PERSON_HERE
 - [ ] Merge `master` into `8-5-stable`
 - Create `<%= version.to_rc(2) %>`, following the [Creating subsequent RCs] guide:
   - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
@@ -132,6 +141,8 @@ workday to quickly fix any issues.
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
+[Merge GitLab CE
+into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
 [Picked into Stable]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 [blog post]: LINK_TO_WIP_BLOG_POST

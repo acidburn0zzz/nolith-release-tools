@@ -1,13 +1,19 @@
 # Creating Release Candidates
 
 Release Candidates (RCs) are pre-release versions of the next major version of
-GitLab CE and EE. The first RC (RC1) is typically created six **working days**
-before the official release and is used for [manual QA testing].
+GitLab CE and EE. The first RC (RC1) is typically created 15 **working days**
+before the official release.
+Every release should have several RCs and can have an unlimited number of RCs.
+Usually, at least 4 RCs are made before the official release. This ensure new
+stuff are tried in production and the associated bugs can be fixed before the
+official release.
 
-Every release must have at least one RC. It's not uncommon to have a second, and
-sometimes even a third.
+## About the "Release Candidate" naming
 
-[manual QA testing]: qa-checklist.md
+We call them "Release Candidate" even though the early RCs are
+closer to Beta than real RC. This simplify our releasing/packaging tools &
+scripts. This approach is coherent with packages.gitlab.com since our RC packages
+are available under [`gitlab/unstable`](https://packages.gitlab.com/gitlab/unstable).
 
 ## Guides
 
@@ -105,20 +111,17 @@ bundle exec rake "release[8.2.0-rc1]"
 #### 5. Integrating changes from `master` into `X-Y-stable`
 
 Once the `X-Y-stable` branch is created, it is the sole source of future
-releases for that version. Meaning `master` can and will contain patches
-intended for releases beyond the current one.
+releases for that version. Up until 4 **working days** before the official
+release, `master` will be merged into `X-Y-stable` so every merge requests
+merged into `master` until this date will go into the `X-Y` version.
 
-From this point, as merges are made into `master` intended for the current
-release, they will either need to be cherry-picked into the `X-Y-stable` branch by
-the release manager, or a second merge request should be opened with the
-`X-Y-stable` branch as the target instead of `master`. At the sole discretion of
-the release manager and depending on when RC1 is tagged in the month, the
-release manager can also merge `master` into `X-Y-stable`.
+From 4 **working days** to the official release date, merge requests will either
+be cherry-picked into `X-Y-stable` by the release manager, or a second merge
+request targeting `X-Y-stable` (instead of `master`) should be opened.
 
-In the case a merge request needs to be cherry-picked into the `X-Y-stable`
-branch, the merger must follow the
-["Changes for Stable Releases"](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases)
-process.
+Developers are responsible for notifying the release manager that a merge
+request is ready to be moved into `X-Y-stable` by following the ["Change for
+stable release" process].
 
 ---
 
@@ -141,6 +144,8 @@ bundle exec rake "release[8.2.0-rc2]"
 
 [GITLAB_SHELL_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_SHELL_VERSION
 [GITLAB_WORKHORSE_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_WORKHORSE_VERSION
+["Change for
+stable release" process]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 
 ---
 
