@@ -115,7 +115,7 @@ releases for that version. Up until 4 **working days** before the official
 release, `master` will be merged into `X-Y-stable` so every merge requests
 merged into `master` until this date will go into the `X-Y` version.
 
-From 4 **working days** to the official release date, merge requests will either
+From 3 **working days** to the official release date, merge requests will either
 be cherry-picked into `X-Y-stable` by the release manager, or a second merge
 request targeting `X-Y-stable` (instead of `master`) should be opened.
 

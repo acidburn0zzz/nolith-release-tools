@@ -8,57 +8,97 @@
 - Follow the [Creating RC1] guide:
   - [ ] Update the "Installation from Source" guide
   - [ ] Create the Update guides
-  - [ ] [Merge GitLab CE
-  into EE] via merge request: REFERENCE_TO_CE_EE_MR
+  - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
   - [ ] In `#operations` (be sure to mention people than can deploy to GitLab.com):
 
-    ```
-    I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE). Will anyone be
-    available to deploy it to GitLab.com when the packages are built?
-    ```
+      ```
+      I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE). Will anyone be
+      available to deploy it to GitLab.com when the packages are built?
+      ```
   - [ ] In `#development`:
 
+      ```
+      I am about to tag `<%= version.to_rc %>`. I will still merge `master` into
+      `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that,
+      please follow the "Change for stable release" process:
+      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+      (TL;DR: Ensure the milestone and the `Pick to Stable` label are set, no need
+      to ping me)
+
+      Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
+      ```
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc %>]"
+      ```
+- [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
+
+    ```sh
+    bundle exec rake "regression_issue[<%= version.to_patch %>]"
     ```
-    I am about to tag `<%= version.to_rc %>`. I will still merge `master` into
-    `<%= version.stable_branch %>` until the <%= ordinal_date(5) %>. After that,
-    please follow the "Change for stable release" process:
-    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-    (TL;DR: Ensure the milestone and the `Pick to Stable` label are set, no need
-    to ping me)
-
-    Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
-    ```
-  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [release tools]:
-
-  ```sh
-  bundle exec rake "release[<%= version.to_rc %>]"
-  ```
-- [ ] Create the regression issue in the CE issue tracker using the [release tools]:
-
-  ```sh
-  bundle exec rake "release[<%= version.to_rc %>]"
-  ```
-  REFERENCE_TO_REGRESSION_ISSUE
 - [ ] Update GitLab.com with `<%= version.to_rc %>`
-- [ ] Tweet about `<%= version.to_rc %>` release:
 
+### ### <%= ordinal_date(16) %>: (16 working days before the 22nd)
+
+- [ ] Triage the [Omnibus milestone]
+
+### <%= ordinal_date(15) %>: (15 working days before the 22nd)
+
+- [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
+- Follow the [Creating RC1] guide:
+  - [ ] Update the "Installation from Source" guide
+  - [ ] Create the Update guides
+  - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
+  - [ ] In `#operations` (be sure to mention people than can deploy to GitLab.com):
+
+      ```
+      I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE). Will anyone be
+      available to deploy it to GitLab.com when the packages are built?
+      ```
+  - [ ] In `#development`:
+
+      ```
+      I am about to tag `<%= version.to_rc %>`. I will still merge `master` into
+      `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that,
+      please follow the "Change for stable release" process:
+      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+      (TL;DR: Ensure the milestone and the `Pick to Stable` label are set, no need
+      to ping me)
+
+      Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
+      ```
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc %>]"
+      ```
+- [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
+
+    ```sh
+    bundle exec rake "regression_issue[<%= version.to_patch %>]"
     ```
-    GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
-    Use at your own risk. Please link regressions issues from
-    LINK_TO_REGRESSION_ISSUE
-    ```
-- [ ] Do QA and fix anything coming out of it (#LINK)
-- [ ] Close the [Omnibus milestone]
+- [ ] Update GitLab.com with `<%= version.to_rc %>`
 
-### <%= ordinal_date(6) %>: (6 working days before the 22nd)
+### Anytime beetween <%= ordinal_date(15) %> (15 working days before the 22nd) and <%= ordinal_date(4) %> (4 working days before the 22nd)
 
-- [ ] Determine QA person and notify this person: MENTION_THIS_PERSON_HERE
-- [ ] Merge `master` into `8-5-stable`
-- Create `<%= version.to_rc(2) %>`, following the [Creating subsequent RCs] guide:
-  - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Tag and build the `<%= version.to_rc(2) %>` version using the [release tools] (will auto-release the packages)
+**Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
+
+---
+
+- [ ] Merge CE `master` into cE `<%= version.stable_branch %>`
+- Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
+  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(2) %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc(2) %>]"
+      ```
 - [ ] Update GitLab.com with `<%= version.to_rc(2) %>`
-- [ ] Tweet about `<%= version.to_rc(2) %>` release:
+
+**Only after the <%= ordinal_date(7) %> (7 working days before the 22nd)**
+
+- [ ] Tweet about the `<%= version.to_rc(2) %>` release:
 
     ```
     GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
@@ -66,29 +106,44 @@
     LINK_TO_REGRESSION_ISSUE
     ```
 
-### <%= ordinal_date(5) %>: (5 working days before the 22nd)
+---
 
-- [ ] Merge `master` into `8-5-stable`
+### <%= ordinal_date(7) %>: (7 working days before the 22nd)
+
+- [ ] Determine QA person and notify this person: MENTION_THIS_PERSON_HERE
+- [ ] Do QA and fix anything coming out of it: LINK_TO_QA_ISSUE
 - [ ] Prepare the [blog post]
 
-### <%= ordinal_date(4) %>: (4 working days before the 22nd)
+### Anytime beetween <%= ordinal_date(3) %> (3 working days before the 22nd) and <%= ordinal_date(1) %> (1 working day before the 22nd)
 
-- [ ] Merge `master` into `8-5-stable`
-- Create `<%= version.to_rc(3) %>`, following the [Creating subsequent RCs] guide:
-  - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Tag and build the `<%= version.to_rc(3) %>` version using the [release tools] (will auto-release the packages)
-- [ ] Update GitLab.com with `<%= version.to_rc(3) %>`
-- [ ] Tweet about `<%= version.to_rc(3) %>` release:
+**Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
+
+---
+
+- [ ] Cherry-pick merge requests labeled [`Picked into Stable`] for the current
+  milestone (you can take advantage of the [Dashboard > Merge Requests] page) into
+  the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
+  branches, respectively
+- Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(4) %>`:
+  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(4) %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc(4) %>]"
+      ```
+- [ ] Update GitLab.com with `<%= version.to_rc(4) %>`
+- [ ] Tweet about the `<%= version.to_rc(4) %>` release:
 
     ```
-    GitLab <%= version.to_rc(3) %> is available: https://packages.gitlab.com/gitlab/unstable
+    GitLab <%= version.to_rc(4) %> is available: https://packages.gitlab.com/gitlab/unstable
     Use at your own risk. Please link regressions issues from
     LINK_TO_REGRESSION_ISSUE
     ```
 
+---
+
 ### <%= ordinal_date(3) %>: (3 working days before the 22nd)
 
-- [ ] Cherry-pick merge requests labeled [Picked into Stable]
 - [ ] Check that everyone is mentioned on the [blog post] using `@all`:
 
     ```
@@ -108,43 +163,165 @@
 
 ### <%= ordinal_date(2) %>: (2 working days before the 22nd)
 
-- [ ] Cherry-pick merge requests labeled [Picked into Stable]
-- [ ] Check that MVP is added to the [MVP page]
+- [ ] Ask in `#core` for suggestions about who should be this release's MVP.
+  Once chosen, add them to the [blog post] and to the [MVP page], in the
+  same merge request
 
-### <%= ordinal_date(1) %>: (1 working day before the 22nd)
+### <%= ordinal_date(1) %>: (1 working days before the 22nd)
 
-- [ ] Cherry-pick merge requests labeled [Picked into Stable]
-- Create `<%= version.to_rc(4) %>`, following the [Creating subsequent RCs] guide:
-  - [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Tag and build the `<%= version.to_rc(4) %>` version using the [release tools] (will auto-release the packages)
-- [ ] Update GitLab.com with `<%= version.to_rc(4) %>`
-- [ ] Tweet about `<%= version.to_rc(4) %>` release:
-
-    ```
-    GitLab <%= version.to_rc(4) %> is available: https://packages.gitlab.com/gitlab/unstable
-    Please link regressions issues from LINK_TO_REGRESSION_ISSUE
-    ```
+Ideally, the last RC should be released no later than this day and should point
+to the same commit as the final release.
 
 ### 22nd before 1200 CET:
 
-Release before 1200 CET / 2AM PST, to make sure the majority of our users
+**Release before 1200 CET / 2AM PST, to make sure the majority of our users
 get the new version on the 22nd and there is sufficient time in the European
-workday to quickly fix any issues.
+workday to quickly fix any issues.**
 
-- [ ] Merge `<%= version.stable_branch %>` into `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-- [ ] Try to do before 1100 CET: Tag and build the `<%= version.to_patch %>` version using the [release tools] (will auto-release the packages)
-- [ ] Try to do before 1200 CET: Publish the release [blog post]
-- [ ] Create the `<%= version.to_patch %>` version on version.gitlab.com
-- [ ] Tweet about the release
-- [ ] Schedule a second Tweet of the release announcement with the same text at 1800 CET / 8AM PST
+- [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+- [ ] Try to do before 1100 CET: Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
+
+    ```sh
+    bundle exec rake "release[<%= version.to_patch %>]"
+    ```
+- Try to do before 1200 CET:
+  - [ ] Update GitLab.com with `<%= version.to_patch %>`
+  - [ ] Publish the release [blog post]
+- [ ] Ensure someone tweet about the `<%= version.to_patch %>` release
+- [ ] Ensure a second tweet of the release announcement is scheduled with the same text at 1800 CET / 8AM PST
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
+[regression issue]: LINK_TO_REGRESSION_ISSUE
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
-[Merge GitLab CE
-into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
+[GitLab CE into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
-[Picked into Stable]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+[`Picked into Stable`]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 [blog post]: LINK_TO_WIP_BLOG_POST
-[release tools]: https://gitlab.com/gitlab-org/release-tools
+[`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
+[`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
+[Dashboard > Merge Requests]: https://gitlab.com/dashboard/merge_requests?label_name=Pick+into+Stable&milestone_title=&scope=all&sort=id_desc&state=merged
+
+
+**Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
+
+---
+
+- [ ] Merge CE `master` into cE `<%= version.stable_branch %>`
+- Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
+  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(2) %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc(2) %>]"
+      ```
+- [ ] Update GitLab.com with `<%= version.to_rc(2) %>`
+
+**Only after the <%= ordinal_date(7) %> (7 working days before the 22nd)**
+
+- [ ] Tweet about the `<%= version.to_rc(2) %>` release:
+
+    ```
+    GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk. Please link regressions issues from
+    LINK_TO_REGRESSION_ISSUE
+    ```
+
+---
+
+### <%= ordinal_date(7) %>: (7 working days before the 22nd)
+
+- [ ] Determine QA person and notify this person: MENTION_THIS_PERSON_HERE
+- [ ] Do QA and fix anything coming out of it: LINK_TO_QA_ISSUE
+- [ ] Prepare the [blog post]
+
+### Anytime beetween <%= ordinal_date(3) %> (3 working days before the 22nd) and <%= ordinal_date(1) %> (1 working day before the 22nd)
+
+**Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
+
+---
+
+- [ ] Cherry-pick merge requests labeled [`Picked into Stable`] for the current
+  milestone (you can take advantage of the [Dashboard > Merge Requests] page) into
+  the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
+  branches, respectively
+- Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(4) %>`:
+  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(4) %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc(4) %>]"
+      ```
+- [ ] Update GitLab.com with `<%= version.to_rc(4) %>`
+- [ ] Tweet about the `<%= version.to_rc(4) %>` release:
+
+    ```
+    GitLab <%= version.to_rc(4) %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk. Please link regressions issues from
+    LINK_TO_REGRESSION_ISSUE
+    ```
+
+---
+
+### <%= ordinal_date(3) %>: (3 working days before the 22nd)
+
+- [ ] Check that everyone is mentioned on the [blog post] using `@all`:
+
+    ```
+    Hello @all, this is the monthly release post that will go out on the 22nd,
+    announcing the new GitLab version. Look through it to see if we can make any
+    changes and feel free to comment with suggestions or questions!
+    ```
+
+    or, if the blog post is still very much a work in progress:
+
+    ```
+    Hello @all, this is the merge request for the monthly release post that will
+    go out on the 22nd, announcing the new GitLab version. Right now it's all
+    boilerplate, but feel free to remind us about things that shouldn't be left
+    out!
+    ```
+
+### <%= ordinal_date(2) %>: (2 working days before the 22nd)
+
+- [ ] Ask in `#core` for suggestions about who should be this release's MVP.
+  Once chosen, add them to the [blog post] and to the [MVP page], in the
+  same merge request
+
+### <%= ordinal_date(1) %>: (1 working day before the 22nd)
+
+Ideally, the last RC should be released no later than this day and should point
+to the same commit as the final release.
+
+### 22nd before 1200 CET:
+
+**Release before 1200 CET / 2AM PST, to make sure the majority of our users
+get the new version on the 22nd and there is sufficient time in the European
+workday to quickly fix any issues.**
+
+- [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+- [ ] Try to do before 1100 CET: Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
+
+    ```sh
+    bundle exec rake "release[<%= version.to_patch %>]"
+    ```
+- Try to do before 1200 CET:
+  - [ ] Update GitLab.com with `<%= version.to_patch %>`
+  - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
+  - [ ] Publish the release [blog post]
+- [ ] Ensure someone tweet about the `<%= version.to_patch %>` release
+- [ ] Ensure a second tweet of the release announcement is scheduled with the same text at 1800 CET / 8AM PST
+
+[Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
+[regression issue]: LINK_TO_REGRESSION_ISSUE
+[Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
+[Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
+[GitLab CE into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
+[Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
+[`Picked into Stable`]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+[blog post]: LINK_TO_WIP_BLOG_POST
+[`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
+[`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
+[MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
+[Dashboard > Merge Requests]: https://gitlab.com/dashboard/merge_requests?label_name=Pick+into+Stable&milestone_title=<%= version.to_minor %>&scope=all&sort=id_desc&state=merged

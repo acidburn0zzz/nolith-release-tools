@@ -1,6 +1,6 @@
 # GitLab QA
 
-The manual QA testing should be done no later than 5 **working days** before
+The manual QA testing should be done no later than 7 **working days** before
 the official release.
 
 ## QA Checklist
