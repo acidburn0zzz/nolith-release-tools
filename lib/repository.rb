@@ -41,7 +41,7 @@ class Repository
   end
 
   def pull(remotes, branch)
-    remotes.each do |remote|
+    Array(remotes).each do |remote|
       run %W(git pull #{remote} #{branch})
     end
   end
