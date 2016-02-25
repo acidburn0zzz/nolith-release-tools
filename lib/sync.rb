@@ -18,9 +18,7 @@ class Sync
     path = "gitlab-sync-#{Time.now.to_f}"
     repo = Repository.get(source, path)
 
-    remotes.each do |remote|
-      repo.pull(remote, branch)
-    end
+    repo.pull(remotes, branch)
 
     remotes.each do |remote|
       repo.push(remote, branch)

@@ -29,7 +29,7 @@ class Release
 
   def execute
     puts "Prepare repository...".colorize(:green)
-    prepare_repo(remotes)
+    repository.add_remotes(remotes)
     prepare_branch(branch, 'remote-0', remotes)
     bump_version(version, branch, remotes)
     create_tag(tag, branch, remotes)
@@ -38,9 +38,7 @@ class Release
 
   def prepare_branch(branch, base_remote, remotes)
     repository.ensure_branch_exists(branch, base_remote)
-    remotes.each do |remote|
-      repository.pull(remote, branch)
-    end
+    repository.pull(remotes, branch)
   end
 
   def bump_version(version, branch, remotes)
@@ -99,17 +97,9 @@ class Release
     version.stable_branch
   end
 
-  def prepare_repo(remotes)
-    remotes.each_with_index do |remote, i|
-      repository.add_remote("remote-#{i}", remote)
-    end
-
-    repository.fetch
-  end
-
   def do_omnibus(repository_path)
     do_omnibus_reinitialize
-    prepare_repo(remotes)
+    repository.add_remotes(remotes)
     prepare_branch(branch, 'remote-0', remotes)
     if set_revisions?(repository_path)
       bump_version_files(branch, remotes)

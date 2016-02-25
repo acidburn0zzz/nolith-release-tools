@@ -40,8 +40,10 @@ class Repository
     run %W(git fetch --all)
   end
 
-  def pull(remote, branch)
-    run %W(git pull #{remote} #{branch})
+  def pull(remotes, branch)
+    Array(remotes).each do |remote|
+      run %W(git pull #{remote} #{branch})
+    end
   end
 
   def create_tag(branch, tag = nil)
@@ -50,7 +52,7 @@ class Repository
     if tag
       version = tag
     else
-      version = execute { File.read('VERSION').strip }
+      version = in_path { File.read('VERSION').strip }
       version.prepend("v") if version[0] != "v"
     end
 
@@ -63,14 +65,17 @@ class Repository
     run %W(git branch #{branch} #{from})
   end
 
-  def add_remote(key, url)
-    run %W(git remote add #{key} #{url})
+  # Given an Array of remotes, add each one to the repository, then fetch
+  def add_remotes(remotes)
+    remotes.each_with_index do |remote, i|
+      add_remote("remote-#{i}", remote)
+    end
+
+    fetch
   end
 
-  def execute(branch = nil)
-    Dir.chdir(@path) do
-      yield
-    end
+  def add_remote(key, url)
+    run %W(git remote add #{key} #{url})
   end
 
   def commit(file, message)
@@ -80,7 +85,7 @@ class Repository
 
   def checkout_and_write(branch, file, content)
     checkout_branch(branch)
-    execute { File.write(file, content) }
+    in_path { File.write(file, content) }
   end
 
   def push(remote, ref)
@@ -94,8 +99,14 @@ class Repository
 
   private
 
+  def in_path
+    Dir.chdir(@path) do
+      yield
+    end
+  end
+
   def run(args)
-    execute do
+    in_path do
       system(*args)
     end
   end
