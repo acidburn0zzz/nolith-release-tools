@@ -18,8 +18,8 @@ sometimes even a third.
 
 #### 1. Update the "Installation from Source" guide
 
-***Note:*** *This only needs to be done for the GitLab CE repository. Changes
-will be merged into GitLab EE.*
+> **Note:** This only needs to be done for the GitLab CE repository. Changes
+will be merged into GitLab EE.
 
 1. Update the name of the `stable` branch in **Clone the Source**.
    There are two occurrences.
@@ -36,16 +36,16 @@ will be merged into GitLab EE.*
 Each major release of GitLab needs a corresponding [update guide](https://gitlab.com/gitlab-org/gitlab-ce/tree/master/doc/update)
 with instructions on how to manually upgrade from the previous major release.
 
-***Note:*** *GitLab CE and EE each have specific guides that need to be created.
-Make sure to do both!*
+> **Note:** GitLab CE and EE each have specific guides that need to be created.
+Make sure to do both!
 
-***Note:*** *For the examples below, we're going to be using GitLab 8.2 as an
-example of the upcoming release, and 8.1 as an example of the previous release.*
+> **Note:** For the examples below, we're going to be using GitLab 8.2 as an
+example of the upcoming release, and 8.1 as an example of the previous release.
 
 ##### GitLab CE
 
-***Note:*** *This only needs to be done for the GitLab CE repository. Changes
-will be merged into GitLab EE.*
+> **Note:** This only needs to be done for the GitLab CE repository. Changes
+will be merged into GitLab EE.
 
 1. Copy the previous update guide to use as a template:
 

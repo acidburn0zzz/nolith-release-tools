@@ -75,8 +75,8 @@ missing commits.
     git push origin 8-3-stable
     ```
 
-    _**Note:** You'll probably want to push the stable branch to all of our
-    remotes. See [Pushing to multiple remotes](push-to-multiple-remotes.md)._
+    > **Note:** You'll probably want to push the stable branch to all of our
+    remotes. See [Pushing to multiple remotes](push-to-multiple-remotes.md).
 
 1. Switch back to the `master` branch and update `CHANGELOG` to include changes
    for the patch version. Commit and push.
