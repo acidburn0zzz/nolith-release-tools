@@ -129,7 +129,7 @@
   Once chosen, add them to the [blog post] and to the [MVP page], in the
   same merge request
 
-### <%= ordinal_date(1) %>: (1 working days before the 22nd)
+### <%= ordinal_date(1) %>: (1 working day before the 22nd)
 
 Ideally, the last RC should be released no later than this day and should point
 to the same commit as the final release.
@@ -150,9 +150,15 @@ workday to quickly fix any issues.**
   - [ ] Check that packages are [built][omnibus-gitlab-builds] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
 - Try to do before 1200 CET:
   - [ ] Update GitLab.com with `<%= version.to_patch %>`
+  - Create the `<%= version.to_patch %>` version on https://version.gitlab.com
   - [ ] Publish the release [blog post]
 - [ ] Ensure someone tweet about the `<%= version.to_patch %>` release
 - [ ] Ensure a second tweet of the release announcement is scheduled with the same text at 1800 CET / 8AM PST
+- [ ] Create the first patch issue using the [`patch_issue` task]:
+
+    ```sh
+    bundle exec rake "patch_issue[<%= version.next_patch %>]"
+    ```
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
 [regression issue]: LINK_TO_REGRESSION_ISSUE
@@ -169,6 +175,7 @@ workday to quickly fix any issues.**
 [`Picked into Stable`]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 [blog post]: LINK_TO_WIP_BLOG_POST
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
+[`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 [`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
 [Dashboard > Merge Requests]: https://gitlab.com/dashboard/merge_requests?label_name=Pick+into+Stable&milestone_title=&scope=all&sort=id_desc&state=merged
