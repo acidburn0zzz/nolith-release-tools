@@ -1,4 +1,7 @@
 class Version < String
+
+  RELEASE_REGEX = /\A(\d+\.\d+\.)(\d+)\Z/.freeze
+
   def ee?
     self.end_with?('-ee')
   end
@@ -8,7 +11,13 @@ class Version < String
   end
 
   def patch?
-    release? && /\.(\d+)$/.match(self)[1].to_i > 0
+    patch > 0
+  end
+
+  def patch
+    return 0 unless release?
+
+    @patch ||= /\.(\d+)$/.match(self)[1].to_i
   end
 
   def rc
@@ -20,19 +29,41 @@ class Version < String
   end
 
   def release?
-    self =~ /\A\d+\.\d+\.\d+\Z/
+    self =~ RELEASE_REGEX
+  end
+
+  def previous_patch
+    return unless patch?
+
+    captures = self.match(RELEASE_REGEX).captures
+
+    "#{captures[0]}#{patch - 1}"
+  end
+
+  def next_patch
+    return unless release?
+
+    captures = self.match(RELEASE_REGEX).captures
+
+    "#{captures[0]}#{patch + 1}"
   end
 
   def stable_branch(ee: false)
-    if ee || self.ee?
-      to_minor.gsub('.', '-') << '-stable-ee'
+    to_minor.gsub('.', '-') << if ee || self.ee?
+      '-stable-ee'
     else
-      to_minor.gsub('.', '-') << '-stable'
+      '-stable'
     end
   end
 
-  def tag
-    "v#{self}"
+  def tag(ee: false)
+    tag_for(self, ee: ee)
+  end
+
+  def previous_tag(ee: false)
+    return unless patch?
+
+    tag_for(previous_patch, ee: ee)
   end
 
   def to_minor
@@ -56,5 +87,14 @@ class Version < String
 
   def valid?
     release? || rc?
+  end
+
+  private
+
+  def tag_for(version, ee: false)
+    str = "v#{version}"
+    str << '-ee' if ee && !ee?
+
+    str
   end
 end

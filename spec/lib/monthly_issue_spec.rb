@@ -20,10 +20,11 @@ describe MonthlyIssue do
       content = issue.description
 
       aggregate_failures do
+        expect(content).to include('### 30th: (16 working days before the 22nd)')
+        expect(content).to include('### 1st: (15 working days before the 22nd)')
+        expect(content).to include('### Anytime beetween 1st (15 working days before the 22nd) and 16th (4 working days before the 22nd)')
         expect(content).to include('### 11th: (7 working days before the 22nd)')
-        expect(content).to include('### 14th: (6 working days before the 22nd)')
-        expect(content).to include('### 15th: (5 working days before the 22nd)')
-        expect(content).to include('### 16th: (4 working days before the 22nd)')
+        expect(content).to include('### Anytime beetween 17th (3 working days before the 22nd) and 21st (1 working day before the 22nd)')
         expect(content).to include('### 17th: (3 working days before the 22nd)')
         expect(content).to include('### 18th: (2 working days before the 22nd)')
         expect(content).to include('### 21st: (1 working day before the 22nd)')
@@ -35,7 +36,7 @@ describe MonthlyIssue do
 
       content = issue.description
 
-      expect(content).to include('GitLab 8.3.0-rc1 is available:')
+      expect(content).to include('GitLab 8.3.0-rc2 is available:')
     end
 
     it "includes stable branch names" do
@@ -43,7 +44,7 @@ describe MonthlyIssue do
 
       content = issue.description
 
-      expect(content).to include('Merge `8-3-stable` into `8-3-stable-ee`')
+      expect(content).to include('Merge CE `8-3-stable` into EE `8-3-stable-ee`')
     end
 
     it "includes the version number" do
@@ -52,8 +53,10 @@ describe MonthlyIssue do
       content = issue.description
 
       aggregate_failures do
-        expect(content).to include("Create the '8.3.0' tag")
-        expect(content).to include("Create the '8.3.0' version")
+        expect(content).to include("Tag and build (this is CI-automatized) the `8.3.0` version")
+        expect(content).to include("Create the `8.3.0` version on https://version.gitlab.com")
+        expect(content).to include("Create the first patch issue")
+        expect(content).to include('bundle exec rake "patch_issue[8.3.1]"')
       end
     end
   end

@@ -71,6 +71,50 @@ describe Version do
     end
   end
 
+  describe '#previous_patch' do
+    it 'returns nil when patch is missing' do
+      expect(version('1.2').previous_patch).to be_nil
+    end
+
+    it 'returns nil when version is not a release' do
+      expect(version('1.2.3-rc1').previous_patch).to be_nil
+    end
+
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').previous_patch).to be_nil
+    end
+
+    it 'returns previous patch when patch is 0' do
+      expect(version('1.2.0').previous_patch).to be_nil
+    end
+
+    it 'returns previous patch when patch is > 0' do
+      expect(version('1.2.3').previous_patch).to eq '1.2.2'
+    end
+  end
+
+  describe '#next_patch' do
+    it 'returns nil when patch is missing' do
+      expect(version('1.2').next_patch).to be_nil
+    end
+
+    it 'returns nil when version is not a release' do
+      expect(version('1.2.3-rc1').next_patch).to be_nil
+    end
+
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').next_patch).to be_nil
+    end
+
+    it 'returns next patch when patch is 0' do
+      expect(version('1.2.0').next_patch).to eq '1.2.1'
+    end
+
+    it 'returns next patch when patch is > 0' do
+      expect(version('1.2.3').next_patch).to eq '1.2.4'
+    end
+  end
+
   describe '#stable_branch' do
     it { expect(version('1.2.3').stable_branch).to eq '1-2-stable' }
     it { expect(version('1.23.45').stable_branch).to eq '1-23-stable' }
@@ -79,9 +123,38 @@ describe Version do
   end
 
   describe '#tag' do
-    it 'returns a tag name' do
+    it 'returns a tag name when version is RC' do
       expect(version('1.2.3-rc1').tag).to eq 'v1.2.3-rc1'
+    end
+
+    it 'returns a tag name when patch is present' do
       expect(version('1.2.3').tag).to eq 'v1.2.3'
+    end
+  end
+
+  describe '#previous_tag' do
+    it 'returns nil when patch is missing' do
+      expect(version('1.2').previous_tag).to be_nil
+    end
+
+    it 'returns nil when version is not a release' do
+      expect(version('1.2.3-rc1').previous_tag).to be_nil
+    end
+
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').previous_tag).to be_nil
+    end
+
+    it 'returns nil when patch is 0' do
+      expect(version('1.2.0').previous_tag).to be_nil
+    end
+
+    it 'returns previous tag when patch is > 0' do
+      expect(version('1.2.3').previous_tag).to eq 'v1.2.2'
+    end
+
+    it 'returns previous EE tag when patch is > 0 and ee: true' do
+      expect(version('1.2.3').previous_tag(ee: true)).to eq 'v1.2.2-ee'
     end
   end
 
