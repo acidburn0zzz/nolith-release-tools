@@ -38,7 +38,7 @@
 - [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
 
     ```sh
-    rake new_release_post["<%= version.to_minor %>"]
+    bundle exec rake "new_release_post[<%= version.to_minor %>]"
     ```
 
 ### Anytime beetween <%= ordinal_date(15) %> (15 working days before the 22nd) and <%= ordinal_date(4) %> (4 working days before the 22nd)
@@ -47,7 +47,7 @@
 
 ---
 
-- [ ] Merge CE `master` into cE `<%= version.stable_branch %>`
+- [ ] Merge CE `master` into CE `<%= version.stable_branch %>`
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(2) %>` version using the [`release` task]:
@@ -162,6 +162,8 @@ workday to quickly fix any issues.**
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
 [regression issue]: LINK_TO_REGRESSION_ISSUE
+[blog post]: LINK_TO_WIP_BLOG_POST
+
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [omnibus-gitlab-builds]: https://dev.gitlab.org/gitlab/omnibus-gitlab/builds
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
@@ -173,7 +175,6 @@ workday to quickly fix any issues.**
 [GitLab CE into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
 [`Picked into Stable`]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-[blog post]: LINK_TO_WIP_BLOG_POST
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 [`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
