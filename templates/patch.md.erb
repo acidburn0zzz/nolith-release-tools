@@ -1,18 +1,18 @@
 - Picked into respective `stable` branches. [`Picked into Stable` <%= version.to_minor %> merged merge requests]:
-  - [ ] REFERENCE TO MR TO PICK
-- [ ] Check [`ce/<%= version.stable_branch %>` CHANGELOG]
-- [ ] Check [`ee/<%= version.stable_branch(ee: true) %>` CHANGELOG]
-- [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG]
-- [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG]
+  - [ ] REFERENCE_TO_MR_TO_PICK
+- [ ] Check [`ce/<%= version.stable_branch %>` CHANGELOG][ce-stable-changelog]
+- [ ] Check [`ee/<%= version.stable_branch(ee: true) %>` CHANGELOG-EE][ee-stable-changelog]
+- [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG][omnibus-stable-changelog]
+- [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG][omnibus-stable-ee-changelog]
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
-- [ ] Check for any migrations in CE: `git diff <%= version.previous_tag %>..<%= version.stable_branch %> -- db/`
-- [ ] Check for any migrations in EE: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/`
+- [ ] Check for any migrations in CE (and paste the diff below): `git diff <%= version.previous_tag %>..<%= version.stable_branch %> -- db/`
+- [ ] Check for any migrations in EE (and paste the diff below): `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
 
     ```sh
     bundle exec rake "release[<%= version.to_patch %>]"
     ```
-- [ ] Check that packages are [built][omnibus-gitlab-builds] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
+- [ ] Check that packages are [built][omnibus-gitlab-builds] and appear under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
 - [ ] Add patch notice to [<%= regression_issue.title %>](<%= regression_issue.url %>):
 
     ```
@@ -22,16 +22,16 @@
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Blog Post:
   - BLOG_POST_MR
-  - [BLOG_POST_URL]
-- [ ] Tweet:
+  - BLOG_POST_URL
+- [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
 
     ```
-    GitLab <%= version %> is now available with DESCRIPTION OF THE FIXES / IMPROVEMENTS HERE. More info: BLOG_POST_URL
+    GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES
     ```
-- [ ] Add [`ce/<%= version.tag %>` CHANGELOG] items to [`ce/master` CHANGELOG]
-- [ ] Add [`ee/<%= version.tag(ee: true) %>` CHANGELOG] items to [`ee/master` CHANGELOG]
-- [ ] Add [`omnibus-gitlab/<%= version.tag %>` CHANGELOG] items [`omnibus-gitlab/master` CHANGELOG]
-- [ ] Create the next patch issue (if needed) using the [`patch_issue` task]:
+- [ ] Add [`ce/<%= version.tag %>` CHANGELOG][ce-tag-changelog] items to [`ce/master` CHANGELOG][ce-master-changelog]
+- [ ] Add [`ee/<%= version.tag(ee: true) %>` CHANGELOG-EE][ee-tag-changelog] items to [`ee/master` CHANGELOG-EE][ee-master-changelog]
+- [ ] Add [`omnibus-gitlab/<%= version.tag %>+ee.0` CHANGELOG][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG][omnibus-master-changelog]
+- [ ] Create the next patch issue (if needed) using the [`patch_issue` task] (and put a reference to it below):
 
     ```sh
     bundle exec rake "patch_issue[<%= version.next_patch %>]"
@@ -40,24 +40,29 @@
 ---
 
 For references:
-- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
-- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-- https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
 - https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+- https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
 
 [`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/dashboard/merge_requests?assignee_id=&author_id=&label_name=Pick+into+Stable&milestone_title=<%= version.to_minor %>&scope=all&sort=id_desc&state=merged
-[`ce/<%= version.stable_branch %>` CHANGELOG]: https://gitlab.com/gitlab-org/gitlab-ce/blob/<%= version.stable_branch %>/CHANGELOG
-[`ee/<%= version.stable_branch(ee: true) %>` CHANGELOG]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG
-[`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
-[`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
-[`ce/<%= version.tag %>` CHANGELOG]: https://gitlab.com/gitlab-org/gitlab-ce/blob/<%= version.tag %>/CHANGELOG
-[`ee/<%= version.tag(ee: true) %>` CHANGELOG]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.tag(ee: true) %>/CHANGELOG
-[`ce/master` CHANGELOG]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CHANGELOG
-[`ee/master` CHANGELOG]: https://gitlab.com/gitlab-org/gitlab-ee/blob/master/CHANGELOG
-[`omnibus-gitlab/master` CHANGELOG]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
-[BLOG_POST_URL]: BLOG_POST_URL
+
+[ce-stable-changelog]: https://gitlab.com/gitlab-org/gitlab-ce/blob/<%= version.stable_branch %>/CHANGELOG
+[ee-stable-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG-EE
+[omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
+[omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
+
+[ce-tag-changelog]: https://gitlab.com/gitlab-org/gitlab-ce/blob/<%= version.tag %>/CHANGELOG
+[ee-tag-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.tag(ee: true) %>/CHANGELOG-EE
+[omnibus-tag-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.tag %>+ee.0/CHANGELOG.md
+
+[ce-master-changelog]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CHANGELOG
+[ee-master-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/master/CHANGELOG-EE
+[omnibus-master-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
+
 [omnibus-gitlab-builds]: https://dev.gitlab.org/gitlab/omnibus-gitlab/builds
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
+
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
