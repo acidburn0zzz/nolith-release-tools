@@ -113,7 +113,9 @@ class Release
   end
 
   def version_files
-    %w( VERSION GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION GITLAB_PAGES_VERSION )
+   files = %w( VERSION GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION )
+   files << "GITLAB_PAGES_VERSION" if version.ee?
+   files
   end
 
   def set_revisions?(repository_path)
@@ -132,9 +134,7 @@ class Release
   def prepare_component_versions(repository_path)
     version_files.each do |f|
       updated = update_version_file(repository_path, f)
-      # GITLAB_PAGES_VERSION doesn't exist in CE so ignore
-      # that failure
-      return nil if update.nil? && f != "GITLAB_PAGES_VERSION"
+      return nil if updated.nil?
     end
 
     true
