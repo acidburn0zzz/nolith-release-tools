@@ -113,7 +113,9 @@ class Release
   end
 
   def version_files
-    %w( VERSION GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION )
+   files = %w( VERSION GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION )
+   files << "GITLAB_PAGES_VERSION" if version.ee?
+   files
   end
 
   def set_revisions?(repository_path)
