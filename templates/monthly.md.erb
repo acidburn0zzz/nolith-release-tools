@@ -12,16 +12,30 @@
   - [ ] In `#operations` (be sure to mention people than can deploy to GitLab.com):
 
       ```
-      I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE). Will anyone be available to deploy it to GitLab.com when the packages are built?
+      I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE).
+      Will anyone be available to deploy it to GitLab.com when the packages are built?
       ```
   - [ ] In `#development`:
 
       ```
       I am about to tag `<%= version.to_rc %>`. I will still merge `master` into `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that, please follow the "Change for stable release" process:
       https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-      (TL;DR: Ensure the milestone and the `Pick to Stable` label are set, no need to ping me)
+      (TL;DR: Ensure the milestone and the `Pick into Stable` label are set, no need to ping me.)
 
       Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
+      ```
+
+      or if the RC has already been tagged and people should follow the
+      `Pick into Stable` workflow:
+
+      ```
+      TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
+
+      `<%= version.to_rc %>` was tagged (rc1 was tagged before the Git vulnerability “fix”) and deployed today.
+      Please start to follow the "Change for stable release" process:
+      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+
+      Looking forward to merging/picking all your cool stuff in `<%= version.to_patch %>`!
       ```
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
 
