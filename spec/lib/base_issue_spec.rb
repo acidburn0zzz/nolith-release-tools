@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 require 'base_issue'
-require 'client'
+require 'gitlab_client'
 
 class TestIssue < BaseIssue
   protected
@@ -21,10 +21,10 @@ describe BaseIssue do
   end
 
   describe '#create' do
-    it 'calls Client.create_issue' do
+    it 'calls GitlabClient.create_issue' do
       issue = TestIssue.new
 
-      expect(Client).to receive(:create_issue).with(issue)
+      expect(GitlabClient).to receive(:create_issue).with(issue)
 
       issue.create
     end
@@ -49,10 +49,10 @@ describe BaseIssue do
   end
 
   describe '#remote_issue' do
-    it 'delegates to Client' do
+    it 'delegates to GitlabClient' do
       issue = TestIssue.new
 
-      expect(Client).to receive(:find_open_issue).with(issue)
+      expect(GitlabClient).to receive(:find_open_issue).with(issue)
 
       issue.remote_issue
     end
@@ -64,7 +64,7 @@ describe BaseIssue do
 
       allow(issue).to receive(:remote_issue).and_return(nil)
 
-      expect(Client).not_to receive(:issue_url)
+      expect(GitlabClient).not_to receive(:issue_url)
       expect(issue.url).to eq ''
     end
 
@@ -74,7 +74,7 @@ describe BaseIssue do
 
       allow(issue).to receive(:remote_issue).and_return(remote)
 
-      expect(Client).to receive(:issue_url).with(remote).and_return('https://example.com/')
+      expect(GitlabClient).to receive(:issue_url).with(remote).and_return('https://example.com/')
       expect(issue.url).to eq 'https://example.com/'
     end
   end

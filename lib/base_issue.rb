@@ -1,6 +1,6 @@
 require 'erb'
 
-require_relative 'client'
+require_relative 'gitlab_client'
 
 class BaseIssue
   def description
@@ -8,7 +8,7 @@ class BaseIssue
   end
 
   def create
-    Client.create_issue(self)
+    GitlabClient.create_issue(self)
   end
 
   def exists?
@@ -16,12 +16,12 @@ class BaseIssue
   end
 
   def remote_issue
-    Client.find_open_issue(self)
+    GitlabClient.find_open_issue(self)
   end
 
   def url
     if exists?
-      Client.issue_url(remote_issue)
+      GitlabClient.issue_url(remote_issue)
     else
       ''
     end

@@ -5,7 +5,7 @@ require 'gitlab'
 Dotenv.load
 Gitlab.reset
 
-class Client
+class GitlabClient
   class MissingMilestone
     def id
       nil

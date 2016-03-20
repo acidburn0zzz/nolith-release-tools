@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-require 'client'
+require 'gitlab_client'
 
-describe Client do
+describe GitlabClient do
   describe '.find_open_issue' do
     it 'finds issues by name', vcr: {cassette_name: 'issues/release-8-3'} do
       issue = double(title: 'Release 8.3', labels: 'release')
