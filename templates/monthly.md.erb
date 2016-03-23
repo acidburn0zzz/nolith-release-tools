@@ -37,6 +37,8 @@
 
       Looking forward to merging/picking all your cool stuff in `<%= version.to_patch %>`!
       ```
+  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
 
       ```sh
@@ -66,6 +68,8 @@
 - [ ] Merge CE `master` into CE `<%= version.stable_branch %>`
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
       ```sh
@@ -106,6 +110,8 @@
   branches, respectively
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(3) %>` (**be sure to use the correct RC number**):
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(3) %>` version using the [`release` task]:
 
       ```sh
@@ -163,6 +169,8 @@ workday to quickly fix any issues.**
 
 - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Try to do before 1100 CET:
+  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh

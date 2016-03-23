@@ -5,6 +5,8 @@
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG][omnibus-stable-ee-changelog]
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
+- [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+- [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff <%= version.previous_tag %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
