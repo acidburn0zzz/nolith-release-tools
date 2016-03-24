@@ -6,7 +6,7 @@ the highest priority.
 Security releases are naturally very similar to [patch releases](patch.md), but
 on a much shorter timeline. The goal is to make a security release available as
 soon as possible, while ensuring that the security issue is properly addressed
-and does not introduce regressions.
+and that the fix does not introduce regressions.
 
 Depending on the severity and the attack surface of the vulnerability, an
 immediate patch release consisting of just the security fix may be warranted.
