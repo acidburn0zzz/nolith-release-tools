@@ -23,8 +23,8 @@ additional considerations:
 
 1. Mark any applicable previous releases as vulnerable on [version.gitlab.com].
 1. Ensure the blog post discloses as much information about the vulnerability as
-   is responsibly possible. We aim for clarity and transparency when possible,
-   avoiding secrecy and ambiguity.
+   is responsibly possible. We aim for clarity and transparency, and try to
+   avoid secrecy and ambiguity.
 1. Coordinate with the Marketing team to send out a security newsletter.
 1. If the vulnerability was responsibly disclosed to us by a security
    researcher, ensure they're [publicly acknowledged] and thank them again
