@@ -41,6 +41,9 @@ to backport the security fix to previous monthly releases of GitLab. This should
 be decided on a case-by-case basis by consulting with the rest of the
 GitLab development team.
 
+If a security fix warrants backporting to previous releases, doing a single blog
+post that mentions all of the patches at once is acceptable.
+
 ---
 
 [Return to Guides](../README.md#guides)
