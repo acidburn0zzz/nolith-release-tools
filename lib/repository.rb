@@ -1,113 +1,147 @@
+require 'colorize'
 require 'fileutils'
 
 class Repository
-  def self.get(url, path)
-    full_path = File.join('/tmp', path)
+  class CannotCloneError < StandardError; end
+  class CannotCheckoutBranchError < StandardError; end
+  class CannotCreateTagError < StandardError; end
 
-    if File.exists?(full_path)
-      FileUtils.rm_r(full_path)
-    end
+  class CanonicalRemote < Struct.new(:name, :url); end
 
-    if system(*%W(git clone #{url} #{full_path}))
-      Repository.new(full_path)
-    else
-      raise "Failed to clone #{url} to #{full_path}"
-    end
+  def self.get(remotes, repository_name = nil)
+    repository_name ||= remotes.values.first.split('/').last.sub(/\.git\Z/, '')
+
+    Repository.new(File.join('/tmp', repository_name), remotes)
   end
 
-  def initialize(path)
+  attr_reader :path, :remotes, :canonical_remote
+
+  def initialize(path, remotes)
+    puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
     @path = path
+    cleanup
+    self.remotes = remotes
   end
 
-  def ensure_branch_exists(branch, remote)
-    if checkout_branch(branch)
-      true
-    else
-      unless create_branch(branch, remote + '/' + branch)
-        create_branch(branch, remote + '/master')
-      end
+  def ensure_branch_exists(branch, remote = canonical_remote.name)
+    fetch_branch(branch, remote)
 
-      checkout_branch(branch)
-    end
+    checkout_branch(branch) || checkout_new_branch(branch, remote)
   end
 
-
-  def checkout_branch(branch)
-    run %W(git checkout #{branch})
-  end
-
-  def fetch
-    run %W(git fetch --all)
-  end
-
-  def pull(remotes, branch)
-    Array(remotes).each do |remote|
-      run %W(git pull #{remote} #{branch})
-    end
-  end
-
-  def create_tag(branch, tag = nil)
-    checkout_branch(branch)
-
-    if tag
-      version = tag
-    else
-      version = in_path { File.read('VERSION').strip }
-      version.prepend("v") if version[0] != "v"
+  def create_tag(tag)
+    message = "Version #{tag}"
+    unless run_git %W(tag -a #{tag} -m #{message})
+      raise CannotCreateTagError.new(tag)
     end
 
-    message = "Version #{version}"
-    run %W(git tag -a #{version} -m #{message})
-    version
+    tag
   end
 
-  def create_branch(branch, from = 'master')
-    run %W(git branch #{branch} #{from})
-  end
-
-  # Given an Array of remotes, add each one to the repository, then fetch
-  def add_remotes(remotes)
-    remotes.each_with_index do |remote, i|
-      add_remote("remote-#{i}", remote)
-    end
-
-    fetch
-  end
-
-  def add_remote(key, url)
-    run %W(git remote add #{key} #{url})
-  end
-
-  def commit(file, message)
-    run %W(git add #{file})
-    run %W(git commit -m #{message})
-  end
-
-  def checkout_and_write(branch, file, content)
-    checkout_branch(branch)
+  def write_file(file, content)
     in_path { File.write(file, content) }
   end
 
-  def push(remote, ref)
-    if ENV['TEST']
-      puts 'Push ignored because TEST env'.colorize(:yellow)
-      true
-    else
-      run %W(git push #{remote} #{ref}:#{ref})
+  def commit(file, message)
+    run_git %W(add #{file})
+    run_git %W(commit -m #{message})
+  end
+
+  def pull_from_all_remotes(ref)
+    remotes.each do |remote_name, _|
+      pull(remote_name, ref)
     end
+  end
+
+  def push_to_all_remotes(ref)
+    remotes.each do |remote_name, _|
+      push(remote_name, ref)
+    end
+  end
+
+  def cleanup
+    puts "Removing #{path}...".colorize(:green)
+    FileUtils.rm_rf(path, secure: true)
   end
 
   private
 
+  def self.run_git(args)
+    args.unshift('git')
+    puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:magenta)
+    system(*args)
+  end
+
+  # Given a Hash of remotes {name: url}, add each one to the repository
+  def remotes=(new_remotes)
+    @remotes = new_remotes.dup
+    @canonical_remote = CanonicalRemote.new(*remotes.first)
+
+    new_remotes.each do |remote_name, remote_url|
+      # Canonical remote doesn't need to be added twice
+      next if remote_name == canonical_remote.name
+      add_remote(remote_name, remote_url)
+    end
+  end
+
+  def add_remote(name, url)
+    run_git %W(remote add #{name} #{url})
+  end
+
+  def remove_remote(name)
+    run_git %W(remote remove #{name})
+  end
+
+  def fetch_branch(branch, remote = canonical_remote.name)
+    unless run_git %W(fetch --depth=1 --quiet #{remote} #{branch}:#{branch})
+      run_git %W(fetch --depth=1 --quiet #{remote} #{branch})
+    end
+  end
+
+  def checkout_branch(branch)
+    run_git %W(checkout #{branch})
+  end
+
+  def checkout_new_branch(branch, remote, base_branch: 'master')
+    fetch_branch(base_branch, remote)
+    unless run_git %W(checkout -b #{branch} #{remote}/#{base_branch})
+      raise CannotCheckoutBranchError.new(branch)
+    end
+  end
+
+  def pull(remote, branch)
+    run_git %W(pull --depth=10 #{remote} #{branch})
+  end
+
+  def push(remote, ref)
+    cmd = %W(push #{remote} #{ref}:#{ref})
+    if ENV['TEST']
+      puts 'Push ignored because of TEST env'.colorize(:yellow)
+      puts "[#{Time.now}] --> git #{cmd.join(' ')}".colorize(:yellow)
+      true
+    else
+      run_git cmd
+    end
+  end
+
   def in_path
-    Dir.chdir(@path) do
+    Dir.chdir(path) do
       yield
     end
   end
 
-  def run(args)
+  def run_git(args)
+    ensure_repo_exist
     in_path do
-      system(*args)
+      self.class.run_git(args)
+    end
+  end
+
+  def ensure_repo_exist
+    return if File.exist?(path) && File.directory?(File.join(path, '.git'))
+
+    unless self.class.run_git(%W(clone --depth=1 --quiet --origin #{canonical_remote.name} #{canonical_remote.url} #{path}))
+      raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}")
     end
   end
 end

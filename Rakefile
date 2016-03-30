@@ -4,7 +4,7 @@ require_relative 'lib/version'
 require_relative 'lib/monthly_issue'
 require_relative 'lib/patch_issue'
 require_relative 'lib/regression_issue'
-require_relative 'lib/release'
+require_relative 'lib/gitlab_release'
 require_relative 'lib/remotes'
 require_relative 'lib/sync'
 
@@ -42,14 +42,14 @@ task :release, [:version] do |t, args|
     puts 'Skipping release for EE'.colorize(:red)
   else
     puts "EE release".colorize(:blue)
-    Release.new(version + '-ee', Remotes.ee_remotes).execute
+    GitlabRelease.new("#{version}-ee", Remotes.ee_remotes).execute
   end
 
   if skip?('ce')
     puts 'Skipping release for CE'.colorize(:red)
   else
     puts "CE release".colorize(:blue)
-    Release.new(version, Remotes.ce_remotes).execute
+    GitlabRelease.new(version, Remotes.ce_remotes).execute
   end
 end
 

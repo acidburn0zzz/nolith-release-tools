@@ -1,27 +1,23 @@
-require_relative 'remotes'
 require_relative 'repository'
-require 'colorize'
 
 class Sync
+
+  attr_reader :remotes
+
   def initialize(remotes)
     @remotes = remotes
   end
 
   def execute(branch = 'master')
-    sync(@remotes, branch)
+    sync(branch)
   end
 
   private
 
-  def sync(remotes, branch)
-    source = remotes.first
-    path = "gitlab-sync-#{Time.now.to_f}"
-    repo = Repository.get(source, path)
+  def sync(branch)
+    repository = Repository.get(remotes, "gitlab-sync-#{Time.now.to_i}")
 
-    repo.pull(remotes, branch)
-
-    remotes.each do |remote|
-      repo.push(remote, branch)
-    end
+    repository.pull_from_all_remotes(branch)
+    repository.push_to_all_remotes(branch)
   end
 end
