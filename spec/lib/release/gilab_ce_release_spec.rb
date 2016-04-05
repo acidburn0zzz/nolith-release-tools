@@ -1,8 +1,7 @@
 require 'spec_helper'
-require 'gitlab_release'
-require 'remotes'
+require 'release/gitlab_ce_release'
 
-describe GitlabRelease do
+describe Release::GitlabCeRelease do
   let(:repo_name) { 'release-tools-test-gitlab' }
   let(:repo_url) { "https://gitlab.com/gitlab-org/#{repo_name}.git" }
   let(:repo_remotes) do
@@ -15,7 +14,9 @@ describe GitlabRelease do
   before do
     # Disable cleanup so that we can see what's the state of the temp Git repos
     allow_any_instance_of(Repository).to receive(:cleanup).and_return(true)
-    expect(Remotes).to receive(:omnibus_gitlab_remotes).and_return({ gitlab: "https://gitlab.com/gitlab-org/#{ob_repo_name}.git" })
+    # Cloning the CE / EE repo takes too long for tests
+    allow_any_instance_of(described_class).to receive(:remotes).and_return(repo_remotes)
+    allow_any_instance_of(Release::OmnibusGitLabRelease).to receive(:remotes).and_return({ gitlab: "https://gitlab.com/gitlab-org/#{ob_repo_name}.git" })
   end
   after do
     FileUtils.rm_r(repo_path, secure: true) if File.exists?(repo_path)
@@ -30,7 +31,7 @@ describe GitlabRelease do
         let(:branch) { "1-9-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
-          let!(:release) { GitlabRelease.new(version, repo_remotes).execute }
+          let!(:release) { described_class.new(version).execute }
 
           it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
             # GitLab expectations
@@ -54,7 +55,7 @@ describe GitlabRelease do
         let(:branch) { "1-10-stable#{suffix}" }
 
         describe "release GitLab #{suffix.upcase}" do
-          before { GitlabRelease.new(version, repo_remotes).execute }
+          before { described_class.new(version).execute }
 
           it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
             expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq "refs/heads/#{branch}"

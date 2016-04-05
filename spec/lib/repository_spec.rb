@@ -40,20 +40,6 @@ describe Repository do
       expect(remotes_info[2].strip).to eq "gitlab\t#{repo_url} (fetch)"
       expect(remotes_info[3].strip).to eq "gitlab\t#{repo_url} (push)"
     end
-
-    xit 'is acceptably fast to clone GitLab CE' do
-      start = Time.now
-      Repository.get(Remotes.ce_remotes)
-
-      expect(Time.now - start).to be_within(20).of(60)
-    end
-
-    xit 'is acceptably fast to clone GitLab EE' do
-      start = Time.now
-      Repository.get(Remotes.ee_remotes)
-
-      expect(Time.now - start).to be_within(20).of(60)
-    end
   end
 
   describe '#path' do

@@ -1,6 +1,6 @@
 require_relative 'version'
 
-class OmnibusVersion < Version
+class OmnibusGitLabVersion < Version
   def tag
     str = "#{to_patch}+"
     str << "#{rc}." if rc?

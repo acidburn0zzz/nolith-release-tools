@@ -17,7 +17,7 @@ RSpec.shared_examples 'a sane Git repository' do
     expect(File.exists?(File.join(repo_path, 'README.md'))).to be_truthy
   end
 
-  it 'perform a shallow cloning of the repo' do
+  it 'performs a shallow cloning of the repo' do
     repo
 
     expect(Dir.chdir(repo_path) { `git log --oneline | wc -l`.to_i }).to eq(1)
