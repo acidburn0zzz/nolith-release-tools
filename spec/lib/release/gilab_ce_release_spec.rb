@@ -25,10 +25,10 @@ describe Release::GitlabCeRelease do
 
   describe '#execute' do
     { ce: '', ee: '-ee' }.each do |edition, suffix|
-      context "with an existing 1-9-stable#{suffix} stable branch" do
-        let(:version) { "1.9.24#{suffix}" }
-        let(:ob_version) { "1.9.24+#{suffix == '' ? 'ce' : suffix.sub('-', '')}.0" }
-        let(:branch) { "1-9-stable#{suffix}" }
+      context "with an existing 9-1-stable#{suffix} stable branch" do
+        let(:version) { "9.1.24#{suffix}" }
+        let(:ob_version) { "9.1.24+#{suffix == '' ? 'ce' : suffix.sub('-', '')}.0" }
+        let(:branch) { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           let!(:release) { described_class.new(version).execute }
@@ -49,10 +49,10 @@ describe Release::GitlabCeRelease do
         end
       end
 
-      context "with a new 1-10-stable#{suffix} stable branch" do
-        let(:version) { "1.10.0-rc13#{suffix}" }
-        let(:ob_version) { "1.10.0+rc13.#{suffix == '' ? 'ce' : suffix.sub('-', '')}.0" }
-        let(:branch) { "1-10-stable#{suffix}" }
+      context "with a new 10-1-stable#{suffix} stable branch" do
+        let(:version) { "10.1.0-rc13#{suffix}" }
+        let(:ob_version) { "10.1.0+rc13.#{suffix == '' ? 'ce' : suffix.sub('-', '')}.0" }
+        let(:branch) { "10-1-stable#{suffix}" }
 
         describe "release GitLab #{suffix.upcase}" do
           before { described_class.new(version).execute }
@@ -71,5 +71,30 @@ describe Release::GitlabCeRelease do
         end
       end
     end
+
+    context "with an version < 8.5.0" do
+      let(:version) { "1.9.24-ee" }
+      let(:ob_version) { "1.9.24+ee.0" }
+      let(:branch) { "1-9-stable-ee" }
+
+      describe "release GitLab-EE" do
+        let!(:release) { described_class.new(version).execute }
+
+        it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
+          # GitLab expectations
+          expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq "refs/heads/#{branch}"
+          expect(File.open(File.join(repo_path, 'VERSION')).read.strip).to eq version
+
+          # Omnibus-GitLab expectations
+          expect(Dir.chdir(ob_repo_path) { `git symbolic-ref HEAD`.strip }).to eq "refs/heads/#{branch}"
+          expect(Dir.chdir(ob_repo_path) { `git tag -l`.strip }).to eq ob_version
+          expect(File.open(File.join(ob_repo_path, 'VERSION')).read.strip).to eq version
+          expect(File.open(File.join(ob_repo_path, 'GITLAB_SHELL_VERSION')).read.strip).to eq '2.2.2'
+          expect(File.open(File.join(ob_repo_path, 'GITLAB_WORKHORSE_VERSION')).read.strip).to eq '3.3.3'
+          expect(File.exist?(File.join(ob_repo_path, 'GITLAB_PAGES_VERSION'))).to be_falsey
+        end
+      end
+    end
+
   end
 end
