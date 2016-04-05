@@ -22,7 +22,7 @@ are available under [`gitlab/unstable`](https://packages.gitlab.com/gitlab/unsta
 
 ### Creating RC1
 
-#### 1. Update the "Installation from Source" guide
+#### Step 1: Update the "Installation from Source" guide
 
 > **Note:** This only needs to be done for the GitLab CE repository. Changes
 will be merged into GitLab EE.
@@ -35,7 +35,7 @@ will be merged into GitLab EE.
    sections. For example, in GitLab 8.0 we had to add the section about
    installing `gitlab-workhorse` (called `gitlab-git-http-server` at the time).
 
-#### 2. Create the Update guides
+#### Step 2: Create the Update guides
 
 Each major release of GitLab needs a corresponding [update guide](https://gitlab.com/gitlab-org/gitlab-ce/tree/master/doc/update)
 with instructions on how to manually upgrade from the previous major release.
@@ -94,12 +94,12 @@ release to the EE version of the same release.
 1. Update the version number in **Things went south?** and the name of the
    `stable` branch in **Revert the code to the previous version**.
 
-#### 3. Merge CE `master` into EE `master`
+#### Step 3: Merge CE `master` into EE `master`
 
 Ensure that CE's `master` branch is merged into EE's. See the [Merge GitLab CE
 into EE](merge-ce-into-ee.md#merging-ce-master-into-ee-master) guide.
 
-#### 4. Tag the RC1 version
+#### Step 4: Tag the RC1 version
 
 Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
@@ -108,7 +108,7 @@ Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 bundle exec rake "release[8.2.0-rc1]"
 ```
 
-#### 5. Integrating changes from `master` into `X-Y-stable`
+#### Step 5: Integrating changes from `master` into `X-Y-stable`
 
 Once the `X-Y-stable` branch is created, it is the sole source of future
 releases for that version. Up until 4 **working days** before the official
@@ -127,13 +127,13 @@ stable release" process].
 
 ### Creating subsequent RCs
 
-#### 1. Merge CE `stable` into EE `stable`
+#### Step 1: Merge CE `stable` into EE `stable`
 
 Ensure that CE's `X-Y-stable` branch is merged into EE's `X-Y-stable-ee`. See
 the [Merge GitLab CE into EE](merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart)
 guide.
 
-#### 2. Tag the RC version
+#### Step 2: Tag the RC version
 
 Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
