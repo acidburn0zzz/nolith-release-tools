@@ -68,7 +68,7 @@ class Repository
 
   def self.run_git(args)
     args.unshift('git')
-    puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:magenta)
+    puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:cyan)
     system(*args)
   end
 
