@@ -116,7 +116,7 @@ release, `master` will be merged into `X-Y-stable` so every merge requests
 merged into `master` until this date will go into the `X-Y` version.
 
 From 3 **working days** to the official release date, merge requests will either
-be cherry-picked into `X-Y-stable` by the release manager, or a second merge
+be [cherry-picked] into `X-Y-stable` by the release manager, or a second merge
 request targeting `X-Y-stable` (instead of `master`) should be opened.
 
 Developers are responsible for notifying the release manager that a merge
@@ -127,13 +127,27 @@ stable release" process].
 
 ### Creating subsequent RCs
 
-#### Step 1: Merge CE `stable` into EE `stable`
+#### Step 1: Bring changes to the `stable` branches
+
+There are 3 possibilities here:
+
+1. Merge CE `master` into CE `stable` and EE `master` into EE `stable`.
+1. Merge CE `master` into CE `stable` and [cherry-pick][cherry-picked] EE merge
+  requests into EE `stable` (since there are less merge requests for EE than for CE).
+1. [Cherry-pick][cherry-picked] CE and EE merge requests into their respective
+  `stable` branch.
+
+The two first strategies can be used for the first RCs (no later than 3
+**working days** before the official release date). The third strategy **must**
+be used once the official release date is getting closer.
+
+#### Step 2: Merge CE `stable` into EE `stable`
 
 Ensure that CE's `X-Y-stable` branch is merged into EE's `X-Y-stable-ee`. See
 the [Merge GitLab CE into EE](merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart)
 guide.
 
-#### Step 2: Tag the RC version
+#### Step 3: Tag the RC version
 
 Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
@@ -145,6 +159,7 @@ bundle exec rake "release[8.2.0-rc2]"
 [GITLAB_SHELL_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_SHELL_VERSION
 [GITLAB_WORKHORSE_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_WORKHORSE_VERSION
 ["Change for stable release" process]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+[cherry-picked]: pick-changes-into-stable.md
 
 ---
 
