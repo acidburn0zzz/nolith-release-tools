@@ -116,8 +116,8 @@ class Repository
   def push(remote, ref)
     cmd = %W(push #{remote} #{ref}:#{ref})
     if ENV['TEST']
-      puts 'Push ignored because of TEST env'.colorize(:yellow)
-      puts "[#{Time.now}] --> git #{cmd.join(' ')}".colorize(:yellow)
+      puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
+      puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
       true
     else
       run_git cmd
