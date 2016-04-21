@@ -1,0 +1,60 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: "[GITLAB_API_ENDPOINT]/projects/13083/issues?labels=Release&milestone=7.14"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 21 Apr 2016 08:28:31 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"d751713988987e9331980363e24189ce"
+      Link:
+      - <[GITLAB_API_ENDPOINT]/projects/13083/issues?id=13083&labels=Release&milestone=7.14&page=1&per_page=20>;
+        rel="first", <[GITLAB_API_ENDPOINT]/projects/13083/issues?id=13083&labels=Release&milestone=7.14&page=0&per_page=20>;
+        rel="last"
+      Status:
+      - 200 OK
+      Vary:
+      - Origin
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 93ee6516-695e-4266-9958-c7629c2b0f93
+      X-Runtime:
+      - '0.191329'
+      X-Total:
+      - '0'
+      X-Total-Pages:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Thu, 21 Apr 2016 08:28:31 GMT
+recorded_with: VCR 2.9.3

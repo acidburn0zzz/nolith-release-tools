@@ -54,16 +54,17 @@ class GitlabClient
     })
   end
 
-  # Find an open issue in the CE project based on the provided issue
+  # Find an issue in the CE project based on the provided issue
   #
   # issue - An object that responds to the following messages:
   #         :title  - Issue title String
   #         :labels - Comma-separated String of label names
   #
   # Returns a Gitlab::ObjectifiedHash object, or nil
-  def self.find_open_issue(issue)
-    ce_issues(labels: issue.labels, state: 'opened').
-      detect { |i| i.title == issue.title }
+  def self.find_issue(issue)
+    opts = { labels: issue.labels, milestone: issue.version.milestone_name }
+
+    ce_issues(opts).detect { |i| i.title == issue.title }
   end
 
   def self.issue_url(issue)
