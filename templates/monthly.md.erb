@@ -49,7 +49,7 @@
     ```sh
     bundle exec rake "regression_issue[<%= version.to_patch %>]"
     ```
-- [ ] Check that packages are [built][omnibus-gitlab-builds] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
+- [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff LATEST_PATCH_TAG..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc %>` to GitLab.com
@@ -75,7 +75,7 @@
       ```sh
       bundle exec rake "release[<%= version.to_rc(2) %>]"
       ```
-- [ ] Check that packages are [built][omnibus-gitlab-builds] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
+- [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc(2) %>` to GitLab.com
@@ -117,7 +117,7 @@
       ```sh
       bundle exec rake "release[<%= version.to_rc(3) %>]"
       ```
-- [ ] Check that packages are [built][omnibus-gitlab-builds] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
+- [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc(2) %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc(3) %>` to GitLab.com
@@ -176,7 +176,7 @@ workday to quickly fix any issues.**
       ```sh
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
-  - [ ] Check that packages are [built][omnibus-gitlab-builds] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
+  - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
 - Try to do before 1200 CET:
   - [ ] Deploy `<%= version.to_patch %>` to GitLab.com
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
@@ -195,7 +195,8 @@ workday to quickly fix any issues.**
 [blog post]: LINK_TO_WIP_BLOG_POST
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
-[omnibus-gitlab-builds]: https://dev.gitlab.org/gitlab/omnibus-gitlab/builds
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
 [`new_release_post` task]: https://gitlab.com/gitlab-com/www-gitlab-com/#create-release-blog-post
 [`www-gitlab-com` project]: https://gitlab.com/gitlab-com/www-gitlab-com/

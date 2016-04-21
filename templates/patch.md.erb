@@ -14,7 +14,7 @@
     ```sh
     bundle exec rake "release[<%= version.to_patch %>]"
     ```
-- [ ] Check that packages are [built][omnibus-gitlab-builds] and appear under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com/gitlab/
+- [ ] Check that [EE packages are built] and [CE packages are built] and appear under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com/gitlab/
 - [ ] Add patch notice to [<%= regression_issue.title %>](<%= regression_issue.url %>):
 
     ```
@@ -30,7 +30,6 @@
     ```
     GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES
     ```
-- [ ] Upgrade the `#gitlab` channel's topic on IRC Freenode with the latest version number
 - [ ] Add [`ce/<%= version.tag %>` CHANGELOG][ce-tag-changelog] items to [`ce/master` CHANGELOG][ce-master-changelog]
 - [ ] Add [`ee/<%= version.tag(ee: true) %>` CHANGELOG-EE][ee-tag-changelog] items to [`ee/master` CHANGELOG-EE][ee-master-changelog]
 - [ ] Add [`omnibus-gitlab/<%= version.tag %>+ee.0` CHANGELOG][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG][omnibus-master-changelog]
@@ -63,7 +62,9 @@ For references:
 [ee-master-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/master/CHANGELOG-EE
 [omnibus-master-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
 
-[omnibus-gitlab-builds]: https://dev.gitlab.org/gitlab/omnibus-gitlab/builds
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
 
