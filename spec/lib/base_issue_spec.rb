@@ -52,7 +52,7 @@ describe BaseIssue do
     it 'delegates to GitlabClient' do
       issue = TestIssue.new
 
-      expect(GitlabClient).to receive(:find_open_issue).with(issue)
+      expect(GitlabClient).to receive(:find_issue).with(issue)
 
       issue.remote_issue
     end

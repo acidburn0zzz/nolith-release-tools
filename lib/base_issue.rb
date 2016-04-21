@@ -16,7 +16,7 @@ class BaseIssue
   end
 
   def remote_issue
-    GitlabClient.find_open_issue(self)
+    GitlabClient.find_issue(self)
   end
 
   def url
