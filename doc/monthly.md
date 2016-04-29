@@ -6,6 +6,11 @@ and reasoning behind this schedule can be found [on the blog].
 The process begins seven **working days** before the 22nd. The [release manager]
 should begin the monthly release process *no later than* the 9th.
 
+The release manager should make sure there's a work in progress blog post
+available for the next release the moment the previous release has been
+published. This allows other developers to leave comments about the release,
+instead of having to note them down elsewhere.
+
 [on the blog]: https://about.gitlab.com/2015/12/07/why-we-shift-objectives-and-not-release-dates-at-gitlab/
 [release manager]: release-manager.md
 
