@@ -1,6 +1,7 @@
 class Version < String
 
-  RELEASE_REGEX = /\A(\d+\.\d+\.)(\d+)\Z/.freeze
+  VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/.freeze
+  RELEASE_REGEX = /\A(\d+\.\d+\.)(\d+)\z/.freeze
 
   def ee?
     self.end_with?('-ee')
@@ -12,6 +13,18 @@ class Version < String
 
   def patch?
     patch > 0
+  end
+
+  def major
+    return 0 unless version?
+
+    @major ||= /\A(\d+)\./.match(self)[1].to_i
+  end
+
+  def minor
+    return 0 unless version?
+
+    @minor ||= /\A\d+\.(\d+)/.match(self)[1].to_i
   end
 
   def patch
@@ -26,6 +39,10 @@ class Version < String
 
   def rc?
     self =~ /\A\d+\.\d+\.\d+-rc\d+(-ee)?\z/
+  end
+
+  def version?
+    self =~ VERSION_REGEX
   end
 
   def release?

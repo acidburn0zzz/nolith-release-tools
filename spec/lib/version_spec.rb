@@ -23,6 +23,20 @@ describe Version do
     end
   end
 
+  describe '#major' do
+    it { expect(version('1.2.3').major).to eq(1) }
+    it { expect(version('1.2.0-rc1').major).to eq(1) }
+    it { expect(version('1.2.0-ee').major).to eq(1) }
+    it { expect(version('wow.1').major).to eq(0) }
+  end
+
+  describe '#minor' do
+    it { expect(version('1.2.3').minor).to eq(2) }
+    it { expect(version('1.2.0-rc1').minor).to eq(2) }
+    it { expect(version('1.2.0-ee').minor).to eq(2) }
+    it { expect(version('wow.1').minor).to eq(0) }
+  end
+
   describe '#patch?' do
     it 'is true for patch releases' do
       expect(version('1.2.3').patch?).to be_truthy
