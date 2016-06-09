@@ -11,53 +11,54 @@
   - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
   - [ ] In `#operations` (be sure to mention people than can deploy to GitLab.com):
 
-      ```
-      I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE).
-      Will anyone be available to deploy it to GitLab.com when the packages are built?
-      ```
+        ```
+        I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE).
+        Will anyone be available to deploy it to GitLab.com when the packages are built?
+        ```
+
   - [ ] In `#development`:
 
-      ```
-      I am about to tag `<%= version.to_rc %>`. I will still merge `master` into `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that, please follow the "Change for stable release" process:
-      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-      (TL;DR: Ensure the milestone and the `Pick into Stable` label are set, no need to ping me.)
+        ```
+        I am about to tag `<%= version.to_rc %>`. I will still merge `master` into `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that, please follow the "Change for stable release" process:
+        https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+        (TL;DR: Ensure the milestone and the `Pick into Stable` label are set, no need to ping me.)
 
-      Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
-      ```
+        Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
+        ```
 
-      or if the RC has already been tagged and people should follow the
-      `Pick into Stable` workflow:
+        or if the RC has already been tagged and people should follow the
+        `Pick into Stable` workflow:
 
-      ```
-      TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
+        ```
+        TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
 
-      `<%= version.to_rc %>` was tagged (rc1 was tagged before the Git vulnerability “fix”) and deployed today.
-      Please start to follow the "Change for stable release" process:
-      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+        `<%= version.to_rc %>` was tagged (rc1 was tagged before the Git vulnerability “fix”) and deployed today.
+        Please start to follow the "Change for stable release" process:
+        https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 
-      Looking forward to merging/picking all your cool stuff in `<%= version.to_patch %>`!
-      ```
+        Looking forward to merging/picking all your cool stuff in `<%= version.to_patch %>`!
+        ```
   - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
 
-      ```sh
-      bundle exec rake "release[<%= version.to_rc %>]"
-      ```
+        ```sh
+        bundle exec rake "release[<%= version.to_rc %>]"
+        ```
 - [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
 
-    ```sh
-    bundle exec rake "regression_issue[<%= version.to_patch %>]"
-    ```
+      ```sh
+      bundle exec rake "regression_issue[<%= version.to_patch %>]"
+      ```
 - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff LATEST_PATCH_TAG..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc %>` to GitLab.com
 - [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
 
-    ```sh
-    bundle exec rake "new_release_post[<%= version.to_minor %>]"
-    ```
+      ```sh
+      bundle exec rake "new_release_post[<%= version.to_minor %>]"
+      ```
 
 ### Anytime beetween <%= ordinal_date(15) %> (15 working days before the 22nd) and <%= ordinal_date(4) %> (4 working days before the 22nd)
 
@@ -72,9 +73,9 @@
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
-      ```sh
-      bundle exec rake "release[<%= version.to_rc(2) %>]"
-      ```
+        ```sh
+        bundle exec rake "release[<%= version.to_rc(2) %>]"
+        ```
 - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
@@ -84,11 +85,11 @@
 
 - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
 
-    ```
-    GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
-    Use at your own risk. Please link regressions issues from
-    LINK_TO_REGRESSION_ISSUE
-    ```
+      ```
+      GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
+      Use at your own risk. Please link regressions issues from
+      LINK_TO_REGRESSION_ISSUE
+      ```
 
 ---
 
@@ -114,20 +115,20 @@
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(3) %>` version using the [`release` task]:
 
-      ```sh
-      bundle exec rake "release[<%= version.to_rc(3) %>]"
-      ```
+        ```sh
+        bundle exec rake "release[<%= version.to_rc(3) %>]"
+        ```
 - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc(2) %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc(3) %>` to GitLab.com
 - [ ] Tweet about the `<%= version.to_rc(3) %>` release:
 
-    ```
-    GitLab <%= version.to_rc(3) %> is available: https://packages.gitlab.com/gitlab/unstable
-    Use at your own risk. Please link regressions issues from
-    LINK_TO_REGRESSION_ISSUE
-    ```
+      ```
+      GitLab <%= version.to_rc(3) %> is available: https://packages.gitlab.com/gitlab/unstable
+      Use at your own risk. Please link regressions issues from
+      LINK_TO_REGRESSION_ISSUE
+      ```
 
 ---
 
@@ -135,20 +136,20 @@
 
 - [ ] Check that everyone is mentioned on the [blog post] using `@all`:
 
-    ```
-    Hello @all, this is the monthly release post that will go out on the 22nd,
-    announcing the new GitLab version. Look through it to see if we can make any
-    changes and feel free to comment with suggestions or questions!
-    ```
+      ```
+      Hello @all, this is the monthly release post that will go out on the 22nd,
+      announcing the new GitLab version. Look through it to see if we can make any
+      changes and feel free to comment with suggestions or questions!
+      ```
 
-    or, if the blog post is still very much a work in progress:
+      or, if the blog post is still very much a work in progress:
 
-    ```
-    Hello @all, this is the merge request for the monthly release post that will
-    go out on the 22nd, announcing the new GitLab version. Right now it's all
-    boilerplate, but feel free to remind us about things that shouldn't be left
-    out!
-    ```
+      ```
+      Hello @all, this is the merge request for the monthly release post that will
+      go out on the 22nd, announcing the new GitLab version. Right now it's all
+      boilerplate, but feel free to remind us about things that shouldn't be left
+      out!
+      ```
 
 ### <%= ordinal_date(2) %>: (2 working days before the 22nd)
 
@@ -173,9 +174,9 @@ workday to quickly fix any issues.**
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
   - [ ] Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
 
-      ```sh
-      bundle exec rake "release[<%= version.to_patch %>]"
-      ```
+        ```sh
+        bundle exec rake "release[<%= version.to_patch %>]"
+        ```
   - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
 - Try to do before 1200 CET:
   - [ ] Deploy `<%= version.to_patch %>` to GitLab.com
@@ -186,9 +187,9 @@ workday to quickly fix any issues.**
 - [ ] Upgrade the `#gitlab` channel's topic on IRC Freenode with the latest version number
 - [ ] Create the first patch issue using the [`patch_issue` task]:
 
-    ```sh
-    bundle exec rake "patch_issue[<%= version.next_patch %>]"
-    ```
+      ```sh
+      bundle exec rake "patch_issue[<%= version.next_patch %>]"
+      ```
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
 [regression issue]: LINK_TO_REGRESSION_ISSUE
