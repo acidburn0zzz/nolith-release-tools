@@ -2,24 +2,25 @@
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Check [`ce/<%= version.stable_branch %>` CHANGELOG][ce-stable-changelog]
 - [ ] Check [`ee/<%= version.stable_branch(ee: true) %>` CHANGELOG-EE][ee-stable-changelog]
+- [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG][omnibus-stable-ee-changelog]
-- [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
+- While waiting for tests to be green, now is a good time to start on the blog post.
 - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
 - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff <%= version.previous_tag %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/`
-- [ ] Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
+- [ ] Tag and build (this is CI-automated) the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
-- [ ] Check that [EE packages are built] and [CE packages are built] and appear under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com/gitlab/
 - [ ] Add patch notice to [<%= regression_issue.title %>](<%= regression_issue.url %>):
 
       ```
       `<%= version %>` has been tagged, further fixes will go into `<%= version.next_patch %>` as necessary.
       ```
+- [ ] Check that [EE packages are built] and [CE packages are built] and appear under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com/gitlab/
 - [ ] Deploy `<%= version %>` to [staging.gitlab.com]
 - [ ] Deploy `<%= version %>` to GitLab.com
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
