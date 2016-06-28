@@ -41,7 +41,7 @@
         ```
   - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
+  - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc %>]"
@@ -73,7 +73,7 @@
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(2) %>` version using the [`release` task]:
+  - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc(2) %>]"
@@ -116,7 +116,7 @@
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc(3) %>` version using the [`release` task]:
+  - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc(3) %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc(3) %>]"
@@ -176,7 +176,7 @@ workday to quickly fix any issues.**
 - [ ] Try to do before 1100 CET:
   - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
   - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_patch %>` version using the [`release` task]:
+  - [ ] Tag and build (this is CI-automated) the `<%= version.to_patch %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_patch %>]"
