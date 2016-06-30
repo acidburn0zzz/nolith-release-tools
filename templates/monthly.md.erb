@@ -55,7 +55,7 @@
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff LATEST_PATCH_TAG..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version.to_rc %>` to GitLab.com
+- [ ] Deploy `<%= version.to_rc %>` to [GitLab.com]
 - [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
 
       ```sh
@@ -82,7 +82,7 @@
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc(2) %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version.to_rc(2) %>` to GitLab.com
+- [ ] Deploy `<%= version.to_rc(2) %>` to [GitLab.com]
 
 **Only after the <%= ordinal_date(7) %> (7 working days before the 22nd)**
 
@@ -125,7 +125,7 @@
 - [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc(2) %>..<%= version.stable_branch %> -- db/`
 - [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc(3) %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version.to_rc(3) %>` to GitLab.com
+- [ ] Deploy `<%= version.to_rc(3) %>` to [GitLab.com]
 - [ ] Tweet about the `<%= version.to_rc(3) %>` release:
 
       ```
@@ -183,7 +183,8 @@ workday to quickly fix any issues.**
         ```
   - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
 - Try to do before 1200 CET:
-  - [ ] Deploy `<%= version.to_patch %>` to GitLab.com
+  - [ ] Deploy `<%= version.to_patch %>` to [staging.gitlab.com]
+  - [ ] Deploy `<%= version.to_patch %>` to [GitLab.com]
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
   - [ ] Publish the release [blog post]
 - [ ] Ensure someone tweet about the `<%= version.to_patch %>` release
@@ -217,3 +218,4 @@ workday to quickly fix any issues.**
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
 [`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
 [staging.gitlab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/staging.md
+[GitLab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
