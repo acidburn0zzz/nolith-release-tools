@@ -53,7 +53,7 @@ describe MonthlyIssue do
       content = issue.description
 
       aggregate_failures do
-        expect(content).to include("Tag and build (this is CI-automatized) the `8.3.0` version")
+        expect(content).to include("Tag and build (this is CI-automated) the `8.3.0` version")
         expect(content).to include("Create the `8.3.0` version on https://version.gitlab.com")
         expect(content).to include("Create the first patch issue")
         expect(content).to include('bundle exec rake "patch_issue[8.3.1]"')

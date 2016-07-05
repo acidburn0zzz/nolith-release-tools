@@ -22,7 +22,7 @@ describe PatchIssue do
       aggregate_failures do
         expect(content).to include '`ce/8-3-stable`'
         expect(content).to include '`ee/8-3-stable-ee`'
-        expect(content).to include("Tag and build (this is CI-automatized) the `8.3.1` version")
+        expect(content).to include("Tag and build (this is CI-automated) the `8.3.1` version")
         expect(content).to include("Create the `8.3.1` version on https://version.gitlab.com")
         expect(content).to include("Create the next patch issue")
         expect(content).to include('bundle exec rake "patch_issue[8.3.2]"')
