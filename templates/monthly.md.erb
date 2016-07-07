@@ -10,6 +10,7 @@
   - [ ] Create the Update guides
   - [ ] Have someone run `bin/rake gitlab:update_templates` and open a merge request to master with ~"Pick into Stable"
   - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
+  - [ ] Sync CE and EE to `dev`
   - [ ] In `#infrastructure` (be sure to mention people than can deploy to GitLab.com):
 
         ```
@@ -39,8 +40,8 @@
 
         Looking forward to merging/picking all your cool stuff in `<%= version.to_patch %>`!
         ```
-  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+  - [ ] Ensure tests are green on CE: https://dev.gitlab.org/gitlab/gitlabhq/commits/master
+  - [ ] Ensure tests are green on EE: https://dev.gitlab.org/gitlab/gitlab-ee/commits/master
   - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
