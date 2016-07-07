@@ -53,8 +53,7 @@
       bundle exec rake "regression_issue[<%= version.to_patch %>]"
       ```
 - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
-- [ ] Check for any migrations in CE (and paste the diff below): `git diff LATEST_PATCH_TAG..<%= version.stable_branch %> -- db/`
-- [ ] Check for any migrations in EE (and paste the diff below): `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/`
+- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/`
 - [ ] Deploy `<%= version.to_rc %>` to [staging.gitlab.com]
 - [ ] Deploy `<%= version.to_rc %>` to [GitLab.com]
 - [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
