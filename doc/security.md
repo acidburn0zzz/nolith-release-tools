@@ -35,11 +35,15 @@ additional considerations:
 
 ## Backporting
 
+For medium-level security issues, we may consider backporting to the previous
+two monthly releases (e.g. 8.8 and 8.9 if 8.10 is released), but this will
+be decided on a case-by-case basis in consultation with the rest of the GitLab
+development team.
+
 For very serious security issues, there is
-[precedent](https://about.gitlab.com/2016/03/21/gitlab-8-dot-5-dot-8-released/)
-to backport the security fix to previous monthly releases of GitLab. This should
-be decided on a case-by-case basis by consulting with the rest of the
-GitLab development team.
+[precedent](https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/)
+to backport security fixes to even more monthly releases of GitLab. This again
+will be decided on a case-by-case basis.
 
 If a security fix warrants backporting to previous releases, doing a single blog
 post that mentions all of the patches at once is acceptable.
