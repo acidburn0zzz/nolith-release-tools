@@ -37,7 +37,7 @@ additional considerations:
 
 For medium-level security issues, we may consider backporting to the previous
 two monthly releases (e.g. 8.8 and 8.9 if 8.10 is released), but this will
-be decided on a case-by-casis in consultation with the rest of the GitLab
+be decided on a case-by-case basis in consultation with the rest of the GitLab
 development team.
 
 For very serious security issues, there is
