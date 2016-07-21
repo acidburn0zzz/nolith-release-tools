@@ -62,7 +62,6 @@ addressed.
 - ["Release Manager - The invisible hero"](https://about.gitlab.com/2015/06/25/release-manager-the-invisible-hero/) (2015-06-25)
 - ["How we managed 49 monthly releases"](https://about.gitlab.com/2015/12/17/gitlab-release-process/) (2015-12-17)
 
-[should be labeled offline or online]: https://gitlab.com/gitlab-org/gitlab-ce/issues/14545
 [deployment procedure]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
 [monthly release]: monthly.md
 [patch releases]: patch.md
