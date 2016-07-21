@@ -37,9 +37,9 @@ users update to the latest version. That's where patch releases come in.
 With the help of the infrastructure team, the release manager is also
 responsible for deploying the latest version to GitLab.com. During the merge
 window, the release manager needs to pay particular attention to migrations
-that require downtime. Merge requests that include migrations [should be
-labeled offline or online]. The release manager should push for online
-migrations as much as possible.
+that may block the deploy. For example, migrations take a long time (e.g. add
+a column with a default value to the issues table) should be reviewed
+carefully.
 
 When the release packages are ready, the release manager should
 begin the [deployment procedure].
