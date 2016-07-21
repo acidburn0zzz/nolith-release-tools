@@ -53,10 +53,23 @@ describe MonthlyIssue do
       content = issue.description
 
       aggregate_failures do
-        expect(content).to include("Tag and build (this is CI-automated) the `8.3.0` version")
-        expect(content).to include("Create the `8.3.0` version on https://version.gitlab.com")
+        expect(content).to include("Tag the `8.3.0` version")
+        expect(content).to include("Check that the `8.3.0` version was automatically created on https://version.gitlab.com")
         expect(content).to include("Create the first patch issue")
         expect(content).to include('bundle exec rake "patch_issue[8.3.1]"')
+      end
+    end
+
+    it "includes links to specific packages" do
+      issue = described_class.new(Version.new('8.3.0'))
+
+      content = issue.description
+
+      aggregate_failures do
+        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc1.ee.0_amd64.deb')
+        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc2.ee.0_amd64.deb')
+        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc3.ee.0_amd64.deb')
+        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0.ee.0_amd64.deb')
       end
     end
   end

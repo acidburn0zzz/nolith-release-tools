@@ -15,6 +15,7 @@ often. As you'll be doing this a lot, it's helpful to have
 ```ini
 # ~/.gitconfig
 [alias]
+  plff = pull --ff-only
   # Check out the latest `X-Y-stable` branch
   stab   = "!f() { br=`git branch --list [0-9]*-[0-9]*-stable | tail -1 | tr -d ' ' | sed 's/*//'`; git checkout $br && git plff; }; f"
   # Check out the latest `X-Y-stable-ee` branch
