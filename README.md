@@ -21,3 +21,4 @@ Manager](doc/release-manager.md).
 - [How to remove packages from packages.gitlab.com](doc/remove-packages.md)
 - [Rake tasks](doc/rake-tasks.md)
 - [Pro tips](doc/pro-tips.md)
+- [Release template files](https://gitlab.com/gitlab-org/release-tools/tree/master/templates)
