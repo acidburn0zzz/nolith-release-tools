@@ -5,12 +5,13 @@
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG][omnibus-stable-ee-changelog]
-- While waiting for tests to be green, now is a good time to start on the blog post.
-- [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-- [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-- [ ] Check for any migrations in CE (and paste the diff below): `git diff <%= version.previous_tag %>..<%= version.stable_branch %> -- db/`
-- [ ] Check for any migrations in EE (and paste the diff below): `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/`
-- [ ] Tag and build (this is CI-automated) the `<%= version.to_patch %>` version using the [`release` task]:
+- [ ] While waiting for tests to be green, now is a good time to start on the blog post:
+  - BLOG_POST_MR
+  - BLOG_POST_URL
+- [ ] [Ensure tests are green on CE]
+- [ ] [Ensure tests are green on EE]
+- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
+- [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh
       bundle exec rake "release[<%= version.to_patch %>]"
@@ -20,13 +21,12 @@
       ```
       `<%= version %>` has been tagged, further fixes will go into `<%= version.next_patch %>` as necessary.
       ```
-- [ ] Check that [EE packages are built] and [CE packages are built] and appear under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com/gitlab/
-- [ ] Deploy `<%= version %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version %>` to GitLab.com
-- [ ] Create the `<%= version %>` version on https://version.gitlab.com
-- [ ] Blog Post:
-  - BLOG_POST_MR
-  - BLOG_POST_URL
+- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to staging
+- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>.ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to production
+- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>.ee.0_amd64.deb) to [GitLab.com]
+- [ ] Check that the `<%= version %>` version was automatically created on https://version.gitlab.com
 - [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
 
       ```
@@ -44,10 +44,10 @@
 ---
 
 For references:
-- https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-- https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
+- https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+- https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+- https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+- https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
 [`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
 
@@ -55,6 +55,11 @@ For references:
 [ee-stable-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG-EE
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
+
+[Ensure tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[Ensure tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
+[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 
 [ce-tag-changelog]: https://gitlab.com/gitlab-org/gitlab-ce/blob/<%= version.tag %>/CHANGELOG
 [ee-tag-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.tag(ee: true) %>/CHANGELOG-EE
@@ -74,3 +79,4 @@ For references:
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 
 [staging.gitlab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/staging.md
+[GitLab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
