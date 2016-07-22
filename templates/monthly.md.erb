@@ -23,17 +23,18 @@
         `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>.
         ```
 
-  - [ ] Ensure tests are green on CE: https://dev.gitlab.org/gitlab/gitlabhq/commits/master
-  - [ ] Ensure tests are green on EE: https://dev.gitlab.org/gitlab/gitlab-ee/commits/master
-  - [ ] Communicate the following action in `#releases`
+  - [ ] [Ensure tests are green on CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
+  - [ ] [Ensure tests are green on EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
-- [ ] Communicate the following actions in `#infrastructure`
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to staging
 - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to production
 - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [GitLab.com]
 
 - [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
@@ -60,17 +61,18 @@
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure tests are green on CE: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Communicate the following action in `#releases`
+  - [ ] [Ensure tests are green on CE]
+  - [ ] [Ensure tests are green on EE]
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
   - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc(2) %>]"
         ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
-- [ ] Communicate the following actions in `#infrastructure`
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
 - [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to production
 - [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [GitLab.com]
 ```
 
@@ -118,17 +120,18 @@
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure tests are green on CE: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Communicate the following action in `#releases`
+  - [ ] [Ensure tests are green on CE]
+  - [ ] [Ensure tests are green on EE]
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(3) %>`
   - [ ] Tag the `<%= version.to_rc(3) %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc(3) %>]"
         ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(3) %>)
-- [ ] Communicate the following actions in `#infrastructure`
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(3) %>` to staging
 - [ ] Deploy [`<%= version.to_rc(3) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(3) %>.ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(3) %>` to production
 - [ ] Deploy [`<%= version.to_rc(3) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(3) %>.ee.0_amd64.deb) to [GitLab.com]
 - [ ] Tweet about the `<%= version.to_rc(3) %>` release:
 
@@ -181,20 +184,30 @@ workday to quickly fix any issues.**
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(3) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure tests are green on CE: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Communicate the following action in `#releases`
+  - [ ] [Ensure tests are green on CE]
+  - [ ] [Ensure tests are green on EE]
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_patch %>]"
         ```
   - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+  - [ ] Update the version in the `VERSION` file to `<%= version.next_minor %>-pre` and create the `v<%= version.next_minor %>.pre` tag:
+
+      ```sh
+      echo "<%= version.next_minor %>-pre" > VERSION
+      git add VERSION && git ci # ci = commit --gpg-sign --signoff --verbose
+      git pdog # pdog = push dev,origin,github
+      git tag -s v<%= version.next_minor %>.pre -m "Update VERSION to <%= version.next_minor %>.pre"
+      git pdog v<%= version.next_minor %>.pre:v<%= version.next_minor %>.pre
+      ```
 
 - Before 0900 PDT / 1800 CET:
-  - [ ] Communicate the following actions in `#infrastructure`
-  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>.ee.0_amd64.deb) to [staging.gitlab.com]
-  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>.ee.0_amd64.deb) to [GitLab.com]
+  - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to staging
+  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>.ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to production
+  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>.ee.0_amd64.deb) to [GitLab.com]
   - [ ] Check that the `<%= version.to_patch %>` version was automatically created on https://version.gitlab.com
   - [ ] Create the first patch issue using the [`patch_issue` task]:
 
@@ -212,6 +225,8 @@ workday to quickly fix any issues.**
 [blog post]: LINK_TO_WIP_BLOG_POST
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
+[Ensure tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[Ensure tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
