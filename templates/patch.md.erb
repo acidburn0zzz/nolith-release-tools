@@ -8,8 +8,8 @@
 - [ ] While waiting for tests to be green, now is a good time to start on the blog post:
   - BLOG_POST_MR
   - BLOG_POST_URL
-- [ ] [Ensure tests are green on CE]
-- [ ] [Ensure tests are green on EE]
+- [ ] Ensure [tests are green on CE]
+- [ ] Ensure [tests are green on EE]
 - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
@@ -56,8 +56,8 @@ For references:
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
 
-[Ensure tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[Ensure tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 

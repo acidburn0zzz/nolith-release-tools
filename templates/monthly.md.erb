@@ -23,8 +23,8 @@
         `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>.
         ```
 
-  - [ ] [Ensure tests are green on CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
-  - [ ] [Ensure tests are green on EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
+  - [ ] Ensure [tests are green on CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
+  - [ ] Ensure [tests are green on EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
@@ -61,8 +61,8 @@
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] [Ensure tests are green on CE]
-  - [ ] [Ensure tests are green on EE]
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
   - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
@@ -120,8 +120,8 @@
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] [Ensure tests are green on CE]
-  - [ ] [Ensure tests are green on EE]
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(3) %>`
   - [ ] Tag the `<%= version.to_rc(3) %>` version using the [`release` task]:
 
@@ -184,8 +184,8 @@ workday to quickly fix any issues.**
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(3) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] [Ensure tests are green on CE]
-  - [ ] [Ensure tests are green on EE]
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
@@ -225,8 +225,8 @@ workday to quickly fix any issues.**
 [blog post]: LINK_TO_WIP_BLOG_POST
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
-[Ensure tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[Ensure tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
