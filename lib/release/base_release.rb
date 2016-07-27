@@ -12,7 +12,7 @@ module Release
     attr_reader :version, :remotes, :options
 
     def_delegator :version, :tag
-    def_delegator :version, :stable_branch, :branch
+    def_delegator :version, :stable_branch
 
     def initialize(version, opts = {})
       @version = version_class.new(version)
@@ -39,13 +39,13 @@ module Release
 
     def prepare_release
       puts "Prepare repository...".colorize(:green)
-      repository.ensure_branch_exists(branch)
-      repository.pull_from_all_remotes(branch)
+      repository.ensure_branch_exists(stable_branch)
+      repository.pull_from_all_remotes(stable_branch)
     end
 
     def execute_release
       bump_versions
-      push_ref('branch', branch)
+      push_ref('branch', stable_branch)
       create_tag
       push_ref('tag', tag)
     end
