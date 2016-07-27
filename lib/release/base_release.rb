@@ -50,13 +50,13 @@ module Release
       push_ref('tag', tag)
     end
 
-    def after_release
-      repository.cleanup
-    end
-
     # Overridable
     def after_execute_hook
       true
+    end
+
+    def after_release
+      repository.cleanup
     end
 
     # Overridable
