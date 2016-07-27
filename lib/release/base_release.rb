@@ -1,4 +1,5 @@
 require 'colorize'
+require 'forwardable'
 
 require_relative '../release'
 require_relative '../repository'
