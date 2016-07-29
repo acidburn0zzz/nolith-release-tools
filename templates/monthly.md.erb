@@ -4,58 +4,44 @@
 
 ### <%= ordinal_date(15) %>: (15 working days before the 22nd)
 
+#### RC1
+
 - [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
 - Follow the [Creating RC1] guide:
   - [ ] Update the "Installation from Source" guide
   - [ ] Create the Update guides
   - [ ] Have someone run `bin/rake gitlab:update_templates` and open a merge request to master with ~"Pick into Stable"
   - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
+  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..master -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] In `#infrastructure` (be sure to mention people than can deploy to GitLab.com):
+  - [ ] In `#core`:
 
         ```
-        I am starting the release tasks for `<%= version.to_rc %>` (LINK_TO_THIS_ISSUE).
-        Will anyone be available to help me if anything goes wrong when deploying to GitLab.com?
+        @developers
+
+        I am about to tag `<%= version.to_rc %>`. I will still merge `master` into
+        `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>.
         ```
 
-  - [ ] In `#development`:
-
-        ```
-        I am about to tag `<%= version.to_rc %>`. I will still merge `master` into `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that, please follow the "Change for stable release" process:
-        https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-        (TL;DR: Ensure the milestone and the `Pick into Stable` label are set, no need to ping me.)
-
-        Looking forward to merging/picking all your cool stuff in <%= version.to_patch %>!
-        ```
-
-        or if the RC has already been tagged and people should follow the
-        `Pick into Stable` workflow:
-
-        ```
-        TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
-
-        `<%= version.to_rc %>` was tagged and deployed today.
-        Please start to follow the "Change for stable release" process:
-        https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-
-        Looking forward to merging/picking all your cool stuff in `<%= version.to_patch %>`!
-        ```
-  - [ ] Ensure tests are green on CE: https://dev.gitlab.org/gitlab/gitlabhq/commits/master
-  - [ ] Ensure tests are green on EE: https://dev.gitlab.org/gitlab/gitlab-ee/commits/master
-  - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc %>` version using the [`release` task]:
+  - [ ] Ensure [tests are green on CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
+  - [ ] Ensure [tests are green on EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
+  - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
+- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to staging
+- [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to production
+- [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>-ee.0_amd64.deb) to [GitLab.com]
+
 - [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
 
       ```sh
       bundle exec rake "regression_issue[<%= version.to_patch %>]"
       ```
-- [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
-- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/`
-- [ ] Deploy `<%= version.to_rc %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version.to_rc %>` to [GitLab.com]
 - [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
 
       ```sh
@@ -66,26 +52,33 @@
 
 **Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
 
----
+```
+#### RC2
 
 - [ ] Merge CE `master` into CE `<%= version.stable_branch %>`
+- [ ] Merge EE `master` into EE `<%= version.stable_branch(ee: true) %>`
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc(2) %>` version using the [`release` task]:
+  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
+  - [ ] Sync CE, EE, and Omnibus to `dev`
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
+  - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc(2) %>]"
         ```
-- [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
-- [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc %>..<%= version.stable_branch %> -- db/`
-- [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
-- [ ] Deploy `<%= version.to_rc(2) %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version.to_rc(2) %>` to [GitLab.com]
+- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
+- [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to production
+- [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>-ee.0_amd64.deb) to [GitLab.com]
+```
 
 **Only after the <%= ordinal_date(7) %> (7 working days before the 22nd)**
 
+```
 - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
 
       ```
@@ -93,8 +86,7 @@
       Use at your own risk. Please link regressions issues from
       LINK_TO_REGRESSION_ISSUE
       ```
-
----
+```
 
 ### <%= ordinal_date(7) %>: (7 working days before the 22nd)
 
@@ -103,9 +95,21 @@
 
 ### Anytime between <%= ordinal_date(3) %> (3 working days before the 22nd) and <%= ordinal_date(1) %> (1 working day before the 22nd)
 
+- [ ] In `#core`:
+
+    ```
+    @developers
+
+    TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
+
+    From now on, please follow the "Change for stable release" process:
+    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+    ```
+
 **Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
 
----
+```
+#### RC3
 
 - [ ] Cherry-pick merge requests labeled [`Picked into Stable`] for the current
   milestone (you can take advantage of the
@@ -114,18 +118,21 @@
   branches, respectively
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(3) %>` (**be sure to use the correct RC number**):
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automated) the `<%= version.to_rc(3) %>` version using the [`release` task]:
+  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
+  - [ ] Sync CE, EE, and Omnibus to `dev`
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(3) %>`
+  - [ ] Tag the `<%= version.to_rc(3) %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc(3) %>]"
         ```
-- [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/unstable`] on https://packages.gitlab.com
-- [ ] Check for any migrations in CE (and paste the diff below): `git diff v<%= version.to_rc(2) %>..<%= version.stable_branch %> -- db/`
-- [ ] Check for any migrations in EE (and paste the diff below): `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/`
-- [ ] Deploy `<%= version.to_rc(3) %>` to [staging.gitlab.com]
-- [ ] Deploy `<%= version.to_rc(3) %>` to [GitLab.com]
+- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(3) %>)
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(3) %>` to staging
+- [ ] Deploy [`<%= version.to_rc(3) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(3) %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(3) %>` to production
+- [ ] Deploy [`<%= version.to_rc(3) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(3) %>-ee.0_amd64.deb) to [GitLab.com]
 - [ ] Tweet about the `<%= version.to_rc(3) %>` release:
 
       ```
@@ -133,8 +140,7 @@
       Use at your own risk. Please link regressions issues from
       LINK_TO_REGRESSION_ISSUE
       ```
-
----
+```
 
 ### <%= ordinal_date(3) %>: (3 working days before the 22nd)
 
@@ -172,42 +178,63 @@ to the same commit as the final release.
 get the new version on the 22nd and there is sufficient time in the European
 workday to quickly fix any issues.**
 
-- [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-- [ ] Try to do before 1100 CET:
-  - [ ] Ensure tests are green on CE: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-  - [ ] Ensure tests are green on EE: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-  - [ ] Tag and build (this is CI-automated) the `<%= version.to_patch %>` version using the [`release` task]:
+- Before 0800 PDT / 1700 CET:
+  - [ ] Remove `(unreleased)` from `CHANGELOG` and add a `(unreleased)` line for the next patch
+  - [ ] Remove `(unreleased)` from `CHANGELOG-EE` and add a `(unreleased)` line for the next patch
+  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(3) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
+  - [ ] Sync CE, EE, and Omnibus to `dev`
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
+  - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
+  - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_patch %>]"
         ```
-  - [ ] Check that [EE packages are built] and [CE packages are built] and appears under [`gitlab/gitlab-ee`] and [`gitlab/gitlab-ce`] on https://packages.gitlab.com
-- Try to do before 1200 CET:
-  - [ ] Deploy `<%= version.to_patch %>` to [staging.gitlab.com]
-  - [ ] Deploy `<%= version.to_patch %>` to [GitLab.com]
-  - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
-  - [ ] Publish the release [blog post]
-- [ ] Ensure someone tweet about the `<%= version.to_patch %>` release
-- [ ] Ensure a second tweet of the release announcement is scheduled with the same text at 1800 CET / 8AM PST
-- [ ] Upgrade the `#gitlab` channel's topic on IRC Freenode with the latest version number
-- [ ] Create the first patch issue using the [`patch_issue` task]:
+  - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+  - [ ] Update the version in the `VERSION` file to `<%= version.next_minor %>-pre` and create the `v<%= version.next_minor %>.pre` tag:
+
+      ```sh
+      echo "<%= version.next_minor %>-pre" > VERSION
+      git add VERSION && git ci # ci = commit --gpg-sign --signoff --verbose
+      git pdog # pdog = push dev,origin,github
+      git tag -s v<%= version.next_minor %>.pre -m "Update VERSION to <%= version.next_minor %>.pre"
+      git pdog v<%= version.next_minor %>.pre:v<%= version.next_minor %>.pre
+      ```
+
+- Before 0900 PDT / 1800 CET:
+  - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to staging
+  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to production
+  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [GitLab.com]
+  - [ ] Check that the `<%= version.to_patch %>` version was automatically created on https://version.gitlab.com
+  - [ ] Create the first patch issue using the [`patch_issue` task]:
 
       ```sh
       bundle exec rake "patch_issue[<%= version.next_patch %>]"
       ```
+
+- At 1000 PDT / 1900 CET:
+  - [ ] Publish the release [blog post]
+  - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release
+  - [ ] Upgrade the `#gitlab` channel's topic on IRC Freenode with the latest version number
 
 [Omnibus milestone]: LINK_TO_OMNIBUS_MILESTONE
 [regression issue]: LINK_TO_REGRESSION_ISSUE
 [blog post]: LINK_TO_WIP_BLOG_POST
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
+[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
 [`new_release_post` task]: https://gitlab.com/gitlab-com/www-gitlab-com/#create-release-blog-post
 [`www-gitlab-com` project]: https://gitlab.com/gitlab-com/www-gitlab-com/
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
+[Sync CE, EE, and Omnibus to `dev`]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/pro-tips.md#add-a-git-pdo-and-a-git-pdog-aliases
 [Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
 [GitLab CE into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart

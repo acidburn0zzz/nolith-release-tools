@@ -85,6 +85,31 @@ describe Version do
     end
   end
 
+  describe '#next_minor' do
+    it 'returns next minor version' do
+      expect(version('1.2').next_minor).to eq '1.3.0'
+    end
+    it 'returns nil when patch is missing' do
+      expect(version('1.2').next_minor).to eq '1.3.0'
+    end
+
+    it 'returns nil when version is not a release' do
+      expect(version('1.2.3-rc1').next_minor).to eq '1.3.0'
+    end
+
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').next_minor).to eq '1.3.0'
+    end
+
+    it 'returns previous patch when patch is 0' do
+      expect(version('1.2.0').next_minor).to eq '1.3.0'
+    end
+
+    it 'returns previous patch when patch is > 0' do
+      expect(version('1.2.3').next_minor).to eq '1.3.0'
+    end
+  end
+
   describe '#previous_patch' do
     it 'returns nil when patch is missing' do
       expect(version('1.2').previous_patch).to be_nil

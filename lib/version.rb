@@ -1,7 +1,7 @@
 class Version < String
 
   VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/.freeze
-  RELEASE_REGEX = /\A(\d+\.\d+\.)(\d+)\z/.freeze
+  RELEASE_REGEX = /\A(\d+)\.(\d+)\.(\d+)\z/.freeze
 
   def ee?
     self.end_with?('-ee')
@@ -49,12 +49,18 @@ class Version < String
     self =~ RELEASE_REGEX
   end
 
+  def next_minor
+    captures = /\A(\d+)\.(\d+)/.match(self).captures
+
+    "#{captures[0]}.#{captures[1].to_i + 1}.0"
+  end
+
   def previous_patch
     return unless patch?
 
     captures = self.match(RELEASE_REGEX).captures
 
-    "#{captures[0]}#{patch - 1}"
+    "#{captures[0]}.#{captures[1]}.#{patch - 1}"
   end
 
   def next_patch
@@ -62,7 +68,7 @@ class Version < String
 
     captures = self.match(RELEASE_REGEX).captures
 
-    "#{captures[0]}#{patch + 1}"
+    "#{captures[0]}.#{captures[1]}.#{patch + 1}"
   end
 
   def stable_branch(ee: false)
