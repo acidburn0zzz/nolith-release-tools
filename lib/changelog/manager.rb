@@ -11,6 +11,10 @@ module Changelog
   # Folder containing unreleased changelog entries in YAML format
   UNRELEASED_PATH = 'CHANGES/unreleased/'
 
+  # Manager collects the unreleased changelog entries in a Version's stable
+  # branch, converts them into Markdown, removes the individual files from both
+  # the stable and master branches, and updates the global CHANGELOG Markdown
+  # file with the changelog for that version.
   class Manager
     attr_reader :repository, :version
     attr_reader :ref, :commit, :tree
@@ -19,6 +23,14 @@ module Changelog
       @repository = repository
     end
 
+    # Given a Version, this method will perform the following actions on both
+    # that version's respective `stable` branch and on `master`:
+    #
+    # 1. Collect a list of YAML files in `UNRELEASED_PATH`
+    # 2. Remove them from the repository
+    # 3. Compile their contents into Markdown
+    # 4. Update `CHANGELOG_FILE` with the compiled Markdown
+    # 5. Commit
     def release(version)
       @version = version
 
@@ -39,7 +51,7 @@ module Changelog
 
       Rugged::Commit.create(repository, {
         tree: index.write_tree(repository),
-        message: "Prepare changelog for #{version}\n\n[ci skip]",
+        message: "Update changelog for #{version}\n\n[ci skip]",
         parents: [commit],
         update_ref: 'HEAD'
       })
@@ -58,13 +70,13 @@ module Changelog
     end
 
     def update_changelog(index)
-      # Rugged points to the '.git' folder, so go up one level
-      changelog_path = File.expand_path(File.join(repository.path, '..', CHANGELOG_FILE))
+      blob = repository.blob_at(repository.head.target_id, CHANGELOG_FILE)
+      markdown = MarkdownGenerator.new(version, unreleased_blobs).to_s
 
-      updater = Updater.new(changelog_path, version)
-      updater.write(MarkdownGenerator.new(version, unreleased_blobs))
+      updater = Updater.new(blob.content, version)
+      changelog_oid = repository.write(updater.insert(markdown), :blob)
 
-      index.add(CHANGELOG_FILE)
+      index.add(path: CHANGELOG_FILE, oid: changelog_oid, mode: 0100644)
     end
 
     def unreleased_blobs

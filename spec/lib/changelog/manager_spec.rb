@@ -38,7 +38,7 @@ describe Changelog::Manager do
     it 'adds a sensible commit message' do
       commit = repository.last_commit
 
-      expect(commit.message).to eq("Prepare changelog for #{release}\n\n[ci skip]")
+      expect(commit.message).to eq("Update changelog for #{release}\n\n[ci skip]")
     end
 
     it 'commits the updated Markdown file' do
@@ -84,7 +84,7 @@ describe Changelog::Manager do
     it 'adds a sensible commit message' do
       commit = repository.last_commit
 
-      expect(commit.message).to eq("Prepare changelog for #{release}\n\n[ci skip]")
+      expect(commit.message).to eq("Update changelog for #{release}\n\n[ci skip]")
     end
 
     it 'commits the updated Markdown file' do
