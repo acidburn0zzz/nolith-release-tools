@@ -8,6 +8,24 @@ describe Changelog::Manager do
   let(:fixture)    { File.expand_path('../../fixtures/repositories/changelog', __dir__) }
   let(:repository) { Rugged::Repository.new(fixture) }
 
+  describe 'initialize' do
+    it 'accepts a path String' do
+      manager = described_class.new(fixture)
+
+      expect(manager.repository).to be_kind_of(Rugged::Repository)
+    end
+
+    it 'accepts a Rugged::Repository object' do
+      manager = described_class.new(repository)
+
+      expect(manager.repository).to eq repository
+    end
+
+    it 'raises an error for any other object' do
+      expect { described_class.new(StringIO.new) }.to raise_error(RuntimeError)
+    end
+  end
+
   describe 'on stable' do
     before do
       reset_fixture!

@@ -19,8 +19,16 @@ module Changelog
     attr_reader :repository, :version
     attr_reader :ref, :commit, :tree
 
+    # repository - Rugged::Repository object or String path to repository
     def initialize(repository)
-      @repository = repository
+      case repository
+      when String
+        @repository = Rugged::Repository.new(repository)
+      when Rugged::Repository
+        @repository = repository
+      else
+        raise "Invalid repository: #{repository}"
+      end
     end
 
     # Given a Version, this method will perform the following actions on both
