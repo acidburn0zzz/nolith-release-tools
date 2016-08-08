@@ -59,6 +59,10 @@ module Changelog
       repository.checkout_head(strategy: :force)
     end
 
+    # Checkout the specified branch name and update `ref`, `commit`, and `tree`
+    # with the current state of the repository.
+    #
+    # branch_name - Branch name to checkout
     def checkout(branch_name)
       @ref    = repository.checkout(branch_name)
       @commit = @ref.target.target
@@ -69,6 +73,10 @@ module Changelog
       index.remove_all(unreleased_blobs.collect(&:path))
     end
 
+    # Updates CHANGELOG_FILE with the Markdown built from the individual
+    # unreleased changelog entries.
+    #
+    # index - Current repository index
     def update_changelog(index)
       blob = repository.blob_at(repository.head.target_id, CHANGELOG_FILE)
       markdown = MarkdownGenerator.new(version, unreleased_blobs).to_s
@@ -79,6 +87,13 @@ module Changelog
       index.add(path: CHANGELOG_FILE, oid: changelog_oid, mode: 0100644)
     end
 
+    # Build an Array of Changelog::Blob objects, with each object representing a
+    # single unreleased changelog entry file.
+    #
+    # Raises RuntimeError if the currently-checked-out branch is not a stable
+    # branch, or if the repository tree could not be read.
+    #
+    # Returns an Array
     def unreleased_blobs
       return @unreleased_blobs if defined?(@unreleased_blobs)
 

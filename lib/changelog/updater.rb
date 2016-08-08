@@ -7,15 +7,15 @@ module Changelog
   # This class expects that a Markdown document present at the provided file
   # path contains a Markdown-based changelog in the following format:
   #
-  #     ## 8.10.1
+  #     ## 8.10.1 (2016-07-25)
   #
   #     - Entries
   #
-  #     ## 8.10.0
+  #     ## 8.10.0 (2016-07-22)
   #
   #     - Entries
   #
-  #     ## 8.9.6
+  #     ## 8.9.6 (2016-07-11)
   #
   #     - Entries
   #
