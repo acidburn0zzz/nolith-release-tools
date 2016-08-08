@@ -24,13 +24,13 @@ module Changelog
   # previous minor release, for example 8.9.7, the entry will be placed _above_
   # `## 8.9.6` but _below_ `## 8.10.0`.
   class Updater
-    attr_reader :file_path, :version
+    attr_reader :contents, :version
 
-    # file_path - Changelog file path String
-    # version   - Version object
-    def initialize(file_path, version)
-      @file_path = file_path
-      @version   = version
+    # contents - Existing changelog content String
+    # version  - Version object
+    def initialize(contents, version)
+      @contents = contents.lines
+      @version  = version
     end
 
     # Insert some Markdown into an existing changelog based on the current
@@ -40,46 +40,18 @@ module Changelog
     #
     # Returns the updated Markdown String
     def insert(markdown)
-      lines = File.readlines(file_path)
-
-      lines.each_with_index do |line, index|
+      contents.each_with_index do |line, index|
         if line.match(/^## (\d+\.\d+\.\d+)$/)
           header = Version.new($1)
 
           if version.major >= header.major && version.minor >= header.minor
-            lines.insert(index, *markdown.lines)
+            contents.insert(index, *markdown.lines)
             break
           end
         end
       end
 
-      lines.join
-    end
-
-    # Insert the provided Markdown into an existing changelog and write to the
-    # specified output.
-    #
-    # markdown - Markdown String to write
-    # writer   - A callable object, accepting the updated Markdown String
-    #
-    # Example:
-    #
-    #   # Write the Markdown to a StringIO object
-    #   output = StringIO.new
-    #   writer = -> (contents) { output.write(contents) }
-    #   write("Hi!", writer: writer)
-    def write(markdown, writer: file_writer)
-      writer.call(insert(markdown.to_s))
-    end
-
-    private
-
-    def file_writer
-      lambda do |contents|
-        File.open(file_path, 'w') do |file|
-          file.write(contents)
-        end
-      end
+      contents.join
     end
   end
 end
