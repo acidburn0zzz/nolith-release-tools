@@ -41,7 +41,7 @@ module Changelog
     # Returns the updated Markdown String
     def insert(markdown)
       contents.each_with_index do |line, index|
-        if line.match(/^## (\d+\.\d+\.\d+)$/)
+        if line.match(/^## (\d+\.\d+\.\d+)/)
           header = Version.new($1)
 
           if version.major >= header.major && version.minor >= header.minor
