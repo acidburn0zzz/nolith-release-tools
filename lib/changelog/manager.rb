@@ -80,23 +80,28 @@ module Changelog
     end
 
     def unreleased_blobs
-      unless defined?(@unreleased_blobs)
-        raise "Cannot gather changelog blobs. Check out the stable branch first!" unless tree
+      return @unreleased_blobs if defined?(@unreleased_blobs)
 
-        @unreleased_blobs = []
+      raise "Cannot gather changelog blobs on a non-stable branch." unless on_stable?
+      raise "Cannot gather changelog blobs. Check out the stable branch first!" unless tree
 
-        tree.walk(:preorder) do |root, entry|
-          next unless root == UNRELEASED_PATH
-          next if entry[:name] == '.gitkeep'
+      @unreleased_blobs = []
 
-          @unreleased_blobs << Blob.new(
-            File.join(root, entry[:name]),
-            repository.lookup(entry[:oid])
-          )
-        end
+      tree.walk(:preorder) do |root, entry|
+        next unless root == UNRELEASED_PATH
+        next if entry[:name] == '.gitkeep'
+
+        @unreleased_blobs << Blob.new(
+          File.join(root, entry[:name]),
+          repository.lookup(entry[:oid])
+        )
       end
 
       @unreleased_blobs
+    end
+
+    def on_stable?
+      repository.head.canonical_name.end_with?('-stable')
     end
   end
 end
