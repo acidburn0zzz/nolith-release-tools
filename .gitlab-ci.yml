@@ -1,12 +1,28 @@
-before_script:
-  - which ruby
-  - ruby -v
-  - gem install bundler --no-ri --no-rdoc
-  - bundle install --jobs $(nproc) "${FLAGS[@]}"
-  - cp .env.example .env
-
-spec:
+specs:
+  stage: test
   script:
+    - which ruby
+    - ruby -v
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install --jobs $(nproc) "${FLAGS[@]}"
+    - cp .env.example .env
     - git config --global user.email "you@example.com"
     - git config --global user.name "Your Name"
     - bundle exec rake
+  artifacts:
+    paths:
+      - coverage/assets
+      - coverage/index.html
+
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public/
+    - mv coverage/ public/
+  dependencies:
+    - specs
+  artifacts:
+    paths:
+      - public/
+  only:
+    - master
