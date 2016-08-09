@@ -4,7 +4,7 @@ require 'changelog/manager'
 require 'version'
 
 describe Changelog::Manager do
-  let(:release)    { Version.new('8.10.2') }
+  let(:release)    { Version.new('8.10.5') }
   let(:fixture)    { File.expand_path('../../fixtures/repositories/changelog', __dir__) }
   let(:repository) { Rugged::Repository.new(fixture) }
 
@@ -62,7 +62,7 @@ describe Changelog::Manager do
     it 'commits the updated Markdown file' do
       patch = patch_for_file("#{Changelog::CHANGELOG_FILE}")
 
-      expect(patch.additions).to eq 3
+      expect(patch.additions).to eq 4
     end
 
     it 'commits the removal of the YAML files' do
@@ -108,7 +108,7 @@ describe Changelog::Manager do
     it 'commits the updated Markdown file' do
       patch = patch_for_file("#{Changelog::CHANGELOG_FILE}")
 
-      expect(patch.additions).to eq 3
+      expect(patch.additions).to eq 4
     end
 
     it 'commits the removal of the YAML files' do

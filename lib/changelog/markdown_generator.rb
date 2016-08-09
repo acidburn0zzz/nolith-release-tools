@@ -18,6 +18,8 @@ module Changelog
         markdown.puts "- #{blob.to_entry}"
       end
 
+      markdown.puts
+
       markdown.rewind
 
       markdown.read

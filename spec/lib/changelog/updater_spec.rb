@@ -53,6 +53,7 @@ describe Changelog::Updater do
     markdown = ""
     markdown << "## #{version}\n\n"
     markdown << "- Change Z\n- Change Y\n- Change X\n"
+    markdown << "\n"
   end
 
   matcher :have_inserted do |version|
@@ -62,6 +63,7 @@ describe Changelog::Updater do
       expect(contents[@line + 2]).to eq "- Change Z\n"
       expect(contents[@line + 3]).to eq "- Change Y\n"
       expect(contents[@line + 4]).to eq "- Change X\n"
+      expect(contents[@line + 5]).to eq "\n"
     end
 
     chain :at_line do |line|
