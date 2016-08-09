@@ -17,6 +17,7 @@ specs:
 pages:
   stage: deploy
   script:
+    - mkdir -p public/
     - mv coverage/ public/
   dependencies:
     - specs
