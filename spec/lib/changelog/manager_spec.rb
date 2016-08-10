@@ -134,9 +134,7 @@ describe Changelog::Manager do
       p.delta.old_file[:path] == filename
     end
 
-    fail "Could not find patch file for #{filename}" unless patch
-
-    patch
+    patch || fail("Could not find patch file for #{filename}")
   end
 
   def changelog_blob(filename, tree:)
