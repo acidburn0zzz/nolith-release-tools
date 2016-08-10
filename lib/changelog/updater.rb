@@ -1,11 +1,11 @@
 require 'version'
 
 module Changelog
-  # Updates a Markdown-based changelog document by inserting new Markdown
-  # for a specified version above the appropriate previous version.
+  # Updates a Markdown changelog String by inserting new Markdown for a
+  # specified version above the appropriate previous version.
   #
-  # This class expects that a Markdown document present at the provided file
-  # path contains a Markdown-based changelog in the following format:
+  # This class expects that the provided Markdown String contains a changelog in
+  # the following format:
   #
   #     ## 8.10.1 (2016-07-25)
   #
