@@ -1,4 +1,5 @@
 before_script:
+  - git submodule update --init
   - apt-get update -yqqq
   - apt-get install -yqqq --force-yes cmake
   - which ruby
