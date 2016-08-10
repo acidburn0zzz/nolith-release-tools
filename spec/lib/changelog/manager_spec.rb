@@ -30,7 +30,6 @@ describe Changelog::Manager do
     before do
       reset_fixture!
 
-      Timecop.freeze(Time.local(1983, 7, 2))
       Changelog::Manager.new(repository).release(release)
 
       repository.checkout(release.stable_branch)
@@ -42,15 +41,6 @@ describe Changelog::Manager do
 
       expect(changelog_blobs(tree).map { |blob| blob[:name] })
         .to match_array(%W(.gitkeep #{Changelog::CHANGELOG_FILE}))
-    end
-
-    it 'compiles changelog YAML files into a single Markdown file' do
-      entry    = changelog_blob("#{Changelog::CHANGELOG_FILE}", tree: repository.last_commit.tree)
-      blob     = repository.lookup(entry[:oid])
-      markdown = blob.content
-
-      expect(markdown).to include("## #{release} (1983-07-02)")
-      expect(markdown).to include("- This fixes a bug and needs to go into stable. !2")
     end
 
     it 'adds a sensible commit message' do
@@ -76,7 +66,6 @@ describe Changelog::Manager do
     before do
       reset_fixture!
 
-      Timecop.freeze(Time.local(1983, 7, 2))
       Changelog::Manager.new(repository).release(release)
 
       repository.checkout('master')
@@ -90,15 +79,6 @@ describe Changelog::Manager do
         .to match_array(%W(.gitkeep #{Changelog::CHANGELOG_FILE} feature-a.yml feature-b.yml))
     end
 
-    it 'compiles changelog YAML files into a single Markdown file' do
-      entry    = changelog_blob("#{Changelog::CHANGELOG_FILE}", tree: repository.last_commit.tree)
-      blob     = repository.lookup(entry[:oid])
-      markdown = blob.content
-
-      expect(markdown).to include("## #{release} (1983-07-02)")
-      expect(markdown).to include("- This fixes a bug and needs to go into stable. !2")
-    end
-
     it 'adds a sensible commit message' do
       commit = repository.last_commit
 
@@ -106,7 +86,7 @@ describe Changelog::Manager do
     end
 
     it 'commits the updated Markdown file' do
-      patch = patch_for_file("#{Changelog::CHANGELOG_FILE}")
+      patch = patch_for_file(Changelog::CHANGELOG_FILE)
 
       expect(patch.additions).to eq 4
     end
