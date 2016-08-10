@@ -13,7 +13,7 @@ describe Changelog::MarkdownGenerator do
     end
 
     describe 'includes the date in the version header' do
-      it 'uses the 22nd of the month for monthly releases' do
+      it 'uses `Release.next_date` for monthly releases' do
         version = Version.new('9.2.0')
         generator = described_class.new(version, [])
 

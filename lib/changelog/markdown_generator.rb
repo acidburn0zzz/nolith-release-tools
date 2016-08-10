@@ -1,4 +1,5 @@
 require 'date'
+require 'release'
 
 module Changelog
   class MarkdownGenerator
@@ -33,13 +34,10 @@ module Changelog
 
     def date
       if version.patch.zero?
-        # Always use the 22nd of the month for new minor releases
-        format = "%Y-%m-22"
+        Release.next_date.strftime("%Y-%m-%d")
       else
-        format = "%Y-%m-%d"
+        Date.today.strftime("%Y-%m-%d")
       end
-
-      Date.today.strftime(format)
     end
   end
 end
