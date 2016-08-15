@@ -23,7 +23,9 @@ etc.) into the corresponding GitLab EE branch (`master`, `8-0-stable-ee`, etc.).
 ### Merging CE `master` into EE `master`
 
 Before [releasing a new Release Candidate](release-candidates.md) of GitLab, we
-need to merge the latest changes from CE into EE.
+need to merge the latest changes from CE into EE. Make sure that there is not a
+merge request where this work is already in progress. All merge requests that
+are related to merging CE into EE have the ["CE upstream" label][upstream label].
 
 1. Make sure your EE repository has all the latest changes:
 
@@ -61,9 +63,11 @@ need to merge the latest changes from CE into EE.
     ```
 
 1. Submit a new [merge request in the GitLab EE project], selecting `ce-to-ee`
-   as the **source** branch and `master` as the **target**.
+   as the **source** branch and `master` as the **target** and add the
+   "CE upstream" label.
 
 [merge request in the GitLab EE project]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests
+[upstream label]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name%5B%5D=CE+upstream&scope=all&sort=id_desc&state=opened
 
 ### Merging a CE stable branch into its EE counterpart
 
