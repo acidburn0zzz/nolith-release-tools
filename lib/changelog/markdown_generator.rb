@@ -15,8 +15,12 @@ module Changelog
       markdown.puts header
       markdown.puts
 
-      blobs.each do |blob|
-        markdown.puts "- #{blob.to_entry}"
+      if version.ee? && blobs.empty?
+        markdown.puts "- No EE-specific changes."
+      else
+        blobs.each do |blob|
+          markdown.puts "- #{blob.to_entry}"
+        end
       end
 
       markdown.puts

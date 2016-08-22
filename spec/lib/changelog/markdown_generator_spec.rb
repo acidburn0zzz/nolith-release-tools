@@ -46,5 +46,14 @@ describe Changelog::MarkdownGenerator do
       expect(markdown).to match("- Change B")
       expect(markdown).to match("- Change C")
     end
+
+    it 'adds a "No changes" entry for EE when there are no blobs' do
+      version = Version.new('1.2.3-ee')
+      generator = described_class.new(version, [])
+
+      markdown = generator.to_s
+
+      expect(markdown).to match("- No EE-specific changes.")
+    end
   end
 end
