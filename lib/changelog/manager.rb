@@ -5,19 +5,13 @@ require_relative 'markdown_generator'
 require_relative 'updater'
 
 module Changelog
-  # Markdown file containing all changelog entries
-  CHANGELOG_FILE = 'CHANGELOG.md'
-
-  # Folder containing unreleased changelog entries in YAML format
-  UNRELEASED_PATH = 'CHANGES/unreleased/'
-
   # Manager collects the unreleased changelog entries in a Version's stable
   # branch, converts them into Markdown, removes the individual files from both
   # the stable and master branches, and updates the global CHANGELOG Markdown
   # file with the changelog for that version.
   class Manager
     attr_reader :repository, :version
-    attr_reader :ref, :commit, :tree
+    attr_reader :ref, :commit, :tree, :index
 
     # repository - Rugged::Repository object or String path to repository
     def initialize(repository)
@@ -34,32 +28,75 @@ module Changelog
     # Given a Version, this method will perform the following actions on both
     # that version's respective `stable` branch and on `master`:
     #
-    # 1. Collect a list of YAML files in `UNRELEASED_PATH`
+    # 1. Collect a list of YAML files in `unreleased_path`
     # 2. Remove them from the repository
     # 3. Compile their contents into Markdown
-    # 4. Update `CHANGELOG_FILE` with the compiled Markdown
+    # 4. Update `changelog_file` with the compiled Markdown
     # 5. Commit
-    def release(version)
+    def release(version, master_branch: 'master')
       @version = version
 
+      if version.ee?
+        @changelog_file  = 'CHANGELOG-EE.md'
+        @unreleased_path = 'CHANGES/unreleased-ee/'
+      else
+        @changelog_file  = 'CHANGELOG.md'
+        @unreleased_path = 'CHANGES/unreleased/'
+      end
+
       perform_release(version.stable_branch)
-      perform_release('master')
+      perform_release(master_branch)
     end
 
     private
 
+    # TODO (rspeicher): Hate it hate it hate it
+    attr_reader :changelog_file, :unreleased_path
+
     def perform_release(branch_name)
       checkout(branch_name)
 
-      index = repository.index
-      index.read_tree(commit.tree)
+      remove_unreleased_blobs
+      update_changelog
+    end
 
-      remove_unreleased_blobs(index)
-      update_changelog(index)
+    # Checkout the specified branch and update `ref`, `commit`, `tree`, and
+    # `index` with the current state of the repository.
+    #
+    # branch_name - Branch name to checkout
+    def checkout(branch_name)
+      @ref    = repository.checkout(branch_name)
+      @commit = @ref.target.target
+      @tree   = @commit.tree
+      @index  = repository.index
 
+      @index.read_tree(commit.tree)
+    end
+
+    def remove_unreleased_blobs
+      index.remove_all(unreleased_blobs(path: unreleased_path).collect(&:path))
+    end
+
+    # Updates CHANGELOG_FILE with the Markdown built from the individual
+    # unreleased changelog entries.
+    def update_changelog
+      blob = repository.blob_at(repository.head.target_id, changelog_file)
+      updater = Updater.new(blob.content, version)
+
+      changelog_oid = repository.write(updater.insert(generate_markdown), :blob)
+      index.add(path: changelog_file, oid: changelog_oid, mode: 0100644)
+
+      create_commit(changelog_file)
+    end
+
+    def generate_markdown
+      MarkdownGenerator.new(version, unreleased_blobs(path: unreleased_path)).to_s
+    end
+
+    def create_commit(changelog_file)
       Rugged::Commit.create(repository, {
         tree: index.write_tree(repository),
-        message: "Update changelog for #{version}\n\n[ci skip]",
+        message: "Update #{changelog_file} for #{version}\n\n[ci skip]",
         parents: [commit],
         update_ref: 'HEAD'
       })
@@ -67,42 +104,17 @@ module Changelog
       repository.checkout_head(strategy: :force)
     end
 
-    # Checkout the specified branch name and update `ref`, `commit`, and `tree`
-    # with the current state of the repository.
-    #
-    # branch_name - Branch name to checkout
-    def checkout(branch_name)
-      @ref    = repository.checkout(branch_name)
-      @commit = @ref.target.target
-      @tree   = @commit.tree
-    end
-
-    def remove_unreleased_blobs(index)
-      index.remove_all(unreleased_blobs.collect(&:path))
-    end
-
-    # Updates CHANGELOG_FILE with the Markdown built from the individual
-    # unreleased changelog entries.
-    #
-    # index - Current repository index
-    def update_changelog(index)
-      blob = repository.blob_at(repository.head.target_id, CHANGELOG_FILE)
-      markdown = MarkdownGenerator.new(version, unreleased_blobs).to_s
-
-      updater = Updater.new(blob.content, version)
-      changelog_oid = repository.write(updater.insert(markdown), :blob)
-
-      index.add(path: CHANGELOG_FILE, oid: changelog_oid, mode: 0100644)
-    end
-
     # Build an Array of Changelog::Blob objects, with each object representing a
     # single unreleased changelog entry file.
+    #
+    # path - Path String relative to repository root containing unreleased
+    #        changelog entries
     #
     # Raises RuntimeError if the currently-checked-out branch is not a stable
     # branch, or if the repository tree could not be read.
     #
     # Returns an Array
-    def unreleased_blobs
+    def unreleased_blobs(path:)
       return @unreleased_blobs if defined?(@unreleased_blobs)
 
       raise "Cannot gather changelog blobs on a non-stable branch." unless on_stable?
@@ -111,7 +123,7 @@ module Changelog
       @unreleased_blobs = []
 
       tree.walk(:preorder) do |root, entry|
-        next unless root == UNRELEASED_PATH
+        next unless root == path
         next if entry[:name] == '.gitkeep'
 
         @unreleased_blobs << Blob.new(
@@ -124,7 +136,7 @@ module Changelog
     end
 
     def on_stable?
-      repository.head.canonical_name.end_with?('-stable')
+      repository.head.canonical_name.end_with?('-stable', 'stable-ee')
     end
   end
 end

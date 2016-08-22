@@ -4,7 +4,6 @@ require 'changelog/manager'
 require 'version'
 
 describe Changelog::Manager do
-  let(:release)    { Version.new('8.10.5') }
   let(:fixture)    { File.expand_path('../../fixtures/repositories/changelog', __dir__) }
   let(:repository) { Rugged::Repository.new(fixture) }
 
@@ -26,80 +25,170 @@ describe Changelog::Manager do
     end
   end
 
-  describe 'on stable' do
-    before do
-      reset_fixture!
+  describe '#release', 'for CE' do
+    let(:release) { Version.new('8.10.5') }
 
-      Changelog::Manager.new(repository).release(release)
+    let(:changelog_file)  { 'CHANGELOG.md' }
+    let(:unreleased_path) { 'CHANGES/unreleased/' }
 
-      repository.checkout(release.stable_branch)
+    describe 'on stable' do
+      before do
+        reset_fixture!
+
+        described_class.new(repository).release(release)
+
+        repository.checkout(release.stable_branch)
+      end
+
+      it 'removes released changelog YAML files' do
+        commit = repository.last_commit
+        tree   = commit.tree
+
+        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
+          .to be_empty
+      end
+
+      it 'adds a sensible commit message' do
+        commit = repository.last_commit
+
+        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
+      end
+
+      it 'commits the updated Markdown file' do
+        patch = patch_for_file(changelog_file)
+
+        expect(patch.additions).to eq 4
+      end
+
+      it 'commits the removal of the YAML files' do
+        file = File.join(unreleased_path, "bugfix-for-cherry-picking.yml")
+        patch = patch_for_file(file)
+
+        expect(patch.deletions).to eq 3
+      end
     end
 
-    it 'removes changelog YAML files' do
-      commit = repository.last_commit
-      tree   = commit.tree
+    describe 'on master' do
+      before do
+        reset_fixture!
 
-      expect(changelog_blobs(tree).map { |blob| blob[:name] })
-        .to match_array(%W(.gitkeep #{Changelog::CHANGELOG_FILE}))
-    end
+        described_class.new(repository).release(release)
 
-    it 'adds a sensible commit message' do
-      commit = repository.last_commit
+        repository.checkout('master')
+      end
 
-      expect(commit.message).to eq("Update changelog for #{release}\n\n[ci skip]")
-    end
+      it 'removes released changelog YAML files' do
+        commit = repository.last_commit
+        tree   = commit.tree
 
-    it 'commits the updated Markdown file' do
-      patch = patch_for_file("#{Changelog::CHANGELOG_FILE}")
+        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
+          .to match_array(%W(feature-a.yml feature-b.yml))
+      end
 
-      expect(patch.additions).to eq 4
-    end
+      it 'adds a sensible commit message' do
+        commit = repository.last_commit
 
-    it 'commits the removal of the YAML files' do
-      patch = patch_for_file("#{Changelog::UNRELEASED_PATH}bugfix-for-cherry-picking.yml")
+        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
+      end
 
-      expect(patch.deletions).to eq 3
+      it 'commits the updated Markdown file' do
+        patch = patch_for_file(changelog_file)
+
+        expect(patch.additions).to eq 4
+      end
+
+      it 'commits the removal of the YAML files' do
+        file = File.join(unreleased_path, "bugfix-for-cherry-picking.yml")
+        patch = patch_for_file(file)
+
+        expect(patch.deletions).to eq 3
+      end
     end
   end
 
-  describe 'on master' do
-    before do
-      reset_fixture!
+  describe '#release', 'for EE' do
+    let(:release) { Version.new('8.10.5-ee') }
 
-      Changelog::Manager.new(repository).release(release)
+    let(:changelog_file)  { 'CHANGELOG-EE.md' }
+    let(:unreleased_path) { 'CHANGES/unreleased-ee/' }
 
-      repository.checkout('master')
+    describe 'on stable' do
+      before do
+        reset_fixture!
+
+        described_class.new(repository).release(release, master_branch: 'master-ee')
+
+        repository.checkout(release.stable_branch)
+      end
+
+      it 'removes released changelog YAML files' do
+        commit = repository.last_commit
+        tree   = commit.tree
+
+        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
+          .to be_empty
+      end
+
+      it 'adds a sensible commit message' do
+        commit = repository.last_commit
+
+        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
+      end
+
+      it 'commits the updated Markdown file' do
+        patch = patch_for_file("#{changelog_file}")
+
+        expect(patch.additions).to eq 4
+      end
+
+      it 'commits the removal of the YAML files' do
+        file = File.join(unreleased_path, "ee-bugfix-for-cherry-picking.yml")
+        patch = patch_for_file(file)
+
+        expect(patch.deletions).to eq 3
+      end
     end
 
-    it 'removes changelog YAML files' do
-      commit = repository.last_commit
-      tree   = commit.tree
+    describe 'on master' do
+      before do
+        reset_fixture!
 
-      expect(changelog_blobs(tree).map { |blob| blob[:name] })
-        .to match_array(%W(.gitkeep #{Changelog::CHANGELOG_FILE} feature-a.yml feature-b.yml))
-    end
+        described_class.new(repository).release(release, master_branch: 'master-ee')
 
-    it 'adds a sensible commit message' do
-      commit = repository.last_commit
+        repository.checkout('master-ee')
+      end
 
-      expect(commit.message).to eq("Update changelog for #{release}\n\n[ci skip]")
-    end
+      it 'removes released changelog YAML files' do
+        commit = repository.last_commit
+        tree   = commit.tree
 
-    it 'commits the updated Markdown file' do
-      patch = patch_for_file(Changelog::CHANGELOG_FILE)
+        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
+          .to match_array(%w(improve-ee-docs.yml))
+      end
 
-      expect(patch.additions).to eq 4
-    end
+      it 'adds a sensible commit message' do
+        commit = repository.last_commit
 
-    it 'commits the removal of the YAML files' do
-      patch = patch_for_file("#{Changelog::UNRELEASED_PATH}bugfix-for-cherry-picking.yml")
+        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
+      end
 
-      expect(patch.deletions).to eq 3
+      it 'commits the updated Markdown file' do
+        patch = patch_for_file(changelog_file)
+
+        expect(patch.additions).to eq 4
+      end
+
+      it 'commits the removal of the YAML files' do
+        file = File.join(unreleased_path, "ee-bugfix-for-cherry-picking.yml")
+        patch = patch_for_file(file)
+
+        expect(patch.deletions).to eq 3
+      end
     end
   end
 
   def reset_fixture!
-    %W(master #{release.stable_branch}).each do |branch|
+    %W(master master-ee #{release.stable_branch}).each do |branch|
       repository.checkout(branch)
       repository.reset("upstream/#{branch}", :hard)
     end
@@ -117,16 +206,12 @@ describe Changelog::Manager do
     patch || fail("Could not find patch file for #{filename}")
   end
 
-  def changelog_blob(filename, tree:)
-    changelog_blobs(tree).detect { |entry| entry[:name] == filename }
-  end
-
-  def changelog_blobs(tree)
+  def changelog_blobs(tree, path:)
     files = []
 
     tree.walk_blobs do |root, entry|
-      next unless root.start_with?(Changelog::UNRELEASED_PATH) ||
-        entry[:name] == Changelog::CHANGELOG_FILE
+      next unless root.start_with?(path)
+      next if entry[:name] == '.gitkeep'
 
       files << entry
     end
