@@ -5,6 +5,7 @@ class Repository
   class CannotCloneError < StandardError; end
   class CannotCheckoutBranchError < StandardError; end
   class CannotCreateTagError < StandardError; end
+  class CannotPullError < StandardError; end
 
   class CanonicalRemote < Struct.new(:name, :url); end
 
@@ -110,7 +111,9 @@ class Repository
   end
 
   def pull(remote, branch)
-    run_git %W(pull --depth=10 #{remote} #{branch})
+    unless run_git %W(pull --depth=10 #{remote} #{branch})
+      raise CannotPullError.new("Failed to pull #{branch} from #{remote}")
+    end
   end
 
   def push(remote, ref)
