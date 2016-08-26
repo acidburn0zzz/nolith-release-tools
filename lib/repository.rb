@@ -111,8 +111,10 @@ class Repository
   end
 
   def pull(remote, branch)
-    unless run_git %W(pull --depth=10 #{remote} #{branch})
-      raise CannotPullError.new("Failed to pull #{branch} from #{remote}")
+    run_git %W(pull --depth=10 #{remote} #{branch})
+
+    if has_conflicts?
+      raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
     end
   end
 
@@ -130,6 +132,13 @@ class Repository
   def in_path
     Dir.chdir(path) do
       yield
+    end
+  end
+
+  def has_conflicts?
+    in_path do
+      output = %x{git ls-files -u}
+      return !output.empty?
     end
   end
 
