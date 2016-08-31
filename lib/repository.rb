@@ -5,6 +5,7 @@ class Repository
   class CannotCloneError < StandardError; end
   class CannotCheckoutBranchError < StandardError; end
   class CannotCreateTagError < StandardError; end
+  class CannotPullError < StandardError; end
 
   class CanonicalRemote < Struct.new(:name, :url); end
 
@@ -111,6 +112,10 @@ class Repository
 
   def pull(remote, branch)
     run_git %W(pull --depth=10 #{remote} #{branch})
+
+    if has_conflicts?
+      raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
+    end
   end
 
   def push(remote, ref)
@@ -127,6 +132,13 @@ class Repository
   def in_path
     Dir.chdir(path) do
       yield
+    end
+  end
+
+  def has_conflicts?
+    in_path do
+      output = %x{git ls-files -u}
+      return !output.empty?
     end
   end
 

@@ -155,12 +155,20 @@ describe Repository do
     subject { Repository.get(Hash[*repo_remotes.first]) }
     before { subject.ensure_branch_exists('master') }
 
-    it 'commits the given file with the given message in the current branch' do
-      expect(File.open(File.join(repo_path, 'GITLAB_SHELL_VERSION')).read.strip).to eq '2.3.0'
+    context 'when there are conflicts' do
+      it 'stops the script' do
+        expect {
+          subject.pull_from_all_remotes('1-9-stable')
+        }.to raise_error(Repository::CannotPullError)
+      end
+    end
 
-      subject.pull_from_all_remotes('1-9-stable')
-
-      expect(File.open(File.join(repo_path, 'GITLAB_SHELL_VERSION')).read.strip).to match /\A<<<<<<< HEAD/
+    context 'when pull was successful' do
+      it 'continues to the next command' do
+        expect {
+          subject.pull_from_all_remotes('master')
+        }.not_to raise_error
+      end
     end
   end
 
