@@ -26,15 +26,13 @@ describe Release::GitlabCeRelease do
   { ce: '', ee: '-ee' }.each do |edition, suffix|
     describe '#execute' do
       before do
-        puts "EXECUTING RELEASE FOR #{edition}"
         described_class.new(version).execute
         Dir.chdir(repo_path) { `git checkout #{branch}` }
-        puts Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }
       end
 
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
         let(:version) { "9.1.24#{suffix}" }
-        let(:ob_version) { "9.1.24+#{edition == :ce ? 'ce' : suffix.sub('-', '')}.0" }
+        let(:ob_version) { "9.1.24+#{edition}.0" }
         let(:branch) { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -56,7 +54,7 @@ describe Release::GitlabCeRelease do
 
       context "with a new 10-1-stable#{suffix} stable branch, releasing a RC" do
         let(:version) { "10.1.0-rc13#{suffix}" }
-        let(:ob_version) { "10.1.0+rc13.#{edition == :ce ? 'ce' : suffix.sub('-', '')}.0" }
+        let(:ob_version) { "10.1.0+rc13.#{edition}.0" }
         let(:branch) { "10-1-stable#{suffix}" }
 
         describe "release GitLab #{suffix.upcase}" do
@@ -78,7 +76,7 @@ describe Release::GitlabCeRelease do
 
       context "with a new 10-1-stable#{suffix} stable branch, releasing a stable .0" do
         let(:version) { "10.1.0#{suffix}" }
-        let(:ob_version) { "10.1.0+#{edition == :ce ? 'ce' : suffix.sub('-', '')}.0" }
+        let(:ob_version) { "10.1.0+#{edition}.0" }
         let(:branch) { "10-1-stable#{suffix}" }
 
         describe "release GitLab #{suffix.upcase}" do
