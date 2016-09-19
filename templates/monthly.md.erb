@@ -1,7 +1,3 @@
-### <%= ordinal_date(16) %>: (16 working days before the 22nd)
-
-- [ ] Triage the [Omnibus milestone]
-
 ### <%= ordinal_date(15) %>: (15 working days before the 22nd)
 
 #### RC1
@@ -13,7 +9,6 @@
   - [ ] Have someone run `bin/rake gitlab:update_templates` and open a merge request to master with ~"Pick into Stable"
   - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..master -- db/migrate` =>
-  - [ ] Sync CE, EE, and Omnibus to `dev`
   - [ ] In `#core`:
 
         ```
@@ -60,7 +55,6 @@
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
-  - [ ] Sync CE, EE, and Omnibus to `dev`
   - [ ] Ensure [tests are green on CE]
   - [ ] Ensure [tests are green on EE]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
@@ -119,7 +113,6 @@
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(3) %>` (**be sure to use the correct RC number**):
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
-  - [ ] Sync CE, EE, and Omnibus to `dev`
   - [ ] Ensure [tests are green on CE]
   - [ ] Ensure [tests are green on EE]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(3) %>`
