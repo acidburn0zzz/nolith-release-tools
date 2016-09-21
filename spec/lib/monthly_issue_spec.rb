@@ -20,7 +20,6 @@ describe MonthlyIssue do
       content = issue.description
 
       aggregate_failures do
-        expect(content).to include('### 30th: (16 working days before the 22nd)')
         expect(content).to include('### 1st: (15 working days before the 22nd)')
         expect(content).to include('### Anytime between 1st (15 working days before the 22nd) and 16th (4 working days before the 22nd)')
         expect(content).to include('### 11th: (7 working days before the 22nd)')
