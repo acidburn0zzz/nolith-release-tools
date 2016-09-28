@@ -90,7 +90,6 @@ release to the EE version of the same release.
 1. Update the version numbers in the top-level header and introduction. There
    are three occurrences.
 1. Update the name of the `stable` branch in **Get the EE code**.
-1. Update the names of the `X-Y-stable` branches in **Update config files**.
 1. Update the version number in **Things went south?** and the name of the
    `stable` branch in **Revert the code to the previous version**.
 
