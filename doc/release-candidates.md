@@ -66,7 +66,7 @@ will be merged into GitLab EE.
 1. Ensure the `gitlab-workhorse` version in **Update gitlab-workhorse** matches
    the [required version][GITLAB_WORKHORSE_VERSION].
 1. Update the names of the `X-Y-stable` branches in **Update configuration
-   files**. There are seven occurrences.
+   files**. There are eight occurrences.
 1. Update references to the "previous version" in **Things went south?** and the
    link to the previous guide.
 1. Add any special instructions specific to this version. For example, maybe
