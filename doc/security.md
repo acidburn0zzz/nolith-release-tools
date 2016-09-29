@@ -16,7 +16,22 @@ concerning a release, and he or she should consult with the GitLab development
 team as well as any applicable security experts, such as the person disclosing
 the issue.
 
-## Process
+## Backporting
+
+For medium-level security issues, we may consider backporting to the previous
+two monthly releases (e.g. 8.8 and 8.9 if 8.10 is released), but this will
+be decided on a case-by-case basis in consultation with the rest of the GitLab
+development team.
+
+For very serious security issues, there is
+[precedent](https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/)
+to backport security fixes to even more monthly releases of GitLab. This again
+will be decided on a case-by-case basis.
+
+If a security fix warrants backporting to previous releases, doing a single blog
+post that mentions all of the patches at once is acceptable.
+
+## Overall process
 
 Follow the standard [patch release process](patch.md#process), with some
 additional considerations:
@@ -33,20 +48,60 @@ additional considerations:
 [version.gitlab.com]: https://version.gitlab.com/
 [publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
 
-## Backporting
+## Technical process
 
-For medium-level security issues, we may consider backporting to the previous
-two monthly releases (e.g. 8.8 and 8.9 if 8.10 is released), but this will
-be decided on a case-by-case basis in consultation with the rest of the GitLab
-development team.
+### Before the release
 
-For very serious security issues, there is
-[precedent](https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/)
-to backport security fixes to even more monthly releases of GitLab. This again
-will be decided on a case-by-case basis.
+When preparing a security release, the most important thing is to **always work
+with the `dev` remote**:
 
-If a security fix warrants backporting to previous releases, doing a single blog
-post that mentions all of the patches at once is acceptable.
+- Merge requests that fix CE security issues should be submitted on
+  https://dev.gitlab.org/gitlab/gitlabhq against the
+  [`security` branch](https://dev.gitlab.org/gitlab/gitlabhq/tree/security)
+
+- Merge requests that fix EE security issues should be submitted on
+  https://dev.gitlab.org/gitlab/gitlab-ee against the
+  [`security` branch](https://dev.gitlab.org/gitlab/gitlab-ee/tree/security)
+
+### About the security branch
+
+The `security` branch is "parallel" to `master` and ensure no one inadvertedly
+exposes security fixes on GitLab.com, since the `security` -> `master` merge is
+a manual and conscious operation.
+
+`master` can and should be merged frequently to `security`, but `security` can
+only be merged once all the security fixes it contains are released as part of
+official releases (and possibly backports).
+
+### Cherry-picking
+
+As usual cherry-pick the merge request commits you need, but this time **push to
+`dev` only**:
+
+```shell
+$ git push dev X-Y-stable
+```
+
+### Merging CE stable into EE stable
+
+To merge CE into EE stable, you can either add `dev/gitlabhq` as a new remote or
+fetch the remote and reference it in the merge with `FETCH_HEAD`, and remember
+to **push to `dev` only**:
+
+```shell
+$ git fetch git@dev.gitlab.org:gitlab/gitlabhq.git X-Y-stable
+$ git merge --no-ff FETCH_HEAD X-Y-stable-ee
+$ git push dev X-Y-stable-ee
+```
+
+**Note:** Please change `FETCH_HEAD` to `dev/X-Y-stable` in the commit message so it's
+obvious what was the merge remotes & branches when viewing the history.
+
+### After the release
+
+After the packages are built and announced on our blog, you can safely merge the
+`security` branches to their `master` counterparts and sync `master` to all the
+remotes.
 
 ---
 
