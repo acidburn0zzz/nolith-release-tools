@@ -84,9 +84,10 @@ $ git push dev X-Y-stable
 
 ### Merging CE stable into EE stable
 
-To merge CE into EE stable, you can either add `dev/gitlabhq` as a new remote or
-fetch the remote and reference it in the merge with `FETCH_HEAD`, and remember
-to **push to `dev` only**:
+To merge CE into EE stable, you can either add
+https://dev.gitlab.org/gitlab/gitlabhq.git as a new remote or fetch the remote
+and reference it in the merge with `FETCH_HEAD`, and remember to **push to `dev`
+only**:
 
 ```shell
 $ git fetch git@dev.gitlab.org:gitlab/gitlabhq.git X-Y-stable
@@ -99,14 +100,11 @@ obvious what was the merge remotes & branches when viewing the history.
 
 ### About the blog post
 
-Create the blog post merge request only once all the [EE packages are built and
-available], and all the [CE packages are built and available].
+Create the blog post merge request **only once all the EE and CE packages are built and
+available on https://packages.gitlab.com/gitlab.
 
 Before that, you can share the draft either in a private snippet, a confidential
 issue or by any other secure and private means.
-
-[EE packages are built and available]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[CE packages are built and available]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
 ### After the release
 
