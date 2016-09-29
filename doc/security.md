@@ -97,6 +97,17 @@ $ git push dev X-Y-stable-ee
 **Note:** Please change `FETCH_HEAD` to `dev/X-Y-stable` in the commit message so it's
 obvious what was the merge remotes & branches when viewing the history.
 
+### About the blog post
+
+Create the blog post merge request only once all the [EE packages are built and
+available], and all the [CE packages are built and available].
+
+Before that, you can share the draft either in a private snippet, a confidential
+issue or by any other secure and private means.
+
+[EE packages are built and available]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE packages are built and available]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+
 ### After the release
 
 After the packages are built and announced on our blog, you can safely merge the
