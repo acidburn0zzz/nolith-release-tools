@@ -108,9 +108,13 @@ issue or by any other secure and private means.
 
 ### After the release
 
-After the packages are built and announced on our blog, you can safely merge the
-`security` branches to their `master` counterparts and sync `master` to all the
-remotes.
+After the packages are built and announced on our blog, you **should not** merge
+the `security` branches to their `master` counterparts but only cherry-pick the
+security merge commits that are already part of a tagged (and announced) release
+to `master` and sync `master` to all the remotes.
+
+This is because new security fixes can be merged to `security` between the time
+you prepare a security release and the time you're done with it.
 
 ---
 
