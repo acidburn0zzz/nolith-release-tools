@@ -92,7 +92,7 @@ describe Release::GitlabCeRelease do
               expect(Dir.chdir(repo_path) { `git tag -l`.strip }).to match eq 'v10.1.0-ee'
             else
               expect(File.open(File.join(repo_path, 'VERSION')).read.strip).to eq '10.2.0-pre'
-              expect(Dir.chdir(repo_path) { `git describe --tag`.strip }).to match /\Av10\.2\.0\.pre/
+              expect(Dir.chdir(repo_path) { `git describe --tag`.strip }).to eq 'v10.2.0.pre'
             end
 
             # Omnibus-GitLab expectations
