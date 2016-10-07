@@ -132,7 +132,7 @@ Ensure that CE's `master` branch is merged into EE's. See the [Merge GitLab CE
 into EE](merge-ce-into-ee.md#merging-ce-master-into-ee-master) guide.
 
 **Note:** Make sure that a related Merge Request doesn't exist by
-searching (open Merge Requests with the `CE upstream` label)[https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?scope=all&state=opened&utf8=%E2%9C%93&label_name%5B%5D=CE+upstream]
+searching [open Merge Requests with the `CE upstream` label](https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?scope=all&state=opened&utf8=%E2%9C%93&label_name%5B%5D=CE+upstream)
 on the `gitlab-ee` project and make sure you have set the same label for your CE->EE masters merges.
 
 #### Step 2: Bring changes to the `stable` branches
