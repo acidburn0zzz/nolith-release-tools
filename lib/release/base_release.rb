@@ -46,7 +46,7 @@ module Release
     def execute_release
       bump_versions
       push_ref('branch', stable_branch)
-      create_tag
+      create_tag(tag)
       push_ref('tag', tag)
     end
 
@@ -75,7 +75,7 @@ module Release
       repository.commit(file_name, "Update #{file_name} to #{version}")
     end
 
-    def create_tag
+    def create_tag(tag)
       puts "Create git tag #{tag}...".colorize(:green)
       repository.create_tag(tag)
     end
