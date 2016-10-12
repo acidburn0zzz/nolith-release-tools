@@ -65,6 +65,8 @@ module Changelog
 
       remove_unreleased_blobs
       update_changelog
+
+      create_commit
     end
 
     # Checkout the specified branch and update `ref`, `commit`, `tree`, and
@@ -92,15 +94,13 @@ module Changelog
 
       changelog_oid = repository.write(updater.insert(generate_markdown), :blob)
       index.add(path: changelog_file, oid: changelog_oid, mode: 0100644)
-
-      create_commit(changelog_file)
     end
 
     def generate_markdown
       MarkdownGenerator.new(version, unreleased_blobs).to_s
     end
 
-    def create_commit(changelog_file)
+    def create_commit
       Rugged::Commit.create(repository, {
         tree: index.write_tree(repository),
         message: "Update #{changelog_file} for #{version}\n\n[ci skip]",
