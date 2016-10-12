@@ -38,10 +38,10 @@ module Changelog
 
       if version.ee?
         @changelog_file  = 'CHANGELOG-EE.md'
-        @unreleased_path = 'CHANGES/unreleased-ee/'
+        @unreleased_path = 'changelogs/unreleased-ee/'
       else
         @changelog_file  = 'CHANGELOG.md'
-        @unreleased_path = 'CHANGES/unreleased/'
+        @unreleased_path = 'changelogs/unreleased/'
       end
 
       perform_release(version.stable_branch)
@@ -136,7 +136,7 @@ module Changelog
     end
 
     def on_stable?
-      repository.head.canonical_name.end_with?('-stable', 'stable-ee')
+      repository.head.canonical_name.end_with?('-stable')#, 'stable-ee')
     end
   end
 end

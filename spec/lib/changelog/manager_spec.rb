@@ -29,7 +29,7 @@ describe Changelog::Manager do
     let(:release) { Version.new('8.10.5') }
 
     let(:changelog_file)  { 'CHANGELOG.md' }
-    let(:unreleased_path) { 'CHANGES/unreleased/' }
+    let(:unreleased_path) { 'changelogs/unreleased/' }
 
     describe 'on stable' do
       before do
@@ -44,8 +44,7 @@ describe Changelog::Manager do
         commit = repository.last_commit
         tree   = commit.tree
 
-        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
-          .to be_empty
+        expect(changelog_blobs(tree, path: unreleased_path)).to be_empty
       end
 
       it 'adds a sensible commit message' do
@@ -56,15 +55,19 @@ describe Changelog::Manager do
 
       it 'commits the updated Markdown file' do
         patch = patch_for_file(changelog_file)
+        delta = patch.delta
 
         expect(patch.additions).to eq 4
+        expect(delta).to be_modified
       end
 
       it 'commits the removal of the YAML files' do
-        file = File.join(unreleased_path, "bugfix-for-cherry-picking.yml")
+        file = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
         patch = patch_for_file(file)
+        delta = patch.delta
 
         expect(patch.deletions).to eq 3
+        expect(delta).to be_deleted
       end
     end
 
@@ -81,8 +84,11 @@ describe Changelog::Manager do
         commit = repository.last_commit
         tree   = commit.tree
 
-        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
-          .to match_array(%W(feature-a.yml feature-b.yml))
+        blob_names = changelog_blobs(tree, path: unreleased_path)
+          .map { |blob| blob[:name] }
+
+        # Verify fix-cycle-analytics-commits.yml was removed
+        expect(blob_names).to contain_exactly('group-specific-lfs.yml')
       end
 
       it 'adds a sensible commit message' do
@@ -93,20 +99,24 @@ describe Changelog::Manager do
 
       it 'commits the updated Markdown file' do
         patch = patch_for_file(changelog_file)
+        delta = patch.delta
 
         expect(patch.additions).to eq 4
+        expect(delta).to be_modified
       end
 
       it 'commits the removal of the YAML files' do
-        file = File.join(unreleased_path, "bugfix-for-cherry-picking.yml")
+        file = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
         patch = patch_for_file(file)
+        delta = patch.delta
 
         expect(patch.deletions).to eq 3
+        expect(delta).to be_deleted
       end
     end
   end
 
-  describe '#release', 'for EE' do
+  xdescribe '#release', 'for EE' do
     let(:release) { Version.new('8.10.5-ee') }
 
     let(:changelog_file)  { 'CHANGELOG-EE.md' }
@@ -188,10 +198,7 @@ describe Changelog::Manager do
   end
 
   def reset_fixture!
-    %W(master master-ee #{release.stable_branch}).each do |branch|
-      repository.checkout(branch)
-      repository.reset("upstream/#{branch}", :hard)
-    end
+    ChangelogFixture.new.rebuild_fixture!
   end
 
   def patch_for_file(filename, commit: repository.last_commit)
