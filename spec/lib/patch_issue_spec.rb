@@ -46,7 +46,7 @@ describe PatchIssue do
       content = issue.description
 
       expect(content).to include 'In the [8.3 Regressions](https://example.com) issue'
-      expect(content).to include 'Add the following notice'
+      expect(content).to include '`8.3.1` has been tagged, further fixes will go into `8.3.2` as necessary.'
     end
   end
 
