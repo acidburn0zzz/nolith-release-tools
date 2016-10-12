@@ -36,22 +36,29 @@ module Changelog
     def release(version, master_branch: 'master')
       @version = version
 
-      if version.ee?
-        @changelog_file  = 'CHANGELOG-EE.md'
-        @unreleased_path = 'changelogs/unreleased-ee/'
-      else
-        @changelog_file  = 'CHANGELOG.md'
-        @unreleased_path = 'changelogs/unreleased/'
-      end
-
       perform_release(version.stable_branch)
       perform_release(master_branch)
     end
 
     private
 
-    # TODO (rspeicher): Hate it hate it hate it
-    attr_reader :changelog_file, :unreleased_path
+    def changelog_file
+      @changelog_file ||=
+        if version.ee?
+          'CHANGELOG-EE.md'
+        else
+          'CHANGELOG.md'
+        end
+    end
+
+    def unreleased_path
+      @unreleased_path ||=
+        if version.ee?
+          'changelogs/unreleased-ee/'
+        else
+          'changelogs/unreleased/'
+        end
+    end
 
     def perform_release(branch_name)
       checkout(branch_name)
@@ -74,7 +81,7 @@ module Changelog
     end
 
     def remove_unreleased_blobs
-      index.remove_all(unreleased_blobs(path: unreleased_path).collect(&:path))
+      index.remove_all(unreleased_blobs.collect(&:path))
     end
 
     # Updates CHANGELOG_FILE with the Markdown built from the individual
@@ -90,7 +97,7 @@ module Changelog
     end
 
     def generate_markdown
-      MarkdownGenerator.new(version, unreleased_blobs(path: unreleased_path)).to_s
+      MarkdownGenerator.new(version, unreleased_blobs).to_s
     end
 
     def create_commit(changelog_file)
@@ -107,14 +114,11 @@ module Changelog
     # Build an Array of Changelog::Blob objects, with each object representing a
     # single unreleased changelog entry file.
     #
-    # path - Path String relative to repository root containing unreleased
-    #        changelog entries
-    #
     # Raises RuntimeError if the currently-checked-out branch is not a stable
     # branch, or if the repository tree could not be read.
     #
     # Returns an Array
-    def unreleased_blobs(path:)
+    def unreleased_blobs
       return @unreleased_blobs if defined?(@unreleased_blobs)
 
       raise "Cannot gather changelog blobs on a non-stable branch." unless on_stable?
@@ -123,8 +127,8 @@ module Changelog
       @unreleased_blobs = []
 
       tree.walk(:preorder) do |root, entry|
-        next unless root == path
-        next if entry[:name] == '.gitkeep'
+        next unless root == unreleased_path
+        next unless entry[:name].end_with?('.yml')
 
         @unreleased_blobs << Blob.new(
           File.join(root, entry[:name]),
