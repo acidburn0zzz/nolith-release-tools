@@ -63,9 +63,8 @@ module Changelog
     def perform_release(branch_name)
       checkout(branch_name)
 
-      remove_unreleased_blobs
       update_changelog
-
+      remove_unreleased_blobs
       create_commit
     end
 
@@ -82,22 +81,19 @@ module Changelog
       @index.read_tree(commit.tree)
     end
 
-    def remove_unreleased_blobs
-      index.remove_all(unreleased_blobs.collect(&:path))
-    end
-
-    # Updates CHANGELOG_FILE with the Markdown built from the individual
+    # Updates `changelog_file` with the Markdown built from the individual
     # unreleased changelog entries.
     def update_changelog
-      blob = repository.blob_at(repository.head.target_id, changelog_file)
-      updater = Updater.new(blob.content, version)
+      blob     = repository.blob_at(repository.head.target_id, changelog_file)
+      updater  = Updater.new(blob.content, version)
+      markdown = MarkdownGenerator.new(version, unreleased_blobs).to_s
 
-      changelog_oid = repository.write(updater.insert(generate_markdown), :blob)
+      changelog_oid = repository.write(updater.insert(markdown), :blob)
       index.add(path: changelog_file, oid: changelog_oid, mode: 0100644)
     end
 
-    def generate_markdown
-      MarkdownGenerator.new(version, unreleased_blobs).to_s
+    def remove_unreleased_blobs
+      index.remove_all(unreleased_blobs.collect(&:path))
     end
 
     def create_commit
