@@ -1,6 +1,8 @@
 require 'fileutils'
 require 'rugged'
 
+require 'changelog/config'
+
 # Builds a fixture repository used in testing Changelog auto-generation
 # functionality
 class ChangelogFixture
@@ -37,6 +39,10 @@ class ChangelogFixture
 
   private
 
+  def config
+    Changelog::Config
+  end
+
   def default_fixture_path
     File.expand_path("../fixtures/repositories/changelog", __dir__)
   end
@@ -45,9 +51,9 @@ class ChangelogFixture
   def build_master
     # Add a CHANGELOG.md file with example version headers and entries
     commit_blob(
-      path: 'CHANGELOG.md',
-      content: read_fixture('CHANGELOG.md'),
-      message: "Add basic CHANGELOG.md"
+      path: config.ce_log,
+      content: read_fixture(config.ce_log),
+      message: "Add basic #{config.ce_log}"
     )
 
     # Add a VERSION file containing `8.10.0-pre`
@@ -57,11 +63,11 @@ class ChangelogFixture
       message: "Update VERSION to 8.10.0-pre"
     )
 
-    # Add `changelogs/unreleased/.gitkeep`
+    # Add the changelog blob structure
     commit_blob(
-      path: 'changelogs/unreleased/.gitkeep',
+      path: File.join(config.ce_path, '.gitkeep'),
       content: '',
-      message: 'Add changelogs/unreleased/.gitkeep'
+      message: "Add #{File.join(config.ce_path, '.gitkeep')}"
     )
   end
 
@@ -75,10 +81,10 @@ class ChangelogFixture
     feature_branch = repository.branches.create(feature_name, 'HEAD')
     repository.checkout(feature_branch.name)
 
-    # Commit `changelogs/unreleased/group-specific-lfs.yml`
+    # Commit the changelog entry
     commit_blob(
-      path: "changelogs/unreleased/#{feature_name}.yml",
-      content: read_fixture("#{feature_name}.yml"),
+      path: File.join(config.ce_path, "#{feature_name}#{config.extension}"),
+      content: read_fixture("#{feature_name}#{config.extension}"),
       message: "Added group-specific settings for LFS."
     )
 
@@ -123,10 +129,10 @@ class ChangelogFixture
     bugfix_branch = repository.branches.create(bugfix_name, 'HEAD')
     repository.checkout(bugfix_branch.name)
 
-    # Commit `changelogs/unreleased/fix-cycle-analytics-commits.yml`
+    # Commit the changelog entry
     commit_blob(
-      path: "changelogs/unreleased/#{bugfix_name}.yml",
-      content: read_fixture("#{bugfix_name}.yml"),
+      path: File.join(config.ce_path, "#{bugfix_name}#{config.extension}"),
+      content: read_fixture("#{bugfix_name}#{config.extension}"),
       message: 'Fix an issue with the "Commits" section of the cycle analytics summary.'
     )
 

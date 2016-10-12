@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+require 'changelog/config'
 require 'changelog/manager'
 require 'version'
 
@@ -26,10 +27,11 @@ describe Changelog::Manager do
   end
 
   describe '#release', 'for CE' do
+    let(:config)  { Changelog::Config }
     let(:release) { Version.new('8.10.5') }
 
-    let(:changelog_file)  { 'CHANGELOG.md' }
-    let(:unreleased_path) { 'changelogs/unreleased/' }
+    let(:changelog_file)  { config.ce_log }
+    let(:unreleased_path) { config.ce_path }
 
     describe 'on stable' do
       before do
@@ -217,8 +219,8 @@ describe Changelog::Manager do
     files = []
 
     tree.walk_blobs do |root, entry|
-      next unless root.start_with?(path)
-      next if entry[:name] == '.gitkeep'
+      next unless root == "#{path}/"
+      next unless entry[:name].end_with?(Changelog::Config.extension)
 
       files << entry
     end

@@ -1,6 +1,7 @@
 require 'rugged'
 
 require_relative 'blob'
+require_relative 'config'
 require_relative 'markdown_generator'
 require_relative 'updater'
 
@@ -43,21 +44,11 @@ module Changelog
     private
 
     def changelog_file
-      @changelog_file ||=
-        if version.ee?
-          'CHANGELOG-EE.md'
-        else
-          'CHANGELOG.md'
-        end
+      @changelog_file ||= Config.log(ee: version.ee?)
     end
 
     def unreleased_path
-      @unreleased_path ||=
-        if version.ee?
-          'changelogs/unreleased-ee/'
-        else
-          'changelogs/unreleased/'
-        end
+      @unreleased_path ||= Config.path(ee: version.ee?)
     end
 
     def perform_release(branch_name)
@@ -123,8 +114,8 @@ module Changelog
       @unreleased_blobs = []
 
       tree.walk(:preorder) do |root, entry|
-        next unless root == unreleased_path
-        next unless entry[:name].end_with?('.yml')
+        next unless root == "#{unreleased_path}/"
+        next unless entry[:name].end_with?(Config.extension)
 
         @unreleased_blobs << Blob.new(
           File.join(root, entry[:name]),
