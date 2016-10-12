@@ -45,7 +45,8 @@ describe PatchIssue do
         and_return(double(title: '8.3 Regressions', url: 'https://example.com'))
       content = issue.description
 
-      expect(content).to include "Add patch notice to [8.3 Regressions](https://example.com)"
+      expect(content).to include 'In the [8.3 Regressions](https://example.com) issue'
+      expect(content).to include 'Add the following notice'
     end
   end
 

@@ -14,11 +14,6 @@
       ```sh
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
-- [ ] Add patch notice to [<%= regression_issue.title %>](<%= regression_issue.url %>):
-
-      ```
-      `<%= version %>` has been tagged, further fixes will go into `<%= version.next_patch %>` as necessary.
-      ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
 - [ ] In `#infrastructure`:
 
@@ -39,6 +34,13 @@
       ```
       GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES
       ```
+- In the [<%= regression_issue.title %>](<%= regression_issue.url %>) issue:
+  - [ ] Add the following notice:
+
+      ```
+      `<%= version %>` has been tagged, further fixes will go into `<%= version.next_patch %>` as necessary.
+      ```
+  - [ ] Remove notes for the regressions fixed by version `<%= version %>`
 - [ ] Add [`ce/<%= version.tag %>` CHANGELOG][ce-tag-changelog] items to [`ce/master` CHANGELOG][ce-master-changelog]
 - [ ] Add [`ee/<%= version.tag(ee: true) %>` CHANGELOG-EE][ee-tag-changelog] items to [`ee/master` CHANGELOG-EE][ee-master-changelog]
 - [ ] Add [`omnibus-gitlab/<%= version.tag %>+ee.0` CHANGELOG][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG][omnibus-master-changelog]

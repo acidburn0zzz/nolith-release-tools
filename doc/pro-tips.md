@@ -91,30 +91,9 @@ isn't [100% fool-proof].
 ## Update the Regression Issue
 
 The [regressions issue](rake-tasks.md#regression_issueversion) is your overview
-of the release from the first RC up through any patch releases. It can be
-helpful to update any comments as they are addressed so you're not constantly
-re-checking things that have already been fixed and merged.
-
-A "best practice" we've developed is editing the notes to reflect their status
-as they are addressed. For example, a regression note might look like this after
-being reported:
-
-```text
-#3531 - User profile pages are timing out - Fix in !1234
-```
-
-After being addressed, you might edit it to look like this:
-
-```text
-~~#3531 - User profile pages are timing out - Fix in !1234~~
-
-**rspeicher:** Merged, to be included in RC2.
-```
-
-The strikethrough formatting makes it easier to scan through the list to find
-issues that still need to be addressed, and the added note from the release
-manager (**rspeicher**, in this case) gives anyone following the issue a clear
-indication of when the fix will be released.
+of the regressions issues that are still not addressed in the current version.
+After each new version (RC, stable or patches), you should delete the notes for
+regressions that are fixed and released.
 
 ## Use a clipboard history or text expander app
 
