@@ -28,7 +28,9 @@ class ChangelogFixture
     @repository = Rugged::Repository.init_at(fixture_path)
 
     build_master
-    stable_branch = build_stable_branch(Version.new('8.10.0'))
+
+    stable_ce_branch = build_stable_branch(Version.new('8.10.0'))
+    stable_ee_branch = build_stable_branch(Version.new('8.10.0-ee'))
 
     _feature_merge = merge_branch_with_changelog_entry(
       changelog_path: config.ce_path,
@@ -38,8 +40,15 @@ class ChangelogFixture
       changelog_path: config.ce_path,
       changelog_name: 'fix-cycle-analytics-commits'
     )
+    ee_merge = merge_branch_with_changelog_entry(
+      changelog_path: config.ee_path,
+      changelog_name: 'protect-branch-missing-param'
+    )
 
-    cherry_pick_to_branch(stable_branch, sha: bugfix_merge)
+    cherry_pick_to_branch(stable_ce_branch, sha: bugfix_merge)
+
+    cherry_pick_to_branch(stable_ee_branch, sha: bugfix_merge)
+    cherry_pick_to_branch(stable_ee_branch, sha: ee_merge)
 
     repository.checkout('master')
   end

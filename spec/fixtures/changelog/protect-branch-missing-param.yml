@@ -1,0 +1,3 @@
+---
+title: "Fix bug when protecting a branch due to missing URL parameter in request"
+id: 760
