@@ -5,6 +5,8 @@ require 'changelog/manager'
 require 'version'
 
 describe Changelog::Manager do
+  include RuggedMatchers
+
   let(:fixture)    { File.expand_path('../../fixtures/repositories/changelog', __dir__) }
   let(:repository) { Rugged::Repository.new(fixture) }
 
@@ -42,34 +44,25 @@ describe Changelog::Manager do
         repository.checkout(release.stable_branch)
       end
 
-      it 'removes released changelog YAML files' do
-        commit = repository.last_commit
-        tree   = commit.tree
+      it 'updates the changelog file' do
+        expect(repository.last_commit).to have_modified(changelog_file)
+      end
 
-        expect(changelog_blobs(tree, path: unreleased_path)).to be_empty
+      it 'removes only the changelog files picked into stable' do
+        picked   = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
+        unpicked = File.join(unreleased_path, 'group-specific-lfs.yml')
+
+        commit = repository.last_commit
+
+        aggregate_failures do
+          expect(commit).to have_deleted(picked)
+          expect(commit).not_to have_deleted(unpicked)
+        end
       end
 
       it 'adds a sensible commit message' do
-        commit = repository.last_commit
-
-        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
-      end
-
-      it 'commits the updated Markdown file' do
-        patch = patch_for_file(changelog_file)
-        delta = patch.delta
-
-        expect(patch.additions).to eq 4
-        expect(delta).to be_modified
-      end
-
-      it 'commits the removal of the YAML files' do
-        file = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
-        patch = patch_for_file(file)
-        delta = patch.delta
-
-        expect(patch.deletions).to eq 3
-        expect(delta).to be_deleted
+        expect(repository.last_commit.message)
+          .to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
       end
     end
 
@@ -82,38 +75,25 @@ describe Changelog::Manager do
         repository.checkout('master')
       end
 
-      it 'removes released changelog YAML files' do
+      it 'updates the changelog file' do
+        expect(repository.last_commit).to have_modified(changelog_file)
+      end
+
+      it 'removes only the changelog files picked into stable' do
+        picked   = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
+        unpicked = File.join(unreleased_path, 'group-specific-lfs.yml')
+
         commit = repository.last_commit
-        tree   = commit.tree
 
-        blob_names = changelog_blobs(tree, path: unreleased_path)
-          .map { |blob| blob[:name] }
-
-        # Verify fix-cycle-analytics-commits.yml was removed
-        expect(blob_names).to contain_exactly('group-specific-lfs.yml')
+        aggregate_failures do
+          expect(commit).to have_deleted(picked)
+          expect(commit).not_to have_deleted(unpicked)
+        end
       end
 
       it 'adds a sensible commit message' do
-        commit = repository.last_commit
-
-        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
-      end
-
-      it 'commits the updated Markdown file' do
-        patch = patch_for_file(changelog_file)
-        delta = patch.delta
-
-        expect(patch.additions).to eq 4
-        expect(delta).to be_modified
-      end
-
-      it 'commits the removal of the YAML files' do
-        file = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
-        patch = patch_for_file(file)
-        delta = patch.delta
-
-        expect(patch.deletions).to eq 3
-        expect(delta).to be_deleted
+        expect(repository.last_commit.message)
+          .to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
       end
     end
   end
