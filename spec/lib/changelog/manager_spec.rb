@@ -9,6 +9,7 @@ describe Changelog::Manager do
 
   let(:fixture)    { File.expand_path('../../fixtures/repositories/changelog', __dir__) }
   let(:repository) { Rugged::Repository.new(fixture) }
+  let(:config)     { Changelog::Config }
 
   describe 'initialize' do
     it 'accepts a path String' do
@@ -29,29 +30,25 @@ describe Changelog::Manager do
   end
 
   describe '#release', 'for CE' do
-    let(:config)  { Changelog::Config }
-    let(:release) { Version.new('8.10.5') }
-
-    let(:changelog_file)  { config.ce_log }
-    let(:unreleased_path) { config.ce_path }
+    let(:version) { Version.new('8.10.5') }
 
     let(:master) { repository.branches['master'] }
-    let(:stable) { repository.branches[release.stable_branch] }
+    let(:stable) { repository.branches[version.stable_branch] }
 
     before do
       reset_fixture!
 
-      described_class.new(repository).release(release)
+      described_class.new(repository).release(version)
     end
 
     it 'updates the changelog file' do
-      expect(master.target).to have_modified(changelog_file)
-      expect(stable.target).to have_modified(changelog_file)
+      expect(master.target).to have_modified(config.ce_log)
+      expect(stable.target).to have_modified(config.ce_log)
     end
 
     it 'removes only the changelog files picked into stable' do
-      picked   = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
-      unpicked = File.join(unreleased_path, 'group-specific-lfs.yml')
+      picked   = File.join(config.ce_path, 'fix-cycle-analytics-commits.yml')
+      unpicked = File.join(config.ce_path, 'group-specific-lfs.yml')
 
       aggregate_failures do
         expect(master.target).to have_deleted(picked)
@@ -64,7 +61,7 @@ describe Changelog::Manager do
     end
 
     it 'adds a sensible commit message' do
-      message = "Update #{changelog_file} for #{release}\n\n[ci skip]"
+      message = "Update #{config.ce_log} for #{version}\n\n[ci skip]"
 
       aggregate_failures do
         expect(master.target.message).to eq(message)
@@ -73,83 +70,38 @@ describe Changelog::Manager do
     end
   end
 
-  xdescribe '#release', 'for EE' do
-    let(:release) { Version.new('8.10.5-ee') }
+  describe '#release', 'for EE' do
+    let(:version) { Version.new('8.10.5-ee') }
 
-    let(:changelog_file)  { 'CHANGELOG-EE.md' }
-    let(:unreleased_path) { 'CHANGES/unreleased-ee/' }
+    let(:master) { repository.branches['master'] }
+    let(:stable) { repository.branches[version.stable_branch] }
 
-    describe 'on stable' do
-      before do
-        reset_fixture!
+    before do
+      reset_fixture!
 
-        described_class.new(repository).release(release, master_branch: 'master-ee')
+      described_class.new(repository).release(version)
+    end
 
-        repository.checkout(release.stable_branch)
-      end
+    it 'updates the changelog file' do
+      expect(master.target).to have_modified(config.ee_log)
+      expect(stable.target).to have_modified(config.ee_log)
+    end
 
-      it 'removes released changelog YAML files' do
-        commit = repository.last_commit
-        tree   = commit.tree
+    it 'removes only the changelog files picked into stable' do
+      picked   = File.join(config.ee_path, 'protect-branch-missing-param.yml')
 
-        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
-          .to be_empty
-      end
-
-      it 'adds a sensible commit message' do
-        commit = repository.last_commit
-
-        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
-      end
-
-      it 'commits the updated Markdown file' do
-        patch = patch_for_file("#{changelog_file}")
-
-        expect(patch.additions).to eq 4
-      end
-
-      it 'commits the removal of the YAML files' do
-        file = File.join(unreleased_path, "ee-bugfix-for-cherry-picking.yml")
-        patch = patch_for_file(file)
-
-        expect(patch.deletions).to eq 3
+      aggregate_failures do
+        expect(master.target).to have_deleted(picked)
+        expect(stable.target).to have_deleted(picked)
       end
     end
 
-    describe 'on master' do
-      before do
-        reset_fixture!
+    it 'adds a sensible commit message' do
+      message = "Update #{config.ee_log} for #{version}\n\n[ci skip]"
 
-        described_class.new(repository).release(release, master_branch: 'master-ee')
-
-        repository.checkout('master-ee')
-      end
-
-      it 'removes released changelog YAML files' do
-        commit = repository.last_commit
-        tree   = commit.tree
-
-        expect(changelog_blobs(tree, path: unreleased_path).map { |blob| blob[:name] })
-          .to match_array(%w(improve-ee-docs.yml))
-      end
-
-      it 'adds a sensible commit message' do
-        commit = repository.last_commit
-
-        expect(commit.message).to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
-      end
-
-      it 'commits the updated Markdown file' do
-        patch = patch_for_file(changelog_file)
-
-        expect(patch.additions).to eq 4
-      end
-
-      it 'commits the removal of the YAML files' do
-        file = File.join(unreleased_path, "ee-bugfix-for-cherry-picking.yml")
-        patch = patch_for_file(file)
-
-        expect(patch.deletions).to eq 3
+      aggregate_failures do
+        expect(master.target.message).to eq(message)
+        expect(stable.target.message).to eq(message)
       end
     end
   end
