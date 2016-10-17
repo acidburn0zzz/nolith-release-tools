@@ -6,13 +6,21 @@ require_relative 'markdown_generator'
 require_relative 'updater'
 
 module Changelog
-  # Manager collects the unreleased changelog entries in a Version's stable
-  # branch, converts them into Markdown, removes the individual files from both
-  # the stable and master branches, and updates the global CHANGELOG Markdown
-  # file with the changelog for that version.
+  # Manager collects the unreleased changelog entries from a Version's stable
+  # branch, and then performs the following actions:
+  #
+  # 1. Compiles their contents into Markdown, updating the overall changelog
+  #    document(s).
+  # 2. Removes them from the repository.
+  # 3. Commits the changes.
+  #
+  # These steps are performed on both the stable _and_ the `master` branch,
+  # keeping them in sync.
+  #
+  # Because `master` is never merged into a `stable` branch, we aren't concerned
+  # with the commits differing.
   class Manager
     attr_reader :repository, :version
-    attr_reader :ref, :commit, :tree, :index
 
     # repository - Rugged::Repository object or String path to repository
     def initialize(repository)
@@ -26,14 +34,6 @@ module Changelog
       end
     end
 
-    # Given a Version, this method will perform the following actions on both
-    # that version's respective `stable` branch and on `master`:
-    #
-    # 1. Collect a list of YAML files in `unreleased_path`
-    # 2. Remove them from the repository
-    # 3. Compile their contents into Markdown
-    # 4. Update `changelog_file` with the compiled Markdown
-    # 5. Commit
     def release(version, master_branch: 'master')
       @version = version
 
@@ -42,6 +42,8 @@ module Changelog
     end
 
     private
+
+    attr_reader :ref, :commit, :tree, :index
 
     def changelog_file
       @changelog_file ||= Config.log(ee: version.ee?)
