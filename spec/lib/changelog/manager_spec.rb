@@ -35,65 +35,39 @@ describe Changelog::Manager do
     let(:changelog_file)  { config.ce_log }
     let(:unreleased_path) { config.ce_path }
 
-    describe 'on stable' do
-      before do
-        reset_fixture!
+    let(:master) { repository.branches['master'] }
+    let(:stable) { repository.branches[release.stable_branch] }
 
-        described_class.new(repository).release(release)
+    before do
+      reset_fixture!
 
-        repository.checkout(release.stable_branch)
-      end
+      described_class.new(repository).release(release)
+    end
 
-      it 'updates the changelog file' do
-        expect(repository.last_commit).to have_modified(changelog_file)
-      end
+    it 'updates the changelog file' do
+      expect(master.target).to have_modified(changelog_file)
+      expect(stable.target).to have_modified(changelog_file)
+    end
 
-      it 'removes only the changelog files picked into stable' do
-        picked   = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
-        unpicked = File.join(unreleased_path, 'group-specific-lfs.yml')
+    it 'removes only the changelog files picked into stable' do
+      picked   = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
+      unpicked = File.join(unreleased_path, 'group-specific-lfs.yml')
 
-        commit = repository.last_commit
+      aggregate_failures do
+        expect(master.target).to have_deleted(picked)
+        expect(master.target).not_to have_deleted(unpicked)
 
-        aggregate_failures do
-          expect(commit).to have_deleted(picked)
-          expect(commit).not_to have_deleted(unpicked)
-        end
-      end
-
-      it 'adds a sensible commit message' do
-        expect(repository.last_commit.message)
-          .to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
+        expect(stable.target).to have_deleted(picked)
+        expect(stable.target).not_to have_deleted(unpicked)
       end
     end
 
-    describe 'on master' do
-      before do
-        reset_fixture!
+    it 'adds a sensible commit message' do
+      message = "Update #{changelog_file} for #{release}\n\n[ci skip]"
 
-        described_class.new(repository).release(release)
-
-        repository.checkout('master')
-      end
-
-      it 'updates the changelog file' do
-        expect(repository.last_commit).to have_modified(changelog_file)
-      end
-
-      it 'removes only the changelog files picked into stable' do
-        picked   = File.join(unreleased_path, 'fix-cycle-analytics-commits.yml')
-        unpicked = File.join(unreleased_path, 'group-specific-lfs.yml')
-
-        commit = repository.last_commit
-
-        aggregate_failures do
-          expect(commit).to have_deleted(picked)
-          expect(commit).not_to have_deleted(unpicked)
-        end
-      end
-
-      it 'adds a sensible commit message' do
-        expect(repository.last_commit.message)
-          .to eq("Update #{changelog_file} for #{release}\n\n[ci skip]")
+      aggregate_failures do
+        expect(master.target.message).to eq(message)
+        expect(stable.target.message).to eq(message)
       end
     end
   end
@@ -181,30 +155,5 @@ describe Changelog::Manager do
 
   def reset_fixture!
     ChangelogFixture.new.rebuild_fixture!
-  end
-
-  def patch_for_file(filename, commit: repository.last_commit)
-    diff = commit.diff(reverse: true)
-    patches = diff.patches
-
-    patches.reject! { |p| p.changes.zero? }
-    patch = patches.detect do |p|
-      p.delta.old_file[:path] == filename
-    end
-
-    patch || fail("Could not find patch file for #{filename}")
-  end
-
-  def changelog_blobs(tree, path:)
-    files = []
-
-    tree.walk_blobs do |root, entry|
-      next unless root == "#{path}/"
-      next unless entry[:name].end_with?(Changelog::Config.extension)
-
-      files << entry
-    end
-
-    files
   end
 end
