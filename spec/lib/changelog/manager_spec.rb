@@ -55,10 +55,11 @@ describe Changelog::Manager do
 
       aggregate_failures do
         expect(master.target).to have_deleted(picked)
-        expect(master.target).not_to have_deleted(unpicked)
+        expect(master.target).to have_blob(unpicked)
 
         expect(stable.target).to have_deleted(picked)
         expect(stable.target).not_to have_deleted(unpicked)
+        expect(stable.target).not_to have_blob(unpicked)
       end
     end
 
