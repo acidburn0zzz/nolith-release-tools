@@ -15,8 +15,8 @@ module Changelog
       markdown.puts header
       markdown.puts
 
-      if version.ee? && blobs.empty?
-        markdown.puts "- No EE-specific changes."
+      if blobs.empty?
+        markdown.puts "- No changes."
       else
         blobs.each do |blob|
           markdown.puts "- #{blob.to_entry}"
@@ -25,9 +25,7 @@ module Changelog
 
       markdown.puts
 
-      markdown.rewind
-
-      markdown.read
+      markdown.string
     end
 
     private
