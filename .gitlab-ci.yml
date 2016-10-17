@@ -1,3 +1,12 @@
+before_script:
+  - apt-get update -yqqq
+  - apt-get install -yqqq --force-yes cmake
+  - which ruby
+  - ruby -v
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install --jobs $(nproc) "${FLAGS[@]}"
+  - cp .env.example .env
+
 specs:
   stage: test
   script:
