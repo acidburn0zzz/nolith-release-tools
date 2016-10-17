@@ -19,6 +19,14 @@ module Changelog
   #
   # Because `master` is never merged into a `stable` branch, we aren't concerned
   # with the commits differing.
+  #
+  # In the case of an EE release, things get slightly more complex. We perform
+  # the same steps above with the EE paths (e.g., `CHANGELOG-EE` and
+  # `changes/unreleased-ee/`), then perform them _again_ but with the CE paths
+  # (e.g., `CHANGELOG.md` and `changes/unreleased/`).
+  #
+  # This is necessary because by the time this process is performed, CE has
+  # already been merged into EE.
   class Manager
     attr_reader :repository, :version
 
@@ -34,11 +42,18 @@ module Changelog
       end
     end
 
-    def release(version, master_branch: 'master')
+    def release(version, stable_branch: version.stable_branch)
+      @unreleased_blobs = nil
       @version = version
 
-      perform_release(version.stable_branch)
-      perform_release(master_branch)
+      perform_release(stable_branch)
+      perform_release('master')
+
+      # Recurse to perform the CE release if we're on EE
+      if version.ee?
+        # NOTE: We pass the EE stable branch, but use the CE configuration!
+        release(version.to_ce, stable_branch: version.stable_branch)
+      end
     end
 
     private
@@ -46,11 +61,11 @@ module Changelog
     attr_reader :ref, :commit, :tree, :index
 
     def changelog_file
-      @changelog_file ||= Config.log(ee: version.ee?)
+      Config.log(ee: version.ee?)
     end
 
     def unreleased_path
-      @unreleased_path ||= Config.path(ee: version.ee?)
+      Config.path(ee: version.ee?)
     end
 
     def perform_release(branch_name)
@@ -100,15 +115,15 @@ module Changelog
       repository.checkout_head(strategy: :force)
     end
 
-    # Build an Array of Changelog::Blob objects, with each object representing a
-    # single unreleased changelog entry file.
+    # Build an Array of Changelog::Blob objects, each representing a single
+    # unreleased changelog entry.
     #
-    # Raises RuntimeError if the currently-checked-out branch is not a stable
-    # branch, or if the repository tree could not be read.
+    # Raises RuntimeError if the HEAD is not a stable branch, or if the
+    # repository tree could not be read.
     #
     # Returns an Array
     def unreleased_blobs
-      return @unreleased_blobs if defined?(@unreleased_blobs)
+      return @unreleased_blobs if @unreleased_blobs
 
       raise "Cannot gather changelog blobs on a non-stable branch." unless on_stable?
       raise "Cannot gather changelog blobs. Check out the stable branch first!" unless tree
@@ -129,7 +144,7 @@ module Changelog
     end
 
     def on_stable?
-      repository.head.canonical_name.end_with?('-stable')#, 'stable-ee')
+      repository.head.canonical_name.end_with?('-stable', '-stable-ee')
     end
   end
 end
