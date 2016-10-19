@@ -45,7 +45,7 @@ class Repository
 
   def commit(file, message)
     run_git %W(add #{file})
-    run_git %W(commit -m #{message})
+    run_git %W(commit --quiet -m #{message})
   end
 
   def pull_from_all_remotes(ref)
@@ -100,18 +100,18 @@ class Repository
   end
 
   def checkout_branch(branch)
-    run_git %W(checkout #{branch})
+    run_git %W(checkout --quiet #{branch})
   end
 
   def checkout_new_branch(branch, remote, base_branch: 'master')
     fetch_branch(base_branch, remote)
-    unless run_git %W(checkout -b #{branch} #{remote}/#{base_branch})
+    unless run_git %W(checkout --quiet -b #{branch} #{remote}/#{base_branch})
       raise CannotCheckoutBranchError.new(branch)
     end
   end
 
   def pull(remote, branch)
-    run_git %W(pull --depth=10 #{remote} #{branch})
+    run_git %W(pull --quiet --depth=10 #{remote} #{branch})
 
     if has_conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
