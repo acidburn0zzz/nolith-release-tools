@@ -38,7 +38,7 @@ module Release
     end
 
     def prepare_release
-      puts "Prepare repository...".colorize(:green)
+      $stdout.puts "Prepare repository...".colorize(:green)
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
     end
@@ -70,18 +70,18 @@ module Release
     end
 
     def bump_version(file_name, version)
-      puts "Update #{file_name} to #{version}...".colorize(:green)
+      $stdout.puts "Update #{file_name} to #{version}...".colorize(:green)
       repository.write_file(file_name, "#{version}\n")
       repository.commit(file_name, "Update #{file_name} to #{version}")
     end
 
     def create_tag(tag)
-      puts "Create git tag #{tag}...".colorize(:green)
+      $stdout.puts "Create git tag #{tag}...".colorize(:green)
       repository.create_tag(tag)
     end
 
     def push_ref(ref_type, ref)
-      puts "Push #{ref_type} #{ref} to all remotes...".colorize(:green)
+      $stdout.puts "Push #{ref_type} #{ref} to all remotes...".colorize(:green)
       repository.push_to_all_remotes(ref)
     end
   end
