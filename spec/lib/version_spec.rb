@@ -37,13 +37,6 @@ describe Version do
     it { expect(version('wow.1').minor).to eq(0) }
   end
 
-  describe '#patch' do
-    it { expect(version('1.2.3').patch).to eq(3) }
-    it { expect(version('1.2.2-rc1').patch).to eq(0) }
-    it { expect(version('1.2.7-ee').patch).to eq(7) }
-    it { expect(version('wow.1').patch).to eq(0) }
-  end
-
   describe '#patch?' do
     it 'is true for patch releases' do
       expect(version('1.2.3').patch?).to be_truthy
@@ -126,16 +119,16 @@ describe Version do
       expect(version('1.2.3-rc1').previous_patch).to be_nil
     end
 
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').previous_patch).to be_nil
+    end
+
     it 'returns previous patch when patch is 0' do
       expect(version('1.2.0').previous_patch).to be_nil
     end
 
     it 'returns previous patch when patch is > 0' do
       expect(version('1.2.3').previous_patch).to eq '1.2.2'
-    end
-
-    it 'returns previous patch when version is EE' do
-      expect(version('1.2.3-ee').previous_patch).to eq '1.2.2'
     end
   end
 
@@ -148,16 +141,16 @@ describe Version do
       expect(version('1.2.3-rc1').next_patch).to be_nil
     end
 
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').next_patch).to be_nil
+    end
+
     it 'returns next patch when patch is 0' do
       expect(version('1.2.0').next_patch).to eq '1.2.1'
     end
 
     it 'returns next patch when patch is > 0' do
       expect(version('1.2.3').next_patch).to eq '1.2.4'
-    end
-
-    it 'returns next patch when version is EE' do
-      expect(version('1.2.3-ee').next_patch).to eq '1.2.4'
     end
   end
 
@@ -187,6 +180,10 @@ describe Version do
       expect(version('1.2.3-rc1').previous_tag).to be_nil
     end
 
+    it 'returns nil when version is EE' do
+      expect(version('1.2.3-ee').previous_tag).to be_nil
+    end
+
     it 'returns nil when patch is 0' do
       expect(version('1.2.0').previous_tag).to be_nil
     end
@@ -197,10 +194,6 @@ describe Version do
 
     it 'returns previous EE tag when patch is > 0 and ee: true' do
       expect(version('1.2.3').previous_tag(ee: true)).to eq 'v1.2.2-ee'
-    end
-
-    it 'returns nil when version is EE and ee: false' do
-      expect(version('1.2.3-ee').previous_tag(ee: false)).to be_nil
     end
   end
 
