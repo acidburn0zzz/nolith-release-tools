@@ -18,7 +18,7 @@ class Repository
   attr_reader :path, :remotes, :canonical_remote
 
   def initialize(path, remotes)
-    puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
+    $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
     @path = path
     cleanup
     self.remotes = remotes
@@ -45,7 +45,7 @@ class Repository
 
   def commit(file, message)
     run_git %W(add #{file})
-    run_git %W(commit -m #{message})
+    run_git %W(commit --quiet -m #{message})
   end
 
   def pull_from_all_remotes(ref)
@@ -61,7 +61,7 @@ class Repository
   end
 
   def cleanup
-    puts "Removing #{path}...".colorize(:green)
+    $stdout.puts "Removing #{path}...".colorize(:green)
     FileUtils.rm_rf(path, secure: true)
   end
 
@@ -69,7 +69,7 @@ class Repository
 
   def self.run_git(args)
     args.unshift('git')
-    puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:cyan)
+    $stdout.puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:cyan)
     system(*args)
   end
 
@@ -100,18 +100,18 @@ class Repository
   end
 
   def checkout_branch(branch)
-    run_git %W(checkout #{branch})
+    run_git %W(checkout --quiet #{branch})
   end
 
   def checkout_new_branch(branch, remote, base_branch: 'master')
     fetch_branch(base_branch, remote)
-    unless run_git %W(checkout -b #{branch} #{remote}/#{base_branch})
+    unless run_git %W(checkout --quiet -b #{branch} #{remote}/#{base_branch})
       raise CannotCheckoutBranchError.new(branch)
     end
   end
 
   def pull(remote, branch)
-    run_git %W(pull --depth=10 #{remote} #{branch})
+    run_git %W(pull --quiet --depth=10 #{remote} #{branch})
 
     if has_conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
@@ -121,8 +121,8 @@ class Repository
   def push(remote, ref)
     cmd = %W(push #{remote} #{ref}:#{ref})
     if ENV['TEST']
-      puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
-      puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
+      $stdout.puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
+      $stdout.puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
       true
     else
       run_git cmd

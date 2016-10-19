@@ -24,7 +24,7 @@ def get_version(args)
   version = Version.new(args[:version])
 
   unless version.valid?
-    puts "Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z".colorize(:red)
+    $stdout.puts "Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z".colorize(:red)
     exit 1
   end
 
@@ -40,16 +40,16 @@ task :release, [:version] do |t, args|
   version = get_version(args)
 
   if skip?('ee')
-    puts 'Skipping release for EE'.colorize(:red)
+    $stdout.puts 'Skipping release for EE'.colorize(:red)
   else
-    puts 'EE release'.colorize(:blue)
+    $stdout.puts 'EE release'.colorize(:blue)
     Release::GitlabEeRelease.new("#{version}-ee").execute
   end
 
   if skip?('ce')
-    puts 'Skipping release for CE'.colorize(:red)
+    $stdout.puts 'Skipping release for CE'.colorize(:red)
   else
-    puts 'CE release'.colorize(:blue)
+    $stdout.puts 'CE release'.colorize(:blue)
     Release::GitlabCeRelease.new(version).execute
   end
 end
@@ -57,20 +57,20 @@ end
 desc "Sync master branch in remotes"
 task :sync do
   if skip?('ee')
-    puts 'Skipping sync for EE'.colorize(:yellow)
+    $stdout.puts 'Skipping sync for EE'.colorize(:yellow)
   else
     Sync.new(Remotes.ee_remotes).execute
   end
 
   if skip?('ce')
-    puts 'Skipping sync for CE'.colorize(:yellow)
+    $stdout.puts 'Skipping sync for CE'.colorize(:yellow)
   else
     Sync.new(Remotes.ce_remotes).execute
   end
 
 
   if skip?('og')
-    puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
+    $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
     Sync.new(Remotes.omnibus_gitlab_remotes).execute
   end
@@ -78,13 +78,13 @@ end
 
 def create_or_show_issue(issue)
   if issue.exists?
-    puts "--> Issue \"#{issue.title}\" already exists.".red
-    puts "    #{issue.url}"
+    $stdout.puts "--> Issue \"#{issue.title}\" already exists.".red
+    $stdout.puts "    #{issue.url}"
     exit 1
   else
     issue.create
-    puts "--> Issue \"#{issue.title}\" created.".green
-    puts "    #{issue.url}"
+    $stdout.puts "--> Issue \"#{issue.title}\" created.".green
+    $stdout.puts "    #{issue.url}"
   end
 end
 
