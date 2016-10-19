@@ -12,6 +12,10 @@ describe Changelog::Manager do
   let(:config)     { Changelog::Config }
 
   describe 'initialize' do
+    before do
+      reset_fixture!
+    end
+
     it 'accepts a path String' do
       manager = described_class.new(fixture)
 
