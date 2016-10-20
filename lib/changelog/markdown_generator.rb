@@ -18,7 +18,7 @@ module Changelog
       if entries.empty?
         markdown.puts "- No changes."
       else
-        entries.each do |entry|
+        sorted_entries.each do |entry|
           markdown.puts "- #{entry}"
         end
       end
@@ -39,6 +39,15 @@ module Changelog
         Release.next_date.strftime("%Y-%m-%d")
       else
         Date.today.strftime("%Y-%m-%d")
+      end
+    end
+
+    # Sort entries in ascending order by ID
+    #
+    # Entries without an ID are placed last
+    def sorted_entries
+      entries.sort do |a,b|
+        (a.id || 999_999) <=> (b.id || 999_999)
       end
     end
   end

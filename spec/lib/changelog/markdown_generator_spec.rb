@@ -32,19 +32,30 @@ describe Changelog::MarkdownGenerator do
       end
     end
 
-    it 'includes each entry' do
+    it 'sorts entries by their entry ID' do
       entries = [
-        double(to_s: "Change A"),
-        double(to_s: "Change B"),
-        double(to_s: "Change C")
+        double(id: 5, to_s: "Change A"),
+        double(id: 3, to_s: "Change B"),
+        double(id: 1, to_s: "Change C")
       ]
       generator = described_class.new(spy, entries)
 
       markdown = generator.to_s
 
-      expect(markdown).to match("- Change A\n")
-      expect(markdown).to match("- Change B\n")
-      expect(markdown).to match("- Change C\n")
+      expect(markdown).to match("- Change C\n- Change B\n- Change A\n")
+    end
+
+    it 'sorts entries without an ID last' do
+      entries = [
+        double(id: 5,   to_s: "Change A"),
+        double(id: nil, to_s: "Change B"),
+        double(id: 1,   to_s: "Change C")
+      ]
+      generator = described_class.new(spy, entries)
+
+      markdown = generator.to_s
+
+      expect(markdown).to match("- Change C\n- Change A\n- Change B\n")
     end
 
     it 'adds a "No changes" entry when there are no entries' do
