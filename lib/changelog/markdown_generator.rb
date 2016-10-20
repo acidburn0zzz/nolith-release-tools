@@ -35,7 +35,11 @@ module Changelog
     end
 
     def date
-      if version.patch.zero?
+      # HACK (rspeicher): `to_ce` is a workaround for unwanted behavior of
+      # `Version#patch` where it will always return 0 for an EE version. Fixing
+      # the unexpected behavior has unintended consequences for the overall
+      # release process.
+      if version.to_ce.patch.zero?
         Release.next_date.strftime("%Y-%m-%d")
       else
         Date.today.strftime("%Y-%m-%d")
