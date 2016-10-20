@@ -110,14 +110,15 @@ describe Changelog::Manager do
       unpicked  = File.join(config.ce_path, 'group-specific-lfs.yml')
 
       aggregate_failures do
-        expect(ce_master_commit).not_to have_deleted(unpicked)
+        expect(ce_master_commit).to have_blob(unpicked)
         expect(ce_master_commit).to have_deleted(ce_picked)
 
         expect(ee_master_commit).to have_deleted(ee_picked)
-        expect(ee_master_commit).not_to have_deleted(unpicked)
+        expect(ee_master_commit).to have_blob(unpicked)
 
         expect(ee_stable_commit).to have_deleted(ee_picked)
         expect(ee_stable_commit).not_to have_deleted(unpicked)
+        expect(ee_stable_commit).not_to have_blob(unpicked)
       end
     end
 
