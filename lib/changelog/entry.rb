@@ -1,20 +1,18 @@
 require 'yaml'
 
 module Changelog
+  # Represents a Rugged::Blob and its changelog entry
   class Entry
-    # Instantiate a new Entry from a YAML String
-    def self.from_yaml(yaml)
-      entry = YAML.load(yaml)
-
-      new(entry['title'], entry['id'], entry['author'])
-    end
-
+    attr_reader :path, :blob
     attr_reader :title, :id, :author
 
-    def initialize(title, id = nil, author = nil)
-      @title  = title
-      @id     = id
-      @author = author
+    # path - Path to the blob, relative to the Repository root
+    # blob - Underlying rugged::Blob object
+    def initialize(path, blob)
+      @path = path
+      @blob = blob
+
+      parse_blob(blob.content)
     end
 
     def to_s
@@ -24,6 +22,16 @@ module Changelog
       str << " (#{author})" if author
 
       str
+    end
+
+    private
+
+    def parse_blob(content)
+      yaml = YAML.load(content)
+
+      @title  = yaml['title']
+      @id     = yaml['id']
+      @author = yaml['author']
     end
   end
 end

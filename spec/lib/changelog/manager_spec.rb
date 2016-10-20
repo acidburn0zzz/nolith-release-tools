@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-require 'changelog/config'
 require 'changelog/manager'
 require 'version'
 

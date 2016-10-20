@@ -3,11 +3,11 @@ require 'release'
 
 module Changelog
   class MarkdownGenerator
-    attr_reader :version, :blobs
+    attr_reader :version, :entries
 
-    def initialize(version, blobs)
+    def initialize(version, entries)
       @version = version
-      @blobs   = blobs
+      @entries = entries
     end
 
     def to_s
@@ -15,11 +15,11 @@ module Changelog
       markdown.puts header
       markdown.puts
 
-      if blobs.empty?
+      if entries.empty?
         markdown.puts "- No changes."
       else
-        blobs.each do |blob|
-          markdown.puts "- #{blob.to_entry}"
+        entries.each do |entry|
+          markdown.puts "- #{entry}"
         end
       end
 

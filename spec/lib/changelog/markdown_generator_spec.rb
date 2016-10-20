@@ -32,13 +32,13 @@ describe Changelog::MarkdownGenerator do
       end
     end
 
-    it 'includes an entry for each blob' do
-      blobs = [
-        double(to_entry: "- Change A"),
-        double(to_entry: "- Change B"),
-        double(to_entry: "- Change C")
+    it 'includes each entry' do
+      entries = [
+        double(to_s: "Change A"),
+        double(to_s: "Change B"),
+        double(to_s: "Change C")
       ]
-      generator = described_class.new(spy, blobs)
+      generator = described_class.new(spy, entries)
 
       markdown = generator.to_s
 
@@ -47,7 +47,7 @@ describe Changelog::MarkdownGenerator do
       expect(markdown).to match("- Change C\n")
     end
 
-    it 'adds a "No changes" entry when there are no blobs' do
+    it 'adds a "No changes" entry when there are no entries' do
       version = Version.new('1.2.3')
       generator = described_class.new(version, [])
 

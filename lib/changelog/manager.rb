@@ -1,7 +1,7 @@
 require 'rugged'
 
-require_relative 'blob'
 require_relative 'config'
+require_relative 'entry'
 require_relative 'markdown_generator'
 require_relative 'updater'
 
@@ -43,7 +43,7 @@ module Changelog
     end
 
     def release(version, stable_branch: version.stable_branch)
-      @unreleased_blobs = nil
+      @unreleased_entries = nil
       @version = version
 
       perform_release(stable_branch)
@@ -72,7 +72,7 @@ module Changelog
       checkout(branch_name)
 
       update_changelog
-      remove_unreleased_blobs
+      remove_processed_entries
       create_commit
     end
 
@@ -94,14 +94,14 @@ module Changelog
     def update_changelog
       blob     = repository.blob_at(repository.head.target_id, changelog_file)
       updater  = Updater.new(blob.content, version)
-      markdown = MarkdownGenerator.new(version, unreleased_blobs).to_s
+      markdown = MarkdownGenerator.new(version, unreleased_entries).to_s
 
       changelog_oid = repository.write(updater.insert(markdown), :blob)
       index.add(path: changelog_file, oid: changelog_oid, mode: 0100644)
     end
 
-    def remove_unreleased_blobs
-      index.remove_all(unreleased_blobs.collect(&:path))
+    def remove_processed_entries
+      index.remove_all(unreleased_entries.collect(&:path))
     end
 
     def create_commit
@@ -115,32 +115,31 @@ module Changelog
       repository.checkout_head(strategy: :force)
     end
 
-    # Build an Array of Changelog::Blob objects, each representing a single
-    # unreleased changelog entry.
+    # Build an Array of `Changelog::Entry` objects
     #
-    # Raises RuntimeError if the HEAD is not a stable branch, or if the
+    # Raises `RuntimeError` if the `HEAD` is not a stable branch, or if the
     # repository tree could not be read.
     #
     # Returns an Array
-    def unreleased_blobs
-      return @unreleased_blobs if @unreleased_blobs
+    def unreleased_entries
+      return @unreleased_entries if @unreleased_entries
 
       raise "Cannot gather changelog blobs on a non-stable branch." unless on_stable?
       raise "Cannot gather changelog blobs. Check out the stable branch first!" unless tree
 
-      @unreleased_blobs = []
+      @unreleased_entries = []
 
       tree.walk(:preorder) do |root, entry|
         next unless root == "#{unreleased_path}/"
         next unless entry[:name].end_with?(Config.extension)
 
-        @unreleased_blobs << Blob.new(
+        @unreleased_entries << Entry.new(
           File.join(root, entry[:name]),
           repository.lookup(entry[:oid])
         )
       end
 
-      @unreleased_blobs
+      @unreleased_entries
     end
 
     def on_stable?
