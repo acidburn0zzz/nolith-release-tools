@@ -21,12 +21,12 @@ module Changelog
   # with the commits differing.
   #
   # In the case of an EE release, things get slightly more complex. We perform
-  # the same steps above with the EE paths (e.g., `CHANGELOG-EE` and
+  # the same steps above with the EE paths (e.g., `CHANGELOG-EE.md` and
   # `changes/unreleased-ee/`), then perform them _again_ but with the CE paths
   # (e.g., `CHANGELOG.md` and `changes/unreleased/`).
   #
   # This is necessary because by the time this process is performed, CE has
-  # already been merged into EE.
+  # already been merged into EE without the consolidated `CHANGELOG.md`.
   class Manager
     attr_reader :repository, :version
 
