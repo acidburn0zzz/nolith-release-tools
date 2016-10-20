@@ -4,6 +4,8 @@ ENV['TEST'] = 'true'
 require 'simplecov'
 SimpleCov.start
 
+require 'active_support/core_ext/string/strip'
+
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
 RSpec.configure do |config|
