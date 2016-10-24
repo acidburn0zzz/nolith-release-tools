@@ -45,6 +45,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    rugged (0.24.0)
     safe_yaml (1.0.4)
     simplecov (0.12.0)
       docile (~> 1.1.0)
@@ -75,6 +76,7 @@ DEPENDENCIES
   pry
   rake
   rspec (~> 3.4.0)
+  rugged (~> 0.24.0)
   simplecov (~> 0.12.0)
   timecop (~> 0.8.0)
   vcr (~> 2.9.0)
@@ -82,4 +84,4 @@ DEPENDENCIES
   weekdays (~> 1.0.0)
 
 BUNDLED WITH
-   1.11.2
+   1.13.5
