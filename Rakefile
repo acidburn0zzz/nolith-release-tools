@@ -35,6 +35,10 @@ def skip?(repo)
   ENV[repo.upcase] == 'false'
 end
 
+def security_release?
+  ENV['SECURITY'] == 'true'
+end
+
 desc "Create release"
 task :release, [:version] do |t, args|
   version = get_version(args)
@@ -43,14 +47,14 @@ task :release, [:version] do |t, args|
     $stdout.puts 'Skipping release for EE'.colorize(:red)
   else
     $stdout.puts 'EE release'.colorize(:blue)
-    Release::GitlabEeRelease.new("#{version}-ee").execute
+    Release::GitlabEeRelease.new("#{version}-ee", security: security_release?).execute
   end
 
   if skip?('ce')
     $stdout.puts 'Skipping release for CE'.colorize(:red)
   else
     $stdout.puts 'CE release'.colorize(:blue)
-    Release::GitlabCeRelease.new(version).execute
+    Release::GitlabCeRelease.new(version, security: security_release?).execute
   end
 end
 

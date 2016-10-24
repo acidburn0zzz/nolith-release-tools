@@ -7,7 +7,7 @@ module Release
     private
 
     def remotes
-      Remotes.ce_remotes
+      Remotes.remotes(:ce, dev_only: options[:security])
     end
 
     def after_execute_hook

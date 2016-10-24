@@ -8,7 +8,7 @@ module Release
     private
 
     def remotes
-      Remotes.omnibus_gitlab_remotes
+      Remotes.remotes(:omnibus_gitlab, dev_only: options[:security])
     end
 
     def version_class
