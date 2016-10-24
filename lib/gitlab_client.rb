@@ -50,7 +50,8 @@ class GitlabClient
       description:  issue.description,
       assignee_id:  current_user.id,
       milestone_id: milestone.id,
-      labels:       issue.labels
+      labels:       issue.labels,
+      confidential: issue.confidential?
     })
   end
 

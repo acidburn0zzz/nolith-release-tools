@@ -27,6 +27,10 @@ class BaseIssue
     end
   end
 
+  def confidential?
+    false
+  end
+
   protected
 
   def template

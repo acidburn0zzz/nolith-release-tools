@@ -31,24 +31,7 @@ will be decided on a case-by-case basis.
 If a security fix warrants backporting to previous releases, doing a single blog
 post that mentions all of the patches at once is acceptable.
 
-## Overall process
-
-Follow the standard [patch release process](patch.md#process), with some
-additional considerations:
-
-1. Mark any applicable previous releases as vulnerable on [version.gitlab.com].
-1. Ensure the blog post discloses as much information about the vulnerability as
-   is responsibly possible. We aim for clarity and transparency, and try to
-   avoid secrecy and ambiguity.
-1. Coordinate with the Marketing team to send out a security newsletter.
-1. If the vulnerability was responsibly disclosed to us by a security
-   researcher, ensure they're [publicly acknowledged] and thank them again
-   privately as well.
-
-[version.gitlab.com]: https://version.gitlab.com/
-[publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
-
-## Technical process
+## Process
 
 ### Before the release
 
@@ -63,6 +46,25 @@ with the `dev` remote**:
   https://dev.gitlab.org/gitlab/gitlab-ee against the
   [`security` branch](https://dev.gitlab.org/gitlab/gitlab-ee/tree/security)
 
+### 1. Create an issue to track the security patch release
+
+In order to keep track of the various tasks that need to happen before a security
+patch release is considered "complete", we create an issue on the [GitLab CE issue
+tracker] and update it as we progress.
+
+1. Create the issue using the [`security_patch_issue`](rake-tasks.md#security_patch_issueversion)
+   Rake task:
+
+    ```sh
+    # NOTE: This command is an example! Update it to reflect new version numbers.
+    bundle exec rake "security_patch_issue[version]"
+    ```
+
+### 2. Complete the security patch release tasks
+
+Use the security patch issue created earlier to keep track of the process and
+mark off tasks as you complete them.
+
 ### About the security branch
 
 The `security` branch is "parallel" to `master` and ensure no one inadvertedly
@@ -72,15 +74,6 @@ a manual and conscious operation.
 `master` can and should be merged frequently to `security`, but `security` can
 only be merged once all the security fixes it contains are released as part of
 official releases (and possibly backports).
-
-### Cherry-picking
-
-As usual cherry-pick the merge request commits you need, but this time **push to
-`dev` only**:
-
-```shell
-$ git push dev X-Y-stable
-```
 
 ### Merging CE stable into EE stable
 

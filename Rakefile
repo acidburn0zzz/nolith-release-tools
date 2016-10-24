@@ -111,3 +111,11 @@ task :patch_issue, [:version] do |t, args|
 
   create_or_show_issue(issue)
 end
+
+desc "Create a security patch issue"
+task :security_patch_issue, [:version] do |t, args|
+  version = get_version(args)
+  issue = SecurityPatchIssue.new(version)
+
+  create_or_show_issue(issue)
+end
