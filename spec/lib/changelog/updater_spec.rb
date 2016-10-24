@@ -4,7 +4,7 @@ require 'changelog/updater'
 
 describe Changelog::Updater do
   let(:contents) do
-    File.read(File.expand_path("../../fixtures/CHANGELOG.md", __dir__))
+    File.read(File.expand_path("../../fixtures/changelog/CHANGELOG.md", __dir__))
   end
 
   describe '#insert' do
