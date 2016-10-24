@@ -22,7 +22,7 @@ Style/AccessModifierIndentation:
 
 # Check the naming of accessor methods for get_/set_.
 Style/AccessorMethodName:
-  Enabled: false
+  Enabled: true
 
 # Use alias_method instead of alias.
 Style/Alias:
@@ -84,11 +84,11 @@ Style/ClassAndModuleCamelCase:
 
 # Checks style of children classes and modules.
 Style/ClassAndModuleChildren:
-  Enabled: false
+  Enabled: true
 
 # Enforces consistent use of `Object#is_a?` or `Object#kind_of?`.
 Style/ClassCheck:
-  Enabled: false
+  Enabled: true
 
 # Use self when defining module/class methods.
 Style/ClassMethods:
@@ -120,7 +120,7 @@ Style/ElseAlignment:
 
 # Use empty lines between defs.
 Style/EmptyLineBetweenDefs:
-  Enabled: false
+  Enabled: true
 
 # Don't use several empty lines in a row.
 Style/EmptyLines:
@@ -177,7 +177,8 @@ Style/For:
 
 # Checks if there is a magic comment to enforce string literals
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
+
 # Do not introduce global variables.
 Style/GlobalVars:
   Enabled: true
@@ -231,7 +232,7 @@ Style/MethodName:
 
 # Checks for usage of `extend self` in modules.
 Style/ModuleFunction:
-  Enabled: false
+  Enabled: true
 
 # Checks that the closing brace in an array literal is either on the same line
 # as the last array element, or a new line.
@@ -266,7 +267,7 @@ Style/MultilineMethodCallBraceLayout:
 # Checks indentation of method calls with the dot operator that span more than
 # one line.
 Style/MultilineMethodCallIndentation:
-  Enabled: false
+  Enabled: true
 
 # Checks that the closing brace in a method definition is symmetrical with
 # respect to the opening brace and the method parameters.
@@ -275,7 +276,7 @@ Style/MultilineMethodDefinitionBraceLayout:
 
 # Checks indentation of binary operations that span more than one line.
 Style/MultilineOperationIndentation:
-  Enabled: false
+  Enabled: true
 
 # Avoid multi-line `? :` (the ternary operator), use if/unless instead.
 Style/MultilineTernaryOperator:
@@ -307,7 +308,7 @@ Style/Not:
 
 # Add underscores to large numeric literals to improve their readability.
 Style/NumericLiterals:
-  Enabled: false
+  Enabled: true
 
 # Favor the ternary operator(?:) over if/then/else/end constructs.
 Style/OneLineConditional:
@@ -454,7 +455,7 @@ Style/WhileUntilModifier:
 
 # Use %w or %W for arrays of words.
 Style/WordArray:
-  Enabled: false
+  Enabled: true
 
 #################### Metrics ################################
 
@@ -511,7 +512,7 @@ Lint/UselessAccessModifier:
 # Checks for attempts to use `private` or `protected` to set the visibility
 # of a class method, which does not work.
 Lint/IneffectiveAccessModifier:
-  Enabled: false
+  Enabled: true
 
 # Checks for ambiguous operators in the first argument of a method invocation
 # without parentheses.
@@ -624,7 +625,7 @@ Lint/RescueException:
 
 # Checks for the order which exceptions are rescued to avoid rescueing a less specific exception before a more specific exception.
 Lint/ShadowedException:
-  Enabled: false
+  Enabled: true
 
 # Checks for Object#to_s usage in string interpolation.
 Lint/StringConversionInInterpolation:
@@ -638,7 +639,7 @@ Lint/UnderscorePrefixedVariableName:
 # Note: this cop is not disabled when disabling all cops.
 # It must be explicitly disabled.
 Lint/UnneededDisable:
-  Enabled: false
+  Enabled: true
 
 # Unreachable code.
 Lint/UnreachableCode:
@@ -824,4 +825,4 @@ RSpec/SubjectStub:
 
 # Prefer using verifying doubles over normal doubles.
 RSpec/VerifiedDoubles:
-  Enabled: false
+  Enabled: true
