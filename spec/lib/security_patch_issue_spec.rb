@@ -34,7 +34,7 @@ describe SecurityPatchIssue do
       allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
-      expect(content).to include 'While waiting for tests to be green, now is a good time to start on the blog post, **in a private snippet**: BLOG_POST_SNIPPET'
+      expect(content).to include 'While waiting for tests to be green, now is a good time to start on [the blog post], **in a private snippet**: BLOG_POST_SNIPPET'
     end
 
     it 'includes a step to redact sensitive information from confidential security issues' do

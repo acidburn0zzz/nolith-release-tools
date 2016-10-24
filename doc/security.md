@@ -62,7 +62,7 @@ tracker] and update it as we progress.
 
 ### 2. Complete the security patch release tasks
 
-Use the security patch issue created earlier to keep track of the process and
+Use the security patch issue created above to keep track of the process and
 mark off tasks as you complete them.
 
 ### About the security branch
