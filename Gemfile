@@ -10,6 +10,7 @@ gem 'rugged',   '~> 0.24.0'
 gem 'weekdays', '~> 1.0.0'
 
 group :development, :test do
+  gem 'byebug'
   gem 'pry'
   gem 'rspec',     '~> 3.4.0'
   gem 'simplecov', '~> 0.12.0'
