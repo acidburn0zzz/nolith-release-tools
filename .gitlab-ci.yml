@@ -1,3 +1,10 @@
+image: "dev.gitlab.org:5005/gitlab/gitlab-build-images:ruby-2.3-git-2.7-phantomjs-2.1"
+
+cache:
+  key: "ruby-231"
+  paths:
+  - vendor/ruby
+
 specs:
   stage: test
   script:

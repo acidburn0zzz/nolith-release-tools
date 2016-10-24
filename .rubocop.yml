@@ -4,7 +4,7 @@ require:
 # inherit_from: .rubocop_todo.yml
 
 AllCops:
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.3
   # Cop names are not d§splayed in offense messages by default. Change behavior
   # by overriding DisplayCopNames, or by giving the -D/--display-cop-names
   # option.
@@ -177,7 +177,7 @@ Style/For:
 
 # Checks if there is a magic comment to enforce string literals
 Style/FrozenStringLiteralComment:
-  Enabled: true
+  Enabled: false
 
 # Do not introduce global variables.
 Style/GlobalVars:
