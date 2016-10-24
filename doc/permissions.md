@@ -17,11 +17,11 @@ branches for the following repositories:
 
 **Developer** access is required to:
 
-[cookbooks/chef-repo](https://dev.gitlab.org/cookbooks/chef-repo)
+* [cookbooks/chef-repo](https://dev.gitlab.org/cookbooks/chef-repo)
 
 On GitHub you will need **Push** access to:
 
-[gitlabhq/gitlabhq](https://github.com/gitlabhq/gitlabhq)
+* [gitlabhq/gitlabhq](https://github.com/gitlabhq/gitlabhq)
 
 ### Chef Server
 
@@ -33,9 +33,9 @@ to have the `knife` tool configured. If all went well you can check if you
 have access to the Chef server by running `knife status` from the
 chef-repo directory.
 
-You `/path/to/chef-repo/.chef/knife.rb` file should looks similar to:
+Your `/path/to/chef-repo/.chef/knife.rb` file should looks similar to:
 
-```
+```ruby
 # This file goes in chef-repo/.chef/knife.rb
 #
 # - Replace 'janedoe' with your username
@@ -46,7 +46,7 @@ You `/path/to/chef-repo/.chef/knife.rb` file should looks similar to:
 current_dir = File.dirname(__FILE__)
 log_level                :info
 log_location             STDOUT
-node_name                "ruben"
+node_name                "janedoe"
 client_key               "#{current_dir}/janedoe.pem"
 chef_server_url          "https://chef.gitlab.com/organizations/gitlab"
 cache_type               'BasicFile'
