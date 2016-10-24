@@ -67,6 +67,29 @@ bundle exec rake "patch_issue[8.3.1]"
     https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
+## `security_patch_issue[version]`
+
+This task will either return the URL of a patch issue if one already exists for
+`version`, or it will create a new one and return the URL.
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
+- Its description is the security patch release issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "Release"
+- It is confidential
+
+### Examples
+
+```sh
+bundle exec rake "security_patch_issue[8.3.1]"
+
+--> Issue "Release 8.3.1" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
+```
+
 ## `regression_issue[version]`
 
 This task will either return the URL of a regression issue if one already exists

@@ -5,7 +5,7 @@ module Release
     private
 
     def remotes
-      Remotes.ee_remotes
+      Remotes.remotes(:ee, dev_only: options[:security])
     end
   end
 end
