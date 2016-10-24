@@ -47,6 +47,23 @@ describe Changelog::Updater do
 
       expect(contents).to have_inserted(version).at_line(54)
     end
+
+    it 'correctly inserts entries for a pre-existing version header' do
+      version = Version.new('8.9.6')
+      markdown = markdown(version)
+
+      writer = described_class.new(contents, version)
+      contents = writer.insert(markdown)
+
+      expect(contents).to include(<<-MD.strip_heredoc)
+        ## 8.9.6 (2016-07-11)
+
+        - Change Z
+        - Change Y
+        - Change X
+        - Change A
+      MD
+    end
   end
 
   def markdown(version)

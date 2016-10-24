@@ -41,10 +41,18 @@ module Changelog
     # Returns the updated Markdown String
     def insert(markdown)
       contents.each_with_index do |line, index|
-        if line.match(/^## (\d+\.\d+\.\d+)/)
+        if line.match(/\A## (\d+\.\d+\.\d+)/)
           header = Version.new($1)
 
-          if version.major >= header.major && version.minor >= header.minor
+          if version == header
+            entries = markdown.lines
+            entries.shift(2) # Remove the header and the blank line
+            entries.pop      # Remove the trailing blank line
+
+            # Insert the entries below the existing header and its blank line
+            contents.insert(index + 2, entries)
+            break
+          elsif version.major >= header.major && version.minor >= header.minor
             contents.insert(index, *markdown.lines)
             break
           end
