@@ -30,7 +30,7 @@ module Changelog
       yaml = YAML.load(content)
 
       @title  = yaml['title']
-      @id     = yaml['id']
+      @id     = yaml['merge_request'] || yaml['id']
       @author = yaml['author']
     end
   end

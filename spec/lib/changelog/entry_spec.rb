@@ -12,7 +12,7 @@ describe Changelog::Entry do
 
   describe 'initialize' do
     it 'parses blob content' do
-      entry = entry('title' => 'Foo', 'id' => 1234, 'author' => 'Joe Smith')
+      entry = entry('title' => 'Foo', 'merge_request' => 1234, 'author' => 'Joe Smith')
 
       aggregate_failures do
         expect(entry.title).to eq 'Foo'
@@ -36,19 +36,19 @@ describe Changelog::Entry do
     end
 
     it 'includes the merge request reference when available' do
-      entry = entry('title' => 'Foo', 'id' => 1234)
+      entry = entry('title' => 'Foo', 'merge_request' => 1234)
 
       expect(entry.to_s).to eq 'Foo. !1234'
     end
 
     it 'includes the author when available' do
-      entry = entry('title' => 'Foo', 'id' => nil, 'author' => 'Joe Smith')
+      entry = entry('title' => 'Foo', 'merge_request' => nil, 'author' => 'Joe Smith')
 
       expect(entry.to_s).to eq 'Foo. (Joe Smith)'
     end
 
     it 'includes the merge request reference and author when available' do
-      entry = entry('title' => 'Foo', 'id' => 1234, 'author' => 'Joe Smith')
+      entry = entry('title' => 'Foo', 'merge_request' => 1234, 'author' => 'Joe Smith')
 
       expect(entry.to_s).to eq 'Foo. !1234 (Joe Smith)'
     end
