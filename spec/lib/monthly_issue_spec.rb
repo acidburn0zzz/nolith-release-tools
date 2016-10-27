@@ -53,7 +53,7 @@ describe MonthlyIssue do
 
       aggregate_failures do
         expect(content).to include("Tag the `8.3.0` version")
-        expect(content).to include("Check that the `8.3.0` version was automatically created on https://version.gitlab.com")
+        expect(content).to include("Create the `8.3.0` version on https://version.gitlab.com")
         expect(content).to include("Create the first patch issue")
         expect(content).to include('bundle exec rake "patch_issue[8.3.1]"')
       end
