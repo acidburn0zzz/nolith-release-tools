@@ -49,7 +49,7 @@ describe Changelog::Updater do
     end
 
     it 'correctly inserts entries for a pre-existing version header' do
-      version = Version.new('8.9.6')
+      version = Version.new('8.9.6-ee')
       markdown = markdown(version)
 
       writer = described_class.new(contents, version)
