@@ -20,7 +20,7 @@
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh
-      bundle exec rake "release[<%= version.to_patch %>]"
+      SECURITY=true bundle exec rake "release[<%= version.to_patch %>]"
       ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
 - [ ] In `#infrastructure`:
