@@ -89,6 +89,20 @@ class Version < String
     tag_for(previous_patch, ee: ee)
   end
 
+  # Convert the current version to CE if it isn't already
+  def to_ce
+    return self unless ee?
+
+    self.class.new(to_s.gsub(/-ee$/, ''))
+  end
+
+  # Convert the current version to EE if it isn't already
+  def to_ee
+    return self if ee?
+
+    self.class.new("#{to_s}-ee")
+  end
+
   def to_minor
     self.match(/\A\d+\.\d+/).to_s
   end

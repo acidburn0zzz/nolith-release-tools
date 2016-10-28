@@ -197,6 +197,34 @@ describe Version do
     end
   end
 
+  describe '#to_ce' do
+    it 'returns self when already CE' do
+      version = version('1.2.3')
+
+      expect(version.to_ce).to eql version
+    end
+
+    it 'returns a CE version when EE' do
+      version = version('1.2.3-ee')
+
+      expect(version.to_ce.to_s).to eq '1.2.3'
+    end
+  end
+
+  describe '#to_ee' do
+    it 'returns self when already EE' do
+      version = version('1.2.3-ee')
+
+      expect(version.to_ee).to eql version
+    end
+
+    it 'returns a EE version when CE' do
+      version = version('1.2.3')
+
+      expect(version.to_ee.to_s).to eq '1.2.3-ee'
+    end
+  end
+
   describe '#to_minor' do
     it 'returns the minor version' do
       expect(version('1.23.4').to_minor).to eq '1.23'
