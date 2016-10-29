@@ -4,6 +4,8 @@ require 'rugged'
 require 'release/gitlab_ce_release'
 
 describe Release::GitlabCeRelease do
+  include RuggedMatchers
+
   # NOTE (rspeicher): There is some "magic" here that can be confusing.
   #
   # The release process checks out a remote to `/tmp/some_folder`, where
@@ -60,21 +62,22 @@ describe Release::GitlabCeRelease do
             aggregate_failures do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
-              expect(read_head_blob(repository, 'VERSION')).to eq version
+              expect(repository).to have_version.at(version)
 
               # Omnibus-GitLab expectations
               expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
               expect(ob_repository.tags[ob_version]).not_to be_nil
-              expect(read_head_blob(ob_repository, 'VERSION')).to eq version
-              expect(read_head_blob(ob_repository, 'GITLAB_SHELL_VERSION')).to eq '2.2.2'
-              expect(read_head_blob(ob_repository, 'GITLAB_WORKHORSE_VERSION')).to eq '3.3.3'
-              expect(read_head_blob(ob_repository, 'GITLAB_PAGES_VERSION')).to eq(edition == :ee ? '4.4.4' : 'master')
+              expect(ob_repository).to have_version.at(version)
+              expect(ob_repository).to have_version('shell').at('2.2.2')
+              expect(ob_repository).to have_version('workhorse').at('3.3.3')
+              expect(ob_repository).to have_version('pages')
+                .at(edition == :ee ? '4.4.4' : 'master')
             end
           end
         end
       end
 
-      context "with a new 10-1-stable#{suffix} stable branch, releasing a RC" do
+      context "with a new 10-1-stable#{suffix} stable branch, releasing an RC" do
         let(:version)    { "10.1.0-rc13#{suffix}" }
         let(:ob_version) { "10.1.0+rc13.#{edition}.0" }
         let(:branch)     { "10-1-stable#{suffix}" }
@@ -84,15 +87,16 @@ describe Release::GitlabCeRelease do
             aggregate_failures do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
-              expect(read_head_blob(repository, 'VERSION')).to eq version
+              expect(repository).to have_version.at(version)
 
               # Omnibus-GitLab expectations
               expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
               expect(ob_repository.tags[ob_version]).not_to be_nil
-              expect(read_head_blob(ob_repository, 'VERSION')).to eq version
-              expect(read_head_blob(ob_repository, 'GITLAB_SHELL_VERSION')).to eq '2.3.0'
-              expect(read_head_blob(ob_repository, 'GITLAB_WORKHORSE_VERSION')).to eq '3.4.0'
-              expect(read_head_blob(ob_repository, 'GITLAB_PAGES_VERSION')).to eq(edition == :ee ? '4.5.0' : 'master')
+              expect(ob_repository).to have_version.at(version)
+              expect(ob_repository).to have_version('shell').at('2.3.0')
+              expect(ob_repository).to have_version('workhorse').at('3.4.0')
+              expect(ob_repository).to have_version('pages')
+                .at(edition == :ee ? '4.5.0' : 'master')
             end
           end
         end
@@ -108,25 +112,26 @@ describe Release::GitlabCeRelease do
             aggregate_failures do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
-              expect(read_head_blob(repository, 'VERSION')).to eq version
+              expect(repository).to have_version.at(version)
 
               repository.checkout('master')
 
               if edition == :ee
-                expect(read_head_blob(repository, 'VERSION')).to eq '1.2.0'
+                expect(repository).to have_version.at('1.2.0')
                 expect(repository.tags['v10.1.0-ee']).not_to be_nil
               else
-                expect(read_head_blob(repository, 'VERSION')).to eq '10.2.0-pre'
+                expect(repository).to have_version.at('10.2.0-pre')
                 expect(repository.tags['v10.2.0.pre']).not_to be_nil
               end
 
               # Omnibus-GitLab expectations
               expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
               expect(ob_repository.tags[ob_version]).not_to be_nil
-              expect(read_head_blob(ob_repository, 'VERSION')).to eq version
-              expect(read_head_blob(ob_repository, 'GITLAB_SHELL_VERSION')).to eq '2.3.0'
-              expect(read_head_blob(ob_repository, 'GITLAB_WORKHORSE_VERSION')).to eq '3.4.0'
-              expect(read_head_blob(ob_repository, 'GITLAB_PAGES_VERSION')).to eq(edition == :ee ? '4.5.0' : 'master')
+              expect(ob_repository).to have_version.at(version)
+              expect(ob_repository).to have_version('shell').at('2.3.0')
+              expect(ob_repository).to have_version('workhorse').at('3.4.0')
+              expect(ob_repository).to have_version('pages')
+                .at(edition == :ee ? '4.5.0' : 'master')
             end
           end
         end
@@ -148,36 +153,18 @@ describe Release::GitlabCeRelease do
           aggregate_failures do
             # GitLab expectations
             expect(repository.head.name).to eq "refs/heads/#{branch}"
-            expect(read_head_blob(repository, 'VERSION')).to eq version
+            expect(repository).to have_version.at(version)
 
             # Omnibus-GitLab expectations
             expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
             expect(ob_repository.tags[ob_version]).not_to be_nil
-            expect(read_head_blob(ob_repository, 'VERSION')).to eq version
-            expect(read_head_blob(ob_repository, 'GITLAB_SHELL_VERSION')).to eq '2.2.2'
-            expect(read_head_blob(ob_repository, 'GITLAB_WORKHORSE_VERSION')).to eq '3.3.3'
-            expect { read_head_blob(ob_repository, 'GITLAB_PAGES_VERSION') }
-              .to raise_error(Rugged::Error)
+            expect(ob_repository).to have_version.at(version)
+            expect(ob_repository).to have_version('shell').at('2.2.2')
+            expect(ob_repository).to have_version('workhorse').at('3.3.3')
+            expect(ob_repository).not_to have_version('pages')
           end
         end
       end
-    end
-
-    # Read a blob at `path` from a repository's current HEAD
-    #
-    # repository - Rugged::Repository object
-    # path       - Path String
-    #
-    # Returns a stripped String
-    def read_head_blob(repository, path)
-      head = repository.head
-
-      repository
-        .blob_at(head.target_id, path)
-        .content
-        .strip
-    rescue NoMethodError
-      raise Rugged::Error.new("Blob at #{path} not found for #{head.target_id}")
     end
   end
 end
