@@ -1,5 +1,6 @@
 require 'date'
-require 'release'
+
+require_relative '../release'
 
 module Changelog
   class MarkdownGenerator
