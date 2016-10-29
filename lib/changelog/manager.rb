@@ -91,8 +91,13 @@ module Changelog
 
     # Updates `changelog_file` with the Markdown built from the individual
     # unreleased changelog entries.
+    #
+    # Raises `NoChangelogError` if the changelog blob does not exist.
     def update_changelog
-      blob     = repository.blob_at(repository.head.target_id, changelog_file)
+      blob = repository.blob_at(repository.head.target_id, changelog_file)
+
+      raise ::Changelog::NoChangelogError.new(changelog_file) if blob.nil?
+
       updater  = Updater.new(blob.content, version)
       markdown = MarkdownGenerator.new(version, unreleased_entries).to_s
 

@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+require 'changelog'
 require 'changelog/manager'
 require 'version'
 
@@ -133,6 +134,17 @@ describe Changelog::Manager do
         expect(ee_master_commit.message).to eq(ee_message)
         expect(ee_stable_commit.message).to eq(ee_message)
       end
+    end
+  end
+
+  describe '#release', 'with no changelog blob' do
+    it 'raises NoChangelogError' do
+      allow(Changelog::Config).to receive(:log).and_return('CHANGELOG-FOO.md')
+
+      reset_fixture!
+
+      expect { described_class.new(repository).release(Version.new('8.10.5')) }
+        .to raise_error(Changelog::NoChangelogError)
     end
   end
 
