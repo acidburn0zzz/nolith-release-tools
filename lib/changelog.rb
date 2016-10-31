@@ -8,4 +8,6 @@ module Changelog
       @changelog_path = changelog_path
     end
   end
+
+  class NoEntriesError < StandardError; end
 end

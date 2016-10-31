@@ -137,6 +137,33 @@ describe Changelog::Manager do
     end
   end
 
+  describe '#release', 'with no changelog entries' do
+    let(:version) { Version.new('8.0.1') }
+
+    let(:master) { repository.branches['master'] }
+    let(:stable) { repository.branches[version.stable_branch] }
+
+    before do
+      reset_fixture!
+
+      described_class.new(repository).release(version)
+    end
+
+    it 'gracefully does nothing' do
+      unpicked1 = File.join(config.ce_path, 'fix-cycle-analytics-commits.yml')
+      unpicked2 = File.join(config.ce_path, 'group-specific-lfs.yml')
+
+      commit = master.target
+
+      aggregate_failures do
+        expect(commit).not_to have_deleted(unpicked1)
+        expect(commit).not_to have_deleted(unpicked2)
+
+        expect(stable.target).to eq(master.target)
+      end
+    end
+  end
+
   describe '#release', 'with no changelog blob' do
     it 'raises NoChangelogError' do
       allow(Changelog::Config).to receive(:log).and_return('CHANGELOG-FOO.md')
