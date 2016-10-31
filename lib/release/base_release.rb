@@ -41,6 +41,7 @@ module Release
 
     def prepare_release
       $stdout.puts "Prepare repository...".colorize(:green)
+      repository.pull_from_all_remotes('master')
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
     end
@@ -51,8 +52,10 @@ module Release
     end
 
     def execute_release
+      repository.ensure_branch_exists(stable_branch)
       bump_versions
       push_ref('branch', stable_branch)
+      push_ref('branch', 'master')
       create_tag(tag)
       push_ref('tag', tag)
     end
