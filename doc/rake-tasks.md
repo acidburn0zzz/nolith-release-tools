@@ -125,12 +125,12 @@ This task will:
 
 ### Configuration
 
-| Option      | Purpose                        |
-| ------      | -------                        |
-| `CE=false`  | Skip CE release                |
-| `EE=false`  | Skip EE release                |
-| `TEST=true` | Don't push anything to remotes |
-| `SECURITY=true` | This is a security release, push will be only pulled & pushed from/to `dev` |
+| Option          | Purpose                                                    |
+| ------          | -------                                                    |
+| `CE=false`      | Skip CE release                                            |
+| `EE=false`      | Skip EE release                                            |
+| `TEST=true`     | Don't push anything to remotes                             |
+| `SECURITY=true` | Treat this as a security release, using only `dev` remotes |
 
 ### Examples
 
