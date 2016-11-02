@@ -1,6 +1,7 @@
 require 'colorize'
 require 'forwardable'
 
+require_relative '../changelog'
 require_relative '../release'
 require_relative '../repository'
 require_relative '../version'
@@ -21,6 +22,7 @@ module Release
 
     def execute
       prepare_release
+      before_execute_hook
       execute_release
       after_execute_hook
       after_release
@@ -39,13 +41,21 @@ module Release
 
     def prepare_release
       $stdout.puts "Prepare repository...".colorize(:green)
+      repository.pull_from_all_remotes('master')
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
     end
 
+    # Overridable
+    def before_execute_hook
+      true
+    end
+
     def execute_release
+      repository.ensure_branch_exists(stable_branch)
       bump_versions
       push_ref('branch', stable_branch)
+      push_ref('branch', 'master')
       create_tag(tag)
       push_ref('tag', tag)
     end
@@ -83,6 +93,15 @@ module Release
     def push_ref(ref_type, ref)
       $stdout.puts "Push #{ref_type} #{ref} to all remotes...".colorize(:green)
       repository.push_to_all_remotes(ref)
+    end
+
+    def compile_changelog
+      begin
+        Changelog::Manager.new(repository.path).release(version)
+      rescue Changelog::NoChangelogError => ex
+        $stderr.puts "Cannot perform changelog update for #{version} on " \
+          "#{ex.changelog_path}".colorize(:red)
+      end
     end
   end
 end

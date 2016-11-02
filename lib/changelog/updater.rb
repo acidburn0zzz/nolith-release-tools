@@ -1,4 +1,4 @@
-require 'version'
+require_relative '../version'
 
 module Changelog
   # Updates a Markdown changelog String by inserting new Markdown for a

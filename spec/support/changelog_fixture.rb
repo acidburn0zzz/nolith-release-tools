@@ -28,6 +28,10 @@ class ChangelogFixture
 
     build_master
 
+    # Build an older stable branch that has no changelog entry files, but does
+    # have the folder
+    build_stable_branch(Version.new('8.0.0'))
+
     stable_ce_branch = build_stable_branch(Version.new('8.10.0'))
     stable_ee_branch = build_stable_branch(Version.new('8.10.0-ee'))
 

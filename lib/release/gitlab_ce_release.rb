@@ -10,6 +10,12 @@ module Release
       Remotes.remotes(:ce, dev_only: options[:security])
     end
 
+    def before_execute_hook
+      compile_changelog
+
+      super
+    end
+
     def after_execute_hook
       Release::OmnibusGitLabRelease.new(
         version,

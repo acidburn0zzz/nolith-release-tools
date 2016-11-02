@@ -46,13 +46,14 @@ module Changelog
       @unreleased_entries = nil
       @version = version
 
-      perform_release(stable_branch)
-      perform_release('master')
+      if perform_release(stable_branch)
+        perform_release('master')
 
-      # Recurse to perform the CE release if we're on EE
-      if version.ee?
-        # NOTE: We pass the EE stable branch, but use the CE configuration!
-        release(version.to_ce, stable_branch: version.stable_branch)
+        # Recurse to perform the CE release if we're on EE
+        if version.ee?
+          # NOTE: We pass the EE stable branch, but use the CE configuration!
+          release(version.to_ce, stable_branch: version.stable_branch)
+        end
       end
     end
 
@@ -68,12 +69,24 @@ module Changelog
       Config.path(ee: version.ee?)
     end
 
+    # Returns true if the release succeeded, otherwise false
     def perform_release(branch_name)
+      previous_head = repository.head
+
       checkout(branch_name)
 
-      update_changelog
-      remove_processed_entries
-      create_commit
+      begin
+        update_changelog
+      rescue ::Changelog::NoEntriesError
+        repository.reset(previous_head.target_id, :hard)
+
+        false
+      else
+        remove_processed_entries
+        create_commit
+
+        true
+      end
     end
 
     # Checkout the specified branch and update `ref`, `commit`, `tree`, and
@@ -91,8 +104,13 @@ module Changelog
 
     # Updates `changelog_file` with the Markdown built from the individual
     # unreleased changelog entries.
+    #
+    # Raises `NoChangelogError` if the changelog blob does not exist.
     def update_changelog
-      blob     = repository.blob_at(repository.head.target_id, changelog_file)
+      blob = repository.blob_at(repository.head.target_id, changelog_file)
+
+      raise ::Changelog::NoChangelogError.new(changelog_file) if blob.nil?
+
       updater  = Updater.new(blob.content, version)
       markdown = MarkdownGenerator.new(version, unreleased_entries).to_s
 
@@ -120,6 +138,8 @@ module Changelog
     # Raises `RuntimeError` if the `HEAD` is not a stable branch, or if the
     # repository tree could not be read.
     #
+    # Raises `NoEntriesError` if there are no changelog entries.
+    #
     # Returns an Array
     def unreleased_entries
       return @unreleased_entries if @unreleased_entries
@@ -138,6 +158,8 @@ module Changelog
           repository.lookup(entry[:oid])
         )
       end
+
+      raise ::Changelog::NoEntriesError if @unreleased_entries.empty?
 
       @unreleased_entries
     end
