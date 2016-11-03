@@ -177,11 +177,11 @@ describe Repository do
 
     it 'removes any existing dir with the given name in /tmp' do
       subject.ensure_branch_exists('master') # To actually clone the repo
-      expect(File.exists?(repo_path)).to be_truthy
+      expect(File.exist?(repo_path)).to be_truthy
 
       subject.cleanup
 
-      expect(File.exists?(repo_path)).to be_falsy
+      expect(File.exist?(repo_path)).to be_falsy
     end
   end
 end
