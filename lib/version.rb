@@ -71,7 +71,7 @@ class Version < String
   end
 
   def stable_branch(ee: false)
-    to_minor.gsub('.', '-') << if ee || ee?
+    to_minor.tr('.', '-') << if ee || ee?
       '-stable-ee'
     else
       '-stable'
