@@ -146,8 +146,8 @@ describe Repository do
       expect(File.open(File.join(repo_path, 'README.md')).read).to eq 'Cool'
 
       commit_info = Dir.chdir(repo_path) { `git show HEAD --name-only --oneline`.lines }
-      expect(commit_info[0]).to match /\A\w{7} Update README\Z/
-      expect(commit_info[1]).to match /\AREADME.md\Z/
+      expect(commit_info[0]).to match(/\A\w{7} Update README\Z/)
+      expect(commit_info[1]).to match(/\AREADME.md\Z/)
     end
   end
 
