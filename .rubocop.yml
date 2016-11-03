@@ -712,7 +712,7 @@ Performance/TimesMap:
 
 # Check that instances are not being stubbed globally.
 RSpec/AnyInstance:
-  Enabled: true
+  Enabled: false
 
 # Check for expectations where `be(...)` can replace `eql(...)`.
 RSpec/BeEql:
