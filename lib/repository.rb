@@ -113,7 +113,7 @@ class Repository
   def pull(remote, branch)
     run_git %W(pull --quiet --depth=10 #{remote} #{branch})
 
-    if has_conflicts?
+    if conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
     end
   end
@@ -135,7 +135,7 @@ class Repository
     end
   end
 
-  def has_conflicts?
+  def conflicts?
     in_path do
       output = %x{git ls-files -u}
       return !output.empty?
