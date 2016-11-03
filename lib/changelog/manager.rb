@@ -115,7 +115,7 @@ module Changelog
       markdown = MarkdownGenerator.new(version, unreleased_entries).to_s
 
       changelog_oid = repository.write(updater.insert(markdown), :blob)
-      index.add(path: changelog_file, oid: changelog_oid, mode: 0100644)
+      index.add(path: changelog_file, oid: changelog_oid, mode: 0o100644)
     end
 
     def remove_processed_entries
