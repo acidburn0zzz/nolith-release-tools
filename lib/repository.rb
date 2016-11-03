@@ -7,7 +7,7 @@ class Repository
   class CannotCreateTagError < StandardError; end
   class CannotPullError < StandardError; end
 
-  class CanonicalRemote < Struct.new(:name, :url); end
+  CanonicalRemote = Struct.new(:name, :url)
 
   def self.get(remotes, repository_name = nil)
     repository_name ||= remotes.values.first.split('/').last.sub(/\.git\Z/, '')
