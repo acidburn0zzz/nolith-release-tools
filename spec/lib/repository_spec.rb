@@ -157,17 +157,15 @@ describe Repository do
 
     context 'when there are conflicts' do
       it 'stops the script' do
-        expect {
-          subject.pull_from_all_remotes('1-9-stable')
-        }.to raise_error(Repository::CannotPullError)
+        expect { subject.pull_from_all_remotes('1-9-stable') }
+          .to raise_error(Repository::CannotPullError)
       end
     end
 
     context 'when pull was successful' do
       it 'continues to the next command' do
-        expect {
-          subject.pull_from_all_remotes('master')
-        }.not_to raise_error
+        expect { subject.pull_from_all_remotes('master') }
+          .not_to raise_error
       end
     end
   end
