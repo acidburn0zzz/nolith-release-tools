@@ -99,7 +99,7 @@ class Version < String
   def to_ee
     return self if ee?
 
-    self.class.new("#{to_s}-ee")
+    self.class.new("#{self}-ee")
   end
 
   def to_minor
