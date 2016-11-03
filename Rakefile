@@ -40,7 +40,7 @@ def security_release?
 end
 
 desc "Create release"
-task :release, [:version] do |t, args|
+task :release, [:version] do |_t, args|
   version = get_version(args)
 
   if skip?('ee')
@@ -93,7 +93,7 @@ def create_or_show_issue(issue)
 end
 
 desc "Create the monthly release issue"
-task :monthly_issue, [:version] do |t, args|
+task :monthly_issue, [:version] do |_t, args|
   version = get_version(args)
   issue = MonthlyIssue.new(version)
 
@@ -101,7 +101,7 @@ task :monthly_issue, [:version] do |t, args|
 end
 
 desc "Create the regression tracking issue"
-task :regression_issue, [:version] do |t, args|
+task :regression_issue, [:version] do |_t, args|
   version = get_version(args)
   issue = RegressionIssue.new(version)
 
@@ -109,7 +109,7 @@ task :regression_issue, [:version] do |t, args|
 end
 
 desc "Create a patch issue"
-task :patch_issue, [:version] do |t, args|
+task :patch_issue, [:version] do |_t, args|
   version = get_version(args)
   issue = PatchIssue.new(version)
 
@@ -117,7 +117,7 @@ task :patch_issue, [:version] do |t, args|
 end
 
 desc "Create a security patch issue"
-task :security_patch_issue, [:version] do |t, args|
+task :security_patch_issue, [:version] do |_t, args|
   version = get_version(args)
   issue = SecurityPatchIssue.new(version)
 
