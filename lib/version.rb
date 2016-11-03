@@ -71,10 +71,12 @@ class Version < String
   end
 
   def stable_branch(ee: false)
-    to_minor.tr('.', '-') << if ee || ee?
-      '-stable-ee'
-    else
-      '-stable'
+    to_minor.tr('.', '-').tap do |prefix|
+      if ee || ee?
+        prefix << '-stable-ee'
+      else
+        prefix << '-stable'
+      end
     end
   end
 
