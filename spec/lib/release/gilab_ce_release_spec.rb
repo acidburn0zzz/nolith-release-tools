@@ -145,7 +145,7 @@ describe Release::GitlabCeRelease do
 
       describe "release GitLab-EE" do
         before do
-          described_class.new(version).execute 
+          described_class.new(version).execute
           repository.checkout(branch)
         end
 
