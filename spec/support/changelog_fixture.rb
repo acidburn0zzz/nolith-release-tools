@@ -192,7 +192,7 @@ class ChangelogFixture
     commit = Rugged::Commit.create(repository, {
       tree: index.write_tree(repository),
       message: message,
-      parents: repository.empty? ? [] : [ repository.head.target ].compact,
+      parents: repository.empty? ? [] : [repository.head.target].compact,
       update_ref: 'HEAD'
     })
 
