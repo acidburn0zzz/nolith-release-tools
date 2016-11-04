@@ -72,7 +72,6 @@ task :sync do
     Sync.new(Remotes.ce_remotes).execute
   end
 
-
   if skip?('og')
     $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
