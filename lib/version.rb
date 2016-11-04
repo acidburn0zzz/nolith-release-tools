@@ -1,6 +1,6 @@
 class Version < String
-  VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/.freeze
-  RELEASE_REGEX = /\A(\d+)\.(\d+)\.(\d+)\z/.freeze
+  VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/
+  RELEASE_REGEX = /\A(\d+)\.(\d+)\.(\d+)\z/
 
   def ee?
     end_with?('-ee')
