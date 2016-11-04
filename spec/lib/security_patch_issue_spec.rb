@@ -64,5 +64,4 @@ describe SecurityPatchIssue do
       expect(content).to include 'Make the confidential security issues public'
     end
   end
-
 end
