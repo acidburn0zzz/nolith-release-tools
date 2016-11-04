@@ -41,8 +41,8 @@ describe PatchIssue do
     it 'includes a link to the regression issue' do
       issue = described_class.new(Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).
-        and_return(double(title: '8.3 Regressions', url: 'https://example.com'))
+      allow(issue).to receive(:regression_issue)
+        .and_return(double(title: '8.3 Regressions', url: 'https://example.com'))
       content = issue.description
 
       expect(content).to include 'In the [8.3 Regressions](https://example.com) issue'

@@ -36,8 +36,8 @@ describe GitlabClient do
     it 'returns the full URL to the issue' do
       issue = double(iid: 1234)
 
-      expect(described_class.issue_url(issue)).
-        to eq "https://gitlab.com/gitlab-org/gitlab-ce/issues/1234"
+      expect(described_class.issue_url(issue))
+        .to eq "https://gitlab.com/gitlab-org/gitlab-ce/issues/1234"
     end
   end
 end
