@@ -137,7 +137,7 @@ class Repository
 
   def conflicts?
     in_path do
-      output = %x{git ls-files -u}
+      output = `git ls-files -u`
       return !output.empty?
     end
   end
