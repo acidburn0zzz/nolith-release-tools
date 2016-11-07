@@ -13,6 +13,8 @@ AllCops:
   # behavior by overriding DisplayStyleGuide, or by giving the
   # -S/--display-style-guide option.
   DisplayStyleGuide: false
+  Exclude:
+    - Rakefile
 
 ##################### Style ##################################
 
@@ -70,6 +72,10 @@ Style/BlockEndNewline:
 Style/BlockDelimiters:
   Enabled: true
 
+# Enforce braces style around hash parameters.
+Style/BracesAroundHashParameters:
+  Enabled: false
+
 # Indentation of when in a case/when/[else/]end.
 Style/CaseIndentation:
   Enabled: true
@@ -98,9 +104,19 @@ Style/ClassMethods:
 Style/ClassVars:
   Enabled: true
 
+# Checks formatting of special comments (TODO, FIXME, OPTIMIZE, HACK, REVIEW).
+Style/CommentAnnotation:
+  Enabled: false
+
 # Indentation of comments.
 Style/CommentIndentation:
   Enabled: true
+
+# Use the return value of `if` and `case` statements for assignment to a
+# variable and variable comparison instead of assigning that variable inside of
+# each branch.
+Style/ConditionalAssignment:
+  Enabled: false
 
 # Constants should use SCREAMING_SNAKE_CASE.
 Style/ConstantName:
@@ -182,6 +198,10 @@ Style/FrozenStringLiteralComment:
 # Do not introduce global variables.
 Style/GlobalVars:
   Enabled: true
+
+# Check for conditionals that can be replaced with guard clauses
+Style/GuardClause:
+  Enabled: false
 
 # Prefer Ruby 1.9 hash syntax `{ a: 1, b: 2 }`
 # over 1.8 syntax `{ :a => 1, :b => 2 }`.
@@ -298,6 +318,10 @@ Style/NestedModifier:
 Style/NestedTernaryOperator:
   Enabled: true
 
+# Use `next` to skip iteration instead of a condition at the end.
+Style/Next:
+  Enabled: false
+
 # Prefer x.nil? to x == nil.
 Style/NilComparison:
   Enabled: true
@@ -314,6 +338,10 @@ Style/Not:
 Style/NumericLiterals:
   Enabled: true
 
+# Checks for the use of predicate- or comparison methods for numeric comparisons.
+Style/NumericPredicate:
+  Enabled: false
+
 # Favor the ternary operator(?:) over if/then/else/end constructs.
 Style/OneLineConditional:
   Enabled: true
@@ -325,6 +353,29 @@ Style/OpMethod:
 # Don't use parentheses around the condition of an if/unless/while.
 Style/ParenthesesAroundCondition:
   Enabled: true
+
+# Use `%`-literal delimiters consistently
+Style/PercentLiteralDelimiters:
+  Enabled: false
+  PreferredDelimiters:
+    '%':  ()
+    '%i': '[]'
+    '%I': '[]'
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': '[]'
+    '%W': '[]'
+    '%x': ()
+
+# Avoid Perl-style regex back references.
+Style/PerlBackrefs:
+  Enabled: false
+
+# Checks the arguments passed to raise/fail.
+Style/RaiseArgs:
+  Enabled: false
 
 # Checks for parentheses that seem not to serve any purpose.
 Style/RedundantParentheses:
@@ -400,6 +451,10 @@ Style/SpaceInsideRangeLiteral:
 Style/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
   Enabled: true
+
+# Avoid Perl-style global variables.
+Style/SpecialGlobalVars:
+  Enabled: false
 
 # Check for the usage of parentheses around stabby lambda arguments.
 Style/StabbyLambdaParentheses:
@@ -755,7 +810,7 @@ RSpec/ExpectActual:
 
 # Checks the file and folder naming of the spec file.
 RSpec/FilePath:
-  Enabled: true
+  Enabled: false
   CustomTransform:
     RuboCop: rubocop
     RSpec: rspec
@@ -775,7 +830,7 @@ RSpec/HookArgument:
 
 # Checks for the usage of instance variables.
 RSpec/InstanceVariable:
-  Enabled: true
+  Enabled: false
 
 # Checks for `subject` definitions that come after `let` definitions.
 RSpec/LeadingSubject:
@@ -829,4 +884,4 @@ RSpec/SubjectStub:
 
 # Prefer using verifying doubles over normal doubles.
 RSpec/VerifiedDoubles:
-  Enabled: true
+  Enabled: false
