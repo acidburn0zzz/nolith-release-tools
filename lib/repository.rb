@@ -65,13 +65,13 @@ class Repository
     FileUtils.rm_rf(path, secure: true)
   end
 
-  private
-
   def self.run_git(args)
     args.unshift('git')
     $stdout.puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:cyan)
     system(*args)
   end
+
+  private
 
   # Given a Hash of remotes {name: url}, add each one to the repository
   def remotes=(new_remotes)
