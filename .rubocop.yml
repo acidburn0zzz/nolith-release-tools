@@ -291,7 +291,7 @@ Style/MultilineMethodCallBraceLayout:
 # Checks indentation of method calls with the dot operator that span more than
 # one line.
 Style/MultilineMethodCallIndentation:
-  Enabled: true
+  Enabled: false
 
 # Checks that the closing brace in a method definition is symmetrical with
 # respect to the opening brace and the method parameters.

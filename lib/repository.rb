@@ -15,7 +15,7 @@ class Repository
       .first
       .split('/')
       .last
-      .sub(%r{\.git\Z}, '')
+      .sub(/\.git\Z/, '')
 
     new(File.join('/tmp', repository_name), remotes)
   end

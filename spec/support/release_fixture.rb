@@ -83,7 +83,11 @@ class ReleaseFixture
   def build_fixture
     @repository = Rugged::Repository.init_at(fixture_path)
 
-    commit_blob(path: 'README.md', content: '', message: 'Add empty README.md')
+    commit_blob(
+      path:    'README.md',
+      content: 'Sample README.md',
+      message: 'Add empty README.md'
+    )
     commit_version_blobs(
       'GITLAB_SHELL_VERSION'     => "2.2.2\n",
       'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
@@ -91,6 +95,9 @@ class ReleaseFixture
     )
 
     repository.checkout('master')
+
+    # Create a basic branch
+    repository.branches.create('branch-1', 'HEAD')
 
     # Create old stable branches
     repository.branches.create('1-9-stable',    'HEAD')
