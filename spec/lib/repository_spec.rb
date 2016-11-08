@@ -157,6 +157,8 @@ describe Repository do
 
     context 'when there are conflicts' do
       it 'stops the script' do
+        expect(subject).to receive(:conflicts?).and_return(true)
+
         expect { subject.pull_from_all_remotes('1-9-stable') }
           .to raise_error(Repository::CannotPullError)
       end
