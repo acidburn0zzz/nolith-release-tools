@@ -13,32 +13,55 @@ describe Repository do
   after { FileUtils.rm_rf(repo_path, secure: true) }
 
   describe '.get' do
-    context 'without a repo name' do
-      it_behaves_like 'a sane Git repository' do
-        let(:repo) { described_class.get(repo_remotes) }
-      end
+    it 'generates a name from the remote path' do
+      remotes = {
+        dev:    'https://example.com/foo/bar/dev.git',
+        origin: 'https://gitlab.com/foo/bar/gitlab.git'
+      }
+
+      expect(described_class).to receive(:new).with('/tmp/dev', anything)
+
+      described_class.get(remotes)
     end
 
-    context 'with a repo name' do
-      before { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
-      after { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
+    it 'accepts a repository name' do
+      expect(described_class).to receive(:new).with('/tmp/foo', anything)
 
-      it_behaves_like 'a sane Git repository' do
-        let(:repo_name) { 'hello-world' }
-        let(:repo) { described_class.get(repo_remotes, repo_name) }
-      end
+      described_class.get({}, 'foo')
     end
 
-    it 'adds the given remotes to the Git repo' do
-      repo = described_class.get(repo_remotes)
-      expect(repo.remotes).to eq repo_remotes
+    it 'passes remotes to the initializer' do
+      expect(described_class).to receive(:new).with(anything, :remotes)
 
-      remotes_info = Dir.chdir(repo_path) { `git remote -v`.lines }
-      expect(remotes_info.size).to eq 4
-      expect(remotes_info[0].strip).to eq "github\t#{github_repo_url} (fetch)"
-      expect(remotes_info[1].strip).to eq "github\t#{github_repo_url} (push)"
-      expect(remotes_info[2].strip).to eq "gitlab\t#{repo_url} (fetch)"
-      expect(remotes_info[3].strip).to eq "gitlab\t#{repo_url} (push)"
+      described_class.get(:remotes, 'foo')
+    end
+  end
+
+  describe 'initialize' do
+    it 'performs cleanup' do
+      expect_any_instance_of(described_class).to receive(:cleanup)
+
+      described_class.new(repo_path, {})
+    end
+
+    it 'performs a shallow clone of the repository' do
+      described_class.new(repo_path, repo_remotes)
+
+      # Note: Rugged has no clean way to do this, so we'll shell out
+      expect(`git -C #{repo_path} log --oneline | wc -l`.to_i)
+        .to eq(1)
+    end
+
+    it 'adds remotes to the repository' do
+      repository = described_class.new(repo_path, repo_remotes)
+      rugged = Rugged::Repository.new(repository.path)
+
+      aggregate_failures do
+        expect(rugged.remotes.count).to eq(2)
+
+        expect(rugged.remotes['gitlab'].url).to eq repo_url
+        expect(rugged.remotes['github'].url).to eq github_repo_url
+      end
     end
   end
 
