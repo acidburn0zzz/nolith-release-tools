@@ -26,7 +26,7 @@ module RuggedMatchers
       tree = commit.tree
 
       tree.walk(:preorder).one? do |root, entry|
-        File.join(root, entry[:name]) == file_path
+        File.join(root, entry[:name]).sub(%r{\A/}, '') == file_path
       end
     end
 

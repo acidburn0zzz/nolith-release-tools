@@ -28,30 +28,41 @@ class ChangelogFixture
 
     build_master
 
-    # Build an older stable branch that has no changelog entry files, but does
-    # have the folder
-    build_stable_branch(Version.new('8.0.0'))
+    branches = {}
+    merges   = {}
 
-    stable_ce_branch = build_stable_branch(Version.new('8.10.0'))
-    stable_ee_branch = build_stable_branch(Version.new('8.10.0-ee'))
+    # These branches have no entries
+    branches['8-2-stable']    = build_stable_branch(Version.new('8.2.0'))
+    branches['8-2-stable-ee'] = build_stable_branch(Version.new('8.2.0-ee'))
 
-    _feature_merge = merge_branch_with_changelog_entry(
+    # These branches have CE entries but not EE entries
+    branches['8-3-stable']    = build_stable_branch(Version.new('8.3.0'))
+    branches['8-3-stable-ee'] = build_stable_branch(Version.new('8.3.0-ee'))
+
+    # These branches have CE entries and EE entries
+    branches['8-10-stable']    = build_stable_branch(Version.new('8.10.0'))
+    branches['8-10-stable-ee'] = build_stable_branch(Version.new('8.10.0-ee'))
+
+    # Merge some changelog entries into `master` that will be cherry-picked
+    merges['feature'] = merge_branch_with_changelog_entry(
       changelog_path: config.ce_path,
       changelog_name: 'group-specific-lfs'
     )
-    bugfix_merge = merge_branch_with_changelog_entry(
+    merges['bugfix'] = merge_branch_with_changelog_entry(
       changelog_path: config.ce_path,
       changelog_name: 'fix-cycle-analytics-commits'
     )
-    ee_merge = merge_branch_with_changelog_entry(
+    merges['ee'] = merge_branch_with_changelog_entry(
       changelog_path: config.ee_path,
       changelog_name: 'protect-branch-missing-param'
     )
 
-    cherry_pick_to_branch(stable_ce_branch, sha: bugfix_merge)
+    cherry_pick_to_branch(branches['8-3-stable'],     sha: merges['bugfix'])
+    cherry_pick_to_branch(branches['8-3-stable-ee'],  sha: merges['bugfix'])
 
-    cherry_pick_to_branch(stable_ee_branch, sha: bugfix_merge)
-    cherry_pick_to_branch(stable_ee_branch, sha: ee_merge)
+    cherry_pick_to_branch(branches['8-10-stable'],    sha: merges['bugfix'])
+    cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['bugfix'])
+    cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['ee'])
 
     repository.checkout('master')
   end

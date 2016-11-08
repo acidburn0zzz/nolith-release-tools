@@ -46,14 +46,13 @@ module Changelog
       @unreleased_entries = nil
       @version = version
 
-      if perform_release(stable_branch)
-        perform_release('master')
+      perform_release(stable_branch)
+      perform_release('master')
 
-        # Recurse to perform the CE release if we're on EE
-        if version.ee?
-          # NOTE: We pass the EE stable branch, but use the CE configuration!
-          release(version.to_ce, stable_branch: version.stable_branch)
-        end
+      # Recurse to perform the CE release if we're on EE
+      if version.ee?
+        # NOTE: We pass the EE stable branch, but use the CE configuration!
+        release(version.to_ce, stable_branch: version.stable_branch)
       end
     end
 
@@ -69,24 +68,13 @@ module Changelog
       Config.path(ee: version.ee?)
     end
 
-    # Returns true if the release succeeded, otherwise false
     def perform_release(branch_name)
-      previous_head = repository.head
-
       checkout(branch_name)
 
-      begin
-        update_changelog
-      rescue ::Changelog::NoEntriesError
-        repository.reset(previous_head.target_id, :hard)
+      update_changelog
 
-        false
-      else
-        remove_processed_entries
-        create_commit
-
-        true
-      end
+      remove_processed_entries
+      create_commit
     end
 
     # Checkout the specified branch and update `ref`, `commit`, `tree`, and
@@ -119,6 +107,8 @@ module Changelog
     end
 
     def remove_processed_entries
+      return if unreleased_entries.empty?
+
       index.remove_all(unreleased_entries.collect(&:path))
     end
 
@@ -138,8 +128,6 @@ module Changelog
     # Raises `RuntimeError` if the `HEAD` is not a stable branch, or if the
     # repository tree could not be read.
     #
-    # Raises `NoEntriesError` if there are no changelog entries.
-    #
     # Returns an Array
     def unreleased_entries
       return @unreleased_entries if @unreleased_entries
@@ -158,8 +146,6 @@ module Changelog
           repository.lookup(entry[:oid])
         )
       end
-
-      raise ::Changelog::NoEntriesError if @unreleased_entries.empty?
 
       @unreleased_entries
     end
