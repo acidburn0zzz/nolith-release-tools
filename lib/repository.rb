@@ -7,7 +7,7 @@ class Repository
   class CannotCreateTagError < StandardError; end
   class CannotPullError < StandardError; end
 
-  class CanonicalRemote < Struct.new(:name, :url); end
+  CanonicalRemote = Struct.new(:name, :url)
 
   def self.get(remotes, repository_name = nil)
     repository_name ||= remotes.values.first.split('/').last.sub(/\.git\Z/, '')
@@ -65,13 +65,13 @@ class Repository
     FileUtils.rm_rf(path, secure: true)
   end
 
-  private
-
   def self.run_git(args)
     args.unshift('git')
     $stdout.puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:cyan)
     system(*args)
   end
+
+  private
 
   # Given a Hash of remotes {name: url}, add each one to the repository
   def remotes=(new_remotes)
@@ -113,7 +113,7 @@ class Repository
   def pull(remote, branch)
     run_git %W(pull --quiet --depth=10 #{remote} #{branch})
 
-    if has_conflicts?
+    if conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
     end
   end
@@ -135,9 +135,9 @@ class Repository
     end
   end
 
-  def has_conflicts?
+  def conflicts?
     in_path do
-      output = %x{git ls-files -u}
+      output = `git ls-files -u`
       return !output.empty?
     end
   end

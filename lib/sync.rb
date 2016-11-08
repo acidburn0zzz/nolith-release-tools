@@ -1,7 +1,6 @@
 require_relative 'repository'
 
 class Sync
-
   attr_reader :remotes
 
   def initialize(remotes)

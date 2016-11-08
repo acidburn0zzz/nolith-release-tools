@@ -1,10 +1,9 @@
 class Version < String
-
-  VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/.freeze
-  RELEASE_REGEX = /\A(\d+)\.(\d+)\.(\d+)\z/.freeze
+  VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/
+  RELEASE_REGEX = /\A(\d+)\.(\d+)\.(\d+)\z/
 
   def ee?
-    self.end_with?('-ee')
+    end_with?('-ee')
   end
 
   def milestone_name
@@ -34,7 +33,7 @@ class Version < String
   end
 
   def rc
-    self.match(/-(rc\d+)(-ee)?\z/).captures.first if rc?
+    match(/-(rc\d+)(-ee)?\z/).captures.first if rc?
   end
 
   def rc?
@@ -58,7 +57,7 @@ class Version < String
   def previous_patch
     return unless patch?
 
-    captures = self.match(RELEASE_REGEX).captures
+    captures = match(RELEASE_REGEX).captures
 
     "#{captures[0]}.#{captures[1]}.#{patch - 1}"
   end
@@ -66,16 +65,18 @@ class Version < String
   def next_patch
     return unless release?
 
-    captures = self.match(RELEASE_REGEX).captures
+    captures = match(RELEASE_REGEX).captures
 
     "#{captures[0]}.#{captures[1]}.#{patch + 1}"
   end
 
   def stable_branch(ee: false)
-    to_minor.gsub('.', '-') << if ee || self.ee?
-      '-stable-ee'
-    else
-      '-stable'
+    to_minor.tr('.', '-').tap do |prefix|
+      if ee || ee?
+        prefix << '-stable-ee'
+      else
+        prefix << '-stable'
+      end
     end
   end
 
@@ -100,11 +101,11 @@ class Version < String
   def to_ee
     return self if ee?
 
-    self.class.new("#{to_s}-ee")
+    self.class.new("#{self}-ee")
   end
 
   def to_minor
-    self.match(/\A\d+\.\d+/).to_s
+    match(/\A\d+\.\d+/).to_s
   end
 
   def to_omnibus(ee: false)
@@ -115,7 +116,7 @@ class Version < String
   end
 
   def to_patch
-    self.match(/\A\d+\.\d+\.\d+/).to_s
+    match(/\A\d+\.\d+\.\d+/).to_s
   end
 
   def to_rc(number = 1)

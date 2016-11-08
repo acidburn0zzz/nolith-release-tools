@@ -1,3 +1,19 @@
+image: "dev.gitlab.org:5005/gitlab/gitlab-build-images:ruby-2.3-git-2.7-phantomjs-2.1"
+
+cache:
+  key: "ruby-231"
+  paths:
+  - vendor/ruby
+
+rubocop:
+  stage: test
+  script:
+    - which ruby
+    - ruby -v
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install --jobs $(nproc) "${FLAGS[@]}"
+    - bundle exec rubocop
+
 specs:
   stage: test
   script:

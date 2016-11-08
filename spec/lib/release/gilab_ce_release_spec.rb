@@ -41,8 +41,8 @@ describe Release::GitlabCeRelease do
 
   after do
     # Manually perform the cleanup we disabled in the `before` block
-    FileUtils.rm_r(repo_path,    secure: true) if File.exists?(repo_path)
-    FileUtils.rm_r(ob_repo_path, secure: true) if File.exists?(ob_repo_path)
+    FileUtils.rm_r(repo_path,    secure: true) if File.exist?(repo_path)
+    FileUtils.rm_r(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
   end
 
   { ce: '', ee: '-ee' }.each do |edition, suffix|
@@ -145,7 +145,7 @@ describe Release::GitlabCeRelease do
 
       describe "release GitLab-EE" do
         before do
-          described_class.new(version).execute 
+          described_class.new(version).execute
           repository.checkout(branch)
         end
 

@@ -15,7 +15,7 @@ describe Repository do
   describe '.get' do
     context 'without a repo name' do
       it_behaves_like 'a sane Git repository' do
-        let(:repo) { Repository.get(repo_remotes) }
+        let(:repo) { described_class.get(repo_remotes) }
       end
     end
 
@@ -25,12 +25,12 @@ describe Repository do
 
       it_behaves_like 'a sane Git repository' do
         let(:repo_name) { 'hello-world' }
-        let(:repo) { Repository.get(repo_remotes, repo_name) }
+        let(:repo) { described_class.get(repo_remotes, repo_name) }
       end
     end
 
     it 'adds the given remotes to the Git repo' do
-      repo = Repository.get(repo_remotes)
+      repo = described_class.get(repo_remotes)
       expect(repo.remotes).to eq repo_remotes
 
       remotes_info = Dir.chdir(repo_path) { `git remote -v`.lines }
@@ -44,13 +44,13 @@ describe Repository do
 
   describe '#path' do
     context 'when no name is given' do
-      subject { Repository.get(repo_remotes) }
+      subject { described_class.get(repo_remotes) }
 
       it { expect(subject.path).to eq File.join('/tmp', repo_name) }
     end
 
     context 'when a name is given' do
-      subject { Repository.get(repo_remotes, 'hello-world') }
+      subject { described_class.get(repo_remotes, 'hello-world') }
       before { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
       after { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
 
@@ -59,20 +59,20 @@ describe Repository do
   end
 
   describe '#canonical_remote' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     it { expect(subject.canonical_remote.name).to eq :gitlab }
     it { expect(subject.canonical_remote.url).to eq repo_url }
   end
 
   describe '#remotes' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     it { expect(subject.remotes).to eq repo_remotes }
   end
 
   describe '#ensure_branch_exists' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     context 'with an existing branch' do
       it 'fetches and checkouts the branch with an history of 1' do
@@ -96,7 +96,7 @@ describe Repository do
   end
 
   describe '#create_tag' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     it 'creates the tag in the current branch' do
       subject.ensure_branch_exists('branch-1')
@@ -110,7 +110,7 @@ describe Repository do
   end
 
   describe '#write_file' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     context 'with an existing file' do
       it 'overwrites the file' do
@@ -130,7 +130,7 @@ describe Repository do
   end
 
   describe '#commit' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     before do
       subject.ensure_branch_exists('branch-1')
@@ -146,42 +146,40 @@ describe Repository do
       expect(File.open(File.join(repo_path, 'README.md')).read).to eq 'Cool'
 
       commit_info = Dir.chdir(repo_path) { `git show HEAD --name-only --oneline`.lines }
-      expect(commit_info[0]).to match /\A\w{7} Update README\Z/
-      expect(commit_info[1]).to match /\AREADME.md\Z/
+      expect(commit_info[0]).to match(/\A\w{7} Update README\Z/)
+      expect(commit_info[1]).to match(/\AREADME.md\Z/)
     end
   end
 
   describe '#pull_from_all_remotes' do
-    subject { Repository.get(Hash[*repo_remotes.first]) }
+    subject { described_class.get(Hash[*repo_remotes.first]) }
     before { subject.ensure_branch_exists('master') }
 
     context 'when there are conflicts' do
       it 'stops the script' do
-        expect {
-          subject.pull_from_all_remotes('1-9-stable')
-        }.to raise_error(Repository::CannotPullError)
+        expect { subject.pull_from_all_remotes('1-9-stable') }
+          .to raise_error(Repository::CannotPullError)
       end
     end
 
     context 'when pull was successful' do
       it 'continues to the next command' do
-        expect {
-          subject.pull_from_all_remotes('master')
-        }.not_to raise_error
+        expect { subject.pull_from_all_remotes('master') }
+          .not_to raise_error
       end
     end
   end
 
   describe '#cleanup' do
-    subject { Repository.get(repo_remotes) }
+    subject { described_class.get(repo_remotes) }
 
     it 'removes any existing dir with the given name in /tmp' do
       subject.ensure_branch_exists('master') # To actually clone the repo
-      expect(File.exists?(repo_path)).to be_truthy
+      expect(File.exist?(repo_path)).to be_truthy
 
       subject.cleanup
 
-      expect(File.exists?(repo_path)).to be_falsy
+      expect(File.exist?(repo_path)).to be_falsy
     end
   end
 end

@@ -30,8 +30,6 @@ module Changelog
       '.yml'
     end
 
-    private
-
     def self.root_path
       'changelogs'
     end

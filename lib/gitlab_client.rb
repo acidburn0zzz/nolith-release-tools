@@ -28,8 +28,8 @@ class GitlabClient
   end
 
   def self.ce_milestone(title)
-    ce_milestones.
-      detect { |m| m.title == title } || MissingMilestone.new
+    ce_milestones
+      .detect { |m| m.title == title } || MissingMilestone.new
   end
 
   # Create an issue in the CE project based on the provided issue

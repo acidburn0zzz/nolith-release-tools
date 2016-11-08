@@ -187,12 +187,12 @@ class ChangelogFixture
     index = repository.index
 
     oid = repository.write(content, :blob)
-    index.add(path: path, oid: oid, mode: 0100644)
+    index.add(path: path, oid: oid, mode: 0o100644)
 
     commit = Rugged::Commit.create(repository, {
       tree: index.write_tree(repository),
       message: message,
-      parents: repository.empty? ? [] : [ repository.head.target ].compact,
+      parents: repository.empty? ? [] : [repository.head.target].compact,
       update_ref: 'HEAD'
     })
 
