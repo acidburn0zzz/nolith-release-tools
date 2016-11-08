@@ -1,8 +1,5 @@
-# This ensure we don't push to the repo during tests
+# This ensures we don't push to the repo during tests
 ENV['TEST'] = 'true'
-
-require 'simplecov'
-SimpleCov.start
 
 require 'active_support/core_ext/string/strip'
 
