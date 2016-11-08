@@ -85,3 +85,9 @@
 - Change H
 - Change I
 - Change J
+
+## 8.0.0
+
+- Change A
+- Change B
+- Change C

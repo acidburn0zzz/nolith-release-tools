@@ -138,7 +138,7 @@ describe Changelog::Manager do
   end
 
   describe '#release', 'with no changelog entries' do
-    let(:version) { Version.new('8.0.1') }
+    let(:version) { Version.new('8.2.1') }
 
     let(:master) { repository.branches['master'] }
     let(:stable) { repository.branches[version.stable_branch] }
@@ -156,10 +156,39 @@ describe Changelog::Manager do
       commit = master.target
 
       aggregate_failures do
-        expect(commit).not_to have_deleted(unpicked1)
-        expect(commit).not_to have_deleted(unpicked2)
+        expect(commit).to have_blob(unpicked1)
+        expect(commit).to have_blob(unpicked2)
+        expect(commit).to have_blob(config.ce_log)
+      end
+    end
+  end
 
-        expect(stable.target).to eq(master.target)
+  describe '#release', 'with CE entries but no EE entries' do
+    let(:version) { Version.new('8.3.1-ee') }
+
+    let(:master) { repository.branches['master'] }
+    let(:stable) { repository.branches[version.stable_branch] }
+
+    let(:ce_master_commit) { master.target }
+    let(:ce_stable_commit) { stable.target }
+    let(:ee_master_commit) { ce_master_commit.parents.first }
+    let(:ee_stable_commit) { ce_stable_commit.parents.first }
+
+    before do
+      reset_fixture!
+
+      described_class.new(repository).release(version)
+    end
+
+    it 'updates both changelog files' do
+      aggregate_failures do
+        expect(ee_master_commit).to have_modified(config.ee_log)
+        expect(ee_stable_commit).to have_modified(config.ee_log)
+
+        expect(read_head_blob(repository, config.ce_log))
+          .not_to match('No changes')
+        expect(read_head_blob(repository, config.ee_log))
+          .to match('No changes')
       end
     end
   end
