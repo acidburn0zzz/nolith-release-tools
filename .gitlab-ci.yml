@@ -5,6 +5,15 @@ cache:
   paths:
   - vendor/ruby
 
+rubocop:
+  stage: test
+  script:
+    - which ruby
+    - ruby -v
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install --jobs $(nproc) "${FLAGS[@]}"
+    - bundle exec rubocop
+
 specs:
   stage: test
   script:
