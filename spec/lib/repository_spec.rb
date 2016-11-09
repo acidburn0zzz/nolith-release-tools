@@ -2,73 +2,108 @@ require 'spec_helper'
 require 'repository'
 
 describe Repository do
-  let(:repo_name) { 'release-tools-test-gitlab' }
-  let(:repo_url) { 'https://gitlab.com/gitlab-org/release-tools-test-gitlab.git' }
-  let(:github_repo_url) { repo_url.sub('gitlab', 'github') }
+  let(:fixture) { ReleaseFixture.new }
+  let(:repo_path) { File.join('/tmp', fixture.class.repository_name) }
+  let(:repo_url) { "file://#{fixture.fixture_path}" }
   let(:repo_remotes) do
-    { gitlab: repo_url, github: github_repo_url }
+    { gitlab: repo_url, github: 'https://example.com/foo/bar/baz.git' }
   end
-  let(:repo_path) { File.join('/tmp', repo_name) }
 
-  after { FileUtils.rm_rf(repo_path, secure: true) }
+  before do
+    fixture.rebuild_fixture!
+  end
 
   describe '.get' do
-    context 'without a repo name' do
-      it_behaves_like 'a sane Git repository' do
-        let(:repo) { described_class.get(repo_remotes) }
+    it 'generates a name from the remote path' do
+      remotes = {
+        dev:    'https://example.com/foo/bar/dev.git',
+        origin: 'https://gitlab.com/foo/bar/gitlab.git'
+      }
+
+      expect(described_class).to receive(:new).with('/tmp/dev', anything)
+
+      described_class.get(remotes)
+    end
+
+    it 'accepts a repository name' do
+      expect(described_class).to receive(:new).with('/tmp/foo', anything)
+
+      described_class.get({}, 'foo')
+    end
+
+    it 'passes remotes to the initializer' do
+      expect(described_class).to receive(:new).with(anything, :remotes)
+
+      described_class.get(:remotes, 'foo')
+    end
+  end
+
+  describe 'initialize' do
+    it 'performs cleanup' do
+      expect_any_instance_of(described_class).to receive(:cleanup)
+
+      described_class.new(repo_path, {})
+    end
+
+    it 'performs a shallow clone of the repository' do
+      described_class.new(repo_path, repo_remotes)
+
+      # Note: Rugged has no clean way to do this, so we'll shell out
+      expect(`git -C #{repo_path} log --oneline | wc -l`.to_i)
+        .to eq(1)
+    end
+
+    it 'adds remotes to the repository' do
+      expect_any_instance_of(described_class).to receive(:remotes=)
+        .with(:remotes)
+
+      described_class.new('foo', :remotes)
+    end
+
+    it 'assigns path' do
+      repository = described_class.new('foo', {})
+
+      expect(repository.path).to eq 'foo'
+    end
+  end
+
+  describe '#remotes=' do
+    it 'assigns the canonical remote' do
+      remotes = { origin: repo_url }
+
+      repository = described_class.new(repo_path, remotes)
+
+      aggregate_failures do
+        expect(repository.canonical_remote.name).to eq(:origin)
+        expect(repository.canonical_remote.url).to eq(repo_url)
       end
     end
 
-    context 'with a repo name' do
-      before { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
-      after { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
+    it 'assigns remotes' do
+      remotes = { origin: repo_url }
 
-      it_behaves_like 'a sane Git repository' do
-        let(:repo_name) { 'hello-world' }
-        let(:repo) { described_class.get(repo_remotes, repo_name) }
+      repository = described_class.new(repo_path, remotes)
+
+      expect(repository.remotes).to eq(remotes)
+    end
+
+    it 'adds remotes to the repository' do
+      remotes = {
+        origin: repo_url,
+        github: '/foo/bar/baz.git'
+      }
+
+      repository = described_class.new(repo_path, remotes)
+
+      aggregate_failures do
+        rugged = Rugged::Repository.new(repository.path)
+
+        expect(rugged.remotes.count).to eq(2)
+
+        expect(rugged.remotes['origin'].url).to eq(repo_url)
+        expect(rugged.remotes['github'].url).to eq('/foo/bar/baz.git')
       end
     end
-
-    it 'adds the given remotes to the Git repo' do
-      repo = described_class.get(repo_remotes)
-      expect(repo.remotes).to eq repo_remotes
-
-      remotes_info = Dir.chdir(repo_path) { `git remote -v`.lines }
-      expect(remotes_info.size).to eq 4
-      expect(remotes_info[0].strip).to eq "github\t#{github_repo_url} (fetch)"
-      expect(remotes_info[1].strip).to eq "github\t#{github_repo_url} (push)"
-      expect(remotes_info[2].strip).to eq "gitlab\t#{repo_url} (fetch)"
-      expect(remotes_info[3].strip).to eq "gitlab\t#{repo_url} (push)"
-    end
-  end
-
-  describe '#path' do
-    context 'when no name is given' do
-      subject { described_class.get(repo_remotes) }
-
-      it { expect(subject.path).to eq File.join('/tmp', repo_name) }
-    end
-
-    context 'when a name is given' do
-      subject { described_class.get(repo_remotes, 'hello-world') }
-      before { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
-      after { FileUtils.rm_rf(File.join('/tmp', 'hello-world'), secure: true) }
-
-      it { expect(subject.path).to eq File.join('/tmp', 'hello-world') }
-    end
-  end
-
-  describe '#canonical_remote' do
-    subject { described_class.get(repo_remotes) }
-
-    it { expect(subject.canonical_remote.name).to eq :gitlab }
-    it { expect(subject.canonical_remote.url).to eq repo_url }
-  end
-
-  describe '#remotes' do
-    subject { described_class.get(repo_remotes) }
-
-    it { expect(subject.remotes).to eq repo_remotes }
   end
 
   describe '#ensure_branch_exists' do
@@ -78,9 +113,11 @@ describe Repository do
       it 'fetches and checkouts the branch with an history of 1' do
         subject.ensure_branch_exists('branch-1')
 
-        expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq 'refs/heads/branch-1'
-        expect(File.open(File.join(repo_path, 'README.md')).read).to eq 'README.md in branch-1'
-        expect(Dir.chdir(repo_path) { `git log --oneline | wc -l`.to_i }).to eq(1)
+        aggregate_failures do
+          expect(`git -C #{repo_path} symbolic-ref HEAD`.strip).to eq 'refs/heads/branch-1'
+          expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Sample README.md'
+          expect(`git -C #{repo_path} log --oneline | wc -l`.to_i).to eq(1)
+        end
       end
     end
 
@@ -88,24 +125,27 @@ describe Repository do
       it 'creates and checkouts the branch with an history of 1' do
         subject.ensure_branch_exists('branch-2')
 
-        expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq 'refs/heads/branch-2'
-        expect(File.open(File.join(repo_path, 'README.md')).read).to eq 'This is a sample README.'
-        expect(Dir.chdir(repo_path) { `git log --oneline | wc -l`.to_i }).to eq(1)
+        aggregate_failures do
+          expect(`git -C #{repo_path} symbolic-ref HEAD`.strip).to eq 'refs/heads/branch-2'
+          expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Sample README.md'
+          expect(`git -C #{repo_path} log --oneline | wc -l`.to_i).to eq(1)
+        end
       end
     end
   end
 
   describe '#create_tag' do
-    subject { described_class.get(repo_remotes) }
-
     it 'creates the tag in the current branch' do
-      subject.ensure_branch_exists('branch-1')
-      expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq 'refs/heads/branch-1'
+      repository = described_class.get(repo_remotes)
+      rugged = Rugged::Repository.new(repository.path)
 
-      subject.create_tag('v42')
+      repository.ensure_branch_exists('branch-1')
+      repository.create_tag('v42')
 
-      expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq 'refs/heads/branch-1'
-      expect(Dir.chdir(repo_path) { `git tag -l`.strip }).to eq 'v42'
+      aggregate_failures do
+        expect(rugged.head.name).to eq 'refs/heads/branch-1'
+        expect(rugged.tags['v42']).not_to be_nil
+      end
     end
   end
 
@@ -116,7 +156,7 @@ describe Repository do
       it 'overwrites the file' do
         subject.write_file('README.md', 'Cool')
 
-        expect(File.open(File.join(repo_path, 'README.md')).read).to eq 'Cool'
+        expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Cool'
       end
     end
 
@@ -124,7 +164,7 @@ describe Repository do
       it 'creates the file' do
         subject.write_file('PROCESS.md', 'Just do it!')
 
-        expect(File.open(File.join(repo_path, 'PROCESS.md')).read).to eq 'Just do it!'
+        expect(File.read(File.join(repo_path, 'PROCESS.md'))).to eq 'Just do it!'
       end
     end
   end
@@ -138,48 +178,46 @@ describe Repository do
     end
 
     it 'commits the given file with the given message in the current branch' do
-      expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq 'refs/heads/branch-1'
+      expect(`git -C #{repo_path} symbolic-ref HEAD`.strip).to eq 'refs/heads/branch-1'
 
       subject.commit('README.md', 'Update README')
 
-      expect(Dir.chdir(repo_path) { `git symbolic-ref HEAD`.strip }).to eq 'refs/heads/branch-1'
-      expect(File.open(File.join(repo_path, 'README.md')).read).to eq 'Cool'
+      expect(`git -C #{repo_path} symbolic-ref HEAD`.strip).to eq 'refs/heads/branch-1'
+      expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Cool'
 
-      commit_info = Dir.chdir(repo_path) { `git show HEAD --name-only --oneline`.lines }
+      commit_info = `git -C #{repo_path} show HEAD --name-only --oneline`.lines
       expect(commit_info[0]).to match(/\A\w{7} Update README\Z/)
       expect(commit_info[1]).to match(/\AREADME.md\Z/)
     end
   end
 
   describe '#pull_from_all_remotes' do
-    subject { described_class.get(Hash[*repo_remotes.first]) }
-    before { subject.ensure_branch_exists('master') }
+    let(:repository) { described_class.get(Hash[*repo_remotes.first]) }
 
     context 'when there are conflicts' do
       it 'stops the script' do
-        expect { subject.pull_from_all_remotes('1-9-stable') }
+        allow(repository).to receive(:conflicts?).and_return(true)
+
+        expect { repository.pull_from_all_remotes('1-9-stable') }
           .to raise_error(Repository::CannotPullError)
       end
     end
 
     context 'when pull was successful' do
       it 'continues to the next command' do
-        expect { subject.pull_from_all_remotes('master') }
+        expect { repository.pull_from_all_remotes('master') }
           .not_to raise_error
       end
     end
   end
 
   describe '#cleanup' do
-    subject { described_class.get(repo_remotes) }
+    it 'removes the repository path' do
+      repository = described_class.new(repo_path, {})
 
-    it 'removes any existing dir with the given name in /tmp' do
-      subject.ensure_branch_exists('master') # To actually clone the repo
-      expect(File.exist?(repo_path)).to be_truthy
+      expect(FileUtils).to receive(:rm_rf).with(repo_path, secure: true)
 
-      subject.cleanup
-
-      expect(File.exist?(repo_path)).to be_falsy
+      repository.cleanup
     end
   end
 end

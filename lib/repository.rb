@@ -10,9 +10,14 @@ class Repository
   CanonicalRemote = Struct.new(:name, :url)
 
   def self.get(remotes, repository_name = nil)
-    repository_name ||= remotes.values.first.split('/').last.sub(/\.git\Z/, '')
+    repository_name ||= remotes
+      .values
+      .first
+      .split('/')
+      .last
+      .sub(/\.git\Z/, '')
 
-    Repository.new(File.join('/tmp', repository_name), remotes)
+    new(File.join('/tmp', repository_name), remotes)
   end
 
   attr_reader :path, :remotes, :canonical_remote
@@ -20,7 +25,10 @@ class Repository
   def initialize(path, remotes)
     $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
     @path = path
+
     cleanup
+
+    # Add remotes, performing the first clone as necessary
     self.remotes = remotes
   end
 
@@ -61,7 +69,7 @@ class Repository
   end
 
   def cleanup
-    $stdout.puts "Removing #{path}...".colorize(:green)
+    $stdout.puts "Removing #{path}...".colorize(:green) if Dir.exist?(path)
     FileUtils.rm_rf(path, secure: true)
   end
 
