@@ -175,8 +175,8 @@ get the new version on the 22nd and there is sufficient time in the European
 workday to quickly fix any issues.**
 
 - Before 0800 PDT / 1700 CET:
-  - [ ] Remove `(unreleased)` from `CHANGELOG` and add a `(unreleased)` line for the next patch
-  - [ ] Remove `(unreleased)` from `CHANGELOG-EE` and add a `(unreleased)` line for the next patch
+  - [ ] Remove `(unreleased)` from `CHANGELOG.md` and add a `(unreleased)` line for the next patch
+  - [ ] Remove `(unreleased)` from `CHANGELOG-EE.md` and add a `(unreleased)` line for the next patch
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(3) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
