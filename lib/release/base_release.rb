@@ -96,6 +96,8 @@ module Release
     end
 
     def compile_changelog
+      return if version.rc?
+
       Changelog::Manager.new(repository.path).release(version)
     rescue Changelog::NoChangelogError => ex
       $stderr.puts "Cannot perform changelog update for #{version} on " \
