@@ -44,7 +44,7 @@ module Changelog
         if line =~ /\A## (\d+\.\d+\.\d+)/
           header = Version.new($1)
 
-          if version.to_ce == header
+          if version.to_ce.to_patch == header
             entries = markdown.lines
             entries.shift(2) # Remove the header and the blank line
             entries.pop      # Remove the trailing blank line

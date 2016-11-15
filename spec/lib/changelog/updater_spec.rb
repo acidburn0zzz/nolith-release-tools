@@ -15,7 +15,7 @@ describe Changelog::Updater do
       writer = described_class.new(contents, version)
       contents = writer.insert(markdown).lines
 
-      expect(contents).to have_inserted(version).at_line(2)
+      expect(contents).to have_inserted(version).at_line(6)
     end
 
     it 'correctly inserts a new patch of the latest major release' do
@@ -25,7 +25,7 @@ describe Changelog::Updater do
       writer = described_class.new(contents, version)
       contents = writer.insert(markdown).lines
 
-      expect(contents).to have_inserted(version).at_line(2)
+      expect(contents).to have_inserted(version).at_line(6)
     end
 
     it 'correctly inserts a new patch of the previous major release' do
@@ -35,7 +35,7 @@ describe Changelog::Updater do
       writer = described_class.new(contents, version)
       contents = writer.insert(markdown).lines
 
-      expect(contents).to have_inserted(version).at_line(24)
+      expect(contents).to have_inserted(version).at_line(28)
     end
 
     it 'correctly inserts a new patch of a legacy major release' do
@@ -45,7 +45,34 @@ describe Changelog::Updater do
       writer = described_class.new(contents, version)
       contents = writer.insert(markdown).lines
 
-      expect(contents).to have_inserted(version).at_line(54)
+      expect(contents).to have_inserted(version).at_line(58)
+    end
+
+    it 'correctly inserts a new pre-release version header' do
+      version = Version.new('8.15.0-rc1')
+      markdown = "## 8.15.0\n\n"
+
+      writer = described_class.new(contents, version)
+      contents = writer.insert(markdown)
+
+      expect(contents).to include("## 8.15.0\n\n## 8.11.0")
+    end
+
+    it 'correctly inserts entries for a pre-existing version header of a pre-release' do
+      version = Version.new('8.11.0-rc3')
+      markdown = markdown(version)
+
+      writer = described_class.new(contents, version)
+      contents = writer.insert(markdown)
+
+      expect(contents).to include(<<-MD.strip_heredoc)
+        ## 8.11.0 (2016-08-22)
+
+        - Change Z
+        - Change Y
+        - Change X
+        - Change W
+      MD
     end
 
     it 'correctly inserts entries for a pre-existing version header' do
@@ -68,7 +95,7 @@ describe Changelog::Updater do
 
   def markdown(version)
     markdown = ""
-    markdown << "## #{version}\n\n"
+    markdown << "## #{version.to_ce.to_patch}\n\n"
     markdown << "- Change Z\n- Change Y\n- Change X\n"
     markdown << "\n"
   end

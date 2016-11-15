@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 8.11.0 (2016-08-22)
+
+- Change W
+
 ## 8.10.4
 
 - Change A
