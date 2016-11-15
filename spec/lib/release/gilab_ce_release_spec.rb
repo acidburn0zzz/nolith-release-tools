@@ -47,7 +47,7 @@ describe Release::GitlabCeRelease do
 
   { ce: '', ee: '-ee' }.each do |edition, suffix|
     describe '#execute' do
-      before do
+      def execute(version, branch)
         described_class.new(version).execute
         repository.checkout(branch)
       end
@@ -58,7 +58,15 @@ describe Release::GitlabCeRelease do
         let(:branch)     { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
+          it 'performs changelog compilation' do
+            expect(Changelog::Manager).to receive(:new).and_call_original
+
+            execute(version, branch)
+          end
+
           it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
+            execute(version, branch)
+
             aggregate_failures do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
@@ -83,7 +91,15 @@ describe Release::GitlabCeRelease do
         let(:branch)     { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
+          it 'does not perform changelog compilation' do
+            expect(Changelog::Manager).not_to receive(:new)
+
+            execute(version, branch)
+          end
+
           it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
+            execute(version, branch)
+
             aggregate_failures do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
@@ -108,7 +124,15 @@ describe Release::GitlabCeRelease do
         let(:branch)     { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
+          it 'performs changelog compilation' do
+            expect(Changelog::Manager).to receive(:new).and_call_original
+
+            execute(version, branch)
+          end
+
           it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
+            execute(version, branch)
+
             aggregate_failures do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
