@@ -1,3 +1,4 @@
 ---
 title: 'Fix an issue with the "Commits" section of the cycle analytics summary.'
-id: 6513
+merge_request: 6513
+author: Rémy Coutable
