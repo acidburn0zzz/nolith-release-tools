@@ -97,10 +97,6 @@ class Repository
     run_git %W(remote add #{name} #{url})
   end
 
-  def remove_remote(name)
-    run_git %W(remote remove #{name})
-  end
-
   def fetch_branch(branch, remote = canonical_remote.name)
     unless run_git %W(fetch --depth=1 --quiet #{remote} #{branch}:#{branch})
       run_git %W(fetch --depth=1 --quiet #{remote} #{branch})
