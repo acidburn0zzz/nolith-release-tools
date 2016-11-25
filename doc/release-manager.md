@@ -32,18 +32,6 @@ as long as **six hours**!
 But no release is ever perfect, and the bug reports will start to come in as
 users update to the latest version. That's where patch releases come in.
 
-### Deployment
-
-With the help of the infrastructure team, the release manager is also
-responsible for deploying the latest version to GitLab.com. During the merge
-window, the release manager needs to pay particular attention to migrations
-that may block the deploy. For example, migrations take a long time (e.g. add
-a column with a default value to the issues table) should be reviewed
-carefully.
-
-When the release packages are ready, the release manager should
-begin the [deployment procedure].
-
 ### Post-release
 
 The amount and scheduling of [patch releases] is entirely at the discretion of
@@ -56,6 +44,18 @@ will include five or more minor fixes. The release manager should use his or her
 best judgement to determine when a patch release is warranted. We strive to
 continue releasing patches until all known regressions for that release are
 addressed.
+
+### Deployment
+
+With the help of the infrastructure team, the release manager is also
+responsible for deploying the latest version to GitLab.com. During the merge
+window, the release manager needs to pay particular attention to migrations
+that may block the deploy. For example, migrations take a long time (e.g. add
+a column with a default value to the issues table) should be reviewed
+carefully.
+
+When the release packages are ready, the release manager should
+begin the [deployment procedure].
 
 ## Further Reading
 
