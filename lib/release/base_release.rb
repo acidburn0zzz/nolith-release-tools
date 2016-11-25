@@ -94,14 +94,5 @@ module Release
       $stdout.puts "Push #{ref_type} #{ref} to all remotes...".colorize(:green)
       repository.push_to_all_remotes(ref)
     end
-
-    def compile_changelog
-      return if version.rc?
-
-      Changelog::Manager.new(repository.path).release(version)
-    rescue Changelog::NoChangelogError => ex
-      $stderr.puts "Cannot perform changelog update for #{version} on " \
-        "#{ex.changelog_path}".colorize(:red)
-    end
   end
 end
