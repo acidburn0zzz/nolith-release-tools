@@ -32,14 +32,6 @@ missing commits.
     To learn why it's safe to use `-m 1`, please read this StackOverflow answer:
     http://stackoverflow.com/questions/12626754/git-cherry-pick-syntax-and-merge-branches/12628579#12628579
 
-1. If necessary, update `CHANGELOG` (or `CHANGELOG-EE`) and then amend the
-   previous cherry pick commit:
-
-    ```sh
-    git add CHANGELOG
-    git commit --amend --no-edit
-    ```
-
 1. Push the updated `stable` branch:
 
     ```sh
