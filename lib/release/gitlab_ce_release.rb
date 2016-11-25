@@ -29,6 +29,15 @@ module Release
       super
     end
 
+    def compile_changelog
+      return if version.rc?
+
+      Changelog::Manager.new(repository.path).release(version)
+    rescue Changelog::NoChangelogError => ex
+      $stderr.puts "Cannot perform changelog update for #{version} on " \
+        "#{ex.changelog_path}".colorize(:red)
+    end
+
     def tag_next_minor_pre_version
       return unless version.release? && version.patch.zero?
 
