@@ -34,9 +34,9 @@ describe Release::GitlabCeRelease do
 
     # Override the actual remotes with our local fixture repositories
     allow_any_instance_of(described_class).to receive(:remotes)
-      .and_return({ gitlab: fixture.fixture_path })
+      .and_return({ gitlab: "file://#{fixture.fixture_path}" })
     allow_any_instance_of(Release::OmnibusGitLabRelease).to receive(:remotes)
-      .and_return({ gitlab: ob_fixture.fixture_path })
+      .and_return({ gitlab: "file://#{ob_fixture.fixture_path}" })
   end
 
   after do
