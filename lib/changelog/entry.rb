@@ -37,7 +37,7 @@ module Changelog
       @title  = yaml['title']
       @id     = yaml['merge_request'] || yaml['id']
       @author = yaml['author']
-    rescue StandardError
+    rescue StandardError # rubocop:disable Lint/HandleExceptions
       # noop
     end
   end

@@ -24,8 +24,7 @@ describe Changelog::Entry do
     it 'handles invalid blob content' do
       blob = double(content: "---\ninvalid: yaml: here\n")
 
-      expect { described_class.new('foo/bar', blob) }
-        .not_to raise_error
+      expect { described_class.new('foo/bar', blob) }.not_to raise_error
     end
   end
 
