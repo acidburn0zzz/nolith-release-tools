@@ -4,6 +4,20 @@ require 'changelog/markdown_generator'
 require 'version'
 
 describe Changelog::MarkdownGenerator do
+  describe 'initialize' do
+    it 'only accepts valid entries' do
+      entries = [
+        double(valid?: false),
+        double(valid?: true),
+        double(valid?: false)
+      ]
+
+      generator = described_class.new(double, entries)
+
+      expect(generator.entries.length).to eq(1)
+    end
+  end
+
   describe '#to_s' do
     it 'includes the version header' do
       version = Version.new('1.2.3')
@@ -44,9 +58,9 @@ describe Changelog::MarkdownGenerator do
 
     it 'sorts entries by their entry ID' do
       entries = [
-        double(id: 5, to_s: "Change A"),
-        double(id: 3, to_s: "Change B"),
-        double(id: 1, to_s: "Change C")
+        double(id: 5, to_s: "Change A", valid?: true),
+        double(id: 3, to_s: "Change B", valid?: true),
+        double(id: 1, to_s: "Change C", valid?: true)
       ]
       generator = described_class.new(spy, entries)
 
@@ -57,9 +71,9 @@ describe Changelog::MarkdownGenerator do
 
     it 'sorts entries without an ID last' do
       entries = [
-        double(id: 5,   to_s: "Change A"),
-        double(id: nil, to_s: "Change B"),
-        double(id: 1,   to_s: "Change C")
+        double(id: 5,   to_s: "Change A", valid?: true),
+        double(id: nil, to_s: "Change B", valid?: true),
+        double(id: 1,   to_s: "Change C", valid?: true)
       ]
       generator = described_class.new(spy, entries)
 

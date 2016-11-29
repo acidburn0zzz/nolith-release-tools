@@ -8,7 +8,7 @@ module Changelog
 
     def initialize(version, entries)
       @version = version
-      @entries = entries
+      @entries = entries.select(&:valid?)
     end
 
     def to_s

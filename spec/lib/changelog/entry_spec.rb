@@ -20,6 +20,12 @@ describe Changelog::Entry do
         expect(entry.author).to eq 'Joe Smith'
       end
     end
+
+    it 'handles invalid blob content' do
+      blob = double(content: "---\ninvalid: yaml: here\n")
+
+      expect { described_class.new('foo/bar', blob) }.not_to raise_error
+    end
   end
 
   describe '#to_s' do
@@ -51,6 +57,20 @@ describe Changelog::Entry do
       entry = entry('title' => 'Foo', 'merge_request' => 1234, 'author' => 'Joe Smith')
 
       expect(entry.to_s).to eq 'Foo. !1234 (Joe Smith)'
+    end
+  end
+
+  describe '#valid?' do
+    it 'returns false when title is missing' do
+      entry = entry({})
+
+      expect(entry).not_to be_valid
+    end
+
+    it 'returns true when title is present' do
+      entry = entry('title' => 'Foo')
+
+      expect(entry).to be_valid
     end
   end
 end

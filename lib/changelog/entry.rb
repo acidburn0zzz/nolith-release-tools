@@ -1,4 +1,5 @@
 require 'yaml'
+require 'active_support/core_ext/object/blank'
 
 module Changelog
   # Represents a Rugged::Blob and its changelog entry
@@ -7,7 +8,7 @@ module Changelog
     attr_reader :title, :id, :author
 
     # path - Path to the blob, relative to the Repository root
-    # blob - Underlying rugged::Blob object
+    # blob - Underlying Rugged::Blob object
     def initialize(path, blob)
       @path = path
       @blob = blob
@@ -24,6 +25,10 @@ module Changelog
       str
     end
 
+    def valid?
+      title.present?
+    end
+
     private
 
     def parse_blob(content)
@@ -32,6 +37,8 @@ module Changelog
       @title  = yaml['title']
       @id     = yaml['merge_request'] || yaml['id']
       @author = yaml['author']
+    rescue StandardError # rubocop:disable Lint/HandleExceptions
+      # noop
     end
   end
 end
