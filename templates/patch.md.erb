@@ -1,7 +1,6 @@
+<%- omnibus_version = OmnibusGitLabVersion.new(version) %>
 - Picked into respective `stable` branches. [`Picked into Stable` <%= version.to_minor %> merged merge requests]:
   - [ ] REFERENCE_TO_MR_TO_PICK
-- [ ] Check [`ce/<%= version.stable_branch %>` CHANGELOG.md][ce-stable-changelog]
-- [ ] Check [`ee/<%= version.stable_branch(ee: true) %>` CHANGELOG-EE.md][ee-stable-changelog]
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog]
@@ -41,7 +40,7 @@
       `<%= version %>` has been tagged, further fixes will go into `<%= version.next_patch %>` as necessary.
       ```
   - [ ] Remove notes for the regressions fixed by version `<%= version %>`
-- [ ] Add [`omnibus-gitlab/<%= version.tag %>+ee.0` CHANGELOG.md][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG.md][omnibus-master-changelog]
+- [ ] Add [`omnibus-gitlab/<%= omnibus_version.tag %>` CHANGELOG.md][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG.md][omnibus-master-changelog]
 - [ ] Create the next patch issue (if needed) using the [`patch_issue` task] (and put a reference to it below):
 
       ```sh
@@ -58,8 +57,6 @@ For references:
 
 [`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
 
-[ce-stable-changelog]: https://gitlab.com/gitlab-org/gitlab-ce/blob/<%= version.stable_branch %>/CHANGELOG.md
-[ee-stable-changelog]: https://gitlab.com/gitlab-org/gitlab-ee/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG-EE.md
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
 
@@ -68,8 +65,7 @@ For references:
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 
-[omnibus-tag-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.tag %>+ee.0/CHANGELOG.md
-
+[omnibus-tag-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= omnibus_version.tag %>/CHANGELOG.md
 [omnibus-master-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
 
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
