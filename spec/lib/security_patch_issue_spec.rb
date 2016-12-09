@@ -4,12 +4,19 @@ require 'security_patch_issue'
 require 'version'
 
 describe SecurityPatchIssue do
-  describe '#title' do
-    it 'returns the issue title' do
-      issue = described_class.new(Version.new('8.3.1'))
+  describe '#confidential?' do
+    it 'is always confidential' do
+      issue = described_class.new('')
 
-      expect(issue.title).to eq 'Release 8.3.1'
       expect(issue).to be_confidential
+    end
+  end
+
+  describe '#labels' do
+    it 'includes the "security" label' do
+      issue = described_class.new('')
+
+      expect(issue.labels).to eq 'Release,security'
     end
   end
 
