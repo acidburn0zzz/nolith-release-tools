@@ -5,6 +5,10 @@ class SecurityPatchIssue < PatchIssue
     true
   end
 
+  def labels
+    super << ',security'
+  end
+
   protected
 
   def template_path
