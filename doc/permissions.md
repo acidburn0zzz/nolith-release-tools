@@ -13,7 +13,7 @@ branches for the following repositories:
 * [gitlab/omnibus-gitlab](https://dev.gitlab.org/gitlab/omnibus-gitlab)
 * [gitlab-org/gitlab-ce](https://gitlab.com/gitlab-org/gitlab-ce)
 * [gitlab-org/gitlab-ee](https://gitlab.com/gitlab-org/gitlab-ee)
-* [gitlab-org/omnibus-gitlab]([https://gitlab.com/gitlab-org/omnibus-gitlab)
+* [gitlab-org/omnibus-gitlab](https://gitlab.com/gitlab-org/omnibus-gitlab)
 
 **Developer** access is required to:
 
