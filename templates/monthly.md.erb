@@ -107,9 +107,9 @@
 ```
 #### RC3
 
-- [ ] Cherry-pick merge requests labeled [`Picked into Stable`] for the current
+- [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
   milestone (you can take advantage of the
-  [`Picked into Stable` <%= version.to_minor %> merged merge requests] page) into
+  [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
   the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
   branches, respectively
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(3) %>` (**be sure to use the correct RC number**):
@@ -171,9 +171,9 @@ to the same commit as the final release.
 ### 22nd before 1900 CET:
 
 - Before 0800 PDT / 1700 CET:
-  - [ ] Cherry-pick merge requests labeled [`Picked into Stable`] for the current
+  - [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
     milestone (you can take advantage of the
-    [`Picked into Stable` <%= version.to_minor %> merged merge requests] page) into
+    [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
     the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
     branches, respectively
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
@@ -231,11 +231,11 @@ to the same commit as the final release.
 [Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
 [GitLab CE into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
-[`Picked into Stable`]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+[`Pick into Stable`]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 [`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
-[`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
+[`Pick into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
 [staging.gitlab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/staging.md
 [GitLab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
