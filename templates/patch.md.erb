@@ -1,4 +1,4 @@
-- Picked into respective `stable` branches. [`Picked into Stable` <%= version.to_minor %> merged merge requests]:
+- Picked into respective `stable` branches. [`Pick into Stable` <%= version.to_minor %> merged merge requests]:
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
@@ -54,7 +54,7 @@ For references:
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
-[`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
+[`Pick into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
 
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
