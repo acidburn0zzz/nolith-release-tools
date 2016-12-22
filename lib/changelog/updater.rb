@@ -59,7 +59,9 @@ module Changelog
         end
       end
 
-      contents.join
+      contents
+        .map { |line| line.force_encoding(Encoding::UTF_8) }
+        .join
     end
   end
 end
