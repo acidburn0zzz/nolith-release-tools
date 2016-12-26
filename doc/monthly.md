@@ -44,6 +44,17 @@ done. Perform the tasks and mark them as complete in the issue as you progress.
 
 If you're not sure what to do for any task, [check the guides](../README.md#guides).
 
+## Getting Help
+
+Completing release tasks on time is very important. So if you experience problems with any 
+release task and you don't know who to ask then you should contact someone from this list:
+
+* Build Lead [@marin](https://gitlab.com/marin)
+* CTO [@dzaporozhets](https://gitlab.com/dzaporozhets)
+
+The earlier we determine problem or delay in release - the easier it is to fix it. 
+
+
 ---
 
 [Return to Guides](../README.md#guides)
