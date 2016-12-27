@@ -60,7 +60,8 @@ module Changelog
       end
 
       contents
-        .flat_map { |line| line.force_encoding(Encoding::UTF_8) }
+        .flatten
+        .map { |line| line.force_encoding(Encoding::UTF_8) }
         .join
     end
   end
