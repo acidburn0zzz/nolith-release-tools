@@ -37,6 +37,8 @@ module Changelog
       @title  = yaml['title']
       @id     = yaml['merge_request'] || yaml['id']
       @author = yaml['author']
+
+      @id = @id.to_i if @id # We don't want `nil` to become `0`
     rescue StandardError # rubocop:disable Lint/HandleExceptions
       # noop
     end

@@ -21,6 +21,12 @@ describe Changelog::Entry do
       end
     end
 
+    it 'handles a String-based ID' do
+      entry = entry('merge_request' => '1234')
+
+      expect(entry.id).to eq 1234
+    end
+
     it 'handles invalid blob content' do
       blob = double(content: "---\ninvalid: yaml: here\n")
 
