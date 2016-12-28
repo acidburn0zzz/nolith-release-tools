@@ -54,6 +54,10 @@ release task and you don't know who to ask then you should contact someone from 
 
 The earlier we determine problem or delay in release - the easier it is to fix it. 
 
+## Priorities
+
+Keep up with the release schedule. It's better to ship less but on time.
+Revert code that delays the release.
 
 ---
 
