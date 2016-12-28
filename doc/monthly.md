@@ -56,7 +56,7 @@ The earlier we determine problem or delay in release - the easier it is to fix i
 
 ## Priorities
 
-Keep up the release schedule. It's better to ship less but on time.
+Keep up with the release schedule. It's better to ship less but on time.
 Revert code that delays the release.
 
 ---
