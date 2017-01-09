@@ -30,19 +30,19 @@ are related to merging CE into EE have the ["CE upstream" label][upstream label]
 1. Make sure your EE repository has all the latest changes:
 
     ```sh
-    git pull origin master
+    git fetch origin master
     ```
 
 1. Then make sure your `ce` remote has the latest branch information:
 
     ```sh
-    git fetch ce
+    git fetch ce master
     ```
 
 1. Create a new branch off of `master` onto which we'll perform the merge:
 
     ```sh
-    git checkout -b ce-to-ee
+    git checkout -b ce-to-ee origin/master
     ```
 
 1. Now perform the merge:
@@ -51,10 +51,26 @@ are related to merging CE into EE have the ["CE upstream" label][upstream label]
     git merge --no-ff ce/master ce-to-ee
     ```
 
-1. At this point it's not uncommon to encounter a merge conflict. Resolve it
-   manually and commit the resolved merge, or if you're unable to resolve it,
-   add the conflicted files as they are and request help in resolving it in the
-   merge request we'll create in a later step.
+1. At this point it's common to encounter conflicts. Display the list of
+  conflicting files and save it somewhere:
+
+    ```sh
+    git status
+    ```
+
+1. Manually add all the conflicting files as-is:
+
+    ```sh
+    git add file1 file2
+    ```
+
+1. Commit (this is to have a snapshot of the conflicts):
+
+    ```sh
+    git commit
+    ```
+
+1. Resolve the conflicts that you feel confident to resolve
 
 1. Push the updated branch to `origin`:
 
@@ -63,11 +79,21 @@ are related to merging CE into EE have the ["CE upstream" label][upstream label]
     ```
 
 1. Submit a new [merge request in the GitLab EE project], selecting `ce-to-ee`
-   as the **source** branch and `master` as the **target** and add the
-   "CE upstream" label.
+   as the **source** branch and `master` as the **target**:
+   - Set the title as `CE upstream` and the `~"CE upstream"` label
+   - Paste the list of conflicting files in the description: you can make it a
+     checklist and check conflicts that you've already resolved
+   - Set the due date as **today**
+   - Ping relevant people for help in resolving the remaining conflicts
+
+From this point on, it is your responsibility to get this merge request merged
+before the end of your workday, so don't hesitate to ping people and kindly
+remind them that they forgot to create
+[a EE-specific merge request in the first place] etc.
 
 [merge request in the GitLab EE project]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests
 [upstream label]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name%5B%5D=CE+upstream&scope=all&sort=id_desc&state=opened
+[a EE-specific merge request in the first place]: https://docs.gitlab.com/ce/development/limit_ee_conflicts.html
 
 ### Merging a CE stable branch into its EE counterpart
 
