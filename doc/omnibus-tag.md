@@ -4,8 +4,8 @@ There are times when it may be easier to bump the omnibus version than
 releasing a new patch release. For example, let's suppose the following tags
 exist in omnibus-gitlab:
 
-    * `8.15.4+ce.0`
-    * `8.15.4+ee.0`
+* `8.15.4+ce.0`
+* `8.15.4+ee.0`
 
 If you made a mistake in the omnibus-gitlab repository (e.g. forgetting to
 merge a patch in the `8-15-stable` branch), you may not want the trouble of
