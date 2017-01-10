@@ -19,6 +19,7 @@ Manager](doc/release-manager.md).
 - [How to perform manual QA testing](doc/qa-checklist.md)
 - [How to push to multiple remotes at once](doc/push-to-multiple-remotes.md)
 - [How to remove packages from packages.gitlab.com](doc/remove-packages.md)
+- [How to push a new omnibus tag version](doc/omnibus-tag.md)
 - [Required permissions to tag and deploy a release](doc/permissions.md)
 - [Rake tasks](doc/rake-tasks.md)
 - [Pro tips](doc/pro-tips.md)
