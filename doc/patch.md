@@ -1,7 +1,7 @@
 # Patch Releases
 
 Patches are released on an as-needed basis in order to fix regressions in the
-current [monthly release] which cannot or should not wait until the next month.
+current or previous [monthly releases].
 
 The changes included and the timing of the release is at the discretion of the
 [release manager].
@@ -38,7 +38,7 @@ guide.
 Use the patch issue created earlier to keep track of the process and mark off
 tasks as you complete them.
 
-[monthly release]: monthly.md
+[monthly releases]: monthly.md
 [release manager]: release-manager.md
 [GitLab CE issue tracker]: https://gitlab.com/gitlab-org/gitlab-ce/issues
 [pick-changes-into-stable]: pick-changes-into-stable.md
