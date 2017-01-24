@@ -5,6 +5,8 @@ require 'time'
 module Release
   class OmnibusGitLabRelease < BaseRelease
     class VersionFileDoesNotExistError < StandardError; end
+    class TemplateFileDoesNotExistError < StandardError; end
+    class VersionStringNotFoundError < StandardError; end
     class SecurityReleaseInProgressError < StandardError; end
 
     # Number of minutes we will be able to reuse the same security repository.
@@ -55,6 +57,9 @@ module Release
 
     def before_execute_hook
       prepare_security_release if security_release?
+
+      bump_container_template_versions(stable_branch)
+      bump_container_template_versions('master')
 
       super
     end
@@ -136,6 +141,45 @@ module Release
       end
 
       File.read(gitlab_file_path).strip
+    end
+
+    def bump_container_template_versions(branch)
+      return if version.ee? || version.rc?
+
+      repository.ensure_branch_exists(branch)
+      openshift_filename = 'docker/openshift-template.json'
+      openshift_version = Version.new(version_from_container_template(openshift_filename))
+      unless openshift_version.valid?
+        raise VersionStringNotFoundError.new(openshift_filename)
+      end
+
+      # Only bump the version if newer that what is already in the template
+      if version.to_i > openshift_version.to_i
+        bump_version_in_openshift_template(openshift_filename)
+      end
+    end
+
+    def version_from_container_template(file_name)
+      file_path = File.join(repository.path, file_name)
+      unless File.exist?(file_path)
+        raise TemplateFileDoesNotExistError.new(file_path)
+      end
+
+      File.open(file_path) { |f| f.read.match(%r{gitlab/gitlab-ce:(\d+\.\d+\.\d+-ce\.\d+)})[1] }
+    end
+
+    def bump_version_in_openshift_template(file_name)
+      file_path = File.join(repository.path, file_name)
+      unless File.exist?(file_path)
+        raise TemplateFileDoesNotExistError.new(file_path)
+      end
+
+      File.open(file_path, 'r+') do |file|
+        content = file.read
+        content.gsub!(%r{gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+}, "gitlab/gitlab-ce:#{version.to_docker}")
+        content.gsub!(/gitlab-\d+\.\d+\.\d+/, "gitlab-#{version.to_patch}")
+        file.puts content
+      end
     end
   end
 end
