@@ -1,3 +1,10 @@
 .env
 coverage/
 spec/fixtures/repositories/
+
+# Rubymine
+.idea
+
+# Emacs
+*~
+\#*\#

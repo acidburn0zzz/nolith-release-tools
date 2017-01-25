@@ -3,6 +3,42 @@
 The release manager oversees the [monthly release] of GitLab as well as any
 [patch releases] for that version.
 
+## Onboarding
+### Master checklist for onboarding of new release managers
+
+The following checklist can be copied and pasted into a new issue in organization 
+to make sure the new release manager have the tools and some initial knowledge ready. 
+The topics are ordered by priority and should be tackled by the new release manager
+before starting the appointed release.
+
+```
+On-Boarding
+- [ ] Make a note of your `dev`, `github` and SSH credentials and add the first two to this issue, the latter to an infrastructure issue for the next item.
+- [ ] chef access: [link to infrastructure issue]
+- [ ] Make sure you have the chef-repo and release-tools cloned locally, with all dependencies installed through bundle.
+- [ ] Read through the release guides https://gitlab.com/gitlab-org/release-tools/blob/master/README.md#guides
+- [ ] Join #releases on Slack, and introduce yourself
+- [ ] Master access on gitlab-ce  (dev and com)
+- [ ] Master access on gitlab-ee (dev and com)
+- [ ] Master access on gitlab-omnibus (dev) (already have on com)
+- [ ] Developer access on chef-repo cookbook
+- [ ] Push access to gitlabhq on GitHub
+
+First Tasks
+- [ ] Read the deploy docs: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/staging.md and https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+- [ ] Be involved in the merge/pick to stable for at least one RC/Patch
+- [ ] Perform the ce-to-ee merge at least once for a RC/Patch
+- [ ] Tag the release for at least one RC/patch
+- [ ] Join a staging deploy call
+- [ ] Join a gitlab.com deploy call
+- [ ] Deploy to staging at least once
+- [ ] Deploy to gitlab.com at least once
+
+  Last task (after the release)
+- [ ] Ensure the next RM trainee has an onboarding issue like this one.
+
+```
+
 ## Responsibilities
 
 ### Pre-release
