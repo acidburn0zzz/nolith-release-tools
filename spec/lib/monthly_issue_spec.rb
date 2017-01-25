@@ -13,23 +13,6 @@ describe MonthlyIssue do
   end
 
   describe '#description' do
-    it "includes ordinal date headers" do
-      time = Time.new(2015, 12, 22)
-      issue = described_class.new(spy, time)
-
-      content = issue.description
-
-      aggregate_failures do
-        expect(content).to include('### 1st: (15 working days before the 22nd)')
-        expect(content).to include('### Anytime between 1st (15 working days before the 22nd) and 16th (4 working days before the 22nd)')
-        expect(content).to include('### 11th: (7 working days before the 22nd)')
-        expect(content).to include('### Anytime between 17th (3 working days before the 22nd) and 21st (1 working day before the 22nd)')
-        expect(content).to include('### 17th: (3 working days before the 22nd)')
-        expect(content).to include('### 18th: (2 working days before the 22nd)')
-        expect(content).to include('### 21st: (1 working day before the 22nd)')
-      end
-    end
-
     it "includes the RC version" do
       issue = described_class.new(Version.new('8.3.0'))
 
@@ -66,8 +49,6 @@ describe MonthlyIssue do
 
       aggregate_failures do
         expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc1.ee.0_amd64.deb')
-        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc2.ee.0_amd64.deb')
-        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc3.ee.0_amd64.deb')
         expect(content).to include('https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_8.3.0-ee.0_amd64.deb')
       end
     end
