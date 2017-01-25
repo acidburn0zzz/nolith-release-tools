@@ -1,4 +1,6 @@
-### <%= ordinal_date(15) %>: (15 working days before the 22nd)
+### 7th
+
+If 7th is a weekend day then it should be done at latest working day before 7th.
 
 #### RC1
 
@@ -44,10 +46,27 @@
       ```sh
       bundle exec rake "new_release_post[<%= version.to_minor %>]"
       ```
+- [ ] In `#core`:
 
-### Anytime between <%= ordinal_date(15) %> (15 working days before the 22nd) and <%= ordinal_date(4) %> (4 working days before the 22nd)
+    ```
+    @channel
+
+    TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
+
+    From now on, please follow the "Change for stable release" process:
+    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+    ```
+
+#### QA
+
+- [ ] Determine QA person and notify this person: MENTION_THIS_PERSON_HERE
+- [ ] Do QA and fix anything coming out of it: LINK_TO_QA_ISSUE
+
+### 14th
 
 **Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
+
+Keep in mind that after RC1 only regressions and security fixes should be cherry-picked into `<%= version.stable_branch %>`.
 
 ```
 #### RC2
@@ -56,7 +75,7 @@
   milestone (you can take advantage of the
   [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
   the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
-  branches, respectively
+  branches, respectively.
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
@@ -74,11 +93,6 @@
 - [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
 - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to production
 - [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [GitLab.com]
-```
-
-**Only after the <%= ordinal_date(7) %> (7 working days before the 22nd)**
-
-```
 - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
 
       ```
@@ -88,61 +102,7 @@
       ```
 ```
 
-### <%= ordinal_date(7) %>: (7 working days before the 22nd)
-
-- [ ] Determine QA person and notify this person: MENTION_THIS_PERSON_HERE
-- [ ] Do QA and fix anything coming out of it: LINK_TO_QA_ISSUE
-
-### Anytime between <%= ordinal_date(3) %> (3 working days before the 22nd) and <%= ordinal_date(1) %> (1 working day before the 22nd)
-
-- [ ] In `#core`:
-
-    ```
-    @channel
-
-    TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
-
-    From now on, please follow the "Change for stable release" process:
-    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-    ```
-
-**Copy-paste the tasks below for any other RCs (be sure to update the RC number).**
-
-```
-#### RC3
-
-- [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
-  milestone (you can take advantage of the
-  [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
-  the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
-  branches, respectively
-- Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(3) %>` (**be sure to use the correct RC number**):
-  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(2) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
-  - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure [tests are green on CE]
-  - [ ] Ensure [tests are green on EE]
-  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(3) %>`
-  - [ ] Tag the `<%= version.to_rc(3) %>` version using the [`release` task]:
-
-        ```sh
-        bundle exec rake "release[<%= version.to_rc(3) %>]"
-        ```
-- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(3) %>)
-- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(3) %>` to staging
-- [ ] Deploy [`<%= version.to_rc(3) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(3) %>.ee.0_amd64.deb) to [staging.gitlab.com]
-- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(3) %>` to production
-- [ ] Deploy [`<%= version.to_rc(3) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(3) %>.ee.0_amd64.deb) to [GitLab.com]
-- [ ] Tweet about the `<%= version.to_rc(3) %>` release:
-
-      ```
-      GitLab <%= version.to_rc(3) %> is available: https://packages.gitlab.com/gitlab/unstable
-      Use at your own risk. Please link regressions issues from
-      LINK_TO_REGRESSION_ISSUE
-      ```
-```
-
-### <%= ordinal_date(3) %>: (3 working days before the 22nd)
+### Anytime between 14th and 21st
 
 - [ ] Check that everyone is mentioned on the [blog post] using `@all`:
 
@@ -160,28 +120,18 @@
       boilerplate, but feel free to remind us about things that shouldn't be left
       out!
       ```
-
-### <%= ordinal_date(2) %>: (2 working days before the 22nd)
-
 - [ ] Ask in `#core` for suggestions about who should be this release's MVP.
   Once chosen, add them to the [blog post] and to the [MVP page], in the
   same merge request
-
-### <%= ordinal_date(1) %>: (1 working day before the 22nd)
-
-Ideally, the last RC should be released no later than this day and should point
-to the same commit as the final release.
+- [ ] Create another RC if necessary. Keep in mind that last RC should be released 
+  no later than 21st and should point to the same commit as the final release.
 
 ### 22nd before 1900 CET:
 
+No new code is added to release that was not included in the last RC.
+This way we ensure the release does not introduce new regressions.
+
 - Before 0800 PDT / 1700 CET:
-  - [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
-    milestone (you can take advantage of the
-    [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
-    the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
-    branches, respectively
-  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc(3) %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
   - [ ] Ensure [tests are green on CE]
   - [ ] Ensure [tests are green on EE]

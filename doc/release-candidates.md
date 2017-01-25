@@ -122,36 +122,19 @@ stable release" process].
 
 ### Creating subsequent RCs
 
-#### Step 1 (only required before the `pick into stable` stage): Merge CE master into EE master
+#### Step 1: Bring changes to the `stable` branches
 
-Ensure that CE's `master` branch is merged into EE's. See the [Merge GitLab CE
-into EE](merge-ce-into-ee.md#merging-ce-master-into-ee-master) guide.
+[Cherry-pick][cherry-picked] CE and EE merge requests into their respective `stable` branch.
+Keep in mind that after RC1 only regressions and security fixes should be
+cherry-picked into `stable` branch.
 
-**Note:** Make sure that a related Merge Request doesn't exist by
-searching [open Merge Requests with the `CE upstream` label](https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?scope=all&state=opened&utf8=%E2%9C%93&label_name%5B%5D=CE+upstream)
-on the `gitlab-ee` project and make sure you have set the same label for your CE->EE masters merges.
-
-#### Step 2: Bring changes to the `stable` branches
-
-There are 3 possibilities here:
-
-1. Merge CE `master` into CE `stable` and EE `master` into EE `stable`.
-1. Merge CE `master` into CE `stable` and [cherry-pick][cherry-picked] EE merge
-  requests into EE `stable` (since there are less merge requests for EE than for CE).
-1. [Cherry-pick][cherry-picked] CE and EE merge requests into their respective
-  `stable` branch.
-
-The two first strategies can be used for the first RCs (no later than 3
-**working days** before the official release date). The third strategy **must**
-be used once the official release date is getting closer.
-
-#### Step 3: Merge CE `stable` into EE `stable`
+#### Step 2: Merge CE `stable` into EE `stable`
 
 Ensure that CE's `X-Y-stable` branch is merged into EE's `X-Y-stable-ee`. See
 the [Merge GitLab CE into EE](merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart)
 guide.
 
-#### Step 4: Tag the RC version
+#### Step 3: Tag the RC version
 
 Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 
