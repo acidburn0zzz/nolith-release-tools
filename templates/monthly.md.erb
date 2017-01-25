@@ -6,7 +6,7 @@
 - Follow the [Creating RC1] guide:
   - [ ] Update the "Installation from Source" guide
   - [ ] Create the Update guides
-  - [ ] Have someone run `bin/rake gitlab:update_templates` and open a merge request to master with ~"Pick into Stable"
+  - [ ] Run `bin/rake gitlab:update_templates` and open a merge request to master
   - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..master -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
@@ -192,15 +192,6 @@ to the same commit as the final release.
         bundle exec rake "release[<%= version.to_patch %>]"
         ```
   - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
-  - [ ] Update the version in the `VERSION` file to `<%= version.next_minor %>-pre` and create the `v<%= version.next_minor %>.pre` tag:
-
-      ```sh
-      echo "<%= version.next_minor %>-pre" > VERSION
-      git add VERSION && git ci # ci = commit --gpg-sign --signoff --verbose
-      git pdog # pdog = push dev,origin,github
-      git tag -s v<%= version.next_minor %>.pre -m "Update VERSION to <%= version.next_minor %>.pre"
-      git pdog v<%= version.next_minor %>.pre:v<%= version.next_minor %>.pre
-      ```
 
 - Before 0900 PDT / 1800 CET:
   - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to staging
