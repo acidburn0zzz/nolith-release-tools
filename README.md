@@ -10,7 +10,7 @@ Manager](doc/release-manager.md).
 ## Guides
 
 - [What is a release manager?](doc/release-manager.md)
-- [How to release new major versions of GitLab each month](doc/monthly.md)
+- [How to release new minor versions of GitLab each month](doc/monthly.md)
 - [How to release patch versions of GitLab](doc/patch.md)
 - [How to release security fixes for GitLab](doc/security.md)
 - [How to pick specific changes into `stable` branches](doc/pick-changes-into-stable.md)
