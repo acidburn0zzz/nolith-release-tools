@@ -1,3 +1,14 @@
+GIT
+  remote: https://gitlab.com/gitlab-org/packagecloud-ruby.git
+  revision: dc340e773dfa240a95e35aa298d204a481715c18
+  branch: package-promotion
+  specs:
+    packagecloud-ruby (1.0.5)
+      excon (~> 0.40)
+      json_pure (~> 1)
+      mime (~> 0.4)
+      multi_json (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -17,6 +28,7 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.5)
     dotenv (2.0.2)
+    excon (0.54.0)
     gitlab (3.6.0)
       httparty
       terminal-table
@@ -26,8 +38,11 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.3)
+    json_pure (1.8.6)
     method_source (0.8.2)
+    mime (0.4.3)
     minitest (5.8.3)
+    multi_json (1.12.1)
     multi_xml (0.5.5)
     parser (2.3.1.4)
       ast (~> 2.2)
@@ -90,6 +105,7 @@ DEPENDENCIES
   colorize
   dotenv (~> 2.0.0)
   gitlab (~> 3.6.0)
+  packagecloud-ruby!
   pry
   rake
   rspec (~> 3.4.0)
@@ -103,4 +119,4 @@ DEPENDENCIES
   weekdays (~> 1.0.0)
 
 BUNDLED WITH
-   1.13.5
+   1.13.7
