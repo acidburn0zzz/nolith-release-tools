@@ -1,9 +1,4 @@
-require 'dotenv'
 require 'gitlab'
-
-# Load ENV and then reset Gitlab client so it actually picks up our config
-Dotenv.load
-Gitlab.reset
 
 class GitlabClient
   class MissingMilestone
