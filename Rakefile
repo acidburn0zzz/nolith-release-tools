@@ -1,4 +1,5 @@
 require_relative 'init'
+require_relative 'lib/support/tasks_helper'
 
 begin
   require 'rspec/core/rake_task'
@@ -8,25 +9,6 @@ begin
   task default: :spec
 rescue LoadError
   # no rspec available
-end
-
-def get_version(args)
-  version = Version.new(args[:version])
-
-  unless version.valid?
-    $stdout.puts "Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z".colorize(:red)
-    exit 1
-  end
-
-  version
-end
-
-def skip?(repo)
-  ENV[repo.upcase] == 'false'
-end
-
-def security_release?
-  ENV['SECURITY'] == 'true'
 end
 
 desc "Create release"
