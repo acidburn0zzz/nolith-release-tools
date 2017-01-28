@@ -25,7 +25,7 @@ class PackagecloudClient
     unless client.repository(secret_repo).succeeded
       result = client.create_repository(secret_repo, true)
       unless result.succeeded
-        $stdout.puts "Cannot create security release repository"
+        $stdout.puts "Cannot create security release repository: #{result.response}"
         false
       end
     end
