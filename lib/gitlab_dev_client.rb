@@ -7,15 +7,15 @@ class GitlabDevClient
 
   class << self
     def ce_create_variable(value)
-      client.create_variables(CE_PROJECT_DEV_ID, 'PACKAGECLOUD_REPO', value)
+      client.create_variable(CE_PROJECT_DEV_ID, 'PACKAGECLOUD_REPO', value)
     end
 
     def ce_remove_variable(value)
-      client.remove_variables(CE_PROJECT_DEV_ID, value)
+      client.remove_variable(CE_PROJECT_DEV_ID, value)
     end
 
     def ee_create_variable(value)
-      client.create_variables(EE_PROJECT_DEV_ID, 'PACKAGECLOUD_REPO', value)
+      client.create_variable(EE_PROJECT_DEV_ID, 'PACKAGECLOUD_REPO', value)
     end
 
     def ee_remove_variable(value)
