@@ -30,6 +30,12 @@ task :release, [:version] do |_t, args|
   end
 end
 
+desc "Create a security release"
+task :security_release, [:version] do |_t, args|
+  ENV['SECURITY'] = 'true'
+  Rake::Task[:release].invoke(args[:version])
+end
+
 desc "Sync master branch in remotes"
 task :sync do
   if skip?('ee')
@@ -48,18 +54,6 @@ task :sync do
     $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
     Sync.new(Remotes.omnibus_gitlab_remotes).execute
-  end
-end
-
-def create_or_show_issue(issue)
-  if issue.exists?
-    $stdout.puts "--> Issue \"#{issue.title}\" already exists.".red
-    $stdout.puts "    #{issue.url}"
-    exit 1
-  else
-    issue.create
-    $stdout.puts "--> Issue \"#{issue.title}\" created.".green
-    $stdout.puts "    #{issue.url}"
   end
 end
 

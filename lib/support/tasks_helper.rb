@@ -16,3 +16,15 @@ end
 def security_release?
   ENV['SECURITY'] == 'true'
 end
+
+def create_or_show_issue(issue)
+  if issue.exists?
+    $stdout.puts "--> Issue \"#{issue.title}\" already exists.".red
+    $stdout.puts "    #{issue.url}"
+    exit 1
+  else
+    issue.create
+    $stdout.puts "--> Issue \"#{issue.title}\" created.".green
+    $stdout.puts "    #{issue.url}"
+  end
+end
