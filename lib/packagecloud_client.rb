@@ -1,6 +1,8 @@
 require 'packagecloud'
 
 class PackagecloudClient
+  attr_accessor :user, :token
+
   def initialize(user, token)
     @user = user
     @token = token
