@@ -31,7 +31,7 @@ module Release
     end
 
     def security_release?
-      options['SECURITY'] == 'true'
+      options[:security]
     end
 
     private

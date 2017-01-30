@@ -30,7 +30,7 @@ module Release
     private
 
     def security_repository
-      version_repo = to_minor.tr('.', '-')
+      version_repo = version.to_minor.tr('.', '-')
       "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo)}"
     end
 
