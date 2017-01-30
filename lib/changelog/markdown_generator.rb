@@ -41,7 +41,7 @@ module Changelog
       # the unexpected behavior has unintended consequences for the overall
       # release process.
       if version.to_ce.patch.zero?
-        Release.next_date.strftime("%Y-%m-%d")
+        Date.today.strftime("%Y-%m-22")
       else
         Date.today.strftime("%Y-%m-%d")
       end
