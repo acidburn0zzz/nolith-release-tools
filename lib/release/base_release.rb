@@ -5,6 +5,8 @@ require_relative '../changelog'
 require_relative '../release'
 require_relative '../repository'
 require_relative '../version'
+require_relative '../packagecloud_client'
+require_relative '../gitlab_dev_client'
 
 module Release
   class BaseRelease
@@ -21,14 +23,32 @@ module Release
     end
 
     def execute
-      prepare_release
+      if security_release?
+        prepare_security_release
+        security_release_hook
+      else
+        prepare_release
+      end
       before_execute_hook
       execute_release
       after_execute_hook
       after_release
     end
 
+    def security_release?
+      options['SECURITY'] == 'true'
+    end
+
     private
+
+    def security_repository
+      version_repo = to_minor.tr('.', '-')
+      "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo)}"
+    end
+
+    def packagecloud
+      @packagecloud ||= PackagecloudClient.new
+    end
 
     # Overridable
     def remotes
@@ -44,6 +64,16 @@ module Release
       repository.pull_from_all_remotes('master')
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
+    end
+
+    def prepare_security_release
+      $stdout.puts "Prepare security release...".colorize(:green)
+      packagecloud.create_secret_repository(security_repository)
+    end
+
+    # Overridable
+    def security_release_hook
+      true
     end
 
     # Overridable

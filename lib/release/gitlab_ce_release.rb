@@ -10,6 +10,14 @@ module Release
       Remotes.remotes(:ce, dev_only: options[:security])
     end
 
+    def security_release_hook
+      unless GitlabDevClient.fetch_variable(:ce)
+        GitlabDevClient.create_variable(:ce, security_repository)
+      end
+
+      super
+    end
+
     def before_execute_hook
       compile_changelog
 

@@ -17,8 +17,10 @@ class GitlabDevClient
       client.remove_variable(project(project_type), REPO_VARIABLE)
     end
 
-    def find_variable(project_type)
-      client.find_variable(project(project_type), REPO_VARIABLE)
+    def fetch_variable(project_type)
+      client.variable(project(project_type), REPO_VARIABLE)
+    rescue Gitlab::Error::NotFound
+      false
     end
 
     private
