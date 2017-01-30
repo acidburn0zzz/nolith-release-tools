@@ -1,7 +1,15 @@
 GIT
+  remote: https://github.com/brodock/gitlab-gem.git
+  revision: 85ecc37c7618a150eb97d13145f995717010cc6c
+  branch: issues-identifier
+  specs:
+    gitlab (3.7.0)
+      httparty
+      terminal-table (= 1.7.1)
+
+GIT
   remote: https://gitlab.com/gitlab-org/packagecloud-ruby.git
-  revision: dc340e773dfa240a95e35aa298d204a481715c18
-  branch: package-promotion
+  revision: 0d054f8a5f0518d8ea79d3c77ae704c1f62e98ea
   specs:
     packagecloud-ruby (1.0.5)
       excon (~> 0.40)
@@ -29,12 +37,8 @@ GEM
     docile (1.1.5)
     dotenv (2.0.2)
     excon (0.54.0)
-    gitlab (3.7.0)
-      httparty (~> 0.13.0)
-      terminal-table
     hashdiff (0.2.3)
-    httparty (0.13.7)
-      json (~> 1.8)
+    httparty (0.14.0)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.6)
@@ -83,7 +87,7 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     slop (3.6.0)
-    terminal-table (1.7.3)
+    terminal-table (1.7.1)
       unicode-display_width (~> 1.1.1)
     thread_safe (0.3.5)
     timecop (0.8.0)
@@ -105,7 +109,7 @@ DEPENDENCIES
   byebug
   colorize
   dotenv (~> 2.0.0)
-  gitlab (~> 3.7.0)
+  gitlab (~> 3.7.0)!
   packagecloud-ruby!
   pry
   rake

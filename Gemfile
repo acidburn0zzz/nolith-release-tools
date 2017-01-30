@@ -4,11 +4,12 @@ source "https://rubygems.org"
 gem 'activesupport', '~> 4.2.0'
 gem 'colorize'
 gem 'dotenv',        '~> 2.0.0'
-gem 'gitlab',        '~> 3.7.0'
+# TODO: use released version again after https://github.com/NARKOZ/gitlab/pull/255 gets merged and a new release is cut
+gem 'gitlab',        '~> 3.7.0', git: 'https://github.com/brodock/gitlab-gem.git', branch: 'issues-identifier'
 gem 'rake'
 gem 'rugged',        '~> 0.24.0'
 gem 'weekdays',      '~> 1.0.0'
-gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.git', branch: 'package-promotion'
+gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.git'
 
 group :development, :test do
   gem 'byebug'
