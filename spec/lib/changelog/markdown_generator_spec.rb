@@ -31,7 +31,7 @@ describe Changelog::MarkdownGenerator do
         version = Version.new('9.2.0')
         generator = described_class.new(version, [])
 
-        Timecop.freeze(Time.local(1983, 7, 2))
+        Timecop.freeze(Time.local(1983, 7, 18))
 
         expect(generator.to_s).to match(/\(1983-07-22\)$/)
       end
