@@ -36,6 +36,15 @@ task :security_release, [:version] do |_t, args|
   Rake::Task[:release].invoke(args[:version])
 end
 
+desc "Promote security release packages to public"
+task :promote_security_release, [:version] do |_t, args|
+  ENV['SECURITY'] = 'true'
+  version = get_version(args)
+
+  $stdout.puts 'Promoting a security release to public'
+  Release::OmnibusGitLabRelease.new(version, security: true).promote_release
+end
+
 desc "Sync master branch in remotes"
 task :sync do
   if skip?('ee')

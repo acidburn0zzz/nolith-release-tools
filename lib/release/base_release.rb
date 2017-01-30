@@ -23,11 +23,7 @@ module Release
     end
 
     def execute
-      if security_release?
-        prepare_security_release
-      else
-        prepare_release
-      end
+      prepare_release
       before_execute_hook
       execute_release
       after_execute_hook
@@ -39,15 +35,6 @@ module Release
     end
 
     private
-
-    def security_repository
-      version_repo = to_minor.tr('.', '-')
-      "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo)}"
-    end
-
-    def packagecloud
-      @packagecloud ||= PackagecloudClient.new
-    end
 
     # Overridable
     def remotes
@@ -63,14 +50,6 @@ module Release
       repository.pull_from_all_remotes('master')
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
-    end
-
-    def prepare_security_release
-      $stdout.puts "Prepare security release...".colorize(:green)
-      packagecloud.create_secret_repository(security_repository)
-      unless GitlabDevClient.fetch_repo_variable
-        GitlabDevClient.create_repo_variable(security_repository)
-      end
     end
 
     # Overridable

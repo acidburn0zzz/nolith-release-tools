@@ -5,7 +5,38 @@ module Release
   class OmnibusGitLabRelease < BaseRelease
     class VersionFileDoesNotExistError < StandardError; end
 
+    def prepare_security_release
+      $stdout.puts "Prepare security release...".colorize(:green)
+      packagecloud.create_secret_repository(security_repository)
+      unless GitlabDevClient.fetch_repo_variable
+        GitlabDevClient.create_repo_variable(security_repository)
+      end
+    end
+
+    def promote_security_release
+      $stdout.puts "Promoting security release to public...".colorize(:green)
+      if GitlabDevClient.fetch_repo_variable
+        packagecloud.promote_packages(security_repository)
+        GitlabDevClient.remove_repo_variable
+      end
+    end
+
+    def before_execute_hook
+      prepare_security_release if security_release?
+
+      super
+    end
+
     private
+
+    def security_repository
+      version_repo = to_minor.tr('.', '-')
+      "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo)}"
+    end
+
+    def packagecloud
+      @packagecloud ||= PackagecloudClient.new
+    end
 
     def remotes
       Remotes.remotes(:omnibus_gitlab, dev_only: options[:security])
