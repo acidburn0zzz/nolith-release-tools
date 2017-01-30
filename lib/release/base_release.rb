@@ -25,7 +25,6 @@ module Release
     def execute
       if security_release?
         prepare_security_release
-        security_release_hook
       else
         prepare_release
       end
@@ -69,11 +68,9 @@ module Release
     def prepare_security_release
       $stdout.puts "Prepare security release...".colorize(:green)
       packagecloud.create_secret_repository(security_repository)
-    end
-
-    # Overridable
-    def security_release_hook
-      true
+      unless GitlabDevClient.fetch_repo_variable
+        GitlabDevClient.create_repo_variable(security_repository)
+      end
     end
 
     # Overridable
