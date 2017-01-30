@@ -1,6 +1,7 @@
 # This ensures we don't push to the repo during tests
 ENV['TEST'] = 'true'
 
+require_relative('../init.rb')
 require 'active_support/core_ext/string/strip'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
