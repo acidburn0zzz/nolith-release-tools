@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/13083/issues?labels=Release&milestone=8.7"
+    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/issues?labels=Release&milestone=8.7"
     body:
       encoding: US-ASCII
       string: ''
@@ -29,8 +29,8 @@ http_interactions:
       Etag:
       - W/"1550ebb318a05ba36a738b089067b7e5"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/13083/issues?id=13083&labels=Release&milestone=8.7&page=1&per_page=20>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/13083/issues?id=13083&labels=Release&milestone=8.7&page=1&per_page=20>;
+      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=8.7&page=1&per_page=20>;
+        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=8.7&page=1&per_page=20>;
         rel="last"
       Status:
       - 200 OK
@@ -354,6 +354,6 @@ http_interactions:
         ZmNhYzk/cz04MFx1MDAyNmQ9aWRlbnRpY29uIiwid2ViX3VybCI6Imh0dHBz
         Oi8vZ2l0bGFiLmNvbS91L3lvcmlja3BldGVyc2UifSwic3Vic2NyaWJlZCI6
         dHJ1ZX1d
-    http_version: 
+    http_version:
   recorded_at: Thu, 21 Apr 2016 08:28:37 GMT
 recorded_with: VCR 2.9.3
