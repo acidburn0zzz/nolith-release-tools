@@ -50,6 +50,7 @@ package_cloud yank --url https://packages.gitlab.com gitlab/gitlab-ce/opensuse/4
 [packages.gitlab.com]: https://packages.gitlab.com/
 [packagecloud documentation]: https://packagecloud.io/docs#yank_pkg
 [secret variables on dev]: https://dev.gitlab.org/gitlab/omnibus-gitlab/variables
+
 ---
 
 [Return to Guides](../README.md#guides)
