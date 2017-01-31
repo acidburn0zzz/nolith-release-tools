@@ -3,6 +3,9 @@ require 'packagecloud'
 class PackagecloudClient
   attr_accessor :user, :token
 
+  GITLAB_CE_PUBLIC_REPO = 'gitlab-ce'.freeze
+  GITLAB_EE_PUBLIC_REPO = 'gitlab-ee'.freeze
+
   def initialize(user = nil, token = nil)
     @user = user || ENV['PACKAGECLOUD_USER']
     @token = token || ENV['PACKAGECLOUD_TOKEN']
@@ -31,16 +34,25 @@ class PackagecloudClient
     end
   end
 
-  def promote_packages(secret_repo, public_repo)
+  def promote_packages(secret_repo)
     packages = client.list_packages(secret_repo)
     if packages.succeeded
       packages.response.count
       packages.response.map do |p|
         distro, version = p['distro_version'].split('/')
-        client.promote_package(secret_repo, distro, version, p['filename'], public_repo)
+        client.promote_package(secret_repo, distro, version, p['filename'], public_repo_for_package(p['filename']))
       end
     else
       $stdout.puts "Cannot find the security release repository"
+    end
+  end
+
+  def public_repo_for_package(filename)
+    pkg = PackageVersion.new(filename)
+    if pkg.ce?
+      GITLAB_CE_PUBLIC_REPO
+    else
+      GITLAB_EE_PUBLIC_REPO
     end
   end
 end
