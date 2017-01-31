@@ -18,6 +18,8 @@ module Release
       if GitlabDevClient.fetch_repo_variable
         packagecloud.promote_packages(security_repository)
         GitlabDevClient.remove_repo_variable
+      else
+        $stdout.puts "There are no release pending promotion".colorize(:red)
       end
     end
 
@@ -31,7 +33,7 @@ module Release
 
     def security_repository
       version_repo = version.to_minor.tr('.', '-')
-      "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo)}"
+      "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo + packagecloud.token)}"
     end
 
     def packagecloud

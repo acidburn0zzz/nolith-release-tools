@@ -41,8 +41,7 @@ task :promote_security_release, [:version] do |_t, args|
   ENV['SECURITY'] = 'true'
   version = get_version(args)
 
-  $stdout.puts 'Promoting a security release to public'
-  Release::OmnibusGitLabRelease.new(version, security: true).promote_release
+  Release::OmnibusGitLabRelease.new(version, security: true).promote_security_release
 end
 
 desc "Sync master branch in remotes"
