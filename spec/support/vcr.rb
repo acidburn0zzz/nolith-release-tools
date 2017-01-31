@@ -8,5 +8,6 @@ VCR.configure do |c|
 
   %w(API_AUTH_TOKEN ENDPOINT PRIVATE_TOKEN).each do |val|
     c.filter_sensitive_data("[GITLAB_API_#{val}]") { ENV["GITLAB_API_#{val}"] }
+    c.filter_sensitive_data("[GITLAB_DEV_API_#{val}]") { ENV["GITLAB_DEV_API_#{val}"] }
   end
 end

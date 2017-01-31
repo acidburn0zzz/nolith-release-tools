@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables"
+    uri: "[GITLAB_DEV_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables"
     body:
       encoding: UTF-8
       string: key=PACKAGECLOUD_REPO&value=super_secret_repo
@@ -10,7 +10,7 @@ http_interactions:
       Accept:
       - application/json
       Private-Token:
-      - "[GITLAB_API_PRIVATE_TOKEN]"
+      - "[GITLAB_DEV_API_PRIVATE_TOKEN]"
   response:
     status:
       code: 201
@@ -39,11 +39,11 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"key":"PACKAGECLOUD_REPO","value":"super_secret_repo"}'
-    http_version: 
+    http_version:
   recorded_at: Tue, 31 Jan 2017 01:56:38 GMT
 - request:
     method: delete
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
+    uri: "[GITLAB_DEV_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
     body:
       encoding: US-ASCII
       string: ''
@@ -51,7 +51,7 @@ http_interactions:
       Accept:
       - application/json
       Private-Token:
-      - "[GITLAB_API_PRIVATE_TOKEN]"
+      - "[GITLAB_DEV_API_PRIVATE_TOKEN]"
   response:
     status:
       code: 200
@@ -80,11 +80,11 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"key":"PACKAGECLOUD_REPO","value":"super_secret_repo"}'
-    http_version: 
+    http_version:
   recorded_at: Tue, 31 Jan 2017 01:56:38 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
+    uri: "[GITLAB_DEV_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
     body:
       encoding: US-ASCII
       string: ''
@@ -92,7 +92,7 @@ http_interactions:
       Accept:
       - application/json
       Private-Token:
-      - "[GITLAB_API_PRIVATE_TOKEN]"
+      - "[GITLAB_DEV_API_PRIVATE_TOKEN]"
   response:
     status:
       code: 404
@@ -119,6 +119,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"message":"404 Variable Not Found"}'
-    http_version: 
+    http_version:
   recorded_at: Tue, 31 Jan 2017 01:56:39 GMT
 recorded_with: VCR 2.9.3
