@@ -14,7 +14,7 @@ from [packages.gitlab.com] by following the [packagecloud documentation].
 1. Get the API token for the for [packages.gitlab.com]. Credentials are
    available in the **Release** 1Password vault. Login and click on
    "API Token" on the upper right. Alternatively, you can find the
-   `PACKAGECLOUD_TOKEN` value in the [secret variables on dev].
+   `PACKAGECLOUD_TOKEN` value in the [secret variables of omnibus-gitlab on dev].
 
 1. Export `PACKAGECLOUD_TOKEN` to your environment:
 
@@ -49,7 +49,7 @@ package_cloud yank --url https://packages.gitlab.com gitlab/gitlab-ce/opensuse/4
 
 [packages.gitlab.com]: https://packages.gitlab.com/
 [packagecloud documentation]: https://packagecloud.io/docs#yank_pkg
-[secret variables on dev]: https://dev.gitlab.org/gitlab/omnibus-gitlab/variables
+[secret variables of omnibus-gitlab on dev]: https://dev.gitlab.org/gitlab/omnibus-gitlab/variables
 
 ---
 
