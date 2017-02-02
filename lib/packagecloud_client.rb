@@ -1,4 +1,5 @@
 require 'packagecloud'
+require_relative 'package_version'
 
 # Packagecloud Client facade with customizations to access our own instance
 class PackagecloudClient
@@ -80,7 +81,7 @@ class PackagecloudClient
   # @param [String] filename
   # @return [String] public repository
   def public_repo_for_package(filename)
-    pkg = PackageVersion.new(filename)
+    pkg = ::PackageVersion.new(filename)
     if pkg.ce?
       GITLAB_CE_PUBLIC_REPO
     else
