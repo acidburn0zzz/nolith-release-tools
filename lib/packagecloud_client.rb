@@ -1,5 +1,6 @@
 require 'packagecloud'
 
+# Packagecloud Client facade with customizations to access our own instance
 class PackagecloudClient
   attr_accessor :username, :token
 
@@ -53,6 +54,8 @@ class PackagecloudClient
     end
   end
 
+  # Promote packages from secret repository to public ones
+  #
   # @param [String] secret_repo repository name
   # @return [boolean]
   def promote_packages(secret_repo)
@@ -72,6 +75,10 @@ class PackagecloudClient
 
   private
 
+  # Find in which public repository should the package be
+  #
+  # @param [String] filename
+  # @return [String] public repository
   def public_repo_for_package(filename)
     pkg = PackageVersion.new(filename)
     if pkg.ce?
