@@ -31,6 +31,13 @@ will be decided on a case-by-case basis.
 If a security fix warrants backporting to previous releases, doing a single blog
 post that mentions all of the patches at once is acceptable.
 
+## What to include
+
+A security release, even one for the latest monthly release, should _only_
+include the changes necessary to resolve the security vulnerabilities. Including
+fixes for regressions in a security patch increases the chances of breaking
+something, both for users and for our packaging and release process.
+
 ## Process
 
 ### Before the release
