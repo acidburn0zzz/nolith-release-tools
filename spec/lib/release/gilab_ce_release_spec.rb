@@ -78,8 +78,7 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version.at(version)
               expect(ob_repository).to have_version('shell').at('2.2.2')
               expect(ob_repository).to have_version('workhorse').at('3.3.3')
-              expect(ob_repository).to have_version('pages')
-                .at(edition == :ee ? '4.4.4' : 'master')
+              expect(ob_repository).to have_version('pages').at('4.4.4')
             end
           end
         end
@@ -111,8 +110,7 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version.at(version)
               expect(ob_repository).to have_version('shell').at('2.3.0')
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
-              expect(ob_repository).to have_version('pages')
-                .at(edition == :ee ? '4.5.0' : 'master')
+              expect(ob_repository).to have_version('pages').at('4.5.0')
             end
           end
         end
@@ -154,8 +152,7 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version.at(version)
               expect(ob_repository).to have_version('shell').at('2.3.0')
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
-              expect(ob_repository).to have_version('pages')
-                .at(edition == :ee ? '4.5.0' : 'master')
+              expect(ob_repository).to have_version('pages').at('4.5.0')
             end
           end
         end
