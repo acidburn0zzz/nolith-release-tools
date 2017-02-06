@@ -23,7 +23,7 @@ module Release
 
     def version_files
       files = %w[GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION]
-      files << 'GITLAB_PAGES_VERSION' if version.ee? && expect_pages_version_file?
+      files << 'GITLAB_PAGES_VERSION' if expect_pages_version_file?
       files << 'VERSION' # Always update VERSION last
       files
     end
