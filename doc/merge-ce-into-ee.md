@@ -70,8 +70,6 @@ are related to merging CE into EE have the ["CE upstream" label][upstream label]
     git commit
     ```
 
-1. Resolve the conflicts that you feel confident to resolve
-
 1. Push the updated branch to `origin`:
 
     ```sh
@@ -84,7 +82,10 @@ are related to merging CE into EE have the ["CE upstream" label][upstream label]
    - Paste the list of conflicting files in the description: you can make it a
      checklist and check conflicts that you've already resolved
    - Set the due date as **today**
-   - Ping relevant people for help in resolving the remaining conflicts
+
+1. Resolve the conflicts that you feel confident to resolve. 
+   Ping relevant people for help in resolving the remaining conflicts.
+   
 
 From this point on, it is your responsibility to get this merge request merged
 before the end of your workday, so don't hesitate to ping people and kindly
