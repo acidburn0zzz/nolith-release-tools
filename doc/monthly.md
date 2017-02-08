@@ -3,8 +3,7 @@
 GitLab releases a new minor version (`X.Y`) every month on the 22nd. The history
 and reasoning behind this schedule can be found [on the blog].
 
-The process begins seven **working days** before the 22nd. The [release manager]
-should begin the monthly release process *no later than* the 9th.
+The [release manager] should begin the monthly release process *no earlier than* the 8th.
 
 For an idea of the release process please see the [monthly template](https://gitlab.com/gitlab-org/release-tools/blob/master/templates/monthly.md.erb).
 
