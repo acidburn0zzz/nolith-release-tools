@@ -1,52 +1,52 @@
-# Parses a package filename to retrieve version information and metadata
+# Public: Parses a package filename to retrieve version information and metadata
 class PackageVersion < String
   REGEXP = /\Agitlab-(?<edition>ce|ee)[-_](?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(ce|ee)\.(?<revision>\d+)(_(?<arch>amd64|armhf)|\.(?<distro>el\d+|sles\d+)\.(?<arch>x86_64))\.(?<pkgtype>deb|rpm)\z/
 
-  # GitLab Edition
+  # Public: GitLab Edition
   #
-  # @return [Symbol] either :ce or :ee
+  # Return either :ce or :ee
   def edition
     REGEXP.match(self)[:edition].to_sym
   end
 
-  # Major version
+  # Public: Major version
   #
-  # @return [Integer] major version
+  # Returns the major version as an Integer
   def major
     REGEXP.match(self)[:major].to_i
   end
 
-  # Minor veersion
+  # Public: Minor version
   #
-  # @return [Integer] minor version
+  # Returns the minor version as an Integer
   def minor
     REGEXP.match(self)[:minor].to_i
   end
 
-  # Patch version
+  # Public: Patch version
   #
-  # @return [Integer] patch version
+  # Returns the patch version as an Integer
   def patch
     REGEXP.match(self)[:patch].to_i
   end
 
-  # Revision number
+  # Public: Revision number
   #
-  # @return [Integer] revision
+  # Returns the revision number as an Integer
   def revision
     REGEXP.match(self)[:revision].to_i
   end
 
-  # Enterprise Edition version?
+  # Public: Is an Enterprise Edition version?
   #
-  # @return [Boolean]
+  # Returns a Boolean
   def ee?
     edition == :ee
   end
 
-  # Community Edition version?
+  # Public: Is a Community Edition version?
   #
-  # @return [Boolean]
+  # Returns a Boolean
   def ce?
     edition == :ce
   end

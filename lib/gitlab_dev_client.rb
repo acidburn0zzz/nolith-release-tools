@@ -1,6 +1,6 @@
 require 'gitlab'
 
-# Gitlab API operations with Dev instance
+# Public: Gitlab API operations with Dev instance
 class GitlabDevClient
   class InvalidProjectException < ArgumentError
   end
@@ -10,17 +10,18 @@ class GitlabDevClient
   REPO_VARIABLE = 'PACKAGECLOUD_REPO'.freeze
 
   class << self
-    # Creates a CI variable and store the repository name
+    # Public: Creates a CI variable and store the repository name
     #
-    # @param [String] name of the repository
-    # @return [Gitlab::ObjectifiedHash]
+    # name - The String name of the repository
+    #
+    # Returns a Gitlab::ObjectifiedHash
     def create_repo_variable(name)
       client.create_variable(OMNIBUS_GITLAB, REPO_VARIABLE, name)
     end
 
-    # Remove CI variable with stored repository name
+    # Public: Remove CI variable with stored repository name
     #
-    # @return [Boolean]
+    # Returns a Boolean
     def remove_repo_variable
       client.remove_variable(OMNIBUS_GITLAB, REPO_VARIABLE)
       true
@@ -28,9 +29,9 @@ class GitlabDevClient
       false
     end
 
-    # Fetch CI variable with stored repository name
+    # Public: Fetch CI variable with stored repository name
     #
-    # @return [String|false]
+    # Return either a String or False
     def fetch_repo_variable
       client.variable(OMNIBUS_GITLAB, REPO_VARIABLE).value
     rescue Gitlab::Error::NotFound
@@ -39,6 +40,9 @@ class GitlabDevClient
 
     private
 
+    # Private: A client connected to GitLab DEV instance
+    #
+    # Returns a Gitlab::Client instance
     def client
       @client ||= Gitlab.client(endpoint: ENV['GITLAB_DEV_API_ENDPOINT'], private_token: ENV['GITLAB_DEV_API_PRIVATE_TOKEN'])
     end

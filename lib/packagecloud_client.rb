@@ -1,45 +1,48 @@
 require 'packagecloud'
 require_relative 'package_version'
 
-# Packagecloud Client facade with customizations to access our own instance
+# Public: Packagecloud Client facade with customizations to access our
+# own instance
 class PackagecloudClient
   attr_accessor :username, :token
 
   GITLAB_CE_PUBLIC_REPO = 'gitlab-ce'.freeze
   GITLAB_EE_PUBLIC_REPO = 'gitlab-ee'.freeze
 
-  # @param [Object] username
-  # @param [Object] token
+  # username - The username as String
+  # token    - The token as String
   def initialize(username = nil, token = nil)
     @username = username || ENV['PACKAGECLOUD_USER']
     @token = token || ENV['PACKAGECLOUD_TOKEN']
   end
 
-  # Packagecloud credentials object
+  # Public: Packagecloud credentials object
   #
-  # @return [Packagecloud::Credentials]
+  # Returns a Packagecloud::Credentials object
   def credentials
     @credentials ||= Packagecloud::Credentials.new(username, token)
   end
 
-  # Connection object pointing to our own instance
+  # Public: Connection object pointing to our own instance
   #
-  # @return [Packagecloud::Connection]
+  # Returns a Packagecloud::Connection object
   def connection
     @connection ||= Packagecloud::Connection.new('https', 'packages.gitlab.com')
   end
 
-  # Packagecloud API client with our credentials and connection to our instance
+  # Public: Packagecloud API client with our credentials and connection to our
+  # instance
   #
   # @return [Packagecloud::Client]
   def client
     @client ||= Packagecloud::Client.new(credentials, 'gitlab-release-tool', connection)
   end
 
-  # Creates a secret repository
+  # Public: Creates a secret repository
   #
-  # @param [String] secret_repo repository name
-  # @return [Boolean]
+  # secret_repo - The repository name as String
+  #
+  # Returns a Boolean
   def create_secret_repository(secret_repo)
     # Make sure the security release repository exists or create otherwhise
     if client.repository(secret_repo).succeeded
@@ -55,10 +58,11 @@ class PackagecloudClient
     end
   end
 
-  # Promote packages from secret repository to public ones
+  # Public: Promote packages from secret repository to public ones
   #
-  # @param [String] secret_repo repository name
-  # @return [boolean]
+  # secret_repo - The repository name as String
+  #
+  # Returns a Boolean
   def promote_packages(secret_repo)
     packages = client.list_packages(secret_repo)
     if packages.succeeded
@@ -76,10 +80,11 @@ class PackagecloudClient
 
   private
 
-  # Find in which public repository should the package be
+  # Private: Find in which public repository should the package be
   #
-  # @param [String] filename
-  # @return [String] public repository
+  # filename - The filename as String
+  #
+  # Returns the public repository name as String
   def public_repo_for_package(filename)
     pkg = ::PackageVersion.new(filename)
     if pkg.ce?
