@@ -1,6 +1,13 @@
 # Public: Parses a package filename to retrieve version information and metadata
 class PackageVersion < String
-  REGEXP = /\Agitlab-(?<edition>ce|ee)[-_](?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(ce|ee)\.(?<revision>\d+)(_(?<arch>amd64|armhf)|\.(?<distro>el\d+|sles\d+)\.(?<arch>x86_64))\.(?<pkgtype>deb|rpm)\z/
+  REGEXP = %r{
+    \Agitlab-
+    (?<edition>ce|ee)[-_]
+    (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(ce|ee)\.
+    (?<revision>\d+)
+    (_(?<arch>amd64|armhf)|\.(?<distro>el\d+|sles\d+)\.(?<arch>x86_64))\.
+    (?<pkgtype>deb|rpm)\z
+  }x
 
   # Public: GitLab Edition
   #

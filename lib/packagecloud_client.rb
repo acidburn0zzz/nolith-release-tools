@@ -78,9 +78,7 @@ class PackagecloudClient
     end
   end
 
-  private
-
-  # Private: Find in which public repository should the package be
+  # Public: Find in which public repository should the package be
   #
   # filename - The filename as String
   #

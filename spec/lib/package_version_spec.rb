@@ -47,7 +47,7 @@ describe PackageVersion do
   end
 
   describe '#major' do
-    it 'returns 8 for all examples' do
+    it 'returns major version for all examples' do
       aggregate_failures 'major versions' do
         expect(described_class.new(deb_amd64).major).to eq 8
         expect(described_class.new(deb_armhf).major).to eq 8

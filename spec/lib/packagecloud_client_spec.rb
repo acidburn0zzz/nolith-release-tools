@@ -100,23 +100,23 @@ describe PackagecloudClient do
 
     it 'returns gitlab-ce for CE packages' do
       aggregate_failures 'CE packages' do
-        expect(subject.send(:public_repo_for_package, deb_amd64)).to eq('gitlab-ce')
-        expect(subject.send(:public_repo_for_package, deb_armhf)).to eq('gitlab-ce')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_el6)).to eq('gitlab-ce')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_el7)).to eq('gitlab-ce')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_sles13)).to eq('gitlab-ce')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_sles42)).to eq('gitlab-ce')
+        expect(subject.public_repo_for_package(deb_amd64)).to eq('gitlab-ce')
+        expect(subject.public_repo_for_package(deb_armhf)).to eq('gitlab-ce')
+        expect(subject.public_repo_for_package(rpm_x86_64_el6)).to eq('gitlab-ce')
+        expect(subject.public_repo_for_package(rpm_x86_64_el7)).to eq('gitlab-ce')
+        expect(subject.public_repo_for_package(rpm_x86_64_sles13)).to eq('gitlab-ce')
+        expect(subject.public_repo_for_package(rpm_x86_64_sles42)).to eq('gitlab-ce')
       end
     end
 
     it 'returns gitlab-ee for EE packages' do
       aggregate_failures 'EE packages' do
-        expect(subject.send(:public_repo_for_package, deb_amd64_ee)).to eq('gitlab-ee')
-        expect(subject.send(:public_repo_for_package, deb_armhf_ee)).to eq('gitlab-ee')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_el6_ee)).to eq('gitlab-ee')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_el7_ee)).to eq('gitlab-ee')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_sles13_ee)).to eq('gitlab-ee')
-        expect(subject.send(:public_repo_for_package, rpm_x86_64_sles42_ee)).to eq('gitlab-ee')
+        expect(subject.public_repo_for_package(deb_amd64_ee)).to eq('gitlab-ee')
+        expect(subject.public_repo_for_package(deb_armhf_ee)).to eq('gitlab-ee')
+        expect(subject.public_repo_for_package(rpm_x86_64_el6_ee)).to eq('gitlab-ee')
+        expect(subject.public_repo_for_package(rpm_x86_64_el7_ee)).to eq('gitlab-ee')
+        expect(subject.public_repo_for_package(rpm_x86_64_sles13_ee)).to eq('gitlab-ee')
+        expect(subject.public_repo_for_package(rpm_x86_64_sles42_ee)).to eq('gitlab-ee')
       end
     end
   end
