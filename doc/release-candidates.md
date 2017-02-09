@@ -1,8 +1,9 @@
 # Creating Release Candidates
 
 Release Candidates (RCs) are pre-release versions of the next major version of
-GitLab CE and EE. The first RC (RC1) is typically created 15 **working days**
-before the official release.
+GitLab CE and EE. The first RC (RC1) is typically created on or the 8th. This
+is because we have a feature freeze, and new features can only be merged into
+the release up until the 7th.
 Every release should have several RCs and can have an unlimited number of RCs.
 Usually, at least 4 RCs are made before the official release. This ensure new
 stuff are tried in production and the associated bugs can be fixed before the
@@ -106,11 +107,7 @@ bundle exec rake "release[8.2.0-rc1]"
 #### Step 5: Integrating changes from `master` into `X-Y-stable`
 
 Once the `X-Y-stable` branch is created, it is the sole source of future
-releases for that version. Up until 4 **working days** before the official
-release, `master` will be merged into `X-Y-stable` so every merge requests
-merged into `master` until this date will go into the `X-Y` version.
-
-From 3 **working days** to the official release date, merge requests will either
+releases for that version. From the 8th, merge requests will either
 be [cherry-picked] into `X-Y-stable` by the release manager, or a second merge
 request targeting `X-Y-stable` (instead of `master`) should be opened.
 
