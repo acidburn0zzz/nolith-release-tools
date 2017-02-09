@@ -1,9 +1,9 @@
 # Creating Release Candidates
 
 Release Candidates (RCs) are pre-release versions of the next major version of
-GitLab CE and EE. The first RC (RC1) is typically created on or the 8th. This
-is because we have a feature freeze, and new features can only be merged into
-the release up until the 7th.
+GitLab CE and EE. The first RC (RC1) is typically created on the 8th. This is
+because we have a feature freeze, and new features can only be merged into the
+release up until the 7th (included).
 Every release should have several RCs and can have an unlimited number of RCs.
 Usually, at least 4 RCs are made before the official release. This ensure new
 stuff are tried in production and the associated bugs can be fixed before the
