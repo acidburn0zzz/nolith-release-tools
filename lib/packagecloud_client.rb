@@ -9,11 +9,9 @@ class PackagecloudClient
   GITLAB_CE_PUBLIC_REPO = 'gitlab-ce'.freeze
   GITLAB_EE_PUBLIC_REPO = 'gitlab-ee'.freeze
 
-  # username - The username as String
-  # token    - The token as String
-  def initialize(username = nil, token = nil)
-    @username = username || ENV['PACKAGECLOUD_USER']
-    @token = token || ENV['PACKAGECLOUD_TOKEN']
+  def initialize
+    @username = ENV['PACKAGECLOUD_USER']
+    @token = ENV['PACKAGECLOUD_TOKEN']
   end
 
   # Public: Packagecloud credentials object

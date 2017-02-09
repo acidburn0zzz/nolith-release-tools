@@ -3,27 +3,17 @@ require 'packagecloud_client'
 
 describe PackagecloudClient do
   include StubENV
-  subject { described_class.new('user', 'token') }
+  subject { described_class.new }
+
+  before do
+    stub_env('PACKAGECLOUD_USER', 'user')
+    stub_env('PACKAGECLOUD_TOKEN', 'token')
+  end
 
   describe '#initialize' do
-    context 'with all optional params' do
-      it 'defines user and token during instantiation' do
-        expect(subject.username).to eq('user')
-        expect(subject.token).to eq('token')
-      end
-    end
-
-    context 'without any param' do
-      subject { described_class.new }
-      before do
-        stub_env('PACKAGECLOUD_USER', 'pkguser')
-        stub_env('PACKAGECLOUD_TOKEN', 'pkgtoken')
-      end
-
-      it 'gets user and token from ENV variables' do
-        expect(subject.username).to eq('pkguser')
-        expect(subject.token).to eq('pkgtoken')
-      end
+    it 'gets user and token from ENV variables' do
+      expect(subject.username).to eq('user')
+      expect(subject.token).to eq('token')
     end
   end
 
