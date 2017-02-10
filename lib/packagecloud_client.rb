@@ -4,6 +4,9 @@ require_relative 'package_version'
 # Public: Packagecloud Client facade with customizations to access our
 # own instance
 class PackagecloudClient
+  class CannotCreateRepositoryError < ArgumentError
+  end
+
   attr_accessor :username, :token
 
   GITLAB_CE_PUBLIC_REPO = 'gitlab-ce'.freeze
@@ -42,18 +45,26 @@ class PackagecloudClient
   #
   # Returns a Boolean
   def create_secret_repository(secret_repo)
-    # Make sure the security release repository exists or create otherwhise
-    if client.repository(secret_repo).succeeded
+    # Make sure the security release repository exists or create otherwise
+    if repository_exists?(secret_repo)
       false
     else
       result = client.create_repository(secret_repo, true)
       if result.succeeded
         true
       else
-        $stdout.puts "Cannot create security release repository: #{result.response}"
-        false
+        raise CannotCreateRepositoryError, result.response
       end
     end
+  end
+
+  # Public: Repository exists?
+  #
+  # repo - The repository name as String
+  #
+  # Returns a Boolean
+  def repository_exists?(repo)
+    client.repository(repo).succeeded
   end
 
   # Public: Promote packages from secret repository to public ones

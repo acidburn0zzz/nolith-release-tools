@@ -5,12 +5,12 @@ describe PackagecloudClient do
   include StubENV
   subject { described_class.new }
 
-  before do
-    stub_env('PACKAGECLOUD_USER', 'user')
-    stub_env('PACKAGECLOUD_TOKEN', 'token')
-  end
-
   describe '#initialize' do
+    before do
+      stub_env('PACKAGECLOUD_USER', 'user')
+      stub_env('PACKAGECLOUD_TOKEN', 'token')
+    end
+
     it 'gets user and token from ENV variables' do
       expect(subject.username).to eq('user')
       expect(subject.token).to eq('token')
@@ -18,6 +18,11 @@ describe PackagecloudClient do
   end
 
   describe '#credentials' do
+    before do
+      stub_env('PACKAGECLOUD_USER', 'user')
+      stub_env('PACKAGECLOUD_TOKEN', 'token')
+    end
+
     it 'returns a credential with previously defined user and token' do
       expect(subject.credentials).to be_a(Packagecloud::Credentials)
       expect(subject.credentials.username).to eq('user')
@@ -26,6 +31,11 @@ describe PackagecloudClient do
   end
 
   describe '#connection' do
+    before do
+      stub_env('PACKAGECLOUD_USER', 'user')
+      stub_env('PACKAGECLOUD_TOKEN', 'token')
+    end
+
     it 'returns a connection pointing to our instance' do
       expect(subject.connection).to be_a(Packagecloud::Connection)
       expect(subject.connection.host).to eq('packages.gitlab.com')
@@ -33,9 +43,9 @@ describe PackagecloudClient do
   end
 
   describe '#client' do
-    # VCR: to record new requests, credentials must be filled in .env file
     let(:pkgcloud) { described_class.new }
 
+    # VCR: to record new requests, credentials must be filled in .env file
     it 'returns a client using pre-defined connection and credentials', vcr: { cassette_name: 'packagecloud/connection' } do
       expect(pkgcloud).to receive(:connection).and_call_original
       expect(pkgcloud).to receive(:credentials).and_call_original
@@ -45,8 +55,6 @@ describe PackagecloudClient do
 
   describe '#create_secret_repository' do
     # VCR: to record new requests, credentials must be filled in .env file
-    subject { described_class.new }
-
     it 'creates a new repository', vcr: { cassette_name: 'packagecloud/repository' } do
       expect(subject.create_secret_repository('new-test-repository')).to be_truthy
     end
@@ -56,21 +64,43 @@ describe PackagecloudClient do
 
       expect(subject.create_secret_repository('new-test-repository')).to be_falsey
     end
+
+    it 'raise an exception when cannot create a repository', vcr: { cassette_name: 'packagecloud/repository_creation_error' } do
+      invalid_repo_name = 'this-is-a-repository-with-a-bigger-than-max-amount-of-characters-packagecloud-support'
+      expect { subject.create_secret_repository(invalid_repo_name) }.to raise_error(PackagecloudClient::CannotCreateRepositoryError)
+    end
+  end
+
+  describe '#repository_exists?' do
+    before do
+      subject.create_secret_repository('test-repository')
+    end
+
+    # VCR: to record new requests, credentials must be filled in .env file
+    it 'returns true when repository exists', vcr: { cassette_name: 'packagecloud/repository_exists' } do
+      expect(subject.repository_exists?('test-repository')).to be_truthy
+    end
+
+    # VCR: to record new requests, credentials must be filled in .env file
+    it 'returns false when repository does not exists', vcr: { cassette_name: 'packagecloud/repository_exists' } do
+      expect(subject.repository_exists?('test-not-found-repository')).to be_falsey
+    end
   end
 
   describe '#promote_packages' do
     # VCR: To setup the environment for VCR recording, make sure both the test-secret, gitlab-ce and gitlab-ee
     # repositories exists and you have sample packages in the secret one to be promoted
     # There is no easy way to automate this, but it should be a one-time thing.
-    subject { described_class.new }
-
     it 'promotes packages to public repository', vcr: { cassette_name: 'packagecloud/promotion' } do
       expect(subject.promote_packages('test-secret')).to be_truthy
     end
   end
 
   describe '#public_repo_for_package' do
-    subject { described_class.new }
+    before do
+      stub_env('PACKAGECLOUD_USER', 'user')
+      stub_env('PACKAGECLOUD_TOKEN', 'token')
+    end
 
     # CE
     let(:deb_amd64) { 'gitlab-ce_8.16.3-ce.1_amd64.deb' }

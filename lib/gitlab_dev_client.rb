@@ -2,9 +2,6 @@ require 'gitlab'
 
 # Public: Gitlab API operations with Dev instance
 class GitlabDevClient
-  class InvalidProjectException < ArgumentError
-  end
-
   # Hard-code IDs following the 'namespace%2Frepo' pattern
   OMNIBUS_GITLAB = 'gitlab%2Fomnibus-gitlab'.freeze
   REPO_VARIABLE = 'PACKAGECLOUD_REPO'.freeze
