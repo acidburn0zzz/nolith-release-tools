@@ -4,22 +4,44 @@ require_relative '../omnibus_gitlab_version'
 module Release
   class OmnibusGitLabRelease < BaseRelease
     class VersionFileDoesNotExistError < StandardError; end
+    class AnotherSecurityReleaseInProgressError < StandardError; end
 
     def prepare_security_release
-      $stdout.puts "Prepare security release...".colorize(:green)
-      packagecloud.create_secret_repository(security_repository)
-      unless GitlabDevClient.fetch_repo_variable
+      $stdout.puts 'Prepare security release...'.colorize(:green)
+
+      repo_variable =  GitlabDevClient.fetch_repo_variable
+      # Prevent different security releases from running at the same time
+      if repo_variable && repo_variable != security_repository
+        raise AnotherSecurityReleaseInProgressError, "Existing security release defined in CI: #{repo_variable} (cannot start new one: #{security_repository})."
+      end
+
+      # Create packagecloud repositories or re-use existing ones
+      if packagecloud.create_secret_repository(security_repository)
+        $stdout.puts "Created repository in packagecloud: #{security_repository}".colorize(:green)
+      else
+        $stdout.puts "Using existing packagecloud repository: #{security_repository}".colorize(:green)
+      end
+
+      # Define CI variable with current security_repository name
+      if repo_variable
+        $stdout.puts "Repository name already defined in CI: #{repo_variable}".colorize(:green)
+      else
         GitlabDevClient.create_repo_variable(security_repository)
+        $stdout.puts "Defined repository name in CI as: #{security_repository}".colorize(:green)
       end
     end
 
     def promote_security_release
-      $stdout.puts "Promoting security release to public...".colorize(:green)
+      $stdout.puts 'Promoting security release to public...'.colorize(:green)
+
       if GitlabDevClient.fetch_repo_variable
         packagecloud.promote_packages(security_repository)
+        $stdout.puts 'Finished package promotion!'.colorize(:green)
+
         GitlabDevClient.remove_repo_variable
+        $stdout.puts 'Removed CI Variable for Security Releases'.colorize(:green)
       else
-        $stdout.puts "There are no release pending promotion".colorize(:red)
+        $stdout.puts 'There are no release pending promotion'.colorize(:red)
       end
     end
 
