@@ -10,6 +10,7 @@ gem 'rake'
 gem 'rugged',        '~> 0.24.0'
 gem 'weekdays',      '~> 1.0.0'
 gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.git'
+gem 'dispel'
 
 group :development, :test do
   gem 'byebug'

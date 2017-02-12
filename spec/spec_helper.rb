@@ -15,3 +15,11 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 end
+
+module Output
+  module Logger
+    def write
+      # do nothing
+    end
+  end
+end

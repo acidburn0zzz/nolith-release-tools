@@ -101,3 +101,14 @@ task :security_patch_issue, [:version] do |_t, args|
 
   create_or_show_issue(issue)
 end
+
+desc "Deploy in interactive mode"
+task :deploy, [:version] do |_t, args|
+  ENV['TERM'] = 'xterm-256color'
+  version = get_version(args)
+
+  # TODO: Figure out why colors do not work unless we spawn a new process.
+  spawn("ruby #{Dir.pwd}/lib/gid/app.rb #{version}")
+
+  Process.wait
+end
