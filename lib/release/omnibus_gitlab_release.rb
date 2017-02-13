@@ -6,6 +6,22 @@ module Release
     class VersionFileDoesNotExistError < StandardError; end
     class AnotherSecurityReleaseInProgressError < StandardError; end
 
+    def promote_security_release
+      $stdout.puts 'Promoting security release to public...'.colorize(:green)
+
+      if GitlabDevClient.fetch_repo_variable
+        packagecloud.promote_packages(security_repository)
+        $stdout.puts 'Finished package promotion!'.colorize(:green)
+
+        GitlabDevClient.remove_repo_variable
+        $stdout.puts 'Removed CI Variable for Security Releases'.colorize(:green)
+      else
+        $stdout.puts 'There are no release pending promotion'.colorize(:red)
+      end
+    end
+
+    private
+
     def prepare_security_release
       $stdout.puts 'Prepare security release...'.colorize(:green)
 
@@ -31,27 +47,11 @@ module Release
       end
     end
 
-    def promote_security_release
-      $stdout.puts 'Promoting security release to public...'.colorize(:green)
-
-      if GitlabDevClient.fetch_repo_variable
-        packagecloud.promote_packages(security_repository)
-        $stdout.puts 'Finished package promotion!'.colorize(:green)
-
-        GitlabDevClient.remove_repo_variable
-        $stdout.puts 'Removed CI Variable for Security Releases'.colorize(:green)
-      else
-        $stdout.puts 'There are no release pending promotion'.colorize(:red)
-      end
-    end
-
     def before_execute_hook
       prepare_security_release if security_release?
 
       super
     end
-
-    private
 
     def security_repository
       version_repo = version.to_minor.tr('.', '-')

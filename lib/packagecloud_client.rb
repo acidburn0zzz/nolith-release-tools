@@ -75,7 +75,6 @@ class PackagecloudClient
   def promote_packages(secret_repo)
     packages = client.list_packages(secret_repo)
     if packages.succeeded
-      packages.response.count
       packages.response.map do |p|
         distro, version = p['distro_version'].split('/')
         client.promote_package(secret_repo, distro, version, p['filename'], public_repo_for_package(p['filename']))

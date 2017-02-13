@@ -3,7 +3,6 @@ require 'packagecloud_client'
 
 describe PackagecloudClient do
   include StubENV
-  subject { described_class.new }
 
   describe '#initialize' do
     before do
