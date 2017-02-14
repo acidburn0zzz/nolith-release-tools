@@ -2,8 +2,8 @@ require 'gitlab'
 
 # Public: Gitlab API operations with Dev instance
 class GitlabDevClient
-  # Hard-code IDs following the 'namespace%2Frepo' pattern
-  OMNIBUS_GITLAB = 'gitlab%2Fomnibus-gitlab'.freeze
+  # Hard-code IDs following the 'namespace/repo' pattern
+  OMNIBUS_GITLAB = 'gitlab/omnibus-gitlab'.freeze
   REPO_VARIABLE = 'PACKAGECLOUD_REPO'.freeze
 
   class << self

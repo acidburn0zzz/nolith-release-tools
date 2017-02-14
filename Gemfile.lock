@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/brodock/gitlab-gem.git
-  revision: 85ecc37c7618a150eb97d13145f995717010cc6c
-  branch: issues-identifier
+  remote: https://github.com/NARKOZ/gitlab.git
+  revision: 9b24b85674b0ec13584a5f6a67436a0d6f1a833b
+  ref: 9b24b85674b0ec13584a5f6a67436a0d6f1a833b
   specs:
     gitlab (3.7.0)
       httparty
@@ -124,4 +124,4 @@ DEPENDENCIES
   weekdays (~> 1.0.0)
 
 BUNDLED WITH
-   1.13.7
+   1.14.3

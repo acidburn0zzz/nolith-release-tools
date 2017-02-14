@@ -7,8 +7,8 @@ class GitlabClient
     end
   end
 
-  # Hard-code IDs following the 'namespace%2Frepo' pattern
-  CE_PROJECT_ID = 'gitlab-org%2Fgitlab-ce'.freeze
+  # Hard-code IDs following the 'namespace/repo' pattern
+  CE_PROJECT_ID = 'gitlab-org/gitlab-ce'.freeze
 
   def self.current_user
     @current_user ||= Gitlab.user
