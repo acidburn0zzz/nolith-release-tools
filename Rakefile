@@ -43,6 +43,11 @@ desc "Create release"
 task :release, [:version] do |_t, args|
   version = get_version(args)
 
+  if security_release?
+    $stdout.puts "Security Release - using dev.gitlab.org only!".colorize(:red)
+    $stdout.puts
+  end
+
   if skip?('ee')
     $stdout.puts 'Skipping release for EE'.colorize(:red)
   else
