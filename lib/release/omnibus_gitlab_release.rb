@@ -28,8 +28,13 @@ module Release
       files
     end
 
+    # GitLab pages was released in EE 8.3, and CE 8.17
     def expect_pages_version_file?
-      version.major > 8 || version.major == 8 && version.minor > 4
+      if version.ee?
+        version.major > 8 || version.major == 8 && version.minor > 4
+      else
+        version.major > 8 || version.major == 8 && version.minor > 16
+      end
     end
 
     def version_from_gitlab_repo(file_name)
