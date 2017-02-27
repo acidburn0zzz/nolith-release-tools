@@ -7,8 +7,9 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
 - Follow the [Creating RC1] guide:
   - [ ] Update the "Installation from Source" guide
-  - [ ] Create the Update guides
-  - [ ] Run `bin/rake gitlab:update_templates` and open a merge request to master
+  - [ ] Create the "Update" guides
+  - [ ] Update the gitignore and license templates
+  - [ ] Update the dependencies license list
   - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..master -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
@@ -20,7 +21,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         I am about to tag `<%= version.to_rc %>`. Everything merged into `master`
         after this point will go into next release. Only regressions and security fixes
         will be cherry-picked into `<%= version.stable_branch %>`.
-        
+
         Please ensure that the correct milestone is set (`<%= version.to_minor %>` for this release)
         and the label `Pick into Stable` has been added.
         ```
@@ -96,7 +97,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Ask in `#core` for suggestions about who should be this release's MVP.
   Once chosen, add them to the [blog post] and to the [MVP page], in the
   same merge request
-- [ ] Create another RC's as needed. 
+- [ ] Create another RC as needed.
 
 Keep in mind that:
 
