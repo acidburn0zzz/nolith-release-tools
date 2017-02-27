@@ -94,7 +94,7 @@ release to the EE version of the same release.
 
 Run `bin/rake gitlab:update_templates` and open a merge request to `master`.
 
-#### Step 4: Update the dependencies' license list
+#### Step 4: Update the dependencies license list
 
 Run `bin/bundle exec license_finder report --format=csv --save=licenses.csv` and
 open a merge request to `master`.
