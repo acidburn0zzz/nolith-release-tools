@@ -156,7 +156,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
 
-- Before 0800 PDT / 1700 CET:
+- Before 08:00 Pacific (mostly 17:00 CET):
   - [ ] Sync CE, EE, and Omnibus to `dev`
   - [ ] Ensure [tests are green on CE]
   - [ ] Ensure [tests are green on EE]
@@ -168,7 +168,7 @@ This way we ensure the release does not introduce new regressions.
         ```
   - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
 
-- Before 0900 PDT / 1800 CET:
+- Before 09:00 Pacific (mostly 18:00 CET):
   - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to staging
   - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
   - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_patch %>` to production
@@ -180,7 +180,7 @@ This way we ensure the release does not introduce new regressions.
       bundle exec rake "patch_issue[<%= version.next_patch %>]"
       ```
 
-- At 1000 PDT / 1900 CET:
+- At 1000 Pacific (mostly 19:00 CET):
   - [ ] Publish the release [blog post]
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release
 
