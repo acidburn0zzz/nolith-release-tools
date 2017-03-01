@@ -13,7 +13,6 @@ VCR.configure do |c|
 
   %w(USER TOKEN).each do |val|
     c.filter_sensitive_data("[PACKAGECLOUD_#{val}]") { ENV["PACKAGECLOUD_#{val}"] }
-    c.filter_sensitive_data("[PACKAGECLOUD_#{val}]") { ENV["PACKAGECLOUD_#{val}"] }
   end
 
   c.filter_sensitive_data('[PACKAGECLOUD_ENCODED_TOKEN]') { Base64.strict_encode64("#{ENV['PACKAGECLOUD_TOKEN']}:") }

@@ -28,7 +28,7 @@ class GitlabDevClient
 
     # Public: Fetch CI variable with stored repository name
     #
-    # Return either a String or False
+    # Returns either a String or False
     def fetch_repo_variable
       client.variable(OMNIBUS_GITLAB, REPO_VARIABLE).value
     rescue Gitlab::Error::NotFound

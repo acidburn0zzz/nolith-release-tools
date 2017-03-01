@@ -4,8 +4,7 @@ require_relative 'package_version'
 # Public: Packagecloud Client facade with customizations to access our
 # own instance
 class PackagecloudClient
-  class CannotCreateRepositoryError < ArgumentError
-  end
+  class CannotCreateRepositoryError < ArgumentError; end
 
   attr_accessor :username, :token
 
@@ -34,7 +33,7 @@ class PackagecloudClient
   # Public: Packagecloud API client with our credentials and connection to our
   # instance
   #
-  # @return [Packagecloud::Client]
+  # Returns a Packagecloud::Client object
   def client
     @client ||= Packagecloud::Client.new(credentials, 'gitlab-release-tool', connection)
   end
@@ -46,15 +45,13 @@ class PackagecloudClient
   # Returns a Boolean
   def create_secret_repository(secret_repo)
     # Make sure the security release repository exists or create otherwise
-    if repository_exists?(secret_repo)
-      false
+    return false if repository_exists?(secret_repo)
+
+    result = client.create_repository(secret_repo, true)
+    if result.succeeded
+      true
     else
-      result = client.create_repository(secret_repo, true)
-      if result.succeeded
-        true
-      else
-        raise CannotCreateRepositoryError, result.response
-      end
+      raise CannotCreateRepositoryError, result.response
     end
   end
 

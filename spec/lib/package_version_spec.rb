@@ -99,28 +99,22 @@ describe PackageVersion do
   end
 
   describe '#ee?' do
-    subject(:ce_pkg) { described_class.new(deb_amd64) }
-    subject(:ee_pkg) { described_class.new(deb_amd64_ee) }
-
     it 'returns true when is EE' do
-      expect(ee_pkg).to be_ee
+      expect(described_class.new(deb_amd64_ee)).to be_ee
     end
 
     it 'returns false when not EE' do
-      expect(ce_pkg).not_to be_ee
+      expect(described_class.new(deb_amd64)).not_to be_ee
     end
   end
 
   describe '#ce?' do
-    subject(:ce_pkg) { described_class.new(deb_amd64) }
-    subject(:ee_pkg) { described_class.new(deb_amd64_ee) }
-
     it 'returns false when is EE' do
-      expect(ee_pkg).not_to be_ce
+      expect(described_class.new(deb_amd64_ee)).not_to be_ce
     end
 
     it 'returns true when not EE' do
-      expect(ce_pkg).to be_ce
+      expect(described_class.new(deb_amd64)).to be_ce
     end
   end
 end

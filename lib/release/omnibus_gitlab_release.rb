@@ -16,7 +16,7 @@ module Release
         GitlabDevClient.remove_repo_variable
         $stdout.puts 'Removed CI Variable for Security Releases'.colorize(:green)
       else
-        $stdout.puts 'There are no release pending promotion'.colorize(:red)
+        $stdout.puts 'There are no releases pending promotion'.colorize(:red)
       end
     end
 
@@ -25,10 +25,10 @@ module Release
     def prepare_security_release
       $stdout.puts 'Prepare security release...'.colorize(:green)
 
-      repo_variable =  GitlabDevClient.fetch_repo_variable
+      repo_variable = GitlabDevClient.fetch_repo_variable
       # Prevent different security releases from running at the same time
       if repo_variable && repo_variable != security_repository
-        raise AnotherSecurityReleaseInProgressError, "Existing security release defined in CI: #{repo_variable} (cannot start new one: #{security_repository})."
+        raise SecurityReleaseInProgressError, "Existing security release defined in CI: #{repo_variable} (cannot start new one: #{security_repository})."
       end
 
       # Create packagecloud repositories or re-use existing ones

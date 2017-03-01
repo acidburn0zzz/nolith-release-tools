@@ -16,7 +16,9 @@ describe GitlabDevClient do
   end
 
   describe '.fetch_repo_variable' do
-    before { described_class.create_repo_variable('super_secret_repo') }
+    before do
+      described_class.create_repo_variable('super_secret_repo')
+    end
 
     it 'fetches a CI variable stored previously and returns its value', vcr: { cassette_name: 'dev_ci/repository_variables' } do
       expect(described_class.fetch_repo_variable).to eq('super_secret_repo')
