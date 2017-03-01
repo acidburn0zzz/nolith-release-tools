@@ -5,6 +5,8 @@ require_relative '../changelog'
 require_relative '../release'
 require_relative '../repository'
 require_relative '../version'
+require_relative '../packagecloud_client'
+require_relative '../gitlab_dev_client'
 
 module Release
   class BaseRelease
@@ -26,6 +28,10 @@ module Release
       execute_release
       after_execute_hook
       after_release
+    end
+
+    def security_release?
+      options[:security]
     end
 
     private

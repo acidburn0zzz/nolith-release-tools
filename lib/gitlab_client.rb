@@ -1,9 +1,4 @@
-require 'dotenv'
 require 'gitlab'
-
-# Load ENV and then reset Gitlab client so it actually picks up our config
-Dotenv.load
-Gitlab.reset
 
 class GitlabClient
   class MissingMilestone
@@ -12,19 +7,19 @@ class GitlabClient
     end
   end
 
-  # Hard-code the CE project ID to save a request
-  CE_PROJECT_ID = 13_083
+  # Hard-code IDs following the 'namespace/repo' pattern
+  CE_PROJECT_ID = 'gitlab-org/gitlab-ce'.freeze
 
   def self.current_user
     @current_user ||= Gitlab.user
   end
 
   def self.ce_issues(options = {})
-    Gitlab.issues(CE_PROJECT_ID, options)
+    client.issues(CE_PROJECT_ID, options)
   end
 
   def self.ce_milestones(options = {})
-    Gitlab.milestones(CE_PROJECT_ID, options)
+    client.milestones(CE_PROJECT_ID, options)
   end
 
   def self.ce_milestone(title)
@@ -46,11 +41,11 @@ class GitlabClient
   def self.create_issue(issue)
     milestone = ce_milestone(issue.version.milestone_name)
 
-    Gitlab.create_issue(CE_PROJECT_ID, issue.title, {
-      description:  issue.description,
-      assignee_id:  current_user.id,
+    client.create_issue(CE_PROJECT_ID, issue.title, {
+      description: issue.description,
+      assignee_id: current_user.id,
       milestone_id: milestone.id,
-      labels:       issue.labels,
+      labels: issue.labels,
       confidential: issue.confidential?
     })
   end
@@ -71,4 +66,10 @@ class GitlabClient
   def self.issue_url(issue)
     "https://gitlab.com/gitlab-org/gitlab-ce/issues/#{issue.iid}"
   end
+
+  def self.client
+    @client ||= Gitlab.client(endpoint: ENV['GITLAB_API_ENDPOINT'], private_token: ENV['GITLAB_API_PRIVATE_TOKEN'])
+  end
+
+  private_class_method :client
 end

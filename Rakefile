@@ -1,14 +1,5 @@
-require 'colorize'
-
-require_relative 'lib/version'
-require_relative 'lib/monthly_issue'
-require_relative 'lib/patch_issue'
-require_relative 'lib/regression_issue'
-require_relative 'lib/security_patch_issue'
-require_relative 'lib/release/gitlab_ce_release'
-require_relative 'lib/release/gitlab_ee_release'
-require_relative 'lib/remotes'
-require_relative 'lib/sync'
+require_relative 'init'
+require_relative 'lib/support/tasks_helper'
 
 begin
   require 'rspec/core/rake_task'
@@ -18,25 +9,6 @@ begin
   task default: :spec
 rescue LoadError
   # no rspec available
-end
-
-def get_version(args)
-  version = Version.new(args[:version])
-
-  unless version.valid?
-    $stdout.puts "Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z".colorize(:red)
-    exit 1
-  end
-
-  version
-end
-
-def skip?(repo)
-  ENV[repo.upcase] == 'false'
-end
-
-def security_release?
-  ENV['SECURITY'] == 'true'
 end
 
 desc "Create release"
@@ -63,6 +35,20 @@ task :release, [:version] do |_t, args|
   end
 end
 
+desc "Create a security release"
+task :security_release, [:version] do |_t, args|
+  ENV['SECURITY'] = 'true'
+  Rake::Task[:release].invoke(args[:version])
+end
+
+desc "Promote security release packages to public"
+task :promote_security_release, [:version] do |_t, args|
+  ENV['SECURITY'] = 'true'
+  version = get_version(args)
+
+  Release::OmnibusGitLabRelease.new(version, security: true).promote_security_release
+end
+
 desc "Sync master branch in remotes"
 task :sync do
   if skip?('ee')
@@ -81,18 +67,6 @@ task :sync do
     $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
     Sync.new(Remotes.omnibus_gitlab_remotes).execute
-  end
-end
-
-def create_or_show_issue(issue)
-  if issue.exists?
-    $stdout.puts "--> Issue \"#{issue.title}\" already exists.".red
-    $stdout.puts "    #{issue.url}"
-    exit 1
-  else
-    issue.create
-    $stdout.puts "--> Issue \"#{issue.title}\" created.".green
-    $stdout.puts "    #{issue.url}"
   end
 end
 
