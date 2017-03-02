@@ -86,7 +86,7 @@ request after it's been picked into the `stable` branch. Here's a template that
 allows you to remove the relevant label using slash commands:
 
  ```
-Merged into `8-14-stable`
+Picked into `8-14-stable`, will go into `8.14.1`
 
 /unlabel ~"Pick into Stable" 
 ```
