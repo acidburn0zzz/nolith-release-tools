@@ -82,8 +82,16 @@ $ git cpm <MERGE COMMIT SHA>
 As the 22nd nears, it can be stressful trying to make sure that everything that
 needs to be included in a release is _actually_ included. It can be helpful to,
 for example, [leave a note] to yourself (and anyone else interested) in a merge
-request after it's been picked into the `stable` branch. Unfortunately, this
-isn't [100% fool-proof].
+request after it's been picked into the `stable` branch. Here's a template that
+allows you to remove the relevant label using slash commands:
+
+ ```
+Picked into `8-14-stable`, will go into `8.14.1`
+
+/unlabel ~"Pick into Stable" 
+```
+
+Unfortunately, this isn't [100% fool-proof].
 
 [leave a note]: https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/2530#note_3332148
 [100% fool-proof]: https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/2530#note_3347972
