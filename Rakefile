@@ -1,5 +1,6 @@
 require_relative 'init'
 require_relative 'lib/support/tasks_helper'
+require_relative 'lib/local_repo'
 
 begin
   require 'rspec/core/rake_task'
@@ -9,6 +10,10 @@ begin
   task default: :spec
 rescue LoadError
   # no rspec available
+end
+
+unless Rake.application.top_level_tasks.include?('default') || LocalRepo.ready?
+  abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
 desc "Create release"
