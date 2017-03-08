@@ -58,11 +58,11 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the chef-repo project:
         bundle exec rake "deploy:production[<%= version.to_rc %>.ee.0, gitlab/unstable]"
         ```
-  - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [GitLab.com]
-  - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
+  - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [GitLab.com]
+  - [ ] Tweet about the `<%= version.to_rc %>` release:
 
         ```
-        GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
+        GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
         Use at your own risk. Please link regressions issues from
         LINK_TO_REGRESSION_ISSUE
         ```
