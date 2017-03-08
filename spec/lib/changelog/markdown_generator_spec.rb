@@ -18,6 +18,25 @@ describe Changelog::MarkdownGenerator do
     end
   end
 
+  describe '#empty?' do
+    it 'delegates to entries' do
+      generator = described_class.new(double, [])
+
+      expect(generator).to be_empty
+    end
+  end
+
+  describe '#to_a' do
+    it 'returns an array of lines' do
+      version = Version.new('1.2.3')
+      generator = described_class.new(version, [
+        double(id: 5, to_s: "Change A", valid?: true),
+      ])
+
+      expect(generator.to_a.size).to eq 4
+    end
+  end
+
   describe '#to_s' do
     it 'includes the version header' do
       version = Version.new('1.2.3')

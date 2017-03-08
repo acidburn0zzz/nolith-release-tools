@@ -4,11 +4,19 @@ require_relative '../release'
 
 module Changelog
   class MarkdownGenerator
+    extend Forwardable
+
     attr_reader :version, :entries
 
     def initialize(version, entries)
       @version = version
       @entries = entries.select(&:valid?)
+    end
+
+    def_delegator :entries, :empty?
+
+    def to_a
+      to_s.lines
     end
 
     def to_s

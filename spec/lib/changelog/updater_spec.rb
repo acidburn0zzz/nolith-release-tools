@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require 'changelog/updater'
+require 'changelog/markdown_generator'
 
 describe Changelog::Updater do
   let(:contents) do
@@ -10,50 +11,50 @@ describe Changelog::Updater do
   describe '#insert' do
     it 'correctly inserts a new major release' do
       version = Version.new('8.11.0')
-      markdown = markdown(version)
+      generator = generator(version)
 
       writer = described_class.new(contents, version)
-      contents = writer.insert(markdown).lines
+      contents = writer.insert(generator).lines
 
       expect(contents).to have_inserted(version).at_line(2)
     end
 
     it 'correctly inserts a new patch of the latest major release' do
       version = Version.new('8.10.5')
-      markdown = markdown(version)
+      generator = generator(version)
 
       writer = described_class.new(contents, version)
-      contents = writer.insert(markdown).lines
+      contents = writer.insert(generator).lines
 
       expect(contents).to have_inserted(version).at_line(2)
     end
 
     it 'correctly inserts a new patch of the previous major release' do
       version = Version.new('8.9.7')
-      markdown = markdown(version)
+      generator = generator(version)
 
       writer = described_class.new(contents, version)
-      contents = writer.insert(markdown).lines
+      contents = writer.insert(generator).lines
 
       expect(contents).to have_inserted(version).at_line(24)
     end
 
     it 'correctly inserts a new patch of a legacy major release' do
       version = Version.new('8.8.8')
-      markdown = markdown(version)
+      generator = generator(version)
 
       writer = described_class.new(contents, version)
-      contents = writer.insert(markdown).lines
+      contents = writer.insert(generator).lines
 
       expect(contents).to have_inserted(version).at_line(54)
     end
 
     it 'correctly inserts entries for a pre-existing version header' do
       version = Version.new('8.9.6-ee')
-      markdown = markdown(version)
+      generator = generator(version)
 
       writer = described_class.new(contents, version)
-      contents = writer.insert(markdown)
+      contents = writer.insert(generator)
 
       expect(contents).to include(<<-MD.strip_heredoc)
         ## 8.9.6 (2016-07-11)
@@ -64,18 +65,29 @@ describe Changelog::Updater do
         - Change A
       MD
     end
+
+    it 'does not add "No changes" to a pre-existing version header' do
+      version = Version.new('8.9.6-ee')
+      generator = Changelog::MarkdownGenerator.new(version, [])
+
+      writer = described_class.new(contents, version)
+      contents = writer.insert(generator)
+
+      expect(contents).not_to include('No changes')
+    end
   end
 
-  def markdown(version)
-    markdown = ""
-    markdown << "## #{version}\n\n"
-    markdown << "- Change Z\n- Change Y\n- Change X\n"
-    markdown << "\n"
+  def generator(version)
+    Changelog::MarkdownGenerator.new(version, [
+      double(id: 3, to_s: 'Change X', valid?: true),
+      double(id: 2, to_s: 'Change Y', valid?: true),
+      double(id: 1, to_s: 'Change Z', valid?: true),
+    ])
   end
 
   matcher :have_inserted do |version|
     match do |contents|
-      expect(contents[@line + 0]).to eq "## #{version}\n"
+      expect(contents[@line + 0]).to match("## #{version}")
       expect(contents[@line + 1]).to eq "\n"
       expect(contents[@line + 2]).to eq "- Change Z\n"
       expect(contents[@line + 3]).to eq "- Change Y\n"

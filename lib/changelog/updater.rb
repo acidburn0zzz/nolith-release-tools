@@ -36,24 +36,29 @@ module Changelog
     # Insert some Markdown into an existing changelog based on the current
     # version and the version headers already present in the changelog.
     #
-    # markdown - Markdown String to insert
+    # generator - Changelog::MarkdownGenerator object
     #
     # Returns the updated Markdown String
-    def insert(markdown)
+    def insert(generator)
       contents.each_with_index do |line, index|
         if line =~ /\A## (\d+\.\d+\.\d+)/
           header = Version.new($1)
 
-          if version.to_ce == header
-            entries = markdown.lines
-            entries.shift(2) # Remove the header and the blank line
-            entries.pop      # Remove the trailing blank line
+          if insert_below?(header)
+            # Don't insert "No changes" on a pre-existing version header
+            break if generator.empty?
+
+            lines = generator.to_a
+            lines.shift(2) # Remove the header and the blank line
+            lines.pop      # Remove the trailing blank line
 
             # Insert the entries below the existing header and its blank line
-            contents.insert(index + 2, entries)
+            contents.insert(index + 2, lines)
+
             break
-          elsif version.major >= header.major && version.minor >= header.minor
-            contents.insert(index, *markdown.lines)
+          elsif insert_above?(header)
+            contents.insert(index, *generator.to_a)
+
             break
           end
         end
@@ -63,6 +68,24 @@ module Changelog
         .flatten
         .map { |line| line.force_encoding(Encoding::UTF_8) }
         .join
+    end
+
+    private
+
+    # If our version header already exists, we should insert our entries below
+    # it
+    #
+    # header - The current header's Version
+    def insert_below?(header)
+      version.to_ce == header
+    end
+
+    # If our version header doesn't yet exist, we should insert the header and
+    # its entries above the previous version's header
+    #
+    # header - The current header's Version
+    def insert_above?(header)
+      version.major >= header.major && version.minor >= header.minor
     end
   end
 end

@@ -99,10 +99,10 @@ module Changelog
 
       raise ::Changelog::NoChangelogError.new(changelog_file) if blob.nil?
 
-      updater  = Updater.new(blob.content, version)
-      markdown = MarkdownGenerator.new(version, unreleased_entries).to_s
+      updater = Updater.new(blob.content, version)
+      generator = MarkdownGenerator.new(version, unreleased_entries)
 
-      changelog_oid = repository.write(updater.insert(markdown), :blob)
+      changelog_oid = repository.write(updater.insert(generator), :blob)
       index.add(path: changelog_file, oid: changelog_oid, mode: 0o100644)
     end
 
