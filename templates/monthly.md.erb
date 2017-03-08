@@ -2,6 +2,26 @@
 
 Stable branch should be created after the 7th. The 7th is the last date to reliably get things in.
 
+- [ ] In `#development`:
+
+      ```
+      @channel
+
+      I am about to branch `<%= version.stable_branch %>`. Everything merged into `master`
+      after this point will go into next release. Only regressions and security fixes
+      will be cherry-picked into `<%= version.stable_branch %>`.
+
+      Please ensure that the correct milestone is set (`<%= version.to_minor %>` for this release)
+      and the label `Pick into Stable` has been added.
+
+      From now on, please follow the "Change for stable release" process:
+      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+      ```
+- [ ] Create branch `<%= version.stable_branch %>` from `master`
+- [ ] Create branch `<%= version.stable_branch(ee: true) %>` from `master`
+- [ ] Merge [GitLab CE into EE] on the stable branches
+- [ ] Sync CE, EE, and Omnibus to `dev`
+
 #### RC1
 
 - [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
@@ -10,45 +30,43 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Create the "Update" guides
   - [ ] Update the gitignore and license templates
   - [ ] Update the dependencies license list
-  - [ ] Merge [GitLab CE into EE] via merge request: LINK_TO_CE_EE_MR
+  - [ ] Ensure above steps are merged to `master` and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
+  - [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
+    milestone (you can take advantage of the
+  - [ ] [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
+    the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
+    branches, respectively.
+  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..master -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] In `#core`:
-
-        ```
-        @channel
-
-        I am about to tag `<%= version.to_rc %>`. Everything merged into `master`
-        after this point will go into next release. Only regressions and security fixes
-        will be cherry-picked into `<%= version.stable_branch %>`.
-
-        Please ensure that the correct milestone is set (`<%= version.to_minor %>` for this release)
-        and the label `Pick into Stable` has been added.
-        ```
-
-  - [ ] Ensure [tests are green on CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
-  - [ ] Ensure [tests are green on EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
+  - [ ] Ensure [tests are green on CE]
+  - [ ] Ensure [tests are green on EE]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
-- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
-- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to staging
-- [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
-      ```sh
-      # In the chef-repo project:
-      bundle exec rake "deploy:staging[<%= version.to_rc %>.ee.0, gitlab/unstable]"
-      ```
-- [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to production
-- [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [GitLab.com]
+  - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
+  - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to staging
+        ```sh
+        # In the chef-repo project:
+        bundle exec rake "deploy:staging[<%= version.to_rc %>.ee.0, gitlab/unstable]"
+        ```
+  - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to production
+        ```sh
+        # In the chef-repo project:
+        bundle exec rake "deploy:production[<%= version.to_rc %>.ee.0, gitlab/unstable]"
+        ```
+  - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [GitLab.com]
+  - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
 
-      ```sh
-      # In the chef-repo project:
-      bundle exec rake "deploy:production[<%= version.to_rc %>.ee.0, gitlab/unstable]"
-      ```
-
+        ```
+        GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
+        Use at your own risk. Please link regressions issues from
+        LINK_TO_REGRESSION_ISSUE
+        ```
 - [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
 
       ```sh
@@ -59,16 +77,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       ```sh
       bundle exec rake "new_release_post[<%= version.to_minor %>]"
       ```
-- [ ] In `#core`:
-
-    ```
-    @channel
-
-    TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set, no need to ping me.
-
-    From now on, please follow the "Change for stable release" process:
-    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
-    ```
 
 #### QA
 
@@ -101,7 +109,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 Keep in mind that:
 
-1. After RC1 only regressions and security fixes can be
+1. After feature freeze only regressions and security fixes can be
 cherry-picked into `<%= version.stable_branch %>`.
 2. Last RC should point to the same commit as the final release.
 
