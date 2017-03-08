@@ -241,6 +241,6 @@ class ChangelogFixture
   end
 
   def load_fixture(contents)
-    YAML.load(contents)
+    YAML.safe_load(contents)
   end
 end
