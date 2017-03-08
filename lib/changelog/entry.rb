@@ -19,8 +19,8 @@ module Changelog
     def to_s
       str = ""
       str << "#{title}.".gsub(/\.{2,}$/, '.')
-      str << " !#{id}" if id
-      str << " (#{author})" if author
+      str << " !#{id}" if id.present?
+      str << " (#{author})" if author.present?
 
       str
     end
@@ -35,12 +35,19 @@ module Changelog
       yaml = YAML.load(content)
 
       @title  = yaml['title']
-      @id     = yaml['merge_request'] || yaml['id']
+      @id     = parse_id(yaml)
       @author = yaml['author']
 
-      @id = @id.to_i if @id # We don't want `nil` to become `0`
+      @id = @id.to_i if @id.present? # We don't want `nil` to become `0`
     rescue StandardError # rubocop:disable Lint/HandleExceptions
       # noop
+    end
+
+    def parse_id(yaml)
+      id = yaml['merge_request'] || yaml['id']
+      id.to_s.gsub!(/[^\d]/, '')
+
+      id
     end
   end
 end
