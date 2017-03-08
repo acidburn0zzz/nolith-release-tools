@@ -9,7 +9,7 @@ describe Changelog::Updater do
 
   describe '#insert' do
     it 'correctly inserts a new major release' do
-      version = Version.new('8.10.5')
+      version = Version.new('8.11.0')
       markdown = markdown(version)
 
       writer = described_class.new(contents, version)
