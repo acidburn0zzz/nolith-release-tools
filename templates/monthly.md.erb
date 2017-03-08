@@ -7,14 +7,14 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       ```
       @channel
 
-      I am about to branch `<%= version.stable_branch %>`. Everything merged into `master`
-      after this point will go into next release. Only regressions and security fixes
+      I am about to create the `<%= version.stable_branch %>` branch. Everything merged into `master`
+      after this point will go into the next release. Only regression and security fixes
       will be cherry-picked into `<%= version.stable_branch %>`.
 
-      Please ensure that the correct milestone is set (`<%= version.to_minor %>` for this release)
-      and the label `Pick into Stable` has been added.
+      Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
+      and the `Pick into Stable` label.
 
-      From now on, please follow the "Change for stable release" process:
+      From now on, please follow the "Changes for stable release" process:
       https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
       ```
 - [ ] Create branch `<%= version.stable_branch %>` from `master`
@@ -32,8 +32,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Update the dependencies license list
   - [ ] Ensure above steps are merged to `master` and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
   - [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
-    milestone (you can take advantage of the
-  - [ ] [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
+    milestone (you can take advantage of the [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
     the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
     branches, respectively.
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
@@ -47,7 +46,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         ```sh
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
-  - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
+  - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
   - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to staging
         ```sh
         # In the chef-repo project:
@@ -109,7 +108,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 Keep in mind that:
 
-1. After feature freeze only regressions and security fixes can be
+1. After feature freeze only regression and security fixes can be
 cherry-picked into `<%= version.stable_branch %>`.
 2. Last RC should point to the same commit as the final release.
 
