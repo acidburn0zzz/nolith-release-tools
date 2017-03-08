@@ -15,7 +15,7 @@ group :development, :test do
   gem 'byebug'
   gem 'pry'
   gem 'rspec',         '~> 3.4.0'
-  gem 'rubocop',       '~> 0.43.0'
+  gem 'rubocop',       '~> 0.47.0'
   gem 'rubocop-rspec', '~> 1.7.0'
   gem 'simplecov',     '~> 0.12.0'
   gem 'timecop',       '~> 0.8.0'
