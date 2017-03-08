@@ -11,7 +11,7 @@ class Version < String
   end
 
   def patch?
-    patch > 0
+    patch.positive?
   end
 
   def major
