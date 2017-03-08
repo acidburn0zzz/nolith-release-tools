@@ -41,13 +41,15 @@ class GitlabClient
   def self.create_issue(issue)
     milestone = ce_milestone(issue.version.milestone_name)
 
-    client.create_issue(CE_PROJECT_ID, issue.title, {
+    client.create_issue(
+      CE_PROJECT_ID,
+      issue.title,
       description: issue.description,
       assignee_id: current_user.id,
       milestone_id: milestone.id,
       labels: issue.labels,
       confidential: issue.confidential?
-    })
+    )
   end
 
   # Find an issue in the CE project based on the provided issue

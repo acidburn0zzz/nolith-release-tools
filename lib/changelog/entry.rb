@@ -32,7 +32,7 @@ module Changelog
     private
 
     def parse_blob(content)
-      yaml = YAML.load(content)
+      yaml = YAML.safe_load(content)
 
       @title  = yaml['title']
       @id     = parse_id(yaml)

@@ -113,12 +113,13 @@ module Changelog
     end
 
     def create_commit
-      Rugged::Commit.create(repository, {
+      Rugged::Commit.create(
+        repository,
         tree: index.write_tree(repository),
         message: "Update #{changelog_file} for #{version}\n\n[ci skip]",
         parents: [commit],
         update_ref: 'HEAD'
-      })
+      )
 
       repository.checkout_head(strategy: :force)
     end
