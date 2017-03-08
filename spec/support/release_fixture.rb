@@ -168,7 +168,7 @@ class OmnibusReleaseFixture
   end
 end
 
-if __FILE__ == $0
+if __FILE__ == $PROGRAM_NAME
   puts "Building release fixture..."
   ReleaseFixture.new.rebuild_fixture!
 
