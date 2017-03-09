@@ -150,7 +150,6 @@ bundle exec rake "release[8.2.0-rc2]"
 ```
 
 [GITLAB_SHELL_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_SHELL_VERSION
-[GITLAB_WORKHORSE_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_WORKHORSE_VERSION
 ["Change for stable release" process]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 [cherry-picked]: pick-changes-into-stable.md
 

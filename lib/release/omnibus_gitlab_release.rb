@@ -79,6 +79,7 @@ module Release
     def version_files
       files = %w[GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION]
       files << 'GITLAB_PAGES_VERSION' if expect_pages_version_file?
+      files << 'GITALY_SERVER_VERSION' if expect_gitaly_version_file?
       files << 'VERSION' # Always update VERSION last
       files
     end
@@ -90,6 +91,10 @@ module Release
       else
         version.major > 8 || version.major == 8 && version.minor > 16
       end
+    end
+
+    def expect_gitaly_version_file?
+      version.major >= 9
     end
 
     def version_from_gitlab_repo(file_name)

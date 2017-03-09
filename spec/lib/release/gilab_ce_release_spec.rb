@@ -45,13 +45,13 @@ describe Release::GitlabCeRelease do
     FileUtils.rm_r(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
   end
 
-  { ce: '', ee: '-ee' }.each do |edition, suffix|
-    describe '#execute' do
-      def execute(version, branch)
-        described_class.new(version).execute
-        repository.checkout(branch)
-      end
+  def execute(version, branch)
+    described_class.new(version).execute
+    repository.checkout(branch)
+  end
 
+  describe '#execute' do
+    { ce: '', ee: '-ee' }.each do |edition, suffix|
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
         let(:version)    { "9.1.24#{suffix}" }
         let(:ob_version) { "9.1.24+#{edition}.0" }
@@ -79,6 +79,7 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version('shell').at('2.2.2')
               expect(ob_repository).to have_version('workhorse').at('3.3.3')
               expect(ob_repository).to have_version('pages').at('4.4.4')
+              expect(ob_repository).to have_version('gitaly').at('5.5.5')
             end
           end
         end
@@ -111,6 +112,7 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version('shell').at('2.3.0')
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
               expect(ob_repository).to have_version('pages').at('4.5.0')
+              expect(ob_repository).to have_version('gitaly').at('5.6.0')
             end
           end
         end
@@ -153,6 +155,7 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version('shell').at('2.3.0')
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
               expect(ob_repository).to have_version('pages').at('4.5.0')
+              expect(ob_repository).to have_version('gitaly').at('5.6.0')
             end
           end
         end
@@ -166,8 +169,7 @@ describe Release::GitlabCeRelease do
 
       describe "release GitLab-EE" do
         before do
-          described_class.new(version).execute
-          repository.checkout(branch)
+          execute(version, branch)
         end
 
         it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
@@ -183,6 +185,31 @@ describe Release::GitlabCeRelease do
             expect(ob_repository).to have_version('shell').at('2.2.2')
             expect(ob_repository).to have_version('workhorse').at('3.3.3')
             expect(ob_repository).not_to have_version('pages')
+            expect(ob_repository).to have_version('gitaly').at('5.5.5')
+          end
+        end
+      end
+    end
+
+    context 'with a version >= 9' do
+      let(:version)    { '9.0.0' }
+      let(:ob_version) { '9.0.0+ce.0' }
+      let(:branch)     { '9-0-stable' }
+
+      describe 'release GitLab-CE' do
+        before do
+          execute(version, branch)
+        end
+
+        it 'creates a new branch and updates the version in GITALY_SERVER_VERSION in the omnibus-gitlab repo' do
+          aggregate_failures do
+            # GitLab expectations
+            expect(repository.head.name).to eq "refs/heads/#{branch}"
+            expect(repository).to have_version.at(version)
+
+            # Omnibus-GitLab expectations
+            expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
+            expect(ob_repository).to have_version('gitaly').at('5.6.0')
           end
         end
       end
