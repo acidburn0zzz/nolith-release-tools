@@ -88,6 +88,8 @@ module RuggedMatchers
     def normalize_path(file_path)
       if file_path.nil?
         'VERSION'
+      elsif file_path.eql?('gitaly')
+        'GITALY_SERVER_VERSION'
       else
         "GITLAB_#{file_path.upcase}_VERSION"
       end

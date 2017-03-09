@@ -93,6 +93,7 @@ class ReleaseFixture
     commit_version_blobs(
       'GITLAB_SHELL_VERSION'     => "2.2.2\n",
       'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
+      'GITALY_SERVER_VERSION'    => "5.5.5\n",
       'VERSION'                  => "1.1.1\n"
     )
 
@@ -114,6 +115,7 @@ class ReleaseFixture
 
     # Bump the versions in master
     commit_version_blobs(
+      'GITALY_SERVER_VERSION'    => "5.6.0\n",
       'GITLAB_PAGES_VERSION'     => "4.5.0\n",
       'GITLAB_SHELL_VERSION'     => "2.3.0\n",
       'GITLAB_WORKHORSE_VERSION' => "3.4.0\n",
@@ -142,6 +144,7 @@ class OmnibusReleaseFixture
     commit_version_blobs(
       'GITLAB_SHELL_VERSION'     => "2.2.2\n",
       'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
+      'GITALY_SERVER_VERSION'    => "5.5.5\n",
       'VERSION'                  => "1.9.24\n"
     )
 
