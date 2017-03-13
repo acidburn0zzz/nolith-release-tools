@@ -96,7 +96,7 @@ Run `bin/rake gitlab:update_templates` and open a merge request to `master`.
 
 #### Step 4: Update the dependencies license list
 
-Run `bin/bundle exec license_finder report --format=csv --save=licenses.csv` and
+Run `bin/bundle exec license_finder report --format=csv --save=vendor/licenses.csv` and
 open a merge request to `master`.
 
 #### Step 5: Merge CE `master` into EE `master`
