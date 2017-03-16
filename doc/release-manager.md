@@ -6,7 +6,7 @@ The release manager oversees the [monthly release] of GitLab as well as any
 ## Onboarding
 ### Master checklist for onboarding of new release managers
 
-The following checklist can be copied and pasted into a new issue in organization 
+The following checklist can be copied and pasted into a [new issue in the Organization project](https://gitlab.com/gitlab-com/organization/issues/new?issue[title]=Onboarding%20Release%20Manager%20[your%20name%20here]) 
 to make sure the new release manager has the tools and some initial knowledge ready. 
 The topics are ordered by priority and should be tackled by the new release manager
 before starting the appointed release.
@@ -14,8 +14,8 @@ before starting the appointed release.
 ```
 On-Boarding
 
-- [ ] Make a note of your `dev`, `github` usernames and SSH credentials and add the usernames to this issue, the latter to an infrastructure issue for the next item.
-- [ ] chef access: [link to infrastructure issue]
+- [ ] Make a note of your `dev` and `github` usernames and add them to this issue.
+- [ ] Create a [new infra issue](https://gitlab.com/gitlab-com/infrastructure/issues/new?issue[title]=Chef%20access%20request), set it to confidential, and post your SSH username and public key there: [link to infrastructure issue]
 - [ ] Make sure you have the [chef-repo](https://dev.gitlab.org/cookbooks/chef-repo) and [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, with all dependencies installed through [bundle](http://bundler.io/).
 - [ ] Read through the [release guides](https://gitlab.com/gitlab-org/release-tools/blob/master/README.md#guides)
 - [ ] Join #releases on Slack, and introduce yourself
