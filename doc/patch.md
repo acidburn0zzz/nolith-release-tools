@@ -33,6 +33,13 @@ monthly release or previous patch release is completed.
 Follow the [Pick specific changes into the `stable` branches][pick-changes-into-stable]
 guide.
 
+Don't pick any changes into stable branches until we're sure that a patch
+release for this version is imminent. Because of our policies of [backporting
+security patches](security.md#backporting) and [only including security
+fixes](security.md#what-to-include) in those security patches, we don't want to
+have unreleased changes in the stable branches because we thought we might do a
+patch release but then later need to do a security release.
+
 ### 3. Complete the patch release tasks
 
 Use the patch issue created earlier to keep track of the process and mark off
