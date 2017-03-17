@@ -38,6 +38,14 @@ include the changes necessary to resolve the security vulnerabilities. Including
 fixes for regressions in a security patch increases the chances of breaking
 something, both for users and for our packaging and release process.
 
+The only exception to this policy is [release
+candidates](release-candidates.md). If the monthly release process is in
+progress as we're preparing for a security release, it's acceptable for a new RC
+to include both security fixes and regression fixes. Care should be taken to
+coordinate the publishing of an RC package with the other security patches so as
+to not disclose the security vulnerabilities publicly before we're ready to
+disclose them.
+
 ## Process
 
 ### Before the release
