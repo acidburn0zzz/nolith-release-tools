@@ -8,6 +8,8 @@ class PackagecloudClient
 
   attr_accessor :username, :token
 
+  RASPBERRY_PI2_PUBLIC_REPO = 'raspberry-pi2'.freeze
+  UNSTABLE_PUBLIC_REPO = 'unstable'.freeze
   GITLAB_CE_PUBLIC_REPO = 'gitlab-ce'.freeze
   GITLAB_EE_PUBLIC_REPO = 'gitlab-ee'.freeze
 
@@ -90,7 +92,11 @@ class PackagecloudClient
   # Returns the public repository name as String
   def public_repo_for_package(filename)
     pkg = ::PackageVersion.new(filename)
-    if pkg.ce?
+    if pkg.arch == :armhf
+      RASPBERRY_PI2_PUBLIC_REPO
+    elsif pkg.rc?
+      UNSTABLE_PUBLIC_REPO
+    elsif pkg.ce?
       GITLAB_CE_PUBLIC_REPO
     else
       GITLAB_EE_PUBLIC_REPO
