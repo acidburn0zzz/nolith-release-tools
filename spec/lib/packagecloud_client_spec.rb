@@ -103,6 +103,7 @@ describe PackagecloudClient do
 
     # CE
     let(:deb_amd64) { 'gitlab-ce_8.16.3-ce.1_amd64.deb' }
+    let(:deb_rc_amd64) { 'gitlab-ce_8.16.3-rc1.ce.1_amd64.deb' }
     let(:deb_armhf) { 'gitlab-ce_8.13.12-ce.0_armhf.deb' }
     let(:rpm_x86_64_el6) { 'gitlab-ce-8.16.3-ce.1.el6.x86_64.rpm' }
     let(:rpm_x86_64_el7) { 'gitlab-ce-8.13.11-ce.0.el7.x86_64.rpm' }
@@ -111,6 +112,7 @@ describe PackagecloudClient do
 
     # EE
     let(:deb_amd64_ee) { 'gitlab-ee_8.16.3-ee.1_amd64.deb' }
+    let(:deb_rc_amd64_ee) { 'gitlab-ee_8.16.3-rc1.ee.1_amd64.deb' }
     let(:deb_armhf_ee) { 'gitlab-ee_8.13.12-ee.0_armhf.deb' }
     let(:rpm_x86_64_el6_ee) { 'gitlab-ee-8.16.3-ee.1.el6.x86_64.rpm' }
     let(:rpm_x86_64_el7_ee) { 'gitlab-ee-8.13.11-ee.0.el7.x86_64.rpm' }
@@ -120,7 +122,6 @@ describe PackagecloudClient do
     it 'returns gitlab-ce for CE packages' do
       aggregate_failures 'CE packages' do
         expect(subject.public_repo_for_package(deb_amd64)).to eq('gitlab-ce')
-        expect(subject.public_repo_for_package(deb_armhf)).to eq('gitlab-ce')
         expect(subject.public_repo_for_package(rpm_x86_64_el6)).to eq('gitlab-ce')
         expect(subject.public_repo_for_package(rpm_x86_64_el7)).to eq('gitlab-ce')
         expect(subject.public_repo_for_package(rpm_x86_64_sles13)).to eq('gitlab-ce')
@@ -128,10 +129,23 @@ describe PackagecloudClient do
       end
     end
 
+    it 'returns unstable for RC packages' do
+      aggregate_failures 'RC packages' do
+        expect(subject.public_repo_for_package(deb_rc_amd64)).to eq('unstable')
+        expect(subject.public_repo_for_package(deb_rc_amd64_ee)).to eq('unstable')
+      end
+    end
+
+    it 'returns raspberry-pi2 for armhf packages' do
+      aggregate_failures 'RC packages' do
+        expect(subject.public_repo_for_package(deb_armhf)).to eq('raspberry-pi2')
+        expect(subject.public_repo_for_package(deb_armhf_ee)).to eq('raspberry-pi2')
+      end
+    end
+
     it 'returns gitlab-ee for EE packages' do
       aggregate_failures 'EE packages' do
         expect(subject.public_repo_for_package(deb_amd64_ee)).to eq('gitlab-ee')
-        expect(subject.public_repo_for_package(deb_armhf_ee)).to eq('gitlab-ee')
         expect(subject.public_repo_for_package(rpm_x86_64_el6_ee)).to eq('gitlab-ee')
         expect(subject.public_repo_for_package(rpm_x86_64_el7_ee)).to eq('gitlab-ee')
         expect(subject.public_repo_for_package(rpm_x86_64_sles13_ee)).to eq('gitlab-ee')

@@ -3,7 +3,7 @@ class PackageVersion < String
   REGEXP = %r{
     \Agitlab-
     (?<edition>ce|ee)[-_]
-    (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(ce|ee)\.
+    (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(rc(?<rc>\d+)\.)?(ce|ee)\.
     (?<revision>\d+)
     (_(?<arch>amd64|armhf)|\.(?<distro>el\d+|sles\d+)\.(?<arch>x86_64))\.
     (?<pkgtype>deb|rpm)\z
@@ -14,6 +14,13 @@ class PackageVersion < String
   # Return either :ce or :ee
   def edition
     REGEXP.match(self)[:edition].to_sym
+  end
+
+  # Public: Arch
+  #
+  # Return :amd64, :armhf or :x86_64
+  def arch
+    REGEXP.match(self)[:arch].to_sym
   end
 
   # Public: Major version
@@ -44,6 +51,14 @@ class PackageVersion < String
     REGEXP.match(self)[:revision].to_i
   end
 
+  # Public: RC number
+  #
+  # Returns the revision number as an Integer or nil if it is not an RC
+  def rc
+    rc = REGEXP.match(self)[:rc]
+    rc.to_i unless rc.nil?
+  end
+
   # Public: Is an Enterprise Edition version?
   #
   # Returns a Boolean
@@ -56,5 +71,12 @@ class PackageVersion < String
   # Returns a Boolean
   def ce?
     edition == :ce
+  end
+
+  # Public: Is RC version?
+  #
+  # Returns a Boolean
+  def rc?
+    !rc.nil?
   end
 end
