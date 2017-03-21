@@ -46,6 +46,12 @@ coordinate the publishing of an RC package with the other security patches so as
 to not disclose the security vulnerabilities publicly before we're ready to
 disclose them.
 
+Be sure NOT to pre-announce which GitLab versions are affected, since that may
+allow malicious users to narrow the search space.
+
+See [https://about.gitlab.com/handbook/engineering/critical-release-process/] for
+more details on how to handle a critical security release.
+
 ## Process
 
 ### Before the release
