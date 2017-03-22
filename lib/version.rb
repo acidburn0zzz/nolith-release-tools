@@ -1,6 +1,34 @@
 class Version < String
-  VERSION_REGEX = /\A\d+\.\d+\.\d+(-rc\d+)?(-ee)?\z/
-  RELEASE_REGEX = /\A(\d+)\.(\d+)\.(\d+)\z/
+  VERSION_REGEX = %r{
+    \A(?<major>\d+)
+    \.(?<minor>\d+)
+    (\.(?<patch>\d+))?
+    (-(?<rc>rc(?<rc_number>\d*)))?
+    (-ee)?\z
+  }x
+
+  def ==(other)
+    if other.respond_to?(:to_ce)
+      to_ce.eql?(other.to_ce)
+    else
+      super
+    end
+  end
+
+  def <=>(other)
+    return nil unless other.is_a?(Version)
+    return 0 if self == other
+
+    if major > other.major ||
+        (major >= other.major && minor > other.minor) ||
+        (major >= other.major && minor >= other.minor && patch > other.patch) ||
+        (major >= other.major && minor >= other.minor && patch >= other.patch && other.rc?)
+
+      rc? ? (rc - other.rc) : 1
+    else
+      -1
+    end
+  end
 
   def ee?
     end_with?('-ee')
@@ -15,29 +43,27 @@ class Version < String
   end
 
   def major
-    return 0 unless version?
-
-    @major ||= /\A(\d+)\./.match(self)[1].to_i
+    @major ||= extract_from_version(:major).to_i
   end
 
   def minor
-    return 0 unless version?
-
-    @minor ||= /\A\d+\.(\d+)/.match(self)[1].to_i
+    @minor ||= extract_from_version(:minor).to_i
   end
 
   def patch
-    return 0 unless release?
-
-    @patch ||= /\.(\d+)$/.match(self)[1].to_i
+    @patch ||= extract_from_version(:patch).to_i
   end
 
   def rc
-    match(/-(rc\d+)(-ee)?\z/).captures.first if rc?
+    return unless rc?
+
+    @rc ||= extract_from_version(:rc_number).to_i
   end
 
   def rc?
-    self =~ /\A\d+\.\d+\.\d+-rc\d+(-ee)?\z/
+    return @is_rc if defined?(@is_rc)
+
+    @is_rc = extract_from_version(:rc, fallback: false)
   end
 
   def version?
@@ -45,29 +71,25 @@ class Version < String
   end
 
   def release?
-    self =~ RELEASE_REGEX
+    valid? && !rc? && !ee?
   end
 
   def next_minor
-    captures = /\A(\d+)\.(\d+)/.match(self).captures
-
-    "#{captures[0]}.#{captures[1].to_i + 1}.0"
+    "#{major}.#{minor + 1}.0"
   end
 
   def previous_patch
     return unless patch?
 
-    captures = match(RELEASE_REGEX).captures
+    new_patch = self.class.new("#{major}.#{minor}.#{patch - 1}")
 
-    "#{captures[0]}.#{captures[1]}.#{patch - 1}"
+    ee? ? new_patch.to_ee : new_patch
   end
 
   def next_patch
-    return unless release?
+    new_patch = self.class.new("#{major}.#{minor}.#{patch + 1}")
 
-    captures = match(RELEASE_REGEX).captures
-
-    "#{captures[0]}.#{captures[1]}.#{patch + 1}"
+    ee? ? new_patch.to_ee : new_patch
   end
 
   def stable_branch(ee: false)
@@ -86,6 +108,7 @@ class Version < String
 
   def previous_tag(ee: false)
     return unless patch?
+    return if rc?
 
     tag_for(previous_patch, ee: ee)
   end
@@ -105,18 +128,18 @@ class Version < String
   end
 
   def to_minor
-    match(/\A\d+\.\d+/).to_s
+    "#{major}.#{minor}"
   end
 
   def to_omnibus(ee: false)
     str = "#{to_patch}+"
-    str << "#{rc}." if rc?
+    str << "rc#{rc}." if rc?
     str << (ee ? 'ee' : 'ce')
     str << '.0'
   end
 
   def to_patch
-    match(/\A\d+\.\d+\.\d+/).to_s
+    "#{major}.#{minor}.#{patch}"
   end
 
   def to_rc(number = 1)
@@ -124,15 +147,24 @@ class Version < String
   end
 
   def valid?
-    release? || rc?
+    self =~ VERSION_REGEX
   end
 
   private
 
   def tag_for(version, ee: false)
-    str = "v#{version}"
-    str << '-ee' if ee && !ee?
+    version = version.to_ee if ee
 
-    str
+    "v#{version}"
+  end
+
+  def extract_from_version(part, fallback: 0)
+    match_data = VERSION_REGEX.match(self)
+
+    if match_data && match_data.names.include?(part.to_s)
+      match_data[part]
+    else
+      fallback
+    end
   end
 end
