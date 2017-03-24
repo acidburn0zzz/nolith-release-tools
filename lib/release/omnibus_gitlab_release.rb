@@ -1,10 +1,14 @@
 require_relative 'base_release'
 require_relative '../omnibus_gitlab_version'
+require 'time'
 
 module Release
   class OmnibusGitLabRelease < BaseRelease
     class VersionFileDoesNotExistError < StandardError; end
-    class AnotherSecurityReleaseInProgressError < StandardError; end
+    class SecurityReleaseInProgressError < StandardError; end
+
+    # Number of minutes we will be able to reuse the same security repository.
+    SECURITY_REPO_GRACE_PERIOD = 24 * 60 * 60
 
     def promote_security_release
       $stdout.puts 'Promoting security release to public...'.colorize(:green)
@@ -27,7 +31,7 @@ module Release
 
       repo_variable = GitlabDevClient.fetch_repo_variable
       # Prevent different security releases from running at the same time
-      if repo_variable && repo_variable != security_repository
+      if release_in_progress?(repo_variable)
         raise SecurityReleaseInProgressError, "Existing security release defined in CI: #{repo_variable} (cannot start new one: #{security_repository})."
       end
 
@@ -54,8 +58,19 @@ module Release
     end
 
     def security_repository
-      version_repo = version.to_minor.tr('.', '-')
-      "security-#{version_repo}-#{Digest::MD5.hexdigest(version_repo + packagecloud.token)}"
+      @security_respository ||= "security-#{Time.now.utc.strftime('%FT%R%Z')}"
+    end
+
+    def release_in_progress?(repo_variable)
+      return false unless repo_variable
+
+      time_limit = repo_variable_time(repo_variable) + SECURITY_REPO_GRACE_PERIOD
+
+      Time.now.utc > time_limit
+    end
+
+    def repo_variable_time(repo_variable)
+      Time.parse(repo_variable.split('-').last)
     end
 
     def packagecloud
