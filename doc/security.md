@@ -17,13 +17,13 @@ team as well as any applicable security experts, such as the person disclosing
 the issue.
 
 As noted in the [checklist](https://about.gitlab.com/handbook/engineering/critical-release-process/),
-a specific "security release manager" is designated to act as the release manager
-security releases. By default, the security release manager is the RM from the
-_previous_ release. Having one RM for the security release - even though a
-security release will typically span multiple prior versions - is more efficient
-and less likely to lead to confusion or unintended "leaking" of the vulnerability.
-By designating the RM from the _previous_ release, the RM for the _current_ release
-is not hindered in their work to get out the next release (candidate). 
+a specific "security release manager" is designated to act as the release
+manager for security releases. By default, the security release manager is the
+RM from the _previous_ release. Having one RM for the security release - even
+though a security release will typically span multiple prior versions - is more
+efficient and less likely to lead to confusion or unintended "leaking" of the
+vulnerability. By designating the RM from the _previous_ release, the RM for the
+_current_ release is not hindered in their work to get out the next release.
 
 ## Backporting
 
