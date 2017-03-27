@@ -9,6 +9,16 @@ describe Changelog::Updater do
 
   describe '#insert' do
     it 'correctly inserts a new major release' do
+      version = Version.new('9.0.0')
+      markdown = markdown(version)
+
+      writer = described_class.new(contents, version)
+      contents = writer.insert(markdown).lines
+
+      expect(contents).to have_inserted(version).at_line(2)
+    end
+
+    it 'correctly inserts a new minor release' do
       version = Version.new('8.11.0')
       markdown = markdown(version)
 
@@ -18,7 +28,7 @@ describe Changelog::Updater do
       expect(contents).to have_inserted(version).at_line(2)
     end
 
-    it 'correctly inserts a new patch of the latest major release' do
+    it 'correctly inserts a new patch of the latest minor release' do
       version = Version.new('8.10.5')
       markdown = markdown(version)
 
@@ -28,7 +38,7 @@ describe Changelog::Updater do
       expect(contents).to have_inserted(version).at_line(2)
     end
 
-    it 'correctly inserts a new patch of the previous major release' do
+    it 'correctly inserts a new patch of the previous minor release' do
       version = Version.new('8.9.7')
       markdown = markdown(version)
 
@@ -38,7 +48,7 @@ describe Changelog::Updater do
       expect(contents).to have_inserted(version).at_line(24)
     end
 
-    it 'correctly inserts a new patch of a legacy major release' do
+    it 'correctly inserts a new patch of a legacy minor release' do
       version = Version.new('8.8.8')
       markdown = markdown(version)
 

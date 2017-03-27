@@ -52,7 +52,7 @@ module Changelog
             # Insert the entries below the existing header and its blank line
             contents.insert(index + 2, entries)
             break
-          elsif version.major >= header.major && version.minor >= header.minor
+          elsif version >= header
             contents.insert(index, *markdown.lines)
             break
           end
