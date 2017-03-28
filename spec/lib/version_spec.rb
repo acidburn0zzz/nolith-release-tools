@@ -7,6 +7,34 @@ describe Version do
     described_class.new(version_string)
   end
 
+  describe '#==' do
+    it { expect(version('1.2.3') == version('1.2.3-ee')).to be_truthy }
+    it { expect(version('1.2.3-rc1') == version('1.2.3-rc1-ee')).to be_truthy }
+  end
+
+  describe '#<=>' do
+    it { expect(version('1.2.3')).to be >= version('1.2.2') }
+    it { expect(version('1.2.3')).to be > version('1.2.2') }
+    it { expect(version('1.2.3')).to be > version('1.1.12') }
+    it { expect(version('1.2.3')).to be > version('0.12.12') }
+    it { expect(version('1.2.3')).to be > version('1.2.3-rc') }
+    it { expect(version('1.2.3')).to be > version('1.2.3-rc2') }
+    it { expect(version('1.2.3-rc3')).to be > version('1.2.3-rc1') }
+
+    it { expect(version('1.2.3-rc1')).to be < version('1.2.3-rc3') }
+    it { expect(version('1.2.3')).to be < version('1.2.4-rc') }
+    it { expect(version('1.2.3')).to be < version('1.2.4') }
+    it { expect(version('1.2.3')).to be < version('1.3.0') }
+    it { expect(version('1.2.3')).to be < version('2.0.8') }
+    it { expect(version('1.2.3')).to be <= version('2.0.8') }
+  end
+
+  describe '#milestone_name' do
+    it 'returns the milestone name' do
+      expect(version('8.3.2').milestone_name).to eq '8.3'
+    end
+  end
+
   describe '#ee?' do
     it 'returns true when EE' do
       expect(version('8.3.2-ee')).to be_ee
@@ -55,20 +83,18 @@ describe Version do
     end
   end
 
+  describe '#rc' do
+    it { expect(version('1.2.3-rc').rc).to eq(0) }
+    it { expect(version('1.2.3-rc1').rc).to eq(1) }
+    it { expect(version('1.2.3').rc).to be_nil }
+    it { expect(version('wow-rc1').rc).to be_nil }
+  end
+
   describe '#rc?' do
-    it 'is true for pre-release versions' do
-      aggregate_failures do
-        expect(version('1.2.3-rc1').rc?).to be_truthy
-      end
-    end
-
-    it 'is false for release versions' do
-      expect(version('1.2.3').rc?).to be_falsey
-    end
-
-    it 'is false for invalid versions' do
-      expect(version('wow-rc1').rc?).to be_falsey
-    end
+    it { expect(version('1.2.3-rc')).to be_rc }
+    it { expect(version('1.2.3-rc1')).to be_rc }
+    it { expect(version('1.2.3')).not_to be_rc }
+    it { expect(version('wow-rc1')).not_to be_rc }
   end
 
   describe '#release?' do
@@ -113,11 +139,11 @@ describe Version do
     end
 
     it 'returns nil when version is not a release' do
-      expect(version('1.2.3-rc1').previous_patch).to be_nil
+      expect(version('1.2.3-rc1').previous_patch).to eq '1.2.2'
     end
 
     it 'returns nil when version is EE' do
-      expect(version('1.2.3-ee').previous_patch).to be_nil
+      expect(version('1.2.3-ee').previous_patch).to eq '1.2.2-ee'
     end
 
     it 'returns previous patch when patch is 0' do
@@ -131,15 +157,15 @@ describe Version do
 
   describe '#next_patch' do
     it 'returns nil when patch is missing' do
-      expect(version('1.2').next_patch).to be_nil
+      expect(version('1.2').next_patch).to eq '1.2.1'
     end
 
     it 'returns nil when version is not a release' do
-      expect(version('1.2.3-rc1').next_patch).to be_nil
+      expect(version('1.2.3-rc1').next_patch).to eq '1.2.4'
     end
 
     it 'returns nil when version is EE' do
-      expect(version('1.2.3-ee').next_patch).to be_nil
+      expect(version('1.2.3-ee').next_patch).to eq '1.2.4-ee'
     end
 
     it 'returns next patch when patch is 0' do
@@ -178,7 +204,7 @@ describe Version do
     end
 
     it 'returns nil when version is EE' do
-      expect(version('1.2.3-ee').previous_tag).to be_nil
+      expect(version('1.2.3-ee').previous_tag).to eq 'v1.2.2-ee'
     end
 
     it 'returns nil when patch is 0' do
