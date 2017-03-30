@@ -13,8 +13,8 @@ module Release
     def promote_security_release
       $stdout.puts 'Promoting security release to public...'.colorize(:green)
 
-      if GitlabDevClient.fetch_repo_variable
-        packagecloud.promote_packages(security_repository)
+      if repo_variable
+        packagecloud.promote_packages(repo_variable)
         $stdout.puts 'Finished package promotion!'.colorize(:green)
 
         GitlabDevClient.remove_repo_variable
@@ -29,17 +29,19 @@ module Release
     def prepare_security_release
       $stdout.puts 'Prepare security release...'.colorize(:green)
 
-      repo_variable = GitlabDevClient.fetch_repo_variable
       # Prevent different security releases from running at the same time
       if release_in_progress?(repo_variable)
         raise SecurityReleaseInProgressError, "Existing security release defined in CI: #{repo_variable} (cannot start new one: #{security_repository})."
       end
 
+      # Use the existing security repository if we have one set
+      repository = repo_variable || security_respository
+
       # Create packagecloud repositories or re-use existing ones
-      if packagecloud.create_secret_repository(security_repository)
-        $stdout.puts "Created repository in packagecloud: #{security_repository}".colorize(:green)
+      if packagecloud.create_secret_repository(repository)
+        $stdout.puts "Created repository in packagecloud: #{repository}".colorize(:green)
       else
-        $stdout.puts "Using existing packagecloud repository: #{security_repository}".colorize(:green)
+        $stdout.puts "Using existing packagecloud repository: #{repository}".colorize(:green)
       end
 
       # Define CI variable with current security_repository name
@@ -57,8 +59,14 @@ module Release
       super
     end
 
+    def repo_variable
+      return @repo_variable if defined?(@repo_variable)
+
+      @repo_variable = GitlabDevClient.fetch_repo_variable
+    end
+
     def security_repository
-      @security_respository ||= "security-#{Time.now.utc.strftime('%FT%R%Z')}"
+      @security_respository ||= "security-#{Time.now.utc.strftime('%Y%m%dT%H%MZ')}"
     end
 
     def release_in_progress?(repo_variable)
