@@ -35,7 +35,7 @@ module Release
       end
 
       # Use the existing security repository if we have one set
-      repository = repo_variable || security_respository
+      repository = repo_variable || security_repository
 
       # Create packagecloud repositories or re-use existing ones
       if packagecloud.create_secret_repository(repository)
@@ -66,7 +66,7 @@ module Release
     end
 
     def security_repository
-      @security_respository ||= "security-#{Time.now.utc.strftime('%Y%m%dT%H%MZ')}"
+      @security_repository ||= "security-#{Time.now.utc.strftime('%Y%m%dT%H%MZ')}"
     end
 
     def release_in_progress?(repo_variable)
