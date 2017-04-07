@@ -19,7 +19,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       ```
 - [ ] Create branch `<%= version.stable_branch %>` from `master`
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master`
-- [ ] In omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch %>` from `master`
+- [ ] In omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master`
 - [ ] Merge [GitLab CE into EE] on the stable branches
 - [ ] Sync CE, EE, and Omnibus to `dev`
 
