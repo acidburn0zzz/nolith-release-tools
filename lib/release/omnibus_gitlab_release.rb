@@ -148,9 +148,9 @@ module Release
 
       repository.ensure_branch_exists(branch)
       openshift_filename = 'docker/openshift-template.json'
-      openshift_version = Version.new(version_from_container_template(openshift_filename))
+      openshift_version = version_class.new(version_from_container_template(openshift_filename).gsub('-', '+'))
       unless openshift_version.valid?
-        raise VersionStringNotFoundError.new(openshift_filename)
+        raise VersionStringNotFoundError.new("#{openshift_version} in #{openshift_filename}")
       end
 
       # Only bump the version if newer that what is already in the template
@@ -173,13 +173,10 @@ module Release
       unless File.exist?(file_path)
         raise TemplateFileDoesNotExistError.new(file_path)
       end
-
-      File.open(file_path, 'r+') do |file|
-        content = file.read
-        content.gsub!(%r{gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+}, "gitlab/gitlab-ce:#{version.to_docker}")
-        content.gsub!(/gitlab-\d+\.\d+\.\d+/, "gitlab-#{version.to_patch}")
-        file.puts content
-      end
+      content = File.read(file_path)
+      content.gsub!(%r{gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+}, "gitlab/gitlab-ce:#{version.to_docker}")
+      content.gsub!(/gitlab-\d+\.\d+\.\d+/, "gitlab-#{version.to_patch}")
+      File.write(file_path, content)
     end
   end
 end

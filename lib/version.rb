@@ -138,8 +138,12 @@ class Version < String
     str << '.0'
   end
 
+  def from_omnibus
+    self.class.new(to_s.gsub(/-ce$/, ''))
+  end
+
   def to_docker(ee: false)
-    to_omnibus(ee).tr('+', '-')
+    to_omnibus(ee: ee).tr('+', '-')
   end
 
   def to_patch
