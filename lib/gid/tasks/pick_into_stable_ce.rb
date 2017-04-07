@@ -53,7 +53,7 @@ module Gid
       end
 
       def push!
-        #Git::Facade.new(repo).push
+        # Git::Facade.new(repo).push
       end
 
       # rubocop:disable Style/AsciiComments

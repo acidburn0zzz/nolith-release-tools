@@ -10,11 +10,11 @@ module Gid
 
       def pull
         run_multiple(
-          [%w(stash),
-           %w(checkout master),
-           %w(pull origin master),
-           %w(checkout) + [@stable_branch],
-           %w(pull origin) + [@stable_branch]])
+          [%w[stash],
+           %w[checkout master],
+           %w[pull origin master],
+           %w[checkout] + [@stable_branch],
+           %w[pull origin] + [@stable_branch]])
       end
 
       def cherry_pick(sha)

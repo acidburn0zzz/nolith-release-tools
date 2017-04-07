@@ -44,22 +44,22 @@ module Gid
     def wait_for_keyboard(redraw)
       Dispel::Keyboard.output timeout: 1 do |key|
         case key
-          when :timeout
-            redraw.call
-          when :'Ctrl+x'
-            break
-          when :up
-            move_up
+        when :timeout
+          redraw.call
+        when :'Ctrl+x'
+          break
+        when :up
+          move_up
 
-            redraw.call
-          when :down
-            move_down
+          redraw.call
+        when :down
+          move_down
 
-            redraw.call
-          when :enter
-            task_list[@selected].run!
-          else
-            redraw.call(key) unless %w(r e f).include?(key)
+          redraw.call
+        when :enter
+          task_list[@selected].run!
+        else
+          redraw.call(key) unless %w[r e f].include?(key)
         end
       end
     end
@@ -91,11 +91,11 @@ module Gid
     end
 
     def move_up
-      @selected -=1 unless @selected.zero?
+      @selected -= 1 unless @selected.zero?
     end
 
     def move_down
-      @selected +=1 unless @selected >= task_list.size - 1
+      @selected += 1 unless @selected >= task_list.size - 1
     end
   end
 end
