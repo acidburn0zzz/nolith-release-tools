@@ -1,3 +1,6 @@
+Also see [the GitLab Handbook on the Critical Release Process](https://about.gitlab.com/handbook/engineering/critical-release-process/)
+for the overall timeline of handling a security release.
+
 # Security Releases
 
 Security vulnerabilities in GitLab and its dependencies are to be addressed with
@@ -57,9 +60,6 @@ disclose them.
 
 Be sure NOT to pre-announce which GitLab versions are affected, since that may
 allow malicious users to narrow the search space.
-
-See [https://about.gitlab.com/handbook/engineering/critical-release-process/] for
-more details on how to handle a critical security release.
 
 ## Process
 
