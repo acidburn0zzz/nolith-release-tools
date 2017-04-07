@@ -148,7 +148,7 @@ module Release
 
       repository.ensure_branch_exists(branch)
       openshift_filename = 'docker/openshift-template.json'
-      openshift_version = version_class.new(version_from_container_template(openshift_filename).gsub('-', '+'))
+      openshift_version = version_class.new(version_from_container_template(openshift_filename).tr('-', '+'))
       unless openshift_version.valid?
         raise VersionStringNotFoundError.new("#{openshift_version} in #{openshift_filename}")
       end
