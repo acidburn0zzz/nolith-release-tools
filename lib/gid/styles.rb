@@ -22,7 +22,7 @@ module Gid
       map.add(["#00FFFF", "#000000"], 6, 0..@screen.columns)
 
       # Log
-      7.upto(@screen.lines - 2) do |line|
+      8.upto(@screen.lines - 2) do |line|
         map.add(["#5fd787", "#000000"], line, 1..23) # 23 being the timestamp size
       end
 

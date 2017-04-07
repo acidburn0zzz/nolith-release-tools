@@ -3,8 +3,9 @@ require_relative '../../repository'
 module Gid
   module Git
     class Facade
-      def initialize(path)
+      def initialize(path, stable_branch)
         @path = path
+        @stable_branch = stable_branch
       end
 
       def pull
@@ -12,7 +13,8 @@ module Gid
           [%w(stash),
            %w(checkout master),
            %w(pull origin master),
-           %w(checkout -B stable-test)]) # TODO use version to get the stable branch
+           %w(checkout) + [@stable_branch],
+           %w(pull origin) + [@stable_branch]])
       end
 
       def cherry_pick(sha)

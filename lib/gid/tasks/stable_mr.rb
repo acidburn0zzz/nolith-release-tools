@@ -22,7 +22,11 @@ module Gid
       end
 
       def leave_note!
-        Gitlab.create_merge_request_note(@project_id, mr.id, mr_note)
+        if Config.dry_run
+          Output::Logger.write(mr_note)
+        else
+          Gitlab.create_merge_request_note(@project_id, @id, mr_note)
+        end
       end
 
       def mr_note

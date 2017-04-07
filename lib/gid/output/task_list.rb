@@ -15,7 +15,8 @@ module Gid
           begin
             {
               'Pick into stable CE' => Gid::Tasks::PickIntoStableCe.new(version: @version),
-              'Pick into stable EE' => Gid::Tasks::PickIntoStableEe.new(version: @version)
+              'Pick into stable EE' => Gid::Tasks::PickIntoStableEe.new(version: @version),
+              'Pick into stable Omnibus' => Gid::Tasks::PickIntoStableOmnibus.new(version: @version)
             }
           end
       end
@@ -27,6 +28,10 @@ module Gid
 
       def running?
         @running
+      end
+
+      def size
+        tasks.size
       end
 
       private

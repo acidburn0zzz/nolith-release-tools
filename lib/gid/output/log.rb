@@ -1,7 +1,7 @@
 module Gid
   module Output
     class Log < Base
-      TOP_MARGIN = 9
+      TOP_MARGIN = 10
 
       # TODO: Use initializer instead
 

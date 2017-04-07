@@ -3,7 +3,7 @@ require_relative 'task'
 module Gid
   module Tasks
     class PickIntoStableCe < Tasks::Task
-      MAX_PAGES = 3
+      MAX_PAGES = 5
 
       protected
 
@@ -25,9 +25,8 @@ module Gid
         merge_requests.each do |mr|
           next unless mr.milestone && mr.milestone.title == version
           next unless mr.labels.include?('Pick into Stable')
-          # TODO: Check previous milestones
 
-          @stable_mrs << StableMr.new(mr, version)
+          @stable_mrs << StableMr.new(mr, @options[:version])
         end
       end
 
@@ -40,7 +39,7 @@ module Gid
 
         Output::Logger.write('Cherry-picking Stable MRs...')
 
-        git_facade = Git::Facade.new(repo)
+        git_facade = Git::Facade.new(repo, stable_branch)
         git_facade.pull unless Config.dry_run
 
         # Start with the oldest - not accurate at all, since we don't know when it was actually merged.
@@ -49,12 +48,12 @@ module Gid
 
           git_facade.cherry_pick(mr.merge_commit_sha) unless Config.dry_run
 
-          mr.leave_note! unless Config.dry_run
+          mr.leave_note!
         end
       end
 
       def push!
-        Git::Facade.new(repo).push
+        #Git::Facade.new(repo).push
       end
 
       # rubocop:disable Style/AsciiComments
@@ -65,7 +64,8 @@ module Gid
       # TODO: Consider adding at least milestone_id to the optional params of the MRs API
       def merge_requests
         mr_chunks = []
-
+        # CE milestone: 31003
+        # EE milestone: 46191
         MAX_PAGES.times do |page|
           mr_chunks << Gitlab.merge_requests(project_id, query_options.merge(page: page + 1)).to_a
         end
@@ -90,8 +90,12 @@ module Gid
         {
           state: 'merged',
           order_by: 'updated_at',
-          per_page: 20
+          per_page: 25,
         }
+      end
+
+      def stable_branch
+        @options[:version].stable_branch
       end
     end
   end

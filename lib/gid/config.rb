@@ -11,8 +11,10 @@ Config.dry_run = ENV['GID_DRY_RUN'] || false
 
 Config.ce_repo = Config.root.join('../../gitlab-development-kit/gitlab')
 Config.ee_repo = Config.root.join('../../gitlab-development-kit-ee/gitlab')
+Config.omnibus_repo = Config.root.join('../../omnibus-gitlab')
 Config.ce_project_id = 13_083
 Config.ee_project_id = 278_964
+Config.omnibus_project_id = 20_699
 
 [%w[gid output ** *.rb],
  %w[gid tasks ** *.rb],
