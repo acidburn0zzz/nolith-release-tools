@@ -1,3 +1,4 @@
-.env
-coverage/
-spec/fixtures/repositories/
+/.env
+/.bundle
+/coverage/
+/spec/fixtures/repositories/
