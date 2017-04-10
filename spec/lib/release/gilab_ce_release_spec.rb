@@ -48,6 +48,7 @@ describe Release::GitlabCeRelease do
   def execute(version, branch)
     described_class.new(version).execute
     repository.checkout(branch)
+    ob_repository.checkout(branch)
   end
 
   describe '#execute' do

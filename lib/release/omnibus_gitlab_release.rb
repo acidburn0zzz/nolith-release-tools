@@ -58,8 +58,17 @@ module Release
     def before_execute_hook
       prepare_security_release if security_release?
 
-      bump_container_template_versions(stable_branch)
-      bump_container_template_versions('master')
+      super
+    end
+
+    def after_release
+      # Bump container template versiosn for stable ce releases
+      unless version.ee? || version.rc?
+        bump_container_template_versions(stable_branch)
+        bump_container_template_versions('master')
+        push_ref('branch', stable_branch)
+        push_ref('branch', 'master')
+      end
 
       super
     end
@@ -176,7 +185,8 @@ module Release
       content = File.read(file_path)
       content.gsub!(%r{gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+}, "gitlab/gitlab-ce:#{version.to_docker}")
       content.gsub!(/gitlab-\d+\.\d+\.\d+/, "gitlab-#{version.to_patch}")
-      File.write(file_path, content)
+      repository.write_file(file_path, content)
+      repository.commit(file_path, "Update #{file_path} to #{version.to_docker}")
     end
   end
 end
