@@ -1,5 +1,6 @@
 Also see [the GitLab Handbook on the Critical Release Process](https://about.gitlab.com/handbook/engineering/critical-release-process/)
-for the overall timeline of handling a security release.
+for the timeline of handling a critical security release.
+Only a subset of the security releases are critical.
 
 # Security Releases
 
