@@ -138,10 +138,6 @@ class Version < String
     str << '.0'
   end
 
-  def from_omnibus
-    self.class.new(to_s.gsub(/-ce$/, ''))
-  end
-
   def to_docker(ee: false)
     to_omnibus(ee: ee).tr('+', '-')
   end
@@ -152,11 +148,6 @@ class Version < String
 
   def to_rc(number = 1)
     "#{to_patch}-rc#{number}"
-  end
-
-  def to_i
-    raise ArgumentError unless valid?
-    Integer(to_patch.gsub(/\D/, ''))
   end
 
   def valid?

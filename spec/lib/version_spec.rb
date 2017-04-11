@@ -278,6 +278,30 @@ describe Version do
     end
   end
 
+  describe '#to_docker' do
+    it 'converts pre-releases' do
+      aggregate_failures do
+        expect(version('1.23.4-rc1').to_docker).to eq '1.23.4-rc1.ce.0'
+
+        expect(version('1.23.4-rc1').to_docker(ee: true)).to eq '1.23.4-rc1.ee.0'
+      end
+    end
+
+    it 'converts minor releases' do
+      aggregate_failures do
+        expect(version('1.23.0').to_docker).to eq '1.23.0-ce.0'
+        expect(version('1.23.0').to_docker(ee: true)).to eq '1.23.0-ee.0'
+      end
+    end
+
+    it 'converts patch releases' do
+      aggregate_failures do
+        expect(version('1.23.2').to_docker).to eq '1.23.2-ce.0'
+        expect(version('1.23.2').to_docker(ee: true)).to eq '1.23.2-ee.0'
+      end
+    end
+  end
+
   describe '#to_patch' do
     it 'returns the patch version' do
       expect(version('1.23.4-rc1').to_patch).to eq '1.23.4'
