@@ -54,13 +54,13 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the chef-repo project:
         bundle exec rake "deploy[staging, <%= version.to_rc %>.ee.0]"
         ```
-  - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] [Deploy] [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to production
         ```sh
         # In the chef-repo project:
         bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
         ```
-  - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [GitLab.com]
+  - [ ] [Deploy] [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to GitLab.com
   - [ ] Tweet about the `<%= version.to_rc %>` release:
 
         ```
@@ -145,13 +145,13 @@ cherry-picked into `<%= version.stable_branch %>`.
       # In the chef-repo project:
       bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
-- [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] [Deploy] [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to production
       ```sh
       # In the chef-repo project:
       bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
-- [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [GitLab.com]
+- [ ] [Deploy] [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
 - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
 
       ```
@@ -183,9 +183,9 @@ This way we ensure the release does not introduce new regressions.
 
 - Before 07:00 Pacific (mostly 16:00 CET):
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
-  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] [Deploy] [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
-  - [ ] Deploy [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [GitLab.com]
+  - [ ] [Deploy] [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to GitLab.com
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
   - [ ] Create the first patch issue using the [`patch_issue` task]:
 
@@ -221,5 +221,5 @@ This way we ensure the release does not introduce new regressions.
 [`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
 [MVP page]: https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/mvp/index.html
 [`Pick into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
-[staging.gitlab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
-[GitLab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[Deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[staging.gitlab.com]: https://staging.gitlab.com/
