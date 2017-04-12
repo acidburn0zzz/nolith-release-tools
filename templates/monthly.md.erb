@@ -17,9 +17,9 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       From now on, please follow the "Changes for stable release" process:
       https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
       ```
-- [ ] Create branch `<%= version.stable_branch %>` from `master`
-- [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master`
-- [ ] In omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master`
+- [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
+- [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
+- [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
 - [ ] Merge [GitLab CE into EE] on the stable branches
 - [ ] Sync CE, EE, and Omnibus to `dev`
 
@@ -27,17 +27,17 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 - [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
 - Follow the [Creating RC1] guide:
-  - [ ] Update the "Installation from Source" guide
-  - [ ] Create the "Update" guides
-  - [ ] Update the gitignore and license templates
-  - [ ] Update the dependencies license list
-  - [ ] Ensure above steps are merged to `master` and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
+  - [ ] Create MR on CE master updating the "Installation from Source" guide, creating the "Update" guides
+  - [ ] Create MR on EE master creating the "CE to EE" guides
+  - [ ] Create MR on CE master updating the gitignore and license templates
+  - [ ] Create MR on CE master updating the dependencies license list
+  - [ ] Ensure above MRs are merged and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
   - [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
     milestone (you can take advantage of the [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
     the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
     branches, respectively.
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..master -- db/migrate` =>
+  - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
   - [ ] Ensure [tests are green on CE]
   - [ ] Ensure [tests are green on EE]
