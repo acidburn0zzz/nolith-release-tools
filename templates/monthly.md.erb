@@ -39,8 +39,10 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure [tests are green on CE]
-  - [ ] Ensure [tests are green on EE]
+  - [ ] Ensure tests are green on [CE stable branch]
+  - [ ] Ensure tests are green on [EE stable branch]
+  - [ ] Ensure tests are green on [Omnibus CE stable branch]
+  - [ ] Ensure tests are green on [Omnibus EE stable branch]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
@@ -130,8 +132,10 @@ cherry-picked into `<%= version.stable_branch %>`.
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure [tests are green on CE]
-  - [ ] Ensure [tests are green on EE]
+  - [ ] Ensure tests are green on [CE stable branch]
+  - [ ] Ensure tests are green on [EE stable branch]
+  - [ ] Ensure tests are green on [Omnibus CE stable branch]
+  - [ ] Ensure tests are green on [Omnibus EE stable branch]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
   - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
@@ -170,8 +174,10 @@ This way we ensure the release does not introduce new regressions.
 
 - Before 06:00 Pacific (mostly 15:00 CET):
   - [ ] Sync CE, EE, and Omnibus to `dev`
-  - [ ] Ensure [tests are green on CE]
-  - [ ] Ensure [tests are green on EE]
+  - [ ] Ensure tests are green on [CE stable branch]
+  - [ ] Ensure tests are green on [EE stable branch]
+  - [ ] Ensure tests are green on [Omnibus CE stable branch]
+  - [ ] Ensure tests are green on [Omnibus EE stable branch]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
@@ -202,10 +208,12 @@ This way we ensure the release does not introduce new regressions.
 [blog post]: LINK_TO_WIP_BLOG_POST
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
-[tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE stable branch]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[EE stable branch]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
 [`new_release_post` task]: https://gitlab.com/gitlab-com/www-gitlab-com/#create-release-blog-post
 [`www-gitlab-com` project]: https://gitlab.com/gitlab-com/www-gitlab-com/
