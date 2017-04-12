@@ -3,7 +3,7 @@ require 'forwardable'
 
 require_relative '../changelog'
 require_relative '../release'
-require_relative '../repository'
+require_relative '../remote_repository'
 require_relative '../version'
 require_relative '../packagecloud_client'
 require_relative '../gitlab_dev_client'
@@ -42,7 +42,7 @@ module Release
     end
 
     def repository
-      @repository ||= Repository.get(remotes)
+      @repository ||= RemoteRepository.get(remotes)
     end
 
     def prepare_release

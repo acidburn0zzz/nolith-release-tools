@@ -30,7 +30,7 @@ describe Release::GitlabCeRelease do
     ob_fixture.rebuild_fixture!
 
     # Disable cleanup so that we can see what's the state of the temp Git repos
-    allow_any_instance_of(Repository).to receive(:cleanup).and_return(true)
+    allow_any_instance_of(RemoteRepository).to receive(:cleanup).and_return(true)
 
     # Override the actual remotes with our local fixture repositories
     allow_any_instance_of(described_class).to receive(:remotes)
