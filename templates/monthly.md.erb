@@ -45,19 +45,20 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
+        # In the release-tools project:
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
   - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
   - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to staging
         ```sh
         # In the chef-repo project:
-        bundle exec rake "deploy:staging[<%= version.to_rc %>.ee.0, gitlab/unstable]"
+        bundle exec rake "deploy[staging, <%= version.to_rc %>.ee.0]"
         ```
   - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
   - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc %>` to production
         ```sh
         # In the chef-repo project:
-        bundle exec rake "deploy:production[<%= version.to_rc %>.ee.0, gitlab/unstable]"
+        bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
         ```
   - [ ] Deploy [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [GitLab.com]
   - [ ] Tweet about the `<%= version.to_rc %>` release:
@@ -70,11 +71,13 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Create the [regression issue] in the CE issue tracker using the [`regression_issue` task] and bookmark it:
 
       ```sh
+      # In the release-tools project:
       bundle exec rake "regression_issue[<%= version.to_patch %>]"
       ```
 - [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
 
       ```sh
+      # In the www-gitlab-com project:
       bundle exec rake "new_release_post[<%= version.to_minor %>]"
       ```
 
@@ -133,19 +136,20 @@ cherry-picked into `<%= version.stable_branch %>`.
   - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
         ```sh
+        # In the release-tools project:
         bundle exec rake "release[<%= version.to_rc(2) %>]"
         ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
 - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
       ```sh
       # In the chef-repo project:
-      bundle exec rake "deploy:staging[<%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
+      bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
 - [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
 - [ ] In `#infrastructure`: I'm going to deploy `<%= version.to_rc(2) %>` to production
       ```sh
       # In the chef-repo project:
-      bundle exec rake "deploy:production[<%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
+      bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
 - [ ] Deploy [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [GitLab.com]
 - [ ] Tweet about the `<%= version.to_rc(2) %>` release:
@@ -172,6 +176,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
         ```sh
+        # In the release-tools project:
         bundle exec rake "release[<%= version.to_patch %>]"
         ```
   - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
@@ -185,6 +190,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Create the first patch issue using the [`patch_issue` task]:
 
       ```sh
+      # In the release-tools project:
       bundle exec rake "patch_issue[<%= version.next_patch %>]"
       ```
 
