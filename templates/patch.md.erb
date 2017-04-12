@@ -14,13 +14,13 @@
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
-- [ ] In `#infrastructure`:
+- [ ] In `#production`:
 
       ```
       I'm going to deploy `<%= version.to_patch %>` to staging
       ```
 - [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
-- [ ] In `#infrastructure`:
+- [ ] In `#production`:
 
       ```
       I'm going to deploy `<%= version.to_patch %>` to production
