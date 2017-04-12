@@ -1,6 +1,6 @@
 require 'open3'
 
-class LocalRepo
+class LocalRepository
   def self.ready?
     new.ready?
   end

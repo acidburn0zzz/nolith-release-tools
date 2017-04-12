@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'repository'
+require 'remote_repository'
 
-describe Repository do
+describe RemoteRepository do
   let(:fixture) { ReleaseFixture.new }
   let(:repo_path) { File.join('/tmp', fixture.class.repository_name) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
@@ -199,7 +199,7 @@ describe Repository do
         allow(repository).to receive(:conflicts?).and_return(true)
 
         expect { repository.pull_from_all_remotes('1-9-stable') }
-          .to raise_error(Repository::CannotPullError)
+          .to raise_error(described_class::CannotPullError)
       end
     end
 

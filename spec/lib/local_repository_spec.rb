@@ -1,14 +1,14 @@
 require 'spec_helper'
-require 'local_repo'
+require 'local_repository'
 
-describe LocalRepo do
-  let(:fixture) { LocalRepoFixture.new }
+describe LocalRepository do
+  let(:fixture) { LocalRepositoryFixture.new }
   let(:repo_path) { File.join('/tmp', fixture.class.repository_name) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
   let(:repo_remotes) do
     { origin: repo_url, github: 'https://example.com/foo/bar/baz.git' }
   end
-  let(:repo) { Repository.get(repo_remotes) }
+  let(:repo) { RemoteRepository.get(repo_remotes) }
 
   before do
     fixture.rebuild_fixture!

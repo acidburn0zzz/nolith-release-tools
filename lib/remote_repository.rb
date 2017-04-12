@@ -1,7 +1,7 @@
 require 'colorize'
 require 'fileutils'
 
-class Repository
+class RemoteRepository
   class CannotCloneError < StandardError; end
   class CannotCheckoutBranchError < StandardError; end
   class CannotCreateTagError < StandardError; end
