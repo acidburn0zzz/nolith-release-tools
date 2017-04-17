@@ -7,7 +7,7 @@ class PatchIssue < BaseIssue
 
   def initialize(version)
     @version = version
-    @omnibus_version = OmnibusGitLabVersion.new(version)
+    @omnibus_version = OmnibusGitLabVersion.new(version.to_omnibus(ee: version.ee?))
   end
 
   def title

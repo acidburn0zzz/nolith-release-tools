@@ -67,7 +67,7 @@ class Version < String
   end
 
   def version?
-    self =~ VERSION_REGEX
+    self =~ self.class::VERSION_REGEX
   end
 
   def release?
@@ -147,7 +147,7 @@ class Version < String
   end
 
   def valid?
-    self =~ VERSION_REGEX
+    self =~ self.class::VERSION_REGEX
   end
 
   private
@@ -159,10 +159,9 @@ class Version < String
   end
 
   def extract_from_version(part, fallback: 0)
-    match_data = VERSION_REGEX.match(self)
-
-    if match_data && match_data.names.include?(part.to_s)
-      match_data[part]
+    match_data = self.class::VERSION_REGEX.match(self)
+    if match_data && match_data.names.include?(part.to_s) && match_data[part]
+      String.new(match_data[part])
     else
       fallback
     end
