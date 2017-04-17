@@ -8,7 +8,7 @@ class OmnibusGitLabVersion < Version
     (\+)?
     (?<rc>rc(?<rc_number>\d*))?
     (\.)?
-    (?<ed>ce|ee)?
+    (?<edition>ce|ee)?
     (\.\d+)?\z
   }x
 
@@ -17,7 +17,7 @@ class OmnibusGitLabVersion < Version
   end
 
   def edition
-    @edition ||= extract_from_version(:ed, fallback: 'ce')
+    @edition ||= extract_from_version(:edition, fallback: 'ce')
   end
 
   def tag
