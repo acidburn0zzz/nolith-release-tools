@@ -6,7 +6,7 @@ require 'version'
 describe SecurityPatchIssue do
   describe '#confidential?' do
     it 'is always confidential' do
-      issue = described_class.new('')
+      issue = described_class.new(Version.new(''))
 
       expect(issue).to be_confidential
     end
@@ -14,7 +14,7 @@ describe SecurityPatchIssue do
 
   describe '#labels' do
     it 'includes the "security" label' do
-      issue = described_class.new('')
+      issue = described_class.new(Version.new(''))
 
       expect(issue.labels).to eq 'Release,security'
     end

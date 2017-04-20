@@ -50,7 +50,7 @@ describe PatchIssue do
 
   describe '#labels' do
     it 'returns a list of labels' do
-      issue = described_class.new('')
+      issue = described_class.new(Version.new(''))
 
       expect(issue.labels).to eq 'Release'
     end
