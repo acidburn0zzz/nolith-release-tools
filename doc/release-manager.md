@@ -62,6 +62,15 @@ involves checking the reported issues and any available fixes for those issues,
 and ensuring they are included either in the next release candidate or the final
 release.
 
+### Training
+
+Release managers have the responsibility to deliver appropriate training to
+the release manager trainees appointed to the same release.  
+
+They'll need to make sure that trainees already have an [onboarding checklist](#master-checklist-for-onboarding-of-new-release-managers)
+early on the release process, as well as giving them the opportunity to tackle
+most of the release tasks during the release, at least once.
+
 ### Release
 
 After performing all of his or her pre-release tasks, and releasing the final
