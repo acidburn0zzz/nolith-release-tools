@@ -134,7 +134,7 @@ module RuggedMatchers
   #
   # Examples:
   #
-  #   expect(repository).to have_have_container_template('docer/openshift-template.json').match('gitlab/gitlab-ce:1.2.3-ce.0')
+  #   expect(repository).to_have_container_template('docer/openshift-template.json').match('gitlab/gitlab-ce:1.2.3-ce.0')
   #   expect(repository).not_to have_container_template('docer/openshift-template.json')
   matcher :have_container_template do |file_path|
     match do |repository|
@@ -144,16 +144,6 @@ module RuggedMatchers
         !read_head_blob(repository, @actual)[@match_data].nil?
       rescue NoMethodError
         false
-      end
-    end
-
-    match_when_negated do |repository|
-      @actual = file_path
-
-      begin
-        read_head_blob(repository, @actual)[@match_data].nil?
-      rescue NoMethodError
-        true
       end
     end
 

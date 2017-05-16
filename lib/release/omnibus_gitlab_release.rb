@@ -172,12 +172,12 @@ module Release
         raise VersionStringNotFoundError.new("#{openshift_version} in #{file_path}")
       end
 
-      # Only bump the version if newer that what is already in the template
+      # Only bump the version if newer than what is already in the template
       return unless version > openshift_version
 
       content = File.read(file_path)
-      content.gsub!(%r{gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+}, "gitlab/gitlab-ce:#{version.to_docker}")
-      content.gsub!(/gitlab-\d+\.\d+\.\d+/, "gitlab-#{version.to_patch}")
+      content.sub!(%r{(?<!'")gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+(?!'")}, "gitlab/gitlab-ce:#{version.to_docker}")
+      content.gsub!(/(?<!'")gitlab-\d+\.\d+\.\d+(?!'")/, "gitlab-#{version.to_patch}")
       repository.write_file(file_path, content)
       repository.commit(file_path, "Update #{file_path} to #{version.to_docker}")
     end
