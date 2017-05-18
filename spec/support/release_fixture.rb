@@ -148,6 +148,12 @@ class OmnibusReleaseFixture
       'VERSION'                  => "1.9.24\n"
     )
 
+    commit_blob(
+      path: 'docker/openshift-template.json',
+      content: '"name": "gitlab-1.9.24","name": "gitlab/gitlab-ce:1.9.24-ce.0","name": "${APPLICATION_NAME}:gitlab-1.9.24"',
+      message: 'Add openshift-template.json'
+    )
+
     repository.branches.create('1-9-stable',    'HEAD')
     repository.branches.create('1-9-stable-ee', 'HEAD')
 

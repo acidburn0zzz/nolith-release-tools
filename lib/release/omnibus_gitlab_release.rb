@@ -5,6 +5,8 @@ require 'time'
 module Release
   class OmnibusGitLabRelease < BaseRelease
     class VersionFileDoesNotExistError < StandardError; end
+    class TemplateFileDoesNotExistError < StandardError; end
+    class VersionStringNotFoundError < StandardError; end
     class SecurityReleaseInProgressError < StandardError; end
 
     # Number of minutes we will be able to reuse the same security repository.
@@ -55,6 +57,15 @@ module Release
 
     def before_execute_hook
       prepare_security_release if security_release?
+
+      super
+    end
+
+    def after_release
+      bump_container_versions(stable_branch)
+      bump_container_versions('master')
+      push_ref('branch', stable_branch)
+      push_ref('branch', 'master')
 
       super
     end
@@ -136,6 +147,39 @@ module Release
       end
 
       File.read(gitlab_file_path).strip
+    end
+
+    def bump_container_versions(branch)
+      repository.ensure_branch_exists(branch)
+      bump_version_in_openshift_template
+    end
+
+    def version_from_container_template(file_path)
+      unless File.exist?(file_path)
+        raise TemplateFileDoesNotExistError.new(file_path)
+      end
+
+      file_version = File.open(file_path) { |f| f.read.match(%r{gitlab/gitlab-ce:(\d+\.\d+\.\d+-ce\.\d+)})[1] }
+      version_class.new(file_version.tr('-', '+'))
+    end
+
+    def bump_version_in_openshift_template
+      return if version.ee? || version.rc?
+
+      file_path = File.join(repository.path, 'docker/openshift-template.json')
+      openshift_version = version_from_container_template(file_path)
+      unless openshift_version.valid?
+        raise VersionStringNotFoundError.new("#{openshift_version} in #{file_path}")
+      end
+
+      # Only bump the version if newer than what is already in the template
+      return unless version > openshift_version
+
+      content = File.read(file_path)
+      content.sub!(%r{(?<!'")gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+(?!'")}, "gitlab/gitlab-ce:#{version.to_docker}")
+      content.gsub!(/(?<!'")gitlab-\d+\.\d+\.\d+(?!'")/, "gitlab-#{version.to_patch}")
+      repository.write_file(file_path, content)
+      repository.commit(file_path, "Update #{file_path} to #{version.to_docker}")
     end
   end
 end

@@ -48,14 +48,16 @@ describe Release::GitlabCeRelease do
   def execute(version, branch)
     described_class.new(version).execute
     repository.checkout(branch)
+    ob_repository.checkout(branch)
   end
 
   describe '#execute' do
     { ce: '', ee: '-ee' }.each do |edition, suffix|
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
-        let(:version)    { "9.1.24#{suffix}" }
-        let(:ob_version) { "9.1.24+#{edition}.0" }
-        let(:branch)     { "9-1-stable#{suffix}" }
+        let(:version)        { "9.1.24#{suffix}" }
+        let(:ob_version)     { "9.1.24+#{edition}.0" }
+        let(:docker_version) { "gitlab/gitlab-ce:#{ob_version.tr('+', '-')}" }
+        let(:branch)         { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
@@ -80,15 +82,24 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version('workhorse').at('3.3.3')
               expect(ob_repository).to have_version('pages').at('4.4.4')
               expect(ob_repository).to have_version('gitaly').at('5.5.5')
+
+              if edition == :ce
+                expect(ob_repository).to have_container_template('docker/openshift-template.json')
+                  .match(docker_version)
+              else
+                expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
+                  .match(docker_version)
+              end
             end
           end
         end
       end
 
       context "with a new 10-1-stable#{suffix} stable branch, releasing an RC" do
-        let(:version)    { "10.1.0-rc13#{suffix}" }
-        let(:ob_version) { "10.1.0+rc13.#{edition}.0" }
-        let(:branch)     { "10-1-stable#{suffix}" }
+        let(:version)        { "10.1.0-rc13#{suffix}" }
+        let(:ob_version)     { "10.1.0+rc13.#{edition}.0" }
+        let(:docker_version) { "gitlab/gitlab-ce:#{ob_version.tr('+', '-')}" }
+        let(:branch)         { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           it 'does not perform changelog compilation' do
@@ -113,15 +124,18 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
               expect(ob_repository).to have_version('pages').at('4.5.0')
               expect(ob_repository).to have_version('gitaly').at('5.6.0')
+              expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
+                .match(docker_version)
             end
           end
         end
       end
 
       context "with a new 10-1-stable#{suffix} stable branch, releasing a stable .0" do
-        let(:version)    { "10.1.0#{suffix}" }
-        let(:ob_version) { "10.1.0+#{edition}.0" }
-        let(:branch)     { "10-1-stable#{suffix}" }
+        let(:version)        { "10.1.0#{suffix}" }
+        let(:ob_version)     { "10.1.0+#{edition}.0" }
+        let(:docker_version) { "gitlab/gitlab-ce:#{ob_version.tr('+', '-')}" }
+        let(:branch)         { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
@@ -156,6 +170,14 @@ describe Release::GitlabCeRelease do
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
               expect(ob_repository).to have_version('pages').at('4.5.0')
               expect(ob_repository).to have_version('gitaly').at('5.6.0')
+
+              if edition == :ce
+                expect(ob_repository).to have_container_template('docker/openshift-template.json')
+                  .match(docker_version)
+              else
+                expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
+                  .match(docker_version)
+              end
             end
           end
         end
@@ -163,9 +185,10 @@ describe Release::GitlabCeRelease do
     end
 
     context "with a version < 8.5.0" do
-      let(:version)    { "1.9.24-ee" }
-      let(:ob_version) { "1.9.24+ee.0" }
-      let(:branch)     { "1-9-stable-ee" }
+      let(:version)        { "1.9.24-ee" }
+      let(:ob_version)     { "1.9.24+ee.0" }
+      let(:docker_version) { "gitlab/gitlab-ce:#{ob_version.tr('+', '-')}" }
+      let(:branch)         { "1-9-stable-ee" }
 
       describe "release GitLab-EE" do
         before do
@@ -186,6 +209,8 @@ describe Release::GitlabCeRelease do
             expect(ob_repository).to have_version('workhorse').at('3.3.3')
             expect(ob_repository).not_to have_version('pages')
             expect(ob_repository).to have_version('gitaly').at('5.5.5')
+            expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
+              .match(docker_version)
           end
         end
       end

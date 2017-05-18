@@ -138,6 +138,10 @@ class Version < String
     str << '.0'
   end
 
+  def to_docker(ee: false)
+    to_omnibus(ee: ee).tr('+', '-')
+  end
+
   def to_patch
     "#{major}.#{minor}.#{patch}"
   end
