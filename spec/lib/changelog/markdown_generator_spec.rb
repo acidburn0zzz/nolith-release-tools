@@ -82,6 +82,19 @@ describe Changelog::MarkdownGenerator do
       expect(markdown).to match("- Change C\n- Change A\n- Change B\n")
     end
 
+    it 'handles a non-numeric ID comparison' do
+      entries = [
+        double(id: 5,     to_s: "Change A", valid?: true),
+        double(id: 'foo', to_s: "Change B", valid?: true),
+        double(id: 1,     to_s: "Change C", valid?: true)
+      ]
+      generator = described_class.new(spy, entries)
+
+      markdown = generator.to_s
+
+      expect(markdown).to match("- Change B\n- Change C\n- Change A\n")
+    end
+
     it 'adds a "No changes" entry when there are no entries' do
       version = Version.new('1.2.3')
       generator = described_class.new(version, [])
