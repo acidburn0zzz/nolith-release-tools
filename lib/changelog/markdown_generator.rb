@@ -52,7 +52,7 @@ module Changelog
     # Entries without an ID are placed last
     def sorted_entries
       entries.sort do |a, b|
-        (a.id || 999_999) <=> (b.id || 999_999)
+        (a.id || 999_999).to_i <=> (b.id || 999_999).to_i
       end
     end
   end
