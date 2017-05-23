@@ -21,7 +21,7 @@ On-Boarding
 - [ ] Join #releases on Slack, and introduce yourself
 - [ ] Master access on gitlab-ce  (dev and com)
 - [ ] Master access on gitlab-ee (dev and com)
-- [ ] Master access on gitlab-omnibus (dev) (already have on com)
+- [ ] Master access on gitlab-omnibus (dev and com)
 - [ ] Developer access on chef-repo cookbook
 - [ ] Get added to the [Release Managers team](https://github.com/orgs/gitlabhq/teams/release-managers) on GitHub.
 - [ ] Make sure you have your [user added to Marvin](https://gitlab.com/gitlab-com/runbooks/blob/master/howto/manage-cog.md#add-a-user) on `#production` so you can tweet and broadcast messages
