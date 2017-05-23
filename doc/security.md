@@ -29,21 +29,6 @@ efficient and less likely to lead to confusion or unintended "leaking" of the
 vulnerability. By designating the RM from the _previous_ release, the RM for the
 _current_ release is not hindered in their work to get out the next release.
 
-## Backporting
-
-For medium-level security issues, we may consider backporting to the previous
-two monthly releases (e.g. 8.8 and 8.9 if 8.10 is released), but this will
-be decided on a case-by-case basis in consultation with the rest of the GitLab
-development team.
-
-For very serious security issues, there is
-[precedent](https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/)
-to backport security fixes to even more monthly releases of GitLab. This again
-will be decided on a case-by-case basis.
-
-If a security fix warrants backporting to previous releases, doing a single blog
-post that mentions all of the patches at once is acceptable.
-
 ## What to include
 
 A security release, even one for the latest monthly release, should _only_
@@ -71,11 +56,15 @@ with the `dev` remote**:
 
 - Merge requests that fix CE security issues should be submitted on
   https://dev.gitlab.org/gitlab/gitlabhq against the
-  [`security` branch](https://dev.gitlab.org/gitlab/gitlabhq/tree/security)
+  [`security-X-Y` branch](https://dev.gitlab.org/gitlab/gitlabhq/branches)
 
 - Merge requests that fix EE security issues should be submitted on
   https://dev.gitlab.org/gitlab/gitlab-ee against the
-  [`security` branch](https://dev.gitlab.org/gitlab/gitlab-ee/tree/security)
+  [`security-X-Y` branch](https://dev.gitlab.org/gitlab/gitlab-ee/branches)
+
+If the latest GitLab release is 9.2, first create a merge request against the
+`security-9-2` branch. If that branch does not yet exist, create it by branching
+off of the latest stable release. In this case that would be `9-2-stable`.
 
 ### 1. Create an issue to track the security patch release
 
@@ -96,15 +85,30 @@ tracker] and update it as we progress.
 Use the security patch issue created above to keep track of the process and
 mark off tasks as you complete them.
 
-### About the security branch
+### About the security branches
 
-The `security` branch is "parallel" to `master` and ensure no one inadvertedly
-exposes security fixes on GitLab.com, since the `security` -> `master` merge is
-a manual and conscious operation.
+The `security` branches are "parallel" to the latest stable branches for each
+release and ensure no one inadvertedly exposes security fixes on GitLab.com,
+since the `security-X-Y` -> `X-Y-stable` merge is a manual and conscious operation.
 
-`master` can and should be merged frequently to `security`, but `security` can
+`X-Y-stable` can and should be merged frequently to `security-X-Y`, but `security-X-Y` can
 only be merged once all the security fixes it contains are released as part of
 official releases (and possibly backports).
+
+### Backporting
+
+Backports should be provided for at least the previous two monthly releases. Using
+the example above that means that `9-1-security` and `9-0-security` should also
+have merge requests. Each security release consists of at least three merge
+requests.
+
+For very serious security issues, there is
+[precedent](https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/)
+to backport security fixes to even more monthly releases of GitLab. This will be
+decided on a case-by-case basis.
+
+If a security fix warrants backporting to previous releases, doing a single blog
+post that mentions all of the patches at once is acceptable.
 
 ### Merging CE stable into EE stable
 
@@ -133,11 +137,11 @@ issue or by any other secure and private means.
 ### After the release
 
 After the packages are built and announced on our blog, you **should not** merge
-the `security` branches to their `master` counterparts but only cherry-pick the
+the `security-X-Y` branches to their `stable` counterparts but only cherry-pick the
 security merge commits that are already part of a tagged (and announced) release
-to `master` and sync `master` to all the remotes.
+to `X-Y-stable` and sync `X-Y-stable` to all the remotes.
 
-This is because new security fixes can be merged to `security` between the time
+This is because new security fixes can be merged to `security-X-Y` between the time
 you prepare a security release and the time you're done with it.
 
 ---
