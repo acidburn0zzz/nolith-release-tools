@@ -182,7 +182,7 @@ class RemoteRepository
 
   def self.run_git(args)
     final_args = ['git', *args]
-    $stdout.puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
+    $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
 
     cmd_output = `#{final_args.join(' ')} 2>&1`
 

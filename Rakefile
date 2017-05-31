@@ -115,3 +115,31 @@ task :security_patch_issue, [:version] do |_t, args|
 
   create_or_show_issue(issue)
 end
+
+desc "Create a CE upstream merge request on EE"
+task :upstream_merge do
+  open_merge_requests = UpstreamMergeRequest.open_mrs
+
+  if open_merge_requests.any?
+    $stdout.puts "--> An upstream merge request already exists.".red
+    $stdout.puts "    #{open_merge_requests.first.url}"
+    exit 1
+  end
+
+  merge_request = UpstreamMergeRequest.new
+  merge = UpstreamMerge.new(
+    origin: Project::GitlabEe.remotes[:gitlab],
+    upstream: Project::GitlabCe.remotes[:gitlab],
+    merge_branch: merge_request.source_branch)
+
+  conflicts_data = merge.execute
+  merge_request.description(conflicts_data, mention_people: mention?)
+
+  $stdout.puts "\nFollowing is the decription of the MR that will be created:\n"
+  $stdout.puts "```\n#{merge_request.description}\n```"
+
+  mr_created = !dry_run? && merge_request.create
+
+  $stdout.puts "--> Merge request \"#{merge_request.title}\" #{'not ' unless mr_created}created.".green
+  $stdout.puts "    #{merge_request.url}"
+end

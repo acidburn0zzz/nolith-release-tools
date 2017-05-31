@@ -4,28 +4,14 @@ require 'rugged'
 require 'changelog/config'
 require 'version'
 
+require_relative 'repository_fixture'
+
 # Builds a fixture repository used in testing Changelog auto-generation
 # functionality
 class ChangelogFixture
-  attr_reader :fixture_path, :repository
+  include RepositoryFixture
 
-  def initialize(fixture_path = nil)
-    @fixture_path = fixture_path || default_fixture_path
-  end
-
-  def rebuild_fixture!
-    wipe_fixture!
-    build_fixture
-  end
-
-  def wipe_fixture!
-    FileUtils.rm_r(fixture_path) if Dir.exist?(fixture_path)
-    FileUtils.mkdir_p(fixture_path)
-  end
-
-  def build_fixture
-    @repository = Rugged::Repository.init_at(fixture_path)
-
+  def build_fixture(options = {})
     build_master
 
     branches = {}
@@ -158,7 +144,7 @@ class ChangelogFixture
     )
 
     # Merge branch into master
-    merge_commit = merge(branch.name, 'master', message: <<-MSG.strip_heredoc)
+    merge_commit = merge(branch.name, 'master', message: <<~MSG)
       Merge branch '#{branch.name}' into 'master'
 
       #{entry['title']}

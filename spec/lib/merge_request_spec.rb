@@ -27,14 +27,4 @@ describe MergeRequest do
       expect(described_class.new(target_branch: 'foo').target_branch).to eq('foo')
     end
   end
-
-  describe '#remove_source_branch' do
-    it 'defaults to false' do
-      expect(described_class.new.remove_source_branch).to be(false)
-    end
-
-    it 'can be set to true' do
-      expect(described_class.new(remove_source_branch: true).remove_source_branch).to be(true)
-    end
-  end
 end
