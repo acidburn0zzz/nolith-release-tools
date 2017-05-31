@@ -121,6 +121,8 @@ class ReleaseFixture
       'GITLAB_WORKHORSE_VERSION' => "3.4.0\n",
       'VERSION'                  => "1.2.0\n"
     )
+
+    repository.checkout('master')
   end
 end
 

@@ -9,7 +9,7 @@ class RemoteRepository
 
   CanonicalRemote = Struct.new(:name, :url)
 
-  def self.get(remotes, repository_name = nil)
+  def self.get(remotes, repository_name = nil, global_depth: 1)
     repository_name ||= remotes
       .values
       .first
@@ -17,14 +17,15 @@ class RemoteRepository
       .last
       .sub(/\.git\Z/, '')
 
-    new(File.join('/tmp', repository_name), remotes)
+    new(File.join('/tmp', repository_name), remotes, global_depth: global_depth)
   end
 
-  attr_reader :path, :remotes, :canonical_remote
+  attr_reader :path, :remotes, :canonical_remote, :global_depth
 
-  def initialize(path, remotes)
-    $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
+  def initialize(path, remotes, global_depth: 1)
+    stdout_puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
     @path = path
+    @global_depth = global_depth
 
     cleanup
 
@@ -32,10 +33,26 @@ class RemoteRepository
     self.remotes = remotes
   end
 
-  def ensure_branch_exists(branch, remote = canonical_remote.name)
-    fetch_branch(branch, remote)
+  def ensure_branch_exists(branch)
+    fetch(branch)
 
-    checkout_branch(branch) || checkout_new_branch(branch, remote)
+    checkout_branch(branch) || checkout_new_branch(branch)
+  end
+
+  def fetch(ref, remote: canonical_remote.name, depth: global_depth)
+    base_cmd = %w[fetch --quiet]
+    base_cmd << "--depth=#{depth}" if depth
+    base_cmd << remote.to_s
+
+    run_git([*base_cmd, ref]) unless run_git([*base_cmd, "#{ref}:#{ref}"])
+  end
+
+  def checkout_new_branch(branch, base_branch: 'master')
+    fetch(base_branch)
+
+    unless run_git %W[checkout --quiet -b #{branch} #{base_branch}]
+      raise CannotCheckoutBranchError.new(branch)
+    end
   end
 
   def create_tag(tag)
@@ -51,14 +68,80 @@ class RemoteRepository
     in_path { File.write(file, content) }
   end
 
-  def commit(file, message)
-    run_git %W[add #{file}]
-    run_git %W[commit --quiet -m #{message}]
+  def commit(files, no_edit: false, amend: false, message: nil, author: nil)
+    run_git ['add', *Array(files)] if files
+
+    cmd = %w[commit --quiet]
+    cmd << '--no-edit' if no_edit
+    cmd << '--amend' if amend
+    cmd << "--author=#{author}" if author
+    cmd += ['--message', message] if message
+
+    run_git cmd
   end
 
-  def pull_from_all_remotes(ref)
+  def merge(upstream, into, no_ff: false)
+    cmd = %w[merge --quiet --no-edit]
+    cmd << '--no-ff' if no_ff
+    cmd += [upstream, into]
+
+    run_git cmd
+  end
+
+  def status(short: false)
+    cmd = %w[status]
+    cmd << '--short' if short
+
+    run_git(cmd, output: true)
+  end
+
+  def log(latest: false, no_merges: false, author_name: false, message: false, files: nil)
+    cmd = %w[log --date-order]
+    cmd << '-1' if latest
+    cmd << '--no-merges' if no_merges
+    cmd << "--pretty=format:'%an'" if author_name
+    cmd << "--pretty=format:'%B'" if message
+    cmd << '--' << files if files
+
+    output = run_git(cmd, output: true)
+    output.squeeze!("\n") if message
+
+    output
+  end
+
+  def head
+    run_git(%w[rev-parse --verify HEAD], output: true).chomp
+  end
+
+  def pull(ref, remote: canonical_remote.name, depth: global_depth)
+    cmd = %w[pull --quiet]
+    cmd << "--depth=#{depth}" if depth
+    cmd << remote.to_s
+    cmd << ref
+
+    run_git(cmd)
+
+    if conflicts?
+      raise CannotPullError.new("Conflicts were found when pulling #{ref} from #{remote}")
+    end
+  end
+
+  def pull_from_all_remotes(ref, depth: global_depth)
     remotes.each do |remote_name, _|
-      pull(remote_name, ref)
+      pull(ref, remote: remote_name, depth: depth)
+    end
+  end
+
+  def push(remote, ref)
+    cmd = %W[push #{remote} #{ref}:#{ref}]
+    if ENV['TEST']
+      stdout_puts
+      stdout_puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
+      stdout_puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
+
+      true
+    else
+      run_git cmd
     end
   end
 
@@ -69,14 +152,23 @@ class RemoteRepository
   end
 
   def cleanup
-    $stdout.puts "Removing #{path}...".colorize(:green) if Dir.exist?(path)
+    stdout_puts "Removing #{path}...".colorize(:green) if Dir.exist?(path)
     FileUtils.rm_rf(path, secure: true)
   end
 
-  def self.run_git(args)
-    args.unshift('git')
-    $stdout.puts "[#{Time.now}] --> #{args.join(' ')}".colorize(:cyan)
-    system(*args)
+  def self.run_git(args, output: false)
+    final_args = ['git', *args]
+    stdout_puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
+
+    if output
+      `#{final_args.join(' ')}`
+    else
+      system(*final_args)
+    end
+  end
+
+  def self.stdout_puts(*args)
+    $stdout.puts(*args)
   end
 
   private
@@ -97,40 +189,8 @@ class RemoteRepository
     run_git %W[remote add #{name} #{url}]
   end
 
-  def fetch_branch(branch, remote = canonical_remote.name)
-    unless run_git %W[fetch --depth=100 --quiet #{remote} #{branch}:#{branch}]
-      run_git %W[fetch --depth=100 --quiet #{remote} #{branch}]
-    end
-  end
-
   def checkout_branch(branch)
     run_git %W[checkout --quiet #{branch}]
-  end
-
-  def checkout_new_branch(branch, remote, base_branch: 'master')
-    fetch_branch(base_branch, remote)
-    unless run_git %W[checkout --quiet -b #{branch} #{remote}/#{base_branch}]
-      raise CannotCheckoutBranchError.new(branch)
-    end
-  end
-
-  def pull(remote, branch)
-    run_git %W[pull --quiet --depth=100 #{remote} #{branch}]
-
-    if conflicts?
-      raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
-    end
-  end
-
-  def push(remote, ref)
-    cmd = %W[push #{remote} #{ref}:#{ref}]
-    if ENV['TEST']
-      $stdout.puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
-      $stdout.puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
-      true
-    else
-      run_git cmd
-    end
   end
 
   def in_path
@@ -146,18 +206,26 @@ class RemoteRepository
     end
   end
 
-  def run_git(args)
+  def run_git(args, output: false)
     ensure_repo_exist
     in_path do
-      self.class.run_git(args)
+      self.class.run_git(args, output: output)
     end
   end
 
   def ensure_repo_exist
     return if File.exist?(path) && File.directory?(File.join(path, '.git'))
 
-    unless self.class.run_git(%W[clone --depth=100 --quiet --origin #{canonical_remote.name} #{canonical_remote.url} #{path}])
+    cmd = %w[clone --quiet]
+    cmd << "--depth=#{global_depth}" if global_depth
+    cmd << '--origin' << canonical_remote.name.to_s << canonical_remote.url << path
+
+    unless self.class.run_git(cmd)
       raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}")
     end
+  end
+
+  def stdout_puts(*args)
+    self.class.stdout_puts(*args)
   end
 end

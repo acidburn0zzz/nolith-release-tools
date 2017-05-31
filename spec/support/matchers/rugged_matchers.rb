@@ -96,6 +96,7 @@ module RuggedMatchers
     end
 
     match do |repository|
+      @repository = repository
       @actual = normalize_path(file_path)
 
       begin
@@ -106,6 +107,7 @@ module RuggedMatchers
     end
 
     match_when_negated do |repository|
+      @repository = repository
       @actual = normalize_path(file_path)
 
       begin
@@ -122,11 +124,23 @@ module RuggedMatchers
     end
 
     failure_message do
-      "expected #{File.join(repository.workdir, @actual)} to be #{@version}"
+      if @version
+        actual_version = read_head_blob(@repository, @actual)
+
+        "expected #{File.join(@repository.workdir, @actual)} to be #{@version} but was #{actual_version}"
+      else
+        "expected #{File.join(@repository.workdir, @actual)} to exist but does not"
+      end
     end
 
     failure_message_when_negated do
-      "expected #{repository.workdir} not to contain #{@actual}"
+      if @version
+        actual_version = read_head_blob(@repository, @actual)
+
+        "expected #{File.join(@repository.workdir, @actual)} not to be #{actual_version}"
+      else
+        "expected #{@repository.workdir} not to contain #{@actual}"
+      end
     end
   end
 

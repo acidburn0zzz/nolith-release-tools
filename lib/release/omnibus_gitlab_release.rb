@@ -182,7 +182,7 @@ module Release
       content.sub!(%r{(?<!'")gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+(?!'")}, "gitlab/gitlab-ce:#{version.to_docker}")
       content.gsub!(/(?<!'")gitlab-\d+\.\d+\.\d+(?!'")/, "gitlab-#{version.to_patch}")
       repository.write_file(file_path, content)
-      repository.commit(file_path, "Update #{file_path} to #{version.to_docker}")
+      repository.commit(file_path, message: "Update #{file_path} to #{version.to_docker}")
     end
   end
 end

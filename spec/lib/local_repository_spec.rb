@@ -42,7 +42,7 @@ describe LocalRepository do
 
       in_repo_path do
         repo.write_file('test', 'test')
-        repo.commit('test', 'test commit')
+        repo.commit('test', message: 'test commit')
       end
     end
 
