@@ -20,8 +20,8 @@ describe PatchIssue do
       content = issue.description
 
       aggregate_failures do
-        expect(content).to include '`ce/8-3-stable`'
-        expect(content).to include '`ee/8-3-stable-ee`'
+        expect(content).to include 'CE `8-3-stable`'
+        expect(content).to include 'EE `8-3-stable-ee`'
         expect(content).to include("Tag the `8.3.1` version")
         expect(content).to include("Create the `8.3.1` version on https://version.gitlab.com")
       end

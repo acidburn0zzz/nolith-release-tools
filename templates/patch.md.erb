@@ -1,31 +1,39 @@
-- Picked into respective `stable` branches. [`Pick into Stable` <%= version.to_minor %> merged merge requests]:
+- [ ] Cherry-pick merge requests labeled [`Pick into Stable`] for the current
+  milestone (you can take advantage of the
+  [`Pick into Stable` <%= version.to_minor %> merged merge requests] page) into
+  the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
+  branches, respectively.
   - [ ] REFERENCE_TO_MR_TO_PICK
-- [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
+- [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+- [ ] Sync CE, EE, and Omnibus to `dev`
+- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog]
-- [ ] Sync the stable branches of CE, EE, and Omnibus to `dev`
 - [ ] While waiting for tests to be green, now is a good time to start on the blog post: BLOG_POST_MR
-- [ ] Ensure [tests are green on CE]
-- [ ] Ensure [tests are green on EE]
-- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
+- [ ] Ensure tests are green on [CE stable branch]
+- [ ] Ensure tests are green on [EE stable branch]
+- [ ] Ensure tests are green on [Omnibus CE stable branch]
+- [ ] Ensure tests are green on [Omnibus EE stable branch]
+- [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh
+      # In the release-tools project:
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
-- [ ] In `#production`:
-
+- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
+      ```sh
+      # In the chef-repo project:
+      bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
       ```
-      I'm going to deploy `<%= version.to_patch %>` to staging
+- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
+      ```sh
+      # In the chef-repo project:
+      bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
       ```
-- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
-- [ ] In `#production`:
-
-      ```
-      I'm going to deploy `<%= version.to_patch %>` to production
-      ```
-- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
+- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Deploy the blog post
 - [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
@@ -55,22 +63,17 @@ For references:
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
 
-[tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
+[CE stable branch]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
+[EE stable branch]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 
 [omnibus-tag-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= omnibus_version.tag %>/CHANGELOG.md
 [omnibus-master-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
 
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-
-[`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
-[`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
-
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
-[`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 
-[staging.gitlab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
-[GitLab.com]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[Deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[staging.gitlab.com]: https://staging.gitlab.com/
