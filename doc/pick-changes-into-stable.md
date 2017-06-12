@@ -4,7 +4,9 @@ The latest RCs, and all patch releases are made up of one or more merge requests
 that have been merged into the `master` branch of GitLab CE or EE, and which
 then need to be [cherry-picked] into the respective `stable` branches.
 
-We merge into master first instead of merging in a stable branch first because master moves faster than stable branches. Getting there first prevents the most merge conflicts by more quickly having all developers fetch the changed code.
+We merge into master first instead of merging in a stable branch first because
+master moves faster than stable branches. Getting there first prevents the most
+merge conflicts by more quickly having all developers fetch the changed code.
 
 We cherry pick the single **merge commit** that results from accepting a merge
 request and which may have been made up of more than one commit. This means we
