@@ -23,6 +23,7 @@ On-Boarding
 - [ ] Master access on gitlab-ee (dev and com)
 - [ ] Master access on gitlab-omnibus (dev and com)
 - [ ] Developer access on chef-repo cookbook
+- [ ] If your ssh key has a passphrase, you will want to do `ssh-add` in your local chef-repo
 - [ ] Get added to the [Release Managers team](https://github.com/orgs/gitlabhq/teams/release-managers) on GitHub.
 - [ ] Make sure you have your [user added to Marvin](https://gitlab.com/gitlab-com/runbooks/blob/master/howto/manage-cog.md#add-a-user) on `#production` so you can tweet and broadcast messages
 
