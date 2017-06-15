@@ -3,6 +3,10 @@
 This guide details the process for merging any GitLab CE branch (`master`, `8-0-stable`,
 etc.) into the corresponding GitLab EE branch (`master`, `8-0-stable-ee`, etc.).
 
+NOTE: Be careful about squashing commits when merging between CE and EE. When
+in doubt, do NOT squash. See the [explanation for more
+details](#why-squashing-is-bad-for-merge-commits).
+
 ## Setup
 
 1. We're going to pull CE into EE, so we first need a working copy of EE:
@@ -148,5 +152,40 @@ Both CE and EE should already have branches called `7-14-stable` and
     ```
 
 ---
+
+## Why Squashing is Bad for Merge Commits
+
+If the tip of the branch is a merge commit, squashing will convert a merge
+commit into a regular commit, causing ancestor history to be lost. This will
+likely cause unnecessary merge conflicts down the road. For example, consider
+the following scenario:
+
+1. Developer adds file `foo.rb` to `9-0-stable`.
+2. Release manager creates a merge commit `XYZ` for `9-0-stable` and `9-0-stable-ee`.
+3. Squashing `XYZ` will make it look like `XYZ` introduced `foo.rb`.
+4. Developer updates file `foo.rb` in `9-0-stable`.
+5. When the release manager attempts to resync `9-0-stable-ee` with
+   `9-0-stable`, step 4 will look like a conflict because Git will think both
+   branches modified the file, when only one did. For example, the
+   `git log --graph foo.rb` output may look like:
+
+```
+*   0b6e1dd5b2 Merge commit '12345678' into 9-0-stable-ee
+|\
+| * 5819ca1a24 Modified foo.rb
+| * cd74c1434e Added foo.rb
+* 621cbd0414 Squashed merge for `9-0-stable` to `9-0-stable-ee`
+```
+
+Because `621cbd0414` is a squashed commit and no longer a merge commit, it has
+no link back to `cd74c1434e`. When Git attempts to merge `621cbd0414` with
+`9-0-stable-ee`, Git will flag a conflict.
+
+Instead, if everything is done properly, the graph should look more like this:
+
+```
+* 5819ca1a24 Modified foo.rb
+* cd74c1434e Added foo.rb
+```
 
 [Return to Guides](../README.md#guides)
