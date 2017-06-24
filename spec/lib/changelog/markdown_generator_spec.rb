@@ -56,24 +56,52 @@ describe Changelog::MarkdownGenerator do
       end
     end
 
-    it 'sorts entries by their entry ID' do
+    it 'sorts entries by type in TYPE_ORDER and by their entry ID in ascending order' do
       entries = [
-        double(id: 5, to_s: "Change A", valid?: true),
-        double(id: 3, to_s: "Change B", valid?: true),
-        double(id: 1, to_s: "Change C", valid?: true)
+        double(id: 5, to_s: "Change A", type: 'security', valid?: true),
+        double(id: 3, to_s: "Change B", type: 'security', valid?: true),
+        double(id: 1, to_s: "Change C", type: 'fixed',    valid?: true)
       ]
       generator = described_class.new(spy, entries)
 
       markdown = generator.to_s
 
-      expect(markdown).to match("- Change C\n- Change B\n- Change A\n")
+      expect(markdown).to match("- Change B\n- Change A\n- Change C\n")
+    end
+
+    it 'sorts entries without a type last' do
+      entries = [
+        double(id: 5, to_s: "Change A", type: 'security', valid?: true),
+        double(id: 3, to_s: "Change B", type: 'security', valid?: true),
+        double(id: 1, to_s: "Change C", type: nil,        valid?: true)
+      ]
+
+      generator = described_class.new(spy, entries)
+
+      markdown = generator.to_s
+
+      expect(markdown).to match("- Change B\n- Change A\n- Change C\n")
+    end
+
+    it 'sorts entries with invalid type last' do
+      entries = [
+        double(id: 5, to_s: "Change A", type: 'security', valid?: true),
+        double(id: 3, to_s: "Change B", type: 'invalid',  valid?: true),
+        double(id: 1, to_s: "Change C", type: 'invalid',  valid?: true)
+      ]
+
+      generator = described_class.new(spy, entries)
+
+      markdown = generator.to_s
+
+      expect(markdown).to match("- Change A\n- Change C\n- Change B\n")
     end
 
     it 'sorts entries without an ID last' do
       entries = [
-        double(id: 5,   to_s: "Change A", valid?: true),
-        double(id: nil, to_s: "Change B", valid?: true),
-        double(id: 1,   to_s: "Change C", valid?: true)
+        double(id: 5,   to_s: 'Change A', valid?: true, type: 'fixed'),
+        double(id: nil, to_s: 'Change B', valid?: true, type: 'fixed'),
+        double(id: 1,   to_s: 'Change C', valid?: true, type: 'fixed')
       ]
       generator = described_class.new(spy, entries)
 
@@ -84,9 +112,9 @@ describe Changelog::MarkdownGenerator do
 
     it 'handles a non-numeric ID comparison' do
       entries = [
-        double(id: 5,     to_s: "Change A", valid?: true),
-        double(id: 'foo', to_s: "Change B", valid?: true),
-        double(id: 1,     to_s: "Change C", valid?: true)
+        double(id: 5,     to_s: 'Change A', valid?: true, type: 'fixed'),
+        double(id: 'foo', to_s: 'Change B', valid?: true, type: 'fixed'),
+        double(id: 1,     to_s: 'Change C', valid?: true, type: 'fixed')
       ]
       generator = described_class.new(spy, entries)
 

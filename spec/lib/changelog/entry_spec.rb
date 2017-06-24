@@ -12,12 +12,13 @@ describe Changelog::Entry do
 
   describe 'initialize' do
     it 'parses blob content' do
-      entry = entry('title' => 'Foo', 'merge_request' => 1234, 'author' => 'Joe Smith')
+      entry = entry('title' => 'Foo', 'merge_request' => 1234, 'author' => 'Joe Smith', 'type' => 'added')
 
       aggregate_failures do
         expect(entry.title).to eq 'Foo'
         expect(entry.id).to eq 1234
         expect(entry.author).to eq 'Joe Smith'
+        expect(entry.type).to eq 'added'
       end
     end
 
@@ -75,6 +76,12 @@ describe Changelog::Entry do
       entry = entry('title' => 'Foo', 'merge_request' => 1234, 'author' => 'Joe Smith')
 
       expect(entry.to_s).to eq 'Foo. !1234 (Joe Smith)'
+    end
+
+    it 'includes the type when available' do
+      entry = entry('title' => 'Foo.', 'type' => 'added')
+
+      expect(entry.to_s).to eq '[ADDED] Foo.'
     end
   end
 

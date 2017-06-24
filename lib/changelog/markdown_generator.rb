@@ -4,6 +4,9 @@ require_relative '../release'
 
 module Changelog
   class MarkdownGenerator
+    # nil is the last type in the order
+    TYPE_ORDER = ['security', 'removed', 'fixed', 'deprecated', 'changed', 'added', 'other', nil].freeze
+
     attr_reader :version, :entries
 
     def initialize(version, entries)
@@ -47,10 +50,20 @@ module Changelog
       end
     end
 
+    # Sort entries by type in TYPE_ORDER and ID in ascending order
+    # invalid types are sorted last
+    def sorted_entries
+      grouped_entries = entries_sorted_by_id.group_by(&:type)
+
+      TYPE_ORDER.inject([]) do |entries, type|
+        entries.concat(grouped_entries.delete(type) || [])
+      end.concat(grouped_entries.values.flatten)
+    end
+
     # Sort entries in ascending order by ID
     #
     # Entries without an ID are placed last
-    def sorted_entries
+    def entries_sorted_by_id
       entries.sort do |a, b|
         (a.id || 999_999).to_i <=> (b.id || 999_999).to_i
       end

@@ -5,7 +5,7 @@ module Changelog
   # Represents a Rugged::Blob and its changelog entry
   class Entry
     attr_reader :path, :blob
-    attr_reader :title, :id, :author
+    attr_reader :type, :title, :id, :author
 
     # path - Path to the blob, relative to the Repository root
     # blob - Underlying Rugged::Blob object
@@ -18,6 +18,7 @@ module Changelog
 
     def to_s
       str = ""
+      str << "[#{type.upcase}] " if type.present?
       str << "#{title}.".gsub(/\.{2,}$/, '.')
       str << " !#{id}" if id.present?
       str << " (#{author})" if author.present?
@@ -34,6 +35,7 @@ module Changelog
     def parse_blob(content)
       yaml = YAML.safe_load(content)
 
+      @type   = yaml['type']
       @title  = yaml['title']
       @id     = parse_id(yaml)
       @author = yaml['author']
