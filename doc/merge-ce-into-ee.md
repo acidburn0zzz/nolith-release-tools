@@ -128,6 +128,13 @@ Both CE and EE should already have branches called `7-14-stable` and
     git pull origin 7-14-stable-ee
     ```
 
+1. Create a new temporary branch for the merge:
+
+    ```sh
+    # NOTE: This command is an example! Update it to reflect new version and date
+    git checkout -b 7-14-stable-ee-with-ce-2017-12-31
+    ```
+
 1. Then make sure your `ce` remote has the latest branch information:
 
     ```sh
@@ -137,19 +144,22 @@ Both CE and EE should already have branches called `7-14-stable` and
 1. Now perform the merge:
 
     ```sh
-    # NOTE: This command is an example! Update it to reflect new version numbers.
-    git merge --no-ff ce/7-14-stable 7-14-stable-ee
+    # NOTE: This command is an example! Update it to reflect new version numbers and date.
+    git merge --no-ff ce/7-14-stable 7-14-stable-ee-with-ce-2017-12-31
     ```
 
 1. At this point there will be a merge conflict, but likely only on the
    `VERSION` file. Resolve it and commit the merge.
 
-1. Push the updated branch to `origin`:
+1. Push the new branch to `origin` ready to create a merge request:
 
     ```sh
     # NOTE: This command is an example! Update it to reflect new version numbers.
-    git push origin 7-14-stable-ee
+    git push origin 7-14-stable-ee-with-ce-2017-12-31
     ```
+    
+1. Submit a new [merge request in the GitLab EE project], selecting the new branch (e.g. `7-14-stable-ee-with-ce-2017-12-31`)
+   as the **source** branch and the stable branch (e.g. `7-14-stable-ee`) as the **target**
 
 ---
 
