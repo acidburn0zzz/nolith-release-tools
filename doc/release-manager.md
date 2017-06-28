@@ -40,7 +40,7 @@ First Tasks
 
   Last task (after the release)
   
-- [ ] Ensure the next RM trainee has an onboarding issue like this one.
+- [ ] Ensure the next RM trainee has an onboarding issue like this one, using [the onboarding template](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-manager.md#master-checklist-for-onboarding-of-new-release-managers).
 
 ```
 
