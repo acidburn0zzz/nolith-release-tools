@@ -65,7 +65,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the chef-repo project:
         bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
         ```
-  - [ ] Tweet about the deploy, at this point the deploy alert banner on GitLab.com should already be up.
+  - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
   - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to GitLab.com
   - [ ] Post a [tweet about] the `<%= version.to_rc %>` release:
 
@@ -159,7 +159,7 @@ cherry-picked into `<%= version.stable_branch %>`.
       # In the chef-repo project:
       bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
-- [ ] Tweet about the deploy, at this point the deploy alert banner on GitLab.com should already be up.
+- [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
 - [ ] Do the [deploy] [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
 - [ ] Post a [tweet about] the `<%= version.to_rc(2) %>` release:
 
@@ -199,7 +199,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
   - [ ] Do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
-  - [ ] Tweet about the deploy, at this point the deploy alert banner on GitLab.com should already be up.
+  - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
   - [ ] Do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to GitLab.com
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
   - [ ] Create the first patch issue using the [`patch_issue` task]:
@@ -225,6 +225,7 @@ This way we ensure the release does not introduce new regressions.
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [tweet about]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-that-the-deploy-is-done
+[announce the deploy on Twitter]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
 [`new_release_post` task]: https://gitlab.com/gitlab-com/www-gitlab-com/#create-release-blog-post
 [`www-gitlab-com` project]: https://gitlab.com/gitlab-com/www-gitlab-com/
