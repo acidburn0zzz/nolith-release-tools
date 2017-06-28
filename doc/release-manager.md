@@ -12,7 +12,7 @@ The topics are ordered by priority and should be tackled by the new release mana
 before starting the appointed release.
 
 ```
-On-Boarding
+### On-Boarding
 
 - [ ] Make a note of your `dev` and `github` usernames and add them to this issue.
 - [ ] Create a [new infra issue](https://gitlab.com/gitlab-com/infrastructure/issues/new?issue[title]=Chef%20access%20request), set it to confidential, and post your SSH username and public key there: [link to infrastructure issue]
@@ -27,7 +27,7 @@ On-Boarding
 - [ ] Get added to the [Release Managers team](https://github.com/orgs/gitlabhq/teams/release-managers) on GitHub.
 - [ ] Make sure you have your [user added to Marvin](https://gitlab.com/gitlab-com/runbooks/blob/master/howto/manage-cog.md#add-a-user) on `#production` so you can tweet and broadcast messages
 
-First Tasks
+### First Tasks
 
 - [ ] Read the deploy docs: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/staging.md and https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
 - [ ] Be involved in the merge/pick to stable for at least one RC/Patch
@@ -38,9 +38,19 @@ First Tasks
 - [ ] Deploy to staging at least once
 - [ ] Deploy to gitlab.com at least once
 
-  Last task (after the release)
-  
+### Last task (after the release)
+
 - [ ] Ensure the next RM trainee has an onboarding issue like this one, using [the onboarding template](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-manager.md#master-checklist-for-onboarding-of-new-release-managers).
+
+
+### Usernames
+
+| | Username |
+|-|-------------------|
+| Gitlab.com |  |
+| dev |  |
+| github |  |
+
 
 ```
 
