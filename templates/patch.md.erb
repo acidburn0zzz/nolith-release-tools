@@ -6,7 +6,7 @@
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Sync CE, EE, and Omnibus to `dev`
-- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
+- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog]
 - [ ] While waiting for tests to be green, now is a good time to start on the blog post: BLOG_POST_MR
