@@ -124,6 +124,28 @@ you might find yourself typing the same things over and over. Unacceptable!
 [adding notes to yourself]: #leave-notes-to-yourself
 [updating regression notes]: #update-the-regression-issue
 
+## Keep `#releases` in Slack updated
+
+Check previous messages to see how other release managers are communcating the release status.
+
+If something looks useful, copy it!
+One example is the following Slack snippet for build status:
+
+```
+Current Status 9.3.3
+Gitlab.com
+CE :green: - `https://gitlab.com/gitlab-org/gitlab-ce/commits/9-3-stable`
+EE :running: - `https://gitlab.com/gitlab-org/gitlab-ee/commits/9-3-stable-ee`
+Omnibus CE :green: - `https://gitlab.com/gitlab-org/omnibus-gitlab/commits/9-3-stable`
+Omnibus EE :red: :repeat: - `https://gitlab.com/gitlab-org/omnibus-gitlab/commits/9-3-stable-ee`
+
+Dev
+CE :hourglass: - Awaiting MRs to merge before sync
+EE :hourglass: - Awaiting MRs to merge before sync
+Omnibus CE :running: - `https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/9-3-stable`
+Omnibus EE :running: - `https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/9-3-stable-ee`
+```
+
 ---
 
 [Return to Guides](../README.md#guides)
