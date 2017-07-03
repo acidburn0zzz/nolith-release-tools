@@ -15,7 +15,7 @@ before starting the appointed release.
 ### On-Boarding
 
 - [ ] Make a note of your `dev` and `github` usernames and add them to this issue.
-- [ ] Create a [new infra issue](https://gitlab.com/gitlab-com/infrastructure/issues/new?issue[title]=Chef%20access%20request), set it to confidential, and post your SSH username and public key there: [link to infrastructure issue]
+- [ ] Use the [release manager infrastructure permissions template](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-manager.md#infrastructure-permissions-template) to request chef and SSH access.
 - [ ] Make sure you have the [chef-repo](https://dev.gitlab.org/cookbooks/chef-repo) and [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, with all dependencies installed through [bundle](http://bundler.io/).
 - [ ] Read through the [release guides](https://gitlab.com/gitlab-org/release-tools/blob/master/README.md#guides)
 - [ ] Join #releases on Slack, and introduce yourself
@@ -53,6 +53,43 @@ before starting the appointed release.
 
 
 ```
+
+### Infrastructure permissions template
+
+Use this template when creating your [new infrastructure permissions issue](https://gitlab.com/gitlab-com/infrastructure/issues/new?issue[title]=Chef%20and%20SSH%20access%20request%20for%20YOUR%20NAME)
+
+Make sure to set the issue to **confidential** and include your SSH username and public key
+
+```
+## What
+- [ ] Master access to chef repo until end of Release Manager duties including patch releases
+- [ ] Access to chef-server
+- [ ] SSH access for release manager
+- [ ] Added to the `release-manager` group in Cog in `#production` so you can tweet and broadcast messages.
+  - A Cog admin in `#production` can run `!group-member-add release-manager <your handle>`, or you could be [manually added to Marvin](https://gitlab.com/gitlab-com/runbooks/blob/master/howto/manage-cog.md#add-a-user)
+
+## Why
+
+I'll be a trainee release manager in TRAINEE_RELEASE and release manager in RELEASE_YOU_WILL_MANAGE.
+
+Onboarding task: LINK_TO_ONBOARING_ISSUE
+
+## SSH Details
+
+### Username
+
+\```
+YOUR_SSH_USER_NAME
+\```
+
+### Public Key
+
+\```
+YOUR_PUBLIC_KEY
+\```
+
+```
+
 
 ## Responsibilities
 
