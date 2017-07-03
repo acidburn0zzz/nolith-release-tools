@@ -25,17 +25,26 @@
       ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
+- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the chef-repo project:
       bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
       ```
-- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
+- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
+      ```sh
+      # In the chef-repo project:
+      bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
+      ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
+- [ ] Make sure to [announce the deploy] on Twitter and GitLab.com
+  * With downtime: 1 hour before
+  * Without downtime: 15 minutes before
+- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
       ```sh
       # In the chef-repo project:
       bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
       ```
-- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Deploy the blog post
 - [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
@@ -79,3 +88,5 @@ For references:
 
 [Deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
 [staging.gitlab.com]: https://staging.gitlab.com/
+
+[announce the deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
