@@ -5,7 +5,9 @@
   branches, respectively.
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-- [ ] Sync CE, EE, and Omnibus to `dev`
+- [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
+- [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
+- [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
 - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog]
@@ -23,17 +25,26 @@
       ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
+- [ ] On video call, [deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the chef-repo project:
       bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
       ```
-- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
+- [ ] On video call, [deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
+      ```sh
+      # In the chef-repo project:
+      bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
+      ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
+- [ ] Make sure to [announce the deploy] on Twitter and GitLab.com
+  * With downtime: 1 hour before
+  * Without downtime: 15 minutes before
+- [ ] On video call, [deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
       ```sh
       # In the chef-repo project:
       bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
       ```
-- [ ] [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Deploy the blog post
 - [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
@@ -75,5 +86,7 @@ For references:
 
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 
-[Deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
 [staging.gitlab.com]: https://staging.gitlab.com/
+
+[announce the deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
