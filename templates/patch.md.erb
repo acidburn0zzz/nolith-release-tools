@@ -23,7 +23,7 @@
       # In the release-tools project:
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
-- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+- [ ] Check progress of [EE packages build] and [CE packages build]
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
@@ -36,6 +36,7 @@
       # In the chef-repo project:
       bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
       ```
+- [ ] Do the [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
 - [ ] Make sure to [announce the deploy] on Twitter and GitLab.com
   * With downtime: 1 hour before
@@ -45,6 +46,10 @@
       # In the chef-repo project:
       bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
       ```
+- [ ] Do the [Deploy] [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
+- [ ] From the [build pipeline], [manually publish public packages]
+- [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+- [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags/<%= version.to_patch %>) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags/<%= version.to_patch %>)
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Deploy the blog post
 - [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
@@ -78,8 +83,8 @@ For references:
 [EE stable branch]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 [Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[EE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 
 [omnibus-tag-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= omnibus_version.tag %>/CHANGELOG.md
 [omnibus-master-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
@@ -91,3 +96,6 @@ For references:
 [canary.gitlab.com]: https://canary.gitlab.com/
 
 [announce the deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
+
+[manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
+[build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags

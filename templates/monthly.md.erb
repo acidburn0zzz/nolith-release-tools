@@ -27,7 +27,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 #### RC1
 
-- [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers
+- [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers in Slack (#build)
 - Follow the [Creating RC1] guide:
   - [ ] Create MR on CE master updating the "Installation from Source" guide, creating the "Update" guides
   - [ ] Create MR on EE master creating the "CE to EE" guides
@@ -57,7 +57,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the release-tools project:
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
-  - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
+  - [ ] Check progress of [EE packages build] and [CE packages build]
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to staging
   - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
         ```sh
@@ -77,6 +77,9 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the chef-repo project:
         bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
         ```
+  - [ ] From the [build pipeline], [manually publish public packages]
+  - [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
+  - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags/<%= version.to_patch %>) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags/<%= version.to_patch %>)
   - [ ] Post a [tweet about] the `<%= version.to_rc %>` release:
 
         ```
@@ -159,7 +162,7 @@ cherry-picked into `<%= version.stable_branch %>`.
         # In the release-tools project:
         bundle exec rake "release[<%= version.to_rc(2) %>]"
         ```
-- [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
+- [ ] Check progress of [EE packages build] and [CE packages build]
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
@@ -172,6 +175,7 @@ cherry-picked into `<%= version.stable_branch %>`.
       # In the chef-repo project:
       bundle exec rake "deploy[canary, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
+- [ ] [Deploy] [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to production
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
       ```sh
@@ -179,6 +183,9 @@ cherry-picked into `<%= version.stable_branch %>`.
       bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
       ```
 - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
+- [ ] Do the [deploy] [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
+- [ ] From the [build pipeline], [manually publish public packages]
+- [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
 - [ ] Post a [tweet about] the `<%= version.to_rc(2) %>` release:
 
       ```
@@ -213,7 +220,7 @@ This way we ensure the release does not introduce new regressions.
         # In the release-tools project:
         bundle exec rake "release[<%= version.to_patch %>]"
         ```
-  - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+  - [ ] Check progress of [EE packages build] and [CE packages build]
 
 - Before 14:00 UTC:
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
@@ -230,6 +237,9 @@ This way we ensure the release does not introduce new regressions.
       ```
 
 - At 15:00 UTC:
+  - [ ] From the [build pipeline], [manually publish public packages]
+  - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+  - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags/<%= version.to_patch %>) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags/<%= version.to_patch %>)
   - [ ] Publish the release [blog post]
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release
 
@@ -242,8 +252,8 @@ This way we ensure the release does not introduce new regressions.
 [Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [announce the deployment]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+[EE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [tweet about]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-that-the-deploy-is-done
 [announce the deploy on Twitter]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
@@ -263,3 +273,5 @@ This way we ensure the release does not introduce new regressions.
 [deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
 [staging.gitlab.com]: https://staging.gitlab.com/
 [canary.gitlab.com]: https://canary.gitlab.com/
+[manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
+[build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
