@@ -72,6 +72,8 @@ In order to keep track of the various tasks that need to happen before a securit
 patch release is considered "complete", we create an issue on the [GitLab CE issue
 tracker] and update it as we progress.
 
+1. Set up [API access for rake tasks](rake-tasks.md#setup)
+
 1. Create the issue using the [`security_patch_issue`](rake-tasks.md#security_patch_issueversion)
    Rake task:
 
