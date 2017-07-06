@@ -21,7 +21,9 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
 - [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
 - [ ] Merge [GitLab CE into EE] on the stable branches
-- [ ] Sync CE, EE, and Omnibus to `dev`
+- [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
+- [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
+- [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
 
 #### RC1
 
@@ -37,7 +39,9 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
     the CE `<%= version.stable_branch %>` and EE `<%= version.stable_branch(ee: true) %>`
     branches, respectively.
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Sync CE, EE, and Omnibus to `dev`
+  - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
+  - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
   - [ ] Ensure tests are green on [CE stable branch]
   - [ ] Ensure tests are green on [EE stable branch]
@@ -137,7 +141,9 @@ cherry-picked into `<%= version.stable_branch %>`.
   branches, respectively.
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
-  - [ ] Sync CE, EE, and Omnibus to `dev`
+  - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
+  - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
   - [ ] Ensure tests are green on [CE stable branch]
   - [ ] Ensure tests are green on [EE stable branch]
@@ -190,7 +196,9 @@ No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
 
 - Before 13:00 UTC:
-  - [ ] Sync CE, EE, and Omnibus to `dev`
+  - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
+  - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
   - [ ] Ensure tests are green on [CE stable branch]
   - [ ] Ensure tests are green on [EE stable branch]
   - [ ] Ensure tests are green on [Omnibus CE stable branch]
