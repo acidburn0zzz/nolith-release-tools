@@ -88,11 +88,52 @@ describe GitlabClient do
   end
 
   describe '.issue_url' do
-    it 'returns the full URL to the issue' do
-      issue = double(iid: 1234)
+    context 'when issue is nil' do
+      it 'returns an empty string' do
+        expect(described_class.issue_url(nil)).to eq ''
+      end
+    end
 
-      expect(described_class.issue_url(issue))
-        .to eq "https://gitlab.com/gitlab-org/gitlab-ce/issues/1234"
+    context 'when issue does not respond to iid' do
+      it 'returns the full URL to the issue' do
+        issue = double('Issue')
+
+        expect(described_class.issue_url(issue)).to eq ''
+      end
+    end
+
+    context 'when issue responds to iid' do
+      it 'returns the full URL to the issue' do
+        issue = double('Issue', iid: 1234)
+
+        expect(described_class.issue_url(issue))
+          .to eq "https://gitlab.com/gitlab-org/gitlab-ce/issues/1234"
+      end
+    end
+  end
+
+  describe '.merge_request_url' do
+    context 'when merge_request is nil' do
+      it 'returns an empty string' do
+        expect(described_class.merge_request_url(nil)).to eq ''
+      end
+    end
+
+    context 'when merge_request does not respond to iid' do
+      it 'returns the full URL to the merge request' do
+        merge_request = double('MergeRequest')
+
+        expect(described_class.merge_request_url(merge_request)).to eq ''
+      end
+    end
+
+    context 'when merge_request responds to iid' do
+      it 'returns the full URL to the merge request' do
+        merge_request = double('MergeRequest', iid: 1234)
+
+        expect(described_class.merge_request_url(merge_request))
+          .to eq "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/1234"
+      end
     end
   end
 end

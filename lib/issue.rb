@@ -3,20 +3,20 @@ require_relative 'gitlab_client'
 
 class Issue < Issuable
   def create
-    GitlabClient.create_issue(self)
+    GitlabClient.create_issue(self, project)
   end
 
   def remote_issuable
-    GitlabClient.find_issue(self)
+    return @remote_issuable if defined?(@remote_issuable)
+
+    @remote_issuable ||= GitlabClient.find_issue(self, project)
+  end
+
+  def url
+    GitlabClient.issue_url(self, project)
   end
 
   def confidential?
     false
-  end
-
-  private
-
-  def _url
-    GitlabClient.issue_url(remote_issuable)
   end
 end

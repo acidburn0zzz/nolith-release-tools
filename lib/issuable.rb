@@ -1,8 +1,26 @@
 require 'erb'
+require 'ostruct'
 
-class Issuable
+class Issuable < OpenStruct
+  def initialize(*args)
+    super
+    yield self if block_given?
+  end
+
   def description
     ERB.new(template).result(binding)
+  end
+
+  def project
+    self[:project] || Project::GitlabCe
+  end
+
+  def iid
+    remote_issuable&.iid
+  end
+
+  def exists?
+    !remote_issuable.nil?
   end
 
   def create
@@ -13,25 +31,13 @@ class Issuable
     raise NotImplementedError
   end
 
-  def exists?
-    !remote_issuable.nil?
-  end
-
   def url
-    if exists?
-      _url
-    else
-      ''
-    end
+    raise NotImplementedError
   end
 
   private
 
   def template
     File.read(template_path)
-  end
-
-  def _url
-    raise NotImplementedError
   end
 end
