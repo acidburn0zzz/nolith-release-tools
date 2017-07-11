@@ -17,15 +17,13 @@ before starting the appointed release.
 - [ ] Make a note of your `dev` and `github` usernames and add them to this issue.
 - [ ] Use the [release manager infrastructure permissions template](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-manager.md#infrastructure-permissions-template) to request chef and SSH access: [link to infrastructure issue]
 - [ ] Make sure you have the [chef-repo](https://dev.gitlab.org/cookbooks/chef-repo) and [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, with all dependencies installed through [bundle](http://bundler.io/).
+- [ ] If your ssh key has a passphrase, you will want to do `ssh-add` in your local chef-repo
 - [ ] Read through the [release guides](https://gitlab.com/gitlab-org/release-tools/blob/master/README.md#guides)
 - [ ] Join #releases on Slack, and introduce yourself
 - [ ] Master access on gitlab-ce  (dev and com)
 - [ ] Master access on gitlab-ee (dev and com)
 - [ ] Master access on gitlab-omnibus (dev and com)
-- [ ] Developer access on chef-repo cookbook
-- [ ] If your ssh key has a passphrase, you will want to do `ssh-add` in your local chef-repo
 - [ ] Get added to the [Release Managers team](https://github.com/orgs/gitlabhq/teams/release-managers) on GitHub.
-- [ ] Make sure you have your [user added to Marvin](https://gitlab.com/gitlab-com/runbooks/blob/master/howto/manage-cog.md#add-a-user) on `#production` so you can tweet and broadcast messages
 
 ### First Tasks
 
