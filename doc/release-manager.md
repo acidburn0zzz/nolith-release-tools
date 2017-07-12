@@ -6,8 +6,8 @@ The release manager oversees the [monthly release] of GitLab as well as any
 ## Onboarding
 ### Master checklist for onboarding of new release managers
 
-The following checklist can be copied and pasted into a [new issue in the Organization project](https://gitlab.com/gitlab-com/organization/issues/new?issue[title]=Onboarding%20Release%20Manager%20[your%20name%20here]) 
-to make sure the new release manager has the tools and some initial knowledge ready. 
+The following checklist can be copied and pasted into a [new issue in the Organization project](https://gitlab.com/gitlab-com/organization/issues/new?issue[title]=Onboarding%20Release%20Manager%20[your%20name%20here])
+to make sure the new release manager has the tools and some initial knowledge ready.
 The topics are ordered by priority and should be tackled by the new release manager
 before starting the appointed release.
 
@@ -24,6 +24,8 @@ before starting the appointed release.
 - [ ] Master access on gitlab-ee (dev and com)
 - [ ] Master access on gitlab-omnibus (dev and com)
 - [ ] Get added to the [Release Managers team](https://github.com/orgs/gitlabhq/teams/release-managers) on GitHub.
+- [ ] Make sure you have VPN access (follow instructions from [creating client certificate](https://gitlab.com/gitlab-cookbooks/gitlab_openvpn#how-to-create-a-client-certificate)
+      up to and including google authenticator setup), and test by bringing VPN up and sshing into staging sidekiq node (`sidekiq-asap01.sv.stg.gitlab.com`)
 
 ### First Tasks
 
@@ -112,7 +114,7 @@ release.
 ### Training
 
 Release managers have the responsibility to deliver appropriate training to
-the release manager trainees appointed to the same release.  
+the release manager trainees appointed to the same release.
 
 They'll need to make sure that trainees already have an [onboarding checklist](#master-checklist-for-onboarding-of-new-release-managers)
 early on the release process, as well as giving them the opportunity to tackle
