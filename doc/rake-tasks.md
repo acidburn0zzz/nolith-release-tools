@@ -126,8 +126,8 @@ This task will:
 
 This task **will NOT**:
 
-1. Release the packages to the public
-1. [Deploy](docrelease-manager.md#deployment)
+1. Release the packages to the public, see [publishing-packages doc](doc/publishing-packages.md).
+1. Perform a [deploy](doc/release-manager.md#deployment)
 
 ### Configuration
 

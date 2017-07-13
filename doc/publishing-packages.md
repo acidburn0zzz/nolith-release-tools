@@ -41,7 +41,7 @@ to start the manual job for:
 * Docker image release
 * Raspberry Pi package release
 
-*Note* Raspberry Pi package builds can take a very long time to complete.
+*Note*: Raspberry Pi package builds can take a very long time to complete.
 The release can be completed without the finished Raspberry Pi package build.
 
 In order to push the package to public repositories, click on each manual job in
@@ -51,25 +51,21 @@ the pipeline:
 
 ### FAQ
 
-Q: Why is the upload to the private repository a separate job?
-```
-A: To avoid having to rebuild the package if the only failure is during package push.
-```
+#### Why is the upload to the private repository a separate job?
 
-Q: What happens if one of the package builds failed?
-```
-A: In this case, retry the failed build. If the issue persists, escalate to the
+To avoid having to rebuild the package if the only failure is during package push.
+
+#### What happens if one of the package builds failed?
+
+In this case, retry the failed job. If the issue persists, escalate to the
 Build team. This is a release blocker.
-```
 
-Q: What happens if one of the uploads to the *private* repository failed?
-```
-A: In this case, finalizing release is not possible. Retry the build and if the
+#### What happens if one of the uploads to the *private* repository failed?
+
+In this case, finalizing release is not possible. Retry the job and if the
 upload fails again, escalate to the Build team.
-```
 
-Q: What happens if one of the uploads to the *public* repositories failed?
-```
-A: In this case, retry the failed upload. If the issue persists, escalate to the
+#### What happens if one of the uploads to the *public* repositories failed?
+
+In this case, retry the failed job. If the upload fails again, escalate to the
 Build team.
-```
