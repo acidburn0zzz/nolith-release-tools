@@ -184,6 +184,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
 - [ ] From the [build pipeline], [manually publish public packages]
 - [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
+- [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
 - [ ] Post a [tweet about] the `<%= version.to_rc(2) %>` release:
 
       ```
