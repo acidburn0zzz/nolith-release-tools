@@ -124,6 +124,11 @@ This task will:
    branches created above.
 1. Push all newly-created branches and tags to all remotes.
 
+This task **will NOT**:
+
+1. Release the packages to the public, see [publishing-packages doc](doc/publishing-packages.md).
+1. Perform a [deploy](doc/release-manager.md#deployment)
+
 ### Configuration
 
 | Option          | Purpose                                                    |
