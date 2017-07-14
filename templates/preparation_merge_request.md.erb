@@ -1,0 +1,19 @@
+Main release issue: LINK_TO_MAIN_RELEASE_ISSUE
+
+### Summary
+
+This MR prepares `STABLE_BRANCH_CE_OR_EE` for %"MILESTONE" (`PATCH_OR_RC_VERSION`) by merging `PREPARATION_BRANCH_NAME` into `STABLE_BRANCH_CE_OR_EE`
+
+### MR Filter for ~"Pick into Stable" MRs
+
+https://gitlab.com/gitlab-org/gitlab-REPO_CE_OR_EE/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=MILESTONE&scope=all&sort=updated_asc&state=merged
+
+### Steps
+
+- Ensure all the MRs in above list are picked into `PREPARATION_BRANCH_NAME` branch.
+
+- If there are any conflicts while picking MRs, attempt to resolve, otherwise create new MR against `PREPARATION_BRANCH_NAME` branch and assign it to author of conflicting files.
+
+- Consider merging CE-to-EE stable MR into this as well for new workflow
+
+- Once this MR is green merge it.
