@@ -27,13 +27,13 @@
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
-      # In the chef-repo project:
+      # In the takeoff project:
       bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
       ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
       ```sh
-      # In the chef-repo project:
+      # In the takeoff project:
       bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
       ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
@@ -42,7 +42,7 @@
   * Without downtime: 15 minutes before
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
       ```sh
-      # In the chef-repo project:
+      # In the takeoff project:
       bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
       ```
 - [ ] From the [build pipeline], [manually publish public packages]
@@ -89,11 +89,11 @@ For references:
 
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 
-[deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [canary.gitlab.com]: https://canary.gitlab.com/
 
-[announce the deploy]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md#announce-the-deployment
+[announce the deploy]: https://gitlab.com/gitlab-org/takeoff#announce-the-deployment
 
 [manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags

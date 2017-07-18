@@ -16,8 +16,8 @@ before starting the appointed release.
 
 - [ ] Make a note of your `dev` and `github` usernames and add them to this issue.
 - [ ] Use the [release manager infrastructure permissions template](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-manager.md#infrastructure-permissions-template) to request chef and SSH access: [link to infrastructure issue]
-- [ ] Make sure you have the [chef-repo](https://dev.gitlab.org/cookbooks/chef-repo) and [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, with all dependencies installed through [bundle](http://bundler.io/).
-- [ ] If your ssh key has a passphrase, you will want to do `ssh-add` in your local chef-repo
+- [ ] Make sure you have the [takeoff](https://gitlab.com/gitlab-org/takeoff) and [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, with all dependencies installed through [bundle](http://bundler.io/).
+- [ ] If your ssh key has a passphrase, you will want to do `ssh-add` in your local takeoff repo
 - [ ] Read through the [release guides](https://gitlab.com/gitlab-org/release-tools/blob/master/README.md#guides)
 - [ ] Join #releases on Slack, and introduce yourself
 - [ ] Master access on gitlab-ce  (dev and com)
@@ -29,7 +29,7 @@ before starting the appointed release.
 
 ### First Tasks
 
-- [ ] Read the deploy docs: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/staging.md and https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+- [ ] Read the deploy docs: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 - [ ] Be involved in the merge/pick to stable for at least one RC/Patch
 - [ ] Perform the ce-to-ee merge at least once for a RC/Patch
 - [ ] Tag the release for at least one RC/patch
@@ -159,7 +159,7 @@ When the release packages are ready, the release manager should begin the
 - ["Release Manager - The invisible hero"](https://about.gitlab.com/2015/06/25/release-manager-the-invisible-hero/) (2015-06-25)
 - ["How we managed 49 monthly releases"](https://about.gitlab.com/2015/12/17/gitlab-release-process/) (2015-12-17)
 
-[deployment procedure]: https://dev.gitlab.org/cookbooks/chef-repo/blob/master/doc/deploying.md
+[deployment procedure]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [monthly release]: monthly.md
 [patch releases]: patch.md
 [security releases]: security.md
