@@ -26,20 +26,34 @@ git push origin `git rev-parse --abbrev-ref HEAD`
 
 ## Merge CE stable changes to EE
 
+1. Check out a branch for the merge, at the current EE preparation branch or EE stable branch
+```
 git fetch origin 9-3-stable-ee
 git checkout 9-3-stable-ee
 git checkout -b 9-3-stable-ee-patch-5-ce-to-ee
+```
 
 # PS: Should repeat for stable as well in case things were directly merged
+
+1. Fetch the current CE branch and create a local branch for it in the EE repo
+```
 git fetch git@gitlab.com:gitlab-org/gitlab-ce.git 9-3-stable-patch-5
-
 git branch 9-3-stable-patch-5-ce FETCH_HEAD
+```
+
+1. Merge that branch into the current EE preparation branch
+```
 git merge 9-3-stable-patch-5-ce
+```
 
-# Fix conflicts
+## Fix conflicts
 
-# If no complicated conflicts update 9-3-stable-ee
+### If no complicated conflicts update 9-3-stable-ee
+```
 git push origin `git rev-parse --abbrev-ref HEAD`:9-3-stable-ee-patch-5
+```
 
-# Else create new MR
+### Else create new MR
+```
 git push origin `git rev-parse --abbrev-ref HEAD`
+```
