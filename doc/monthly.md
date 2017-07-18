@@ -4,7 +4,7 @@ GitLab releases a new minor version (`X.Y`) every month on the 22nd. The history
 and reasoning behind this schedule can be found [on the blog].
 
 The [release manager] should begin the monthly release process *no earlier than* the 8th (Pacific time, midnight is the start of the workday in Europe).
-The last day to reliably get you code in the release is the 7th (Pacific time).
+The last day to reliably get your code in the release is the 7th (Pacific time).
 
 For an idea of the release process please see the [monthly template](https://gitlab.com/gitlab-org/release-tools/blob/master/templates/monthly.md.erb).
 
