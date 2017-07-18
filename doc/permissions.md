@@ -17,7 +17,7 @@ branches for the following repositories:
 
 **Developer** access is required to:
 
-* [cookbooks/chef-repo](https://dev.gitlab.org/cookbooks/chef-repo)
+* [cookbooks/takeoff](https://gitlab.com/gitlab-org/takeoff)
 
 On GitHub you will need **Push** access to:
 
@@ -25,18 +25,18 @@ On GitHub you will need **Push** access to:
 
 ### Chef Server
 
-First make sure you have a copy of the [chef-repo project](https://dev.gitlab.org/cookbooks/chef-repo).
+First make sure you have a copy of the [takeoff project](https://gitlab.com/gitlab-org/takeoffo).
 
 Now you need to request for an account on the Chef server, please [open a new issue](https://gitlab.com/gitlab-com/infrastructure/issues/new)
-and an operations engineer will provide you with a private key that you can store in /path/to/chef-repo/.chef/your_username.pem in order
+and an operations engineer will provide you with a private key that you can store in /path/to/takeoff/.chef/your_username.pem in order
 to have the `knife` tool configured. If all went well you can check if you
 have access to the Chef server by running `knife status` from the
-chef-repo directory.
+takeoff directory.
 
-Your `/path/to/chef-repo/.chef/knife.rb` file should looks similar to:
+Your `/path/to/takeoff/.chef/knife.rb` file should looks similar to:
 
 ```ruby
-# This file goes in chef-repo/.chef/knife.rb
+# This file goes in takeoff/.chef/knife.rb
 #
 # - Replace 'janedoe' with your username
 # - Put your private key for chef.gitlab.com/gitlab in .chef/
