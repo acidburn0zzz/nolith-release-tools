@@ -167,19 +167,19 @@ cherry-picked into `<%= version.stable_branch %>`.
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the chef-repo project:
-      bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
+      bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0]"
       ```
 - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to canary
 - [ ] If needed, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [canary.gitlab.com]
       ```sh
       # In the chef-repo project:
-      bundle exec rake "deploy[canary, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
+      bundle exec rake "deploy[canary, <%= version.to_rc(2) %>.ee.0]"
       ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to production
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
       ```sh
       # In the chef-repo project:
-      bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0, gitlab/unstable]"
+      bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0]"
       ```
 - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
 - [ ] From the [build pipeline], [manually publish public packages]
