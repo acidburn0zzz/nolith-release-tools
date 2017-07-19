@@ -1,6 +1,6 @@
-require_relative 'base_issue'
+require_relative 'issue'
 
-class RegressionIssue < BaseIssue
+class RegressionIssue < Issue
   attr_reader :version
 
   def initialize(version)

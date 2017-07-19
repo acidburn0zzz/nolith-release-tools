@@ -1,8 +1,8 @@
-require_relative 'base_issue'
+require_relative 'issue'
 require_relative 'regression_issue'
 require_relative 'omnibus_gitlab_version'
 
-class PatchIssue < BaseIssue
+class PatchIssue < Issue
   attr_reader :version, :omnibus_version
 
   def initialize(version)

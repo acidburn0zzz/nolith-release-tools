@@ -8,10 +8,10 @@ require 'active_support/core_ext/integer'
 require 'active_support/core_ext/numeric'
 require 'weekdays'
 
-require_relative 'base_issue'
+require_relative 'issue'
 require_relative 'release'
 
-class MonthlyIssue < BaseIssue
+class MonthlyIssue < Issue
   attr_reader :release_date, :version
 
   def initialize(version, release_date = Release.next_date)
