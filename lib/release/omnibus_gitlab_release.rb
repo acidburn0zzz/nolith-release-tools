@@ -56,7 +56,9 @@ module Release
     end
 
     def before_execute_hook
-      prepare_security_release if security_release?
+      if security_release? && (version.major < 9 || version.major == 9 && version.minor < 4)
+        prepare_security_release
+      end
 
       super
     end
