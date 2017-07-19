@@ -14,23 +14,19 @@ RSpec.shared_examples 'issuable #remote_issuable' do |find_issuable_method|
   end
 
   context 'when remote issuable does not exist' do
-    before do
+    it 'memoizes the remote issuable' do
       expect(GitlabClient).to receive(find_issuable_method).once
         .with(subject, Project::GitlabCe).and_return(nil)
-    end
 
-    it 'memoizes the remote issuable' do
       2.times { subject.remote_issuable }
     end
   end
 
   context 'when remote issuable exists' do
-    before do
+    it 'memoizes the remote issuable' do
       expect(GitlabClient).to receive(find_issuable_method).once
         .with(subject, Project::GitlabCe).and_return(double)
-    end
 
-    it 'memoizes the remote issuable' do
       2.times { subject.remote_issuable }
     end
   end

@@ -119,7 +119,7 @@ class GitlabClient
   #
   # Returns an URL
   def self.issue_url(issue, project = Project::GitlabCe)
-    return '' unless issue&.respond_to?(:iid)
+    return '' if issue.iid.nil?
 
     "https://gitlab.com/#{project.path}/issues/#{issue.iid}"
   end
@@ -132,7 +132,7 @@ class GitlabClient
   #
   # Returns an URL
   def self.merge_request_url(merge_request, project = Project::GitlabCe)
-    return '' unless merge_request.respond_to?(:iid)
+    return '' if merge_request.iid.nil?
 
     "https://gitlab.com/#{project.path}/merge_requests/#{merge_request.iid}"
   end
