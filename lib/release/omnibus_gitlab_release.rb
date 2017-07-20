@@ -1,5 +1,6 @@
 require_relative 'base_release'
 require_relative '../omnibus_gitlab_version'
+require_relative '../project/omnibus_gitlab'
 require 'time'
 
 module Release

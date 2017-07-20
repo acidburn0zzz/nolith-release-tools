@@ -1,6 +1,6 @@
-require_relative '../remotes'
 require_relative 'base_release'
 require_relative 'omnibus_gitlab_release'
+require_relative '../project/gitlab_ce'
 
 module Release
   class GitlabCeRelease < BaseRelease
