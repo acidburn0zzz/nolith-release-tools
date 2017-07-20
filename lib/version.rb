@@ -7,6 +7,14 @@ class Version < String
     (-ee)?\z
   }x
 
+  def initialize(version_string)
+    super(version_string)
+
+    if valid? && extract_from_version(:patch, fallback: nil).nil?
+      rc? ? super(to_rc(rc)) : super(to_patch)
+    end
+  end
+
   def ==(other)
     if other.respond_to?(:to_ce)
       to_ce.eql?(other.to_ce)
