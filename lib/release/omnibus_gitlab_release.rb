@@ -1,5 +1,6 @@
 require_relative 'base_release'
 require_relative '../omnibus_gitlab_version'
+require_relative '../project/omnibus_gitlab'
 require 'time'
 
 module Release
@@ -99,7 +100,7 @@ module Release
     end
 
     def remotes
-      Remotes.remotes(:omnibus_gitlab, dev_only: options[:security])
+      Project::OmnibusGitlab.remotes(dev_only: options[:security])
     end
 
     def version_class

@@ -59,19 +59,19 @@ task :sync do
   if skip?('ee')
     $stdout.puts 'Skipping sync for EE'.colorize(:yellow)
   else
-    Sync.new(Remotes.ee_remotes).execute
+    Sync.new(Project::GitlabEe.remotes).execute
   end
 
   if skip?('ce')
     $stdout.puts 'Skipping sync for CE'.colorize(:yellow)
   else
-    Sync.new(Remotes.ce_remotes).execute
+    Sync.new(Project::GitlabCe.remotes).execute
   end
 
   if skip?('og')
     $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
-    Sync.new(Remotes.omnibus_gitlab_remotes).execute
+    Sync.new(Project::OmnibusGitlab.remotes).execute
   end
 end
 

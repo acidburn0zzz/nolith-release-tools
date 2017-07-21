@@ -1,13 +1,13 @@
-require_relative '../remotes'
 require_relative 'base_release'
 require_relative 'omnibus_gitlab_release'
+require_relative '../project/gitlab_ce'
 
 module Release
   class GitlabCeRelease < BaseRelease
     private
 
     def remotes
-      Remotes.remotes(:ce, dev_only: options[:security])
+      Project::GitlabCe.remotes(dev_only: options[:security])
     end
 
     def before_execute_hook
