@@ -4,9 +4,11 @@ require 'security_patch_issue'
 require 'version'
 
 describe SecurityPatchIssue do
+  it_behaves_like 'issuable #initialize'
+
   describe '#confidential?' do
     it 'is always confidential' do
-      issue = described_class.new(Version.new(''))
+      issue = described_class.new(version: Version.new(''))
 
       expect(issue).to be_confidential
     end
@@ -14,7 +16,7 @@ describe SecurityPatchIssue do
 
   describe '#labels' do
     it 'includes the "security" label' do
-      issue = described_class.new(Version.new(''))
+      issue = described_class.new(version: Version.new(''))
 
       expect(issue.labels).to eq 'Release,security'
     end
@@ -22,7 +24,7 @@ describe SecurityPatchIssue do
 
   describe '#description' do
     it 'includes steps to push to dev only' do
-      issue = described_class.new(Version.new('8.3.1'))
+      issue = described_class.new(version: Version.new('8.3.1-rc2'))
 
       allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
@@ -36,7 +38,7 @@ describe SecurityPatchIssue do
     end
 
     it 'includes a step to create the blog post in a private snippet' do
-      issue = described_class.new(Version.new('8.3.1'))
+      issue = described_class.new(version: Version.new('8.3.1'))
 
       allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
@@ -45,7 +47,7 @@ describe SecurityPatchIssue do
     end
 
     it 'includes a step to perform a security release' do
-      issue = described_class.new(Version.new('8.3.1'))
+      issue = described_class.new(version: Version.new('8.3.1'))
 
       allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
@@ -54,7 +56,7 @@ describe SecurityPatchIssue do
     end
 
     it 'includes a step to redact sensitive information from confidential security issues' do
-      issue = described_class.new(Version.new('8.3.1'))
+      issue = described_class.new(version: Version.new('8.3.1'))
 
       allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
@@ -63,7 +65,7 @@ describe SecurityPatchIssue do
     end
 
     it 'includes a step to make the confidential security issues public' do
-      issue = described_class.new(Version.new('8.3.1'))
+      issue = described_class.new(version: Version.new('8.3.1'))
 
       allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description

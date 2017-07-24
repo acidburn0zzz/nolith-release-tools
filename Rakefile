@@ -78,7 +78,7 @@ end
 desc "Create the monthly release issue"
 task :monthly_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = MonthlyIssue.new(version)
+  issue = MonthlyIssue.new(version: version)
 
   create_or_show_issue(issue)
 end
@@ -86,7 +86,7 @@ end
 desc "Create the regression tracking issue"
 task :regression_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = RegressionIssue.new(version)
+  issue = RegressionIssue.new(version: version)
 
   create_or_show_issue(issue)
 end
@@ -94,7 +94,7 @@ end
 desc "Create a patch issue"
 task :patch_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = PatchIssue.new(version)
+  issue = PatchIssue.new(version: version)
 
   create_or_show_issue(issue)
 end
@@ -102,7 +102,7 @@ end
 desc "Create a security patch issue"
 task :security_patch_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = SecurityPatchIssue.new(version)
+  issue = SecurityPatchIssue.new(version: version)
 
   create_or_show_issue(issue)
 end

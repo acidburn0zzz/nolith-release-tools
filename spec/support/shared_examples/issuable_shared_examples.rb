@@ -1,3 +1,19 @@
+RSpec.shared_examples 'issuable #initialize' do
+  it 'accepts arbitrary attributes as arguments' do
+    issuable = described_class.new(foo: 'bar')
+
+    expect(issuable.foo).to eq('bar')
+  end
+
+  it 'accepts a block' do
+    issuable = described_class.new do |new_issuable|
+      new_issuable.foo = 'bar'
+    end
+
+    expect(issuable.foo).to eq('bar')
+  end
+end
+
 RSpec.shared_examples 'issuable #create' do |create_issuable_method|
   it 'calls GitlabClient.create_issue' do
     expect(GitlabClient).to receive(create_issuable_method).with(subject, Project::GitlabCe)

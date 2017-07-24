@@ -4,9 +4,11 @@ require 'monthly_issue'
 require 'version'
 
 describe MonthlyIssue do
+  it_behaves_like 'issuable #initialize'
+
   describe '#title' do
     it "returns the issue title" do
-      issue = described_class.new(Version.new('8.3.5-rc1'))
+      issue = described_class.new(version: Version.new('8.3.5-rc1'))
 
       expect(issue.title).to eq 'Release 8.3'
     end
@@ -14,7 +16,7 @@ describe MonthlyIssue do
 
   describe '#description' do
     it "includes the RC version" do
-      issue = described_class.new(Version.new('8.3.0'))
+      issue = described_class.new(version: Version.new('8.3.0'))
 
       content = issue.description
 
@@ -22,7 +24,7 @@ describe MonthlyIssue do
     end
 
     it "includes stable branch names" do
-      issue = described_class.new(Version.new('8.3.0-rc1'))
+      issue = described_class.new(version: Version.new('8.3.0-rc1'))
 
       content = issue.description
 
@@ -30,7 +32,7 @@ describe MonthlyIssue do
     end
 
     it "includes the version number" do
-      issue = described_class.new(Version.new('8.3.0'))
+      issue = described_class.new(version: Version.new('8.3.0'))
 
       content = issue.description
 
@@ -43,7 +45,7 @@ describe MonthlyIssue do
     end
 
     it "includes links to specific packages" do
-      issue = described_class.new(Version.new('8.3.0'))
+      issue = described_class.new(version: Version.new('8.3.0'))
 
       content = issue.description
 
@@ -56,7 +58,7 @@ describe MonthlyIssue do
 
   describe '#labels' do
     it 'returns a list of labels' do
-      issue = described_class.new(double)
+      issue = described_class.new(version: double)
 
       expect(issue.labels).to eq 'Release'
     end
@@ -64,10 +66,10 @@ describe MonthlyIssue do
 
   describe '#ordinal_date' do
     it "returns an ordinal date string" do
-      time = Time.new(2015, 12, 22)
-      issue = described_class.new(double, time)
+      time = Time.new(2017, 7, 18)
+      issue = described_class.new(version: double, release_date: time)
 
-      expect(issue.ordinal_date(5)).to eq '15th'
+      expect(issue.ordinal_date(5)).to eq '11th'
     end
   end
 end
