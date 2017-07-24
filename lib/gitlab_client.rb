@@ -25,7 +25,7 @@ class GitlabClient
   end
 
   def self.milestone(project = Project::GitlabCe, title:)
-    milestones(project.path)
+    milestones(project)
       .detect { |m| m.title == title } || MissingMilestone.new
   end
 

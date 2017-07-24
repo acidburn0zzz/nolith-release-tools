@@ -12,11 +12,8 @@ require_relative 'issue'
 require_relative 'release'
 
 class MonthlyIssue < Issue
-  attr_reader :release_date, :version
-
-  def initialize(version, release_date = Release.next_date)
-    @version      = version
-    @release_date = release_date
+  def release_date
+    self[:release_date] || Release.next_date
   end
 
   def title

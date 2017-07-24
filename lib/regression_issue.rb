@@ -1,12 +1,6 @@
 require_relative 'issue'
 
 class RegressionIssue < Issue
-  attr_reader :version
-
-  def initialize(version)
-    @version = version
-  end
-
   def title
     "#{version.to_minor} Regressions"
   end

@@ -14,22 +14,6 @@ end
 describe Issuable do
   subject { TestIssuable.new }
 
-  describe '#initialize' do
-    it 'accepts arbitrary attributes as arguments' do
-      issuable = TestIssuable.new(foo: 'bar')
-
-      expect(issuable.foo).to eq('bar')
-    end
-
-    it 'accepts a block' do
-      issuable = TestIssuable.new do |new_issuable|
-        new_issuable.foo = 'bar'
-      end
-
-      expect(issuable.foo).to eq('bar')
-    end
-  end
-
   describe '#description' do
     it { expect(subject.description).to eq RUBY_VERSION }
   end
