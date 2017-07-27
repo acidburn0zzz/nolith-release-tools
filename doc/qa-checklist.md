@@ -37,6 +37,7 @@ the official release.
 - [ ] Remove project
 - [ ] Create branch via UI
 - [ ] Create tag via UI
+- [ ] Rebase a merge request via UI, then merge the result
 
 ### Web editor
 
