@@ -7,6 +7,14 @@ describe Version do
     described_class.new(version_string)
   end
 
+  describe '#initialize' do
+    it { expect(version('1.2.3')).to eq(version('1.2.3')) }
+    it { expect(version('1.2')).to eq(version('1.2.0')) }
+    it { expect(version('1.2.0-rc1')).to eq(version('1.2.0-rc1')) }
+    it { expect(version('1.2.0-ee')).to eq(version('1.2.0-ee')) }
+    it { expect(version('1.2.0-rc1-ee')).to eq(version('1.2.0-rc1-ee')) }
+  end
+
   describe '#==' do
     it { expect(version('1.2.3') == version('1.2.3-ee')).to be_truthy }
     it { expect(version('1.2.3-rc1') == version('1.2.3-rc1-ee')).to be_truthy }
