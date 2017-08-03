@@ -13,6 +13,7 @@ describe Version do
     it { expect(version('1.2.0-rc1')).to eq(version('1.2.0-rc1')) }
     it { expect(version('1.2.0-ee')).to eq(version('1.2.0-ee')) }
     it { expect(version('1.2.0-rc1-ee')).to eq(version('1.2.0-rc1-ee')) }
+    it { expect(version('1.2-rc1-ee')).to eq(version('1.2.0-rc1-ee')) }
   end
 
   describe '#==' do
@@ -190,6 +191,8 @@ describe Version do
     it { expect(version('1.23.45').stable_branch).to eq '1-23-stable' }
     it { expect(version('1.23.45-rc67').stable_branch).to eq '1-23-stable' }
     it { expect(version('1.23.45-ee').stable_branch).to eq '1-23-stable-ee' }
+    it { expect(version('1.23.45-rc2-ee').stable_branch).to eq '1-23-stable-ee' }
+    it { expect(version('1.23-rc2-ee').stable_branch).to eq '1-23-stable-ee' }
   end
 
   describe '#tag' do
@@ -326,6 +329,16 @@ describe Version do
 
     it 'accepts an optional number' do
       expect(version('8.3.0').to_rc(3)).to eq '8.3.0-rc3'
+    end
+
+    context 'when version is EE' do
+      it 'keeps the -ee suffix' do
+        aggregate_failures do
+          expect(version('8.3.0-ee').to_rc(3)).to eq '8.3.0-rc3-ee'
+          expect(version('8.3.0-rc2-ee').to_rc(3)).to eq '8.3.0-rc3-ee'
+          expect(version('8.3-rc2-ee').to_rc(3)).to eq '8.3.0-rc3-ee'
+        end
+      end
     end
   end
 
