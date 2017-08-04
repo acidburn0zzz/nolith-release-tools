@@ -155,7 +155,9 @@ class Version < String
   end
 
   def to_rc(number = 1)
-    "#{to_patch}-rc#{number}"
+    "#{to_patch}-rc#{number}".tap do |version|
+      version << '-ee' if ee?
+    end
   end
 
   def valid?
