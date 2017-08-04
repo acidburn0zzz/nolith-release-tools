@@ -4,30 +4,64 @@ require 'gitlab_client'
 
 describe GitlabClient do
   describe '.create_merge_request' do
-    context 'when issue is open' do
-      it 'finds issues by title', vcr: { cassette_name: 'issues/release-8-7' } do
-        version = double(milestone_name: '8.7')
-        issue = double(title: 'Release 8.7', labels: 'Release', version: version)
+    before do
+      allow(described_class).to receive(:current_user).and_return(double(id: 42))
+    end
 
-        expect(described_class.find_issue(issue)).not_to be_nil
+    let(:merge_request) do
+      double(
+        project: double(path: 'gitlab-org/gitlab-ce'),
+        title: 'Upstream MR',
+        description: 'Hello world',
+        labels: 'CE upstream',
+        source_branch: 'feature',
+        target_branch: nil)
+    end
+    let(:default_params) do
+      {
+        description:   merge_request.description,
+        assignee_id:   42,
+        labels:        merge_request.labels,
+        source_branch: merge_request.source_branch,
+        target_branch: 'master'
+      }
+    end
+
+    it 'creates a merge request against master on the GitLab CE project' do
+      expect(described_class.__send__(:client))
+        .to receive(:create_merge_request).with(
+          Project::GitlabCe.path,
+          merge_request.title,
+          default_params)
+
+      described_class.create_merge_request(merge_request)
+    end
+
+    context 'when passing a project' do
+      it 'creates a merge request in the given project' do
+        expect(described_class.__send__(:client))
+          .to receive(:create_merge_request).with(
+            Project::GitlabEe.path,
+            merge_request.title,
+            default_params)
+
+        described_class.create_merge_request(merge_request, Project::GitlabEe)
       end
     end
 
-    context 'when issue is closed' do
-      it 'finds issues by title', vcr: { cassette_name: 'issues/regressions-8-5' } do
-        version = double(milestone_name: '8.5')
-        issue = double(title: '8.5 Regressions', labels: 'Release', state_filter: nil, version: version)
-
-        expect(described_class.find_issue(issue)).not_to be_nil
+    context 'when merge request has a target branch' do
+      before do
+        allow(merge_request).to receive(:target_branch).and_return('stable')
       end
-    end
 
-    context 'when issue cannot be found' do
-      it 'does not find non-matching issues', vcr: { cassette_name: 'issues/release-7-14' } do
-        version = double(milestone_name: '7.14')
-        issue = double(title: 'Release 7.14', labels: 'Release', version: version)
+      it 'creates a merge request against the given target branch' do
+        expect(described_class.__send__(:client))
+          .to receive(:create_merge_request).with(
+            Project::GitlabEe.path,
+            merge_request.title,
+            default_params.merge(target_branch: 'stable'))
 
-        expect(described_class.find_issue(issue)).to be_nil
+        described_class.create_merge_request(merge_request, Project::GitlabEe)
       end
     end
   end
