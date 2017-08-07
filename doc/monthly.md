@@ -48,13 +48,14 @@ If you're not sure what to do for any task, [check the guides](../README.md#guid
 
 ## Getting Help
 
-Completing release tasks on time is very important. So if you experience problems with any 
-release task and you don't know who to ask then you should contact someone from this list:
+Completing release tasks on time is very important. If you experience problems with any of
+release tasks and you don't know who to ask then you should contact someone from this list:
 
 * Build Lead [@marin](https://gitlab.com/marin)
+* VP of Engineering [@stanhu](https://gitlab.com/stanhu)
 * CTO [@dzaporozhets](https://gitlab.com/dzaporozhets)
 
-The earlier we determine problem or delay in release - the easier it is to fix it. 
+The earlier we determine problem or delay in release - the easier it is to fix it.
 
 ## Priorities
 
