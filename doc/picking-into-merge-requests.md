@@ -1,4 +1,4 @@
-## Create EE preparing release MR
+## Create MR to prepare release
 
 1. Create `X-Y-stable-patch-Z` and `X-Y-stable-ee-patch-Z` branches from their respective stable branches. Ensure the stable branch is up to date and append `-patch-x` or `-preparing-RCx` depending on the patch release or RC being worked on.
 ```
@@ -11,16 +11,16 @@ git checkout -b X-Y-stable-ee-patch-Z origin/X-Y-stable-ee
 git push origin X-Y-stable-ee-patch-Z
 ```
 
-1. Create MR with URL provided and closely follow steps below, e.g. https://gitlab.com/gitlab-org/gitlab-ee/merge_requests/new?merge_request%5Bsource_branch%5D=9-3-stable-ee-patch-5
-1.  Change target branch to the stable branch for that release
-  - **NOTE:** Do this first as title/description will be lost
-1. Set title to "WIP: Preparing 9.3.3-ee release"
-1. Generate template descriptions using the [preparation merge request template](../templates/preparation_merge_request.md.erb)
-1. Assign to self
-1. Add `Release` label
-1. Set milestone to `X.Y`
-1. `/cc` other release managers and trainees in a comment
-1. Use template steps to begin picking MRs
+1. Create an MR with the URL provided (e.g., https://gitlab.com/gitlab-org/gitlab-ee/merge_requests/new?merge_request%5Bsource_branch%5D=9-3-stable-ee-patch-5) and closely follow the steps below:
+  1. Change target branch to the stable branch for that release  
+     **NOTE:** Do this first as title/description will be lost
+  1. Set title to "WIP: Preparing 9.3.3-ee release"
+  1. Generate template descriptions using the [preparation merge request template](../templates/preparation_merge_request.md.erb)
+  1. Assign to self
+  1. Add `Release` label
+  1. Set milestone to `X.Y`
+  1. `/cc` other release managers and trainees in a comment
+  1. Use template steps to begin picking MRs
 
 ## Merge CE stable changes to EE
 
