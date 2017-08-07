@@ -194,14 +194,65 @@ cherry-picked into `<%= version.stable_branch %>`.
       ```
 ```
 
+### 21st final RC
 
+- Before 13:00 UTC:
+  - Final RC is ready for tagging. Including changes at this stage requires signoff from VP of Eng.
+    - [ ] Ensure tests are green on [CE stable branch]
+    - [ ] Ensure tests are green on [EE stable branch]
+    - [ ] Ensure tests are green on [Omnibus CE stable branch]
+    - [ ] Ensure tests are green on [Omnibus EE stable branch]
+    - [ ] In `#releases`: I'm going to tag final RC release
+    - [ ] Replace XX in the tasks below with the RC version number:
+    - [ ] Tag the final RC version using the [`release` task],
 
-### 22nd before 15:00 UTC:
+          ```sh
+          # In the release-tools project:
+          bundle exec rake "release[<%= version.to_rc(21) %>]"
+          ```
+    - [ ] Check progress of [EE packages build] and [CE packages build]
+    - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to staging
+    - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [staging.gitlab.com]
+        ```sh
+        # In the takeoff project:
+        bundle exec rake "deploy[staging, <%= version.to_rc(21) %>.ee.0]"
+        ```
+    - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to canary
+    - [ ] If needed, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [canary.gitlab.com]
+        ```sh
+        # In the takeoff project:
+        bundle exec rake "deploy[canary, <%= version.to_rc(21) %>.ee.0]"
+        ```
+    - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to production
+    - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to GitLab.com
+        ```sh
+        # In the takeoff project:
+        bundle exec rake "deploy[production, <%= version.to_rc(21) %>.ee.0]"
+        ```
+    - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
+    - [ ] From the [build pipeline], [manually publish public packages]
+    - [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(21) %>)
+    - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
+    - [ ] Post a [tweet about] the `<%= version.to_rc(21) %>` release:
+
+        ```
+        GitLab <%= version.to_rc(21) %> is available: https://packages.gitlab.com/gitlab/unstable
+        Use at your own risk. Please link regressions issues from
+        LINK_TO_REGRESSION_ISSUE
+        ```
+
+- At 15:00 UTC:
+  - [ ] If the final RC is not tagged and deployed by this time, notify the [Build Lead](doc/monthly.md#getting-help)
+
+- At 20:00 UTC:
+  - [ ] If the final RC is not tagged and deployed by this time, notify the [VP of Engineering](doc/monthly.md#getting-help)
+
+### 22nd, the release day:
 
 No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
 
-- Before 13:00 UTC:
+- At 8:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from VP of Eng.):
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
@@ -209,9 +260,9 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Ensure tests are green on [EE stable branch]
   - [ ] Ensure tests are green on [Omnibus CE stable branch]
   - [ ] Ensure tests are green on [Omnibus EE stable branch]
-  - [ ] Make sure to [announce the deployment] on Twitter and GitLab.com
-    * With downtime: 1 hour before
-    * Without downtime: 15 minutes before
+  - [ ] If at this time final release is not ready for tagging, notify the [CTO](doc/monthly.md#getting-help)
+
+- Before 10:00 UTC:
   - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
@@ -221,7 +272,7 @@ This way we ensure the release does not introduce new regressions.
         ```
   - [ ] Check progress of [EE packages build] and [CE packages build]
 
-- Before 14:00 UTC:
+- Before 12:00 UTC:
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
   - [ ] Do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
@@ -233,6 +284,7 @@ This way we ensure the release does not introduce new regressions.
       # In the release-tools project:
       bundle exec rake "patch_issue[<%= version.next_patch %>]"
       ```
+  - [ ] If at this point final release is not ready for public, notify the [CEO](https://about.gitlab.com/team/#sytses)
 
 - At 15:00 UTC:
   - [ ] From the [build pipeline], [manually publish public packages]
