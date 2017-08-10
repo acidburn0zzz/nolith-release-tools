@@ -90,7 +90,7 @@ mark off tasks as you complete them.
 ### About the security branches
 
 The `security` branches are "parallel" to the latest stable branches for each
-release and ensure no one inadvertedly exposes security fixes on GitLab.com,
+release and ensure no one inadvertently exposes security fixes on GitLab.com,
 since the `security-X-Y` -> `X-Y-stable` merge is a manual and conscious operation.
 
 `X-Y-stable` can and should be merged frequently to `security-X-Y`, but `security-X-Y` can
@@ -131,10 +131,21 @@ obvious what was the merge remotes & branches when viewing the history.
 ### About the blog post
 
 Create the blog post merge request **only once all the EE and CE packages are built and
-available on https://packages.gitlab.com/gitlab.
+available on https://packages.gitlab.com/gitlab**.
 
 Before that, you can share the draft either in a private snippet, a confidential
 issue or by any other secure and private means.
+
+The title of the blog post should start with the words "Security Release: ", so
+for example "Security Release: GitLab X.Y.Z released".
+
+### Other communications about the Security Release
+
+Twitter: Aside from writing the blog post, the release should also be [tweeted about just
+as with any other release](https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md#twitter).
+
+Security Newsletter: per the [checklist](https://about.gitlab.com/handbook/engineering/critical-release-process/),
+this is only sent out after the blog post is published, and the marketing team needs to be involved to handle this piece.
 
 ### After the release
 
