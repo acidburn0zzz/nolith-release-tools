@@ -1,9 +1,9 @@
-- [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md)
+- [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md)
 - [ ] Cherry-pick changes into preparation MRs following their instructions
 - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
   milestone using the
   [`Pick into Stable` <%= version.to_minor %> merged merge requests] page
- - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
+ - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Where appropriate, ensure each has made it into both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`

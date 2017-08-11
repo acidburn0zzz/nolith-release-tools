@@ -10,13 +10,15 @@ https://gitlab.com/gitlab-org/gitlab-REPO_CE_OR_EE/merge_requests?label_name%5B%
 
 ### Steps
 
-- Ensure all the MRs in above list are picked into `PREPARATION_BRANCH_NAME` branch.
+- Ensure all the MRs in the list above are picked into `PREPARATION_BRANCH_NAME` branch.
 - Note the following in each picked MR:
+
 ```
 Picked into https://gitlab.com/gitlab-org/gitlab-REPO_CE_OR_EE/merge_requests/MERGE_REQUST_ID, will merge into `STABLE_BRANCH_CE_OR_EE` ready for `FULL_PATCH_OR_RC_VERSION`
 
 /unlabel ~"Pick into Stable"
 ```
-- If there are any conflicts while picking MRs, attempt to resolve, otherwise create new MR against `PREPARATION_BRANCH_NAME` branch and assign it to author of conflicting files.
-- Consider merging CE-to-EE stable MR into this as well for new workflow
+
+- If there are any conflicts while picking MRs then attempt to resolve them; otherwise, create a new MR against the `PREPARATION_BRANCH_NAME` branch and assign it to the author of the conflicting files.
+- Merge CE-to-EE using one of the workflows described in the [Merge CE stable changes to EE docs](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
 - Once this MR is green merge it.
