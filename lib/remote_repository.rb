@@ -98,8 +98,8 @@ class RemoteRepository
   end
 
   def fetch_branch(branch, remote = canonical_remote.name)
-    unless run_git %W(fetch --depth=1 --quiet #{remote} #{branch}:#{branch})
-      run_git %W(fetch --depth=1 --quiet #{remote} #{branch})
+    unless run_git %W(fetch --depth=100 --quiet #{remote} #{branch}:#{branch})
+      run_git %W(fetch --depth=100 --quiet #{remote} #{branch})
     end
   end
 
@@ -115,7 +115,7 @@ class RemoteRepository
   end
 
   def pull(remote, branch)
-    run_git %W(pull --quiet --depth=10 #{remote} #{branch})
+    run_git %W(pull --quiet --depth=100 #{remote} #{branch})
 
     if conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
@@ -156,7 +156,7 @@ class RemoteRepository
   def ensure_repo_exist
     return if File.exist?(path) && File.directory?(File.join(path, '.git'))
 
-    unless self.class.run_git(%W(clone --depth=1 --quiet --origin #{canonical_remote.name} #{canonical_remote.url} #{path}))
+    unless self.class.run_git(%W(clone --depth=100 --quiet --origin #{canonical_remote.name} #{canonical_remote.url} #{path}))
       raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}")
     end
   end
