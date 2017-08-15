@@ -1,0 +1,24 @@
+Main release issue: LINK_TO_MAIN_RELEASE_ISSUE
+
+### Summary
+
+This MR prepares `STABLE_BRANCH_CE_OR_EE` for %"MILESTONE" (`PATCH_OR_RC_VERSION`) by merging `PREPARATION_BRANCH_NAME` into `STABLE_BRANCH_CE_OR_EE`
+
+### MR Filter for ~"Pick into Stable" MRs
+
+https://gitlab.com/gitlab-org/gitlab-REPO_CE_OR_EE/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=MILESTONE&scope=all&sort=updated_asc&state=merged
+
+### Steps
+
+- Ensure all the MRs in the list above are picked into `PREPARATION_BRANCH_NAME` branch.
+- Note the following in each picked MR:
+
+```
+Picked into https://gitlab.com/gitlab-org/gitlab-REPO_CE_OR_EE/merge_requests/MERGE_REQUST_ID, will merge into `STABLE_BRANCH_CE_OR_EE` ready for `FULL_PATCH_OR_RC_VERSION`
+
+/unlabel ~"Pick into Stable"
+```
+
+- If there are any conflicts while picking MRs then attempt to resolve them; otherwise, create a new MR against the `PREPARATION_BRANCH_NAME` branch and assign it to the author of the conflicting files.
+- Merge CE-to-EE using one of the workflows described in the [Merge CE stable changes to EE docs](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
+- Once this MR is green merge it.
