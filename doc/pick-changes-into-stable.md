@@ -26,6 +26,7 @@ missing commits.
     # NOTE: This command is an example! Update it to reflect new version numbers.
     git checkout 8-3-stable
     ```
+    **Note:** For CE/EE these instructions have been superseded/extended by [picking-into-merge-requests.md](picking-into-merge-requests.md). The branch you'll use in this step might instead look like `X-Y-stable-patch-Z`.
 
 1. Cherry-pick the **merge commit** from `master`:
 
