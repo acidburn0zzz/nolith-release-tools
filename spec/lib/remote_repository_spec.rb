@@ -50,7 +50,7 @@ describe RemoteRepository do
 
       # Note: Rugged has no clean way to do this, so we'll shell out
       expect(`git -C #{repo_path} log --oneline | wc -l`.to_i)
-        .to eq(1)
+        .to eq(4)
     end
 
     it 'adds remotes to the repository' do
@@ -110,25 +110,25 @@ describe RemoteRepository do
     subject { described_class.get(repo_remotes) }
 
     context 'with an existing branch' do
-      it 'fetches and checkouts the branch with an history of 1' do
+      it 'fetches and checkouts the branch with an history of 100' do
         subject.ensure_branch_exists('branch-1')
 
         aggregate_failures do
           expect(`git -C #{repo_path} symbolic-ref HEAD`.strip).to eq 'refs/heads/branch-1'
           expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Sample README.md'
-          expect(`git -C #{repo_path} log --oneline | wc -l`.to_i).to eq(1)
+          expect(`git -C #{repo_path} log --oneline | wc -l`.to_i).to eq(2)
         end
       end
     end
 
     context 'with a non-existing branch' do
-      it 'creates and checkouts the branch with an history of 1' do
+      it 'creates and checkouts the branch with an history of 100' do
         subject.ensure_branch_exists('branch-2')
 
         aggregate_failures do
           expect(`git -C #{repo_path} symbolic-ref HEAD`.strip).to eq 'refs/heads/branch-2'
           expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Sample README.md'
-          expect(`git -C #{repo_path} log --oneline | wc -l`.to_i).to eq(1)
+          expect(`git -C #{repo_path} log --oneline | wc -l`.to_i).to eq(4)
         end
       end
     end
