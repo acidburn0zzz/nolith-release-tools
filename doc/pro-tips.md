@@ -93,7 +93,7 @@ Picked into `8-14-stable`, will go into `8.14.1`
 
 When picking into a merge request instead of directly to stable, the following may be useful:
 ```
-Picked into https://gitlab.com/gitlab-org/gitlab-EE_OR_CE/merge_requests/MERGE_REQUST_ID, will merge into `9.3-stable-ee` ready for `9.3.5`
+Picked into https://gitlab.com/gitlab-org/gitlab-EE_OR_CE/merge_requests/MERGE_REQUEST_ID, will merge into `9.3-stable-ee` ready for `9.3.5`
 
 /unlabel ~"Pick into Stable"
 ```

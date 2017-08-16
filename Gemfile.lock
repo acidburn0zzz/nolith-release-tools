@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/NARKOZ/gitlab.git
-  revision: 9b24b85674b0ec13584a5f6a67436a0d6f1a833b
-  ref: 9b24b85674b0ec13584a5f6a67436a0d6f1a833b
-  specs:
-    gitlab (3.7.0)
-      httparty
-      terminal-table (= 1.7.1)
-
-GIT
   remote: https://gitlab.com/gitlab-org/packagecloud-ruby.git
   revision: 0d054f8a5f0518d8ea79d3c77ae704c1f62e98ea
   specs:
@@ -37,8 +28,11 @@ GEM
     docile (1.1.5)
     dotenv (2.0.2)
     excon (0.54.0)
+    gitlab (4.2.0)
+      httparty
+      terminal-table
     hashdiff (0.2.3)
-    httparty (0.14.0)
+    httparty (0.15.6)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.6)
@@ -87,8 +81,8 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     slop (3.6.0)
-    terminal-table (1.7.1)
-      unicode-display_width (~> 1.1.1)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
     thread_safe (0.3.5)
     timecop (0.8.0)
     tzinfo (1.2.2)
@@ -109,7 +103,7 @@ DEPENDENCIES
   byebug
   colorize
   dotenv (~> 2.0.0)
-  gitlab (~> 3.7.0)!
+  gitlab (~> 4.2.0)
   packagecloud-ruby!
   pry
   rake
