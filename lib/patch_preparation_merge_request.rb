@@ -56,8 +56,12 @@ class PatchPreparationMergeRequest < MergeRequest
     end
   end
 
+  def ee?
+    version.ee?
+  end
+
   def repo_ce_or_ee
-    version.ee? ? 'ee' : 'ce'
+    ee? ? 'ee' : 'ce'
   end
 
   def create_branch!

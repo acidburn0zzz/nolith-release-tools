@@ -3,7 +3,8 @@
 - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
   milestone using the
   [`Pick into Stable` <%= version.to_minor %> merged merge requests] page
- - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Where appropriate, ensure each has made it into both CE and EE
+- [ ] Check for merge requests marked [`Pick into Backports`] and cherry-pick those which should go into this release.
+- [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Where appropriate, ensure each has made it into both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
@@ -74,6 +75,7 @@ For references:
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
 [`Pick into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
+[`Pick into Backports`]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name%5B%5D=Pick+into+Backports&scope=all&sort=updated_asc&state=merged
 
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
