@@ -25,6 +25,8 @@ class GitlabClient
   end
 
   def self.milestone(project = Project::GitlabCe, title:)
+    return MissingMilestone.new if title.nil?
+
     milestones(project)
       .detect { |m| m.title == title } || MissingMilestone.new
   end
@@ -52,6 +54,26 @@ class GitlabClient
       confidential: issue.confidential?)
   end
 
+  # Create a branch with the given name
+  #
+  # branch_name - Name of the new branch
+  # ref - commit sha or existing branch ref
+  # project - An object that responds to :path
+  #
+  # Returns a Gitlab::ObjectifiedHash object
+  def self.create_branch(branch_name, ref, project = Project::GitlabCe)
+    client.create_branch(project.path, branch_name, ref)
+  end
+
+  # Find a branch in a given project
+  #
+  # Returns a Gitlab::ObjectifiedHash object, or nil
+  def self.find_branch(branch_name, project = Project::GitlabCe)
+    client.branch(project.path, branch_name)
+  rescue Gitlab::Error::NotFound
+    nil
+  end
+
   # Create a merge request in the given project based on the provided merge request
   #
   # merge_request - An object that responds to the following messages:
@@ -66,14 +88,18 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_merge_request(merge_request, project = Project::GitlabCe)
-    client.create_merge_request(
-      project.path,
-      merge_request.title,
+    milestone = milestone(project, title: merge_request.milestone)
+
+    params = {
       description:   merge_request.description,
       assignee_id:   current_user.id,
       labels:        merge_request.labels,
       source_branch: merge_request.source_branch,
-      target_branch: merge_request.target_branch || 'master')
+      target_branch: merge_request.target_branch,
+      milestone_id:  milestone.id
+    }
+
+    client.create_merge_request(project.path, merge_request.title, params)
   end
 
   # Find an issue in the given project based on the provided issue

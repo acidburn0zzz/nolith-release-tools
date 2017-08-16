@@ -15,15 +15,18 @@ describe GitlabClient do
         description: 'Hello world',
         labels: 'CE upstream',
         source_branch: 'feature',
-        target_branch: nil)
+        target_branch: 'master',
+        milestone: nil)
     end
+
     let(:default_params) do
       {
         description:   merge_request.description,
         assignee_id:   42,
         labels:        merge_request.labels,
         source_branch: merge_request.source_branch,
-        target_branch: 'master'
+        target_branch: 'master',
+        milestone_id: nil
       }
     end
 
@@ -62,6 +65,16 @@ describe GitlabClient do
             default_params.merge(target_branch: 'stable'))
 
         described_class.create_merge_request(merge_request, Project::GitlabEe)
+      end
+    end
+
+    context 'with miletone', vcr: { cassette_name: 'merge_requests/create_milestone' } do
+      it 'sets milestone id' do
+        allow(merge_request).to receive(:milestone).and_return('9.4')
+
+        response = described_class.create_merge_request(merge_request)
+
+        expect(response.milestone.title).to eq '9.4'
       end
     end
   end
@@ -118,6 +131,26 @@ describe GitlabClient do
 
         expect(described_class.find_merge_request(merge_request, Project::GitlabEe)).to be_nil
       end
+    end
+  end
+
+  describe '.find_branch' do
+    it 'finds existing branches', vcr: { cassette_name: 'branches/9-4-stable' } do
+      expect(described_class.find_branch('9-4-stable').name).to eq '9-4-stable'
+    end
+
+    it "returns nil when branch can't be found", vcr: { cassette_name: 'branches/9-4-stable-doesntexist' } do
+      expect(described_class.find_branch('9-4-stable-doesntexist')).to be_nil
+    end
+  end
+
+  describe '.create_branch' do
+    it 'creates a branch', vcr: { cassette_name: 'branches/create-test' } do
+      branch_name = 'test-branch-from-release-tools'
+
+      response = described_class.create_branch(branch_name, 'master')
+
+      expect(response.name).to eq branch_name
     end
   end
 

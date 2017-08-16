@@ -17,14 +17,22 @@ def security_release?
   ENV['SECURITY'] == 'true'
 end
 
-def create_or_show_issue(issue)
-  if issue.exists?
-    $stdout.puts "--> Issue \"#{issue.title}\" already exists.".red
-    $stdout.puts "    #{issue.url}"
+def create_or_show_issuable(issuable, type)
+  if issuable.exists?
+    $stdout.puts "--> #{type} \"#{issuable.title}\" already exists.".red
+    $stdout.puts "    #{issuable.url}"
     exit 1
   else
-    issue.create
-    $stdout.puts "--> Issue \"#{issue.title}\" created.".green
-    $stdout.puts "    #{issue.url}"
+    issuable.create
+    $stdout.puts "--> #{type} \"#{issuable.title}\" created.".green
+    $stdout.puts "    #{issuable.url}"
   end
+end
+
+def create_or_show_issue(issue)
+  create_or_show_issuable(issue, "Issue")
+end
+
+def create_or_show_merge_request(merge_request)
+  create_or_show_issuable(merge_request, "Merge Request")
 end

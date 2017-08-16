@@ -12,7 +12,7 @@ class Issuable < OpenStruct
   end
 
   def project
-    self[:project] || Project::GitlabCe
+    self[:project] || default_project
   end
 
   def iid
@@ -36,6 +36,10 @@ class Issuable < OpenStruct
   end
 
   private
+
+  def default_project
+    Project::GitlabCe
+  end
 
   def template
     File.read(template_path)
