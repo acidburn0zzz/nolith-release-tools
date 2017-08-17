@@ -136,16 +136,16 @@ available on https://packages.gitlab.com/gitlab**.
 Before that, you can share the draft either in a private snippet, a confidential
 issue or by any other secure and private means.
 
-The title of the blog post should start with the words "Security Release: ", so
-for example "Security Release: GitLab X.Y.Z released".
+The title of the blog post should be of the format "GitLab Security Release: x.y.z".
 
 ### Other communications about the Security Release
 
-Twitter: Aside from writing the blog post, the release should also be [tweeted about just
-as with any other release](https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md#twitter).
-
-Security Newsletter: per the [checklist](https://about.gitlab.com/handbook/engineering/critical-release-process/),
-this is only sent out after the blog post is published, and the marketing team needs to be involved to handle this piece.
+Per the [checklist](https://about.gitlab.com/handbook/engineering/critical-release-process/),
+security releases need to be communicated about widely and loudly, using 
+- Twitter: consider adopting guidelines from how frequently we tweet, and with what timing
+from the [guidelines on Twitter use for deployments](https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md#twitter)
+- Security Newsletter:  this is only sent out after the blog post is published, 
+- and the marketing team needs to be involved to handle this piece.
 
 ### After the release
 
