@@ -15,3 +15,7 @@ the [omnibus release
 documentation](https://docs.gitlab.com/omnibus/release/README.html).
 
 Remember to include the `.1` when deploying the latest version!
+
+---
+
+[Return to Guides](../README.md#guides)

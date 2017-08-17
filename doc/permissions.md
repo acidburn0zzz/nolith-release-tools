@@ -28,10 +28,10 @@ On GitHub you will need **Push** access to:
 First make sure you have a copy of the [takeoff project](https://gitlab.com/gitlab-org/takeoffo).
 
 Now you need to request for an account on the Chef server, please [open a new issue](https://gitlab.com/gitlab-com/infrastructure/issues/new)
-and an operations engineer will provide you with a private key that you can store in /path/to/takeoff/.chef/your_username.pem in order
-to have the `knife` tool configured. If all went well you can check if you
-have access to the Chef server by running `knife status` from the
-takeoff directory.
+and an operations engineer will provide you with a private key that you can
+store in `/path/to/takeoff/.chef/your_username.pem` in order to have the `knife`
+tool configured. If all went well you can check if you have access to the Chef
+server by running `knife status` from the takeoff directory.
 
 Your `/path/to/takeoff/.chef/knife.rb` file should looks similar to:
 
@@ -56,3 +56,7 @@ cookbook_path            ["#{current_dir}/../cookbooks"]
 knife[:vault_mode] = 'client'
 knife[:ssh_user] = 'janedoe'
 ```
+
+---
+
+[Return to Guides](../README.md#guides)
