@@ -144,8 +144,8 @@ Per the [checklist](https://about.gitlab.com/handbook/engineering/critical-relea
 security releases need to be communicated about widely and loudly, using 
 - Twitter: consider adopting guidelines from how frequently we tweet, and with what timing
 from the [guidelines on Twitter use for deployments](https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md#twitter)
-- Security Newsletter:  this is only sent out after the blog post is published, 
-- and the marketing team needs to be involved to handle this piece.
+- Security Newsletter: this is only sent out after the blog post is published, 
+and the marketing team needs to be involved in sending the newsletter.
 
 ### After the release
 
