@@ -1,14 +1,14 @@
 # Creating Release Candidates
 
 Release Candidates (RCs) are pre-release versions of the next major version of
-GitLab CE and EE. The first RC (RC1) is typically created on the 8th. This is
-because we have a feature freeze, and new features can only be merged into the
-release up until the 7th (included).
+GitLab CE and EE. The first RC, appropriately called RC1, is typically created
+on the 8th. This is because we have a feature freeze, and new features can only
+be merged into the release up through the 7th.
 
-Every release should have several RCs and can have an unlimited number of RCs.
-Usually, at least 4 RCs are made before the official release. This ensure new
-stuff are tried in production and the associated bugs can be fixed before the
-official release.
+Every release will have several RCs, and there is no limit on the final number.
+Usually, at least four RCs are made before the official release. This ensures
+new changes are tried in production, at scale, and new bugs can be fixed before
+the official release.
 
 Usually RC1 has the most number of migrations that should be deployed into
 production as soon as possible. Release managers should prioritize getting RC1
@@ -20,10 +20,10 @@ those that contain new migrations.
 
 ## About the "Release Candidate" naming
 
-We call them "Release Candidate" even though the early RCs are
-closer to Beta than real RC. This simplify our releasing/packaging tools &
-scripts. This approach is coherent with packages.gitlab.com since our RC packages
-are available under [`gitlab/unstable`](https://packages.gitlab.com/gitlab/unstable).
+We call them "Release Candidates" even though the early RCs are closer to Beta
+than real RC. This simplifies our releasing/packaging tools and scripts. This
+approach is coherent with packages.gitlab.com since our RC packages are
+available under [`gitlab/unstable`].
 
 ## Guides
 
@@ -56,9 +56,6 @@ example of the upcoming release, and 8.1 as an example of the previous release.
 
 ##### GitLab CE
 
-> **Note:** This only needs to be done for the GitLab CE repository. Changes
-will be merged into GitLab EE.
-
 1. Copy the previous update guide to use as a template:
 
     ```sh
@@ -67,12 +64,10 @@ will be merged into GitLab EE.
     ```
 
 1. Update the versions in the top-level header.
-1. Update the name of the `X-Y-stable[-ee]` branches in **Get latest code**.
+1. Update the name of the latest `X-Y-stable[-ee]` branch **Get latest code**.
    There are two occurrences.
-1. Ensure the `gitlab-shell` version in **Update gitlab-shell** matches the
-   [required version][GITLAB_SHELL_VERSION].
 1. Update the names of the `X-Y-stable` branches in **Update configuration
-   files**. There are eight occurrences.
+   files**.
 1. Update references to the "previous version" in **Things went south?** and the
    link to the previous guide.
 1. Add any special instructions specific to this version. For example, maybe
@@ -158,7 +153,7 @@ Use the [`release`](rake-tasks.md#releaseversion) Rake task:
 bundle exec rake "release[8.2.0-rc2]"
 ```
 
-[GITLAB_SHELL_VERSION]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/GITLAB_SHELL_VERSION
+[`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
 ["Change for stable release" process]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
 [cherry-picked]: pick-changes-into-stable.md
 
