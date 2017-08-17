@@ -179,23 +179,25 @@ the following scenario:
    branches modified the file, when only one did. For example, the
    `git log --graph foo.rb` output may look like:
 
-```
-*   0b6e1dd5b2 Merge commit '12345678' into 9-0-stable-ee
-|\
-| * 5819ca1a24 Modified foo.rb
-| * cd74c1434e Added foo.rb
-* 621cbd0414 Squashed merge for `9-0-stable` to `9-0-stable-ee`
-```
+    ```
+    *   0b6e1dd5b2 Merge commit '12345678' into 9-0-stable-ee
+    |\
+    | * 5819ca1a24 Modified foo.rb
+    | * cd74c1434e Added foo.rb
+    * 621cbd0414 Squashed merge for `9-0-stable` to `9-0-stable-ee`
+    ```
 
-Because `621cbd0414` is a squashed commit and no longer a merge commit, it has
-no link back to `cd74c1434e`. When Git attempts to merge `621cbd0414` with
-`9-0-stable-ee`, Git will flag a conflict.
+    Because `621cbd0414` is a squashed commit and no longer a merge commit, it has
+    no link back to `cd74c1434e`. When Git attempts to merge `621cbd0414` with
+    `9-0-stable-ee`, Git will flag a conflict.
 
-Instead, if everything is done properly, the graph should look more like this:
+    Instead, if everything is done properly, the graph should look more like this:
 
-```
-* 5819ca1a24 Modified foo.rb
-* cd74c1434e Added foo.rb
-```
+    ```
+    * 5819ca1a24 Modified foo.rb
+    * cd74c1434e Added foo.rb
+    ```
+
+---
 
 [Return to Guides](../README.md#guides)
