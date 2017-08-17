@@ -1,6 +1,9 @@
 # This ensures we don't push to the repo during tests
 ENV['TEST'] = 'true'
 
+# SimpleCov needs to be loaded before everything else
+require_relative 'support/simplecov'
+
 require_relative('../init.rb')
 require 'active_support/core_ext/string/strip'
 
