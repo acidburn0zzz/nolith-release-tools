@@ -34,8 +34,9 @@ missing commits.
     # NOTE: This command is an example! Update it to reflect the actual SHA.
     git cherry-pick [merge commit sha] -m 1
     ```
-    To learn why it's safe to use `-m 1`, please read this StackOverflow answer:
-    http://stackoverflow.com/questions/12626754/git-cherry-pick-syntax-and-merge-branches/12628579#12628579
+
+    To learn why it's safe to use `-m 1`, please read [this StackOverflow
+    answer](https://stackoverflow.com/a/12628579/223897).
 
 1. Push the updated `stable` branch:
 
