@@ -27,7 +27,9 @@ missing commits.
     git checkout 8-3-stable
     ```
 
-1. Cherry-pick the **merge commit** from `master`:
+1. Cherry-pick the **merge commit** from `master`. You should almost always be
+   picking merge commits because there may be a series of commits in a merge
+   request that must go together.
 
     ```sh
     # NOTE: This command is an example! Update it to reflect the actual SHA.
