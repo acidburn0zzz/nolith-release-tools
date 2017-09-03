@@ -38,6 +38,11 @@ missing commits.
     To learn why it's safe to use `-m 1`, please read this StackOverflow answer:
     http://stackoverflow.com/questions/12626754/git-cherry-pick-syntax-and-merge-branches/12628579#12628579
 
+   If you do not see the merge commit in the GitLab system note, it's likely
+   this a Sidekiq job failed to post it. The merge commit likely exists in the
+   repository. Check to see if you can find it by searching for the
+   title of the merge request in `git log`.
+
 1. Push the updated `stable` branch:
 
     ```sh
