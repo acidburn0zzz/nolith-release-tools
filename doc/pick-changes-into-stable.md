@@ -28,7 +28,9 @@ missing commits.
     ```
     **Note:** For CE/EE these instructions have been superseded/extended by [picking-into-merge-requests.md](picking-into-merge-requests.md). The branch you'll use in this step might instead look like `X-Y-stable-patch-Z`.
 
-1. Cherry-pick the **merge commit** from `master`:
+1. Cherry-pick the **merge commit** from `master`. You should almost always be
+   picking merge commits because there may be a series of commits in a merge
+   request that must go together.
 
     ```sh
     # NOTE: This command is an example! Update it to reflect the actual SHA.
@@ -37,6 +39,11 @@ missing commits.
 
     To learn why it's safe to use `-m 1`, please read [this StackOverflow
     answer](https://stackoverflow.com/a/12628579/223897).
+
+   If you do not see the merge commit in the GitLab system note, it's likely
+   this a Sidekiq job failed to post it. The merge commit likely exists in the
+   repository. Check to see if you can find it by searching for the
+   title of the merge request in `git log`.
 
 1. Push the updated `stable` branch:
 
