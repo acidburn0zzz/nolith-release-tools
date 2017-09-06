@@ -39,7 +39,7 @@ module Changelog
     end
 
     def date
-      if version.patch.zero?
+      if version.monthly?
         Date.today.strftime("%Y-%m-22")
       else
         Date.today.strftime("%Y-%m-%d")

@@ -54,6 +54,23 @@ describe Version do
     end
   end
 
+  describe '#monthly?' do
+    it 'is true for monthly releases' do
+      expect(version('1.2.0')).to be_monthly
+      expect(version('1.2.0-ee')).to be_monthly
+    end
+
+    it 'is false for patch releases' do
+      expect(version('1.2.3')).not_to be_monthly
+      expect(version('1.2.3-ee')).not_to be_monthly
+    end
+
+    it 'is false for pre-releases' do
+      expect(version('1.2.0-rc1')).not_to be_monthly
+      expect(version('1.2.0-rc1-ee')).not_to be_monthly
+    end
+  end
+
   describe '#patch?' do
     it 'is true for patch releases' do
       expect(version('1.2.3')).to be_patch
