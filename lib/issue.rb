@@ -7,8 +7,6 @@ class Issue < Issuable
   end
 
   def remote_issuable
-    return @remote_issuable if defined?(@remote_issuable)
-
     @remote_issuable ||= GitlabClient.find_issue(self, project)
   end
 

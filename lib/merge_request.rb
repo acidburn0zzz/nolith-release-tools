@@ -19,8 +19,6 @@ class MergeRequest < Issuable
   end
 
   def remote_issuable
-    return @remote_issuable if defined?(@remote_issuable)
-
     @remote_issuable ||= GitlabClient.find_merge_request(self, project)
   end
 
