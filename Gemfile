@@ -13,7 +13,7 @@ gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.g
 group :development, :test do
   gem 'byebug'
   gem 'pry'
-  gem 'rspec',         '~> 3.4.0'
+  gem 'rspec',         '~> 3.6.0'
   gem 'rubocop',       '~> 0.49.0'
   gem 'rubocop-rspec', '~> 1.15.0'
   gem 'simplecov',     '~> 0.15.0'
