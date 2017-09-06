@@ -17,8 +17,8 @@ describe Version do
   end
 
   describe '#==' do
-    it { expect(version('1.2.3') == version('1.2.3-ee')).to be_truthy }
-    it { expect(version('1.2.3-rc1') == version('1.2.3-rc1-ee')).to be_truthy }
+    it { expect(version('1.2.3')).to eq version('1.2.3-ee') }
+    it { expect(version('1.2.3-rc1')).to eq version('1.2.3-rc1-ee') }
   end
 
   describe '#<=>' do
@@ -38,12 +38,6 @@ describe Version do
     it { expect(version('1.2.3')).to be <= version('2.0.8') }
   end
 
-  describe '#milestone_name' do
-    it 'returns the milestone name' do
-      expect(version('8.3.2').milestone_name).to eq '8.3'
-    end
-  end
-
   describe '#ee?' do
     it 'returns true when EE' do
       expect(version('8.3.2-ee')).to be_ee
@@ -60,6 +54,24 @@ describe Version do
     end
   end
 
+  describe '#patch?' do
+    it 'is true for patch releases' do
+      expect(version('1.2.3')).to be_patch
+    end
+
+    it 'is false for pre-releases' do
+      expect(version('1.2.0-rc1')).not_to be_patch
+    end
+
+    it 'is false for minor releases' do
+      expect(version('1.2.0')).not_to be_patch
+    end
+
+    it 'is false for invalid releases' do
+      expect(version('wow.1')).not_to be_patch
+    end
+  end
+
   describe '#major' do
     it { expect(version('1.2.3').major).to eq(1) }
     it { expect(version('1.2.0-rc1').major).to eq(1) }
@@ -72,24 +84,6 @@ describe Version do
     it { expect(version('1.2.0-rc1').minor).to eq(2) }
     it { expect(version('1.2.0-ee').minor).to eq(2) }
     it { expect(version('wow.1').minor).to eq(0) }
-  end
-
-  describe '#patch?' do
-    it 'is true for patch releases' do
-      expect(version('1.2.3').patch?).to be_truthy
-    end
-
-    it 'is false for pre-releases' do
-      expect(version('1.2.0-rc1').patch?).to be_falsey
-    end
-
-    it 'is false for minor releases' do
-      expect(version('1.2.0').patch?).to be_falsey
-    end
-
-    it 'is false for invalid releases' do
-      expect(version('wow.1').patch?).to be_falsey
-    end
   end
 
   describe '#rc' do
@@ -108,15 +102,15 @@ describe Version do
 
   describe '#release?' do
     it 'is true for release versions' do
-      expect(version('1.2.3').release?).to be_truthy
+      expect(version('1.2.3')).to be_release
     end
 
     it 'is false for pre-release versions' do
-      expect(version('1.2.3-rc1').release?).to be_falsey
+      expect(version('1.2.3-rc1')).not_to be_release
     end
 
     it 'is false for invalid versions' do
-      expect(version('wow.1').release?).to be_falsey
+      expect(version('wow.1')).not_to be_release
     end
   end
 
@@ -343,11 +337,11 @@ describe Version do
   end
 
   describe '#valid?' do
-    it { expect(version('1.2.3').valid?).to be_truthy }
-    it { expect(version('11.22.33').valid?).to be_truthy }
-    it { expect(version('2.2.3-rc1').valid?).to be_truthy }
-    it { expect(version('2.2.3.rc1').valid?).to be_falsey }
-    it { expect(version('1.2.3.4').valid?).to be_falsey }
-    it { expect(version('wow').valid?).to be_falsey }
+    it { expect(version('1.2.3')).to be_valid }
+    it { expect(version('11.22.33')).to be_valid }
+    it { expect(version('2.2.3-rc1')).to be_valid }
+    it { expect(version('2.2.3.rc1')).not_to be_valid }
+    it { expect(version('1.2.3.4')).not_to be_valid }
+    it { expect(version('wow')).not_to be_valid }
   end
 end
