@@ -40,7 +40,7 @@ class RemoteRepository
 
   def create_tag(tag)
     message = "Version #{tag}"
-    unless run_git %W(tag -a #{tag} -m #{message})
+    unless run_git %W[tag -a #{tag} -m #{message}]
       raise CannotCreateTagError.new(tag)
     end
 
@@ -52,8 +52,8 @@ class RemoteRepository
   end
 
   def commit(file, message)
-    run_git %W(add #{file})
-    run_git %W(commit --quiet -m #{message})
+    run_git %W[add #{file}]
+    run_git %W[commit --quiet -m #{message}]
   end
 
   def pull_from_all_remotes(ref)
@@ -94,28 +94,28 @@ class RemoteRepository
   end
 
   def add_remote(name, url)
-    run_git %W(remote add #{name} #{url})
+    run_git %W[remote add #{name} #{url}]
   end
 
   def fetch_branch(branch, remote = canonical_remote.name)
-    unless run_git %W(fetch --depth=100 --quiet #{remote} #{branch}:#{branch})
-      run_git %W(fetch --depth=100 --quiet #{remote} #{branch})
+    unless run_git %W[fetch --depth=100 --quiet #{remote} #{branch}:#{branch}]
+      run_git %W[fetch --depth=100 --quiet #{remote} #{branch}]
     end
   end
 
   def checkout_branch(branch)
-    run_git %W(checkout --quiet #{branch})
+    run_git %W[checkout --quiet #{branch}]
   end
 
   def checkout_new_branch(branch, remote, base_branch: 'master')
     fetch_branch(base_branch, remote)
-    unless run_git %W(checkout --quiet -b #{branch} #{remote}/#{base_branch})
+    unless run_git %W[checkout --quiet -b #{branch} #{remote}/#{base_branch}]
       raise CannotCheckoutBranchError.new(branch)
     end
   end
 
   def pull(remote, branch)
-    run_git %W(pull --quiet --depth=100 #{remote} #{branch})
+    run_git %W[pull --quiet --depth=100 #{remote} #{branch}]
 
     if conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{branch} from #{remote}")
@@ -123,7 +123,7 @@ class RemoteRepository
   end
 
   def push(remote, ref)
-    cmd = %W(push #{remote} #{ref}:#{ref})
+    cmd = %W[push #{remote} #{ref}:#{ref}]
     if ENV['TEST']
       $stdout.puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
       $stdout.puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
@@ -156,7 +156,7 @@ class RemoteRepository
   def ensure_repo_exist
     return if File.exist?(path) && File.directory?(File.join(path, '.git'))
 
-    unless self.class.run_git(%W(clone --depth=100 --quiet --origin #{canonical_remote.name} #{canonical_remote.url} #{path}))
+    unless self.class.run_git(%W[clone --depth=100 --quiet --origin #{canonical_remote.name} #{canonical_remote.url} #{path}])
       raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}")
     end
   end
