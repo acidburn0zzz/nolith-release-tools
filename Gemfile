@@ -16,7 +16,7 @@ group :development, :test do
   gem 'rspec',         '~> 3.4.0'
   gem 'rubocop',       '~> 0.49.0'
   gem 'rubocop-rspec', '~> 1.15.0'
-  gem 'simplecov',     '~> 0.12.0'
+  gem 'simplecov',     '~> 0.15.0'
   gem 'timecop',       '~> 0.9.0'
   gem 'vcr',           '~> 2.9.0'
   gem 'webmock',       '~> 1.22.0'
