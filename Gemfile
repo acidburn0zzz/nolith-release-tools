@@ -12,12 +12,13 @@ gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.g
 
 group :development, :test do
   gem 'byebug'
+  gem 'climate_control', '~> 0.2.0'
   gem 'pry'
-  gem 'rspec',         '~> 3.6.0'
-  gem 'rubocop',       '~> 0.49.0'
-  gem 'rubocop-rspec', '~> 1.15.0'
-  gem 'simplecov',     '~> 0.15.0'
-  gem 'timecop',       '~> 0.9.0'
-  gem 'vcr',           '~> 2.9.0'
-  gem 'webmock',       '~> 1.22.0'
+  gem 'rspec',           '~> 3.6.0'
+  gem 'rubocop',         '~> 0.49.0'
+  gem 'rubocop-rspec',   '~> 1.15.0'
+  gem 'simplecov',       '~> 0.15.0'
+  gem 'timecop',         '~> 0.9.0'
+  gem 'vcr',             '~> 2.9.0'
+  gem 'webmock',         '~> 1.22.0'
 end

@@ -2,39 +2,28 @@ require 'spec_helper'
 require 'packagecloud_client'
 
 describe PackagecloudClient do
-  include StubENV
+  around do |ex|
+    ClimateControl.modify PACKAGECLOUD_USER: 'gitlab', PACKAGECLOUD_TOKEN: 'token' do
+      ex.run
+    end
+  end
 
   describe '#initialize' do
-    before do
-      stub_env('PACKAGECLOUD_USER', 'user')
-      stub_env('PACKAGECLOUD_TOKEN', 'token')
-    end
-
     it 'gets user and token from ENV variables' do
-      expect(subject.username).to eq('user')
+      expect(subject.username).to eq('gitlab')
       expect(subject.token).to eq('token')
     end
   end
 
   describe '#credentials' do
-    before do
-      stub_env('PACKAGECLOUD_USER', 'user')
-      stub_env('PACKAGECLOUD_TOKEN', 'token')
-    end
-
     it 'returns a credential with previously defined user and token' do
       expect(subject.credentials).to be_a(Packagecloud::Credentials)
-      expect(subject.credentials.username).to eq('user')
+      expect(subject.credentials.username).to eq('gitlab')
       expect(subject.credentials.token).to eq('token')
     end
   end
 
   describe '#connection' do
-    before do
-      stub_env('PACKAGECLOUD_USER', 'user')
-      stub_env('PACKAGECLOUD_TOKEN', 'token')
-    end
-
     it 'returns a connection pointing to our instance' do
       expect(subject.connection).to be_a(Packagecloud::Connection)
       expect(subject.connection.host).to eq('packages.gitlab.com')
@@ -96,11 +85,6 @@ describe PackagecloudClient do
   end
 
   describe '#public_repo_for_package' do
-    before do
-      stub_env('PACKAGECLOUD_USER', 'user')
-      stub_env('PACKAGECLOUD_TOKEN', 'token')
-    end
-
     # CE
     let(:deb_amd64) { 'gitlab-ce_8.16.3-ce.1_amd64.deb' }
     let(:deb_rc_amd64) { 'gitlab-ce_8.16.3-rc1.ce.1_amd64.deb' }
