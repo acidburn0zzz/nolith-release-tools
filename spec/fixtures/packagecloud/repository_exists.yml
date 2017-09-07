@@ -331,7 +331,7 @@ http_interactions:
   recorded_at: Fri, 10 Feb 2017 05:23:56 GMT
 - request:
     method: get
-    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/[PACKAGECLOUD_USER]/test-repository.json
+    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/gitlab/test-repository.json
     body:
       encoding: US-ASCII
       string: ''
@@ -428,12 +428,12 @@ http_interactions:
       - '0.049919'
     body:
       encoding: ASCII-8BIT
-      string: '{"url":"https://packages.gitlab.com//[PACKAGECLOUD_USER]/test-repository"}'
+      string: '{"url":"https://packages.gitlab.com//gitlab/test-repository"}'
     http_version: 
   recorded_at: Fri, 10 Feb 2017 05:23:58 GMT
 - request:
     method: get
-    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/[PACKAGECLOUD_USER]/test-not-found-repository.json
+    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/gitlab/test-not-found-repository.json
     body:
       encoding: US-ASCII
       string: ''
@@ -482,7 +482,7 @@ http_interactions:
   recorded_at: Fri, 10 Feb 2017 05:23:59 GMT
 - request:
     method: get
-    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/[PACKAGECLOUD_USER]/test-repository.json
+    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/gitlab/test-repository.json
     body:
       encoding: US-ASCII
       string: ''
@@ -530,7 +530,7 @@ http_interactions:
       - max-age=31536000
     body:
       encoding: ASCII-8BIT
-      string: '{"name":"test-repository","path":"/[PACKAGECLOUD_USER]/test-repository","repo_type":null,"total_installs_count":0,"created_at":"2017-02-10T05:23:58.000Z","updated_at":"2017-02-10T05:23:58.000Z","paths":{"create_package":"/api/v1/repos/[PACKAGECLOUD_USER]/test-repository/packages.json","package_contents":"/api/v1/repos/[PACKAGECLOUD_USER]/test-repository/packages/contents","master_tokens":"/api/v1/repos/[PACKAGECLOUD_USER]/test-repository/master_tokens","create_master_token":"/api/v1/repos/[PACKAGECLOUD_USER]/test-repository/master_tokens","self":"/api/v1/repos/[PACKAGECLOUD_USER]/test-repository"},"urls":{"install_script":"https://c8b17a27a1256d69976f0271c3242656c297e9f185f4c4fa:@packages.gitlab.com/install/repositories/[PACKAGECLOUD_USER]/test-repository/script.:package_type.sh"}}'
+      string: '{"name":"test-repository","path":"/gitlab/test-repository","repo_type":null,"total_installs_count":0,"created_at":"2017-02-10T05:23:58.000Z","updated_at":"2017-02-10T05:23:58.000Z","paths":{"create_package":"/api/v1/repos/gitlab/test-repository/packages.json","package_contents":"/api/v1/repos/gitlab/test-repository/packages/contents","master_tokens":"/api/v1/repos/gitlab/test-repository/master_tokens","create_master_token":"/api/v1/repos/gitlab/test-repository/master_tokens","self":"/api/v1/repos/gitlab/test-repository"},"urls":{"install_script":"https://c8b17a27a1256d69976f0271c3242656c297e9f185f4c4fa:@packages.gitlab.com/install/repositories/gitlab/test-repository/script.:package_type.sh"}}'
     http_version: 
   recorded_at: Fri, 10 Feb 2017 05:24:00 GMT
 recorded_with: VCR 2.9.3
