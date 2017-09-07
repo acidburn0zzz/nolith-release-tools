@@ -74,5 +74,14 @@ describe SecurityPatchIssue do
 
       expect(content).to include 'Make the confidential security issues public'
     end
+
+    it 'includes a step to publish the packages one tag at a time' do
+      issue = described_class.new(version: Version.new('8.3.1'))
+
+      allow(issue).to receive(:regression_issue).and_return(spy)
+      content = issue.description
+
+      expect(content).to include 'Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.'
+    end
   end
 end
