@@ -38,8 +38,6 @@ Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requ
 
 - [ ] Changes marked ~"Pick into Stable" have been picked
 - [ ] Changes marked ~"Pick into Backports" have been picked
-<% if ee? %>
-- [ ] CE->EE merge has taken place
-<% end %>
+<% if ee? %>- [ ] CE->EE merge has taken place<% end %>
 - [ ] Conflicts resolved
-- [ ] No new commits have introduced directly to the stable branch while this MR was in progress. If there are,<% unless ee? %> ensure these are get merged into EE and<% end %> check for a green pipeline after merging this MR.
+- [ ] No new commits have introduced directly to the stable branch while this MR was in progress. If there are,<% unless ee? %> ensure these are merged into EE and<% end %> check for a green pipeline after merging this MR.
