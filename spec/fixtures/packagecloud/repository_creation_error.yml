@@ -331,7 +331,7 @@ http_interactions:
   recorded_at: Fri, 10 Feb 2017 05:56:13 GMT
 - request:
     method: get
-    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/[PACKAGECLOUD_USER]/this-is-a-repository-with-a-bigger-than-max-amount-of-characters-packagecloud-support.json
+    uri: https://[PACKAGECLOUD_TOKEN]@packages.gitlab.com/api/v1/repos/gitlab/this-is-a-repository-with-a-bigger-than-max-amount-of-characters-packagecloud-support.json
     body:
       encoding: US-ASCII
       string: ''
