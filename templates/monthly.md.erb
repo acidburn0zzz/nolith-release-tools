@@ -4,19 +4,19 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 - [ ] In `#development`:
 
-      ```
-      @channel
+    ```
+    @channel
 
-      I am about to create the `<%= version.stable_branch %>` branch. Everything merged into `master`
-      after this point will go into next month's release. Only regression and security fixes
-      will be cherry-picked into `<%= version.stable_branch %>`.
+    I am about to create the `<%= version.stable_branch %>` branch. Everything merged into `master`
+    after this point will go into next month's release. Only regression and security fixes
+    will be cherry-picked into `<%= version.stable_branch %>`.
 
-      Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
-      and the `Pick into Stable` label.
+    Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
+    and the `Pick into Stable` label.
 
-      From now on, please follow the "After the 7th" process:
-      https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
-      ```
+    From now on, please follow the "After the 7th" process:
+    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
+    ```
 - [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
 - [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
