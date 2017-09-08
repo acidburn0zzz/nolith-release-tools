@@ -33,6 +33,7 @@
       I'm going to deploy `<%= version %>` to production
       ```
 - [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
+- [ ] Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Mark any applicable previous releases as vulnerable on https://version.gitlab.com.
 - [ ] Check any sensitive information from the confidential security issues, and redact them if needed
@@ -94,3 +95,5 @@ For references:
 [publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
 [the blog post]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/security.md#about-the-blog-post
 [the security process]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/security.md#merging-ce-stable-into-ee-stable
+
+[publish the packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
