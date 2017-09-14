@@ -47,13 +47,11 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
-  - [ ] Ensure tests are green on [CE stable branch]
-  - [ ] Ensure tests are green on [EE stable branch]
-  - [ ] Ensure tests are green on [Omnibus CE stable branch]
-  - [ ] Ensure tests are green on [Omnibus EE stable branch]
+  - [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
+  - [ ] Ensure build are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
   - [ ] Make sure to [announce the deployment] on Twitter and GitLab.com
-    * With downtime: 1 hour before
-    * Without downtime: 15 minutes before
+      * With downtime: 1 hour before
+      * Without downtime: 15 minutes before
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
