@@ -95,12 +95,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       # In the release-tools project:
       bundle exec rake "regression_issue[<%= version.to_patch %>]"
       ```
-- [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`www-gitlab-com` project]:
-
-      ```sh
-      # In the www-gitlab-com project:
-      bundle exec rake "new_release_post[<%= version.to_minor %>]"
-      ```
 
 #### QA
 
@@ -109,23 +103,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 ### Anytime after RC1 but before 22nd
 
-
-- [ ] Check that everyone is mentioned on the [blog post] using `@all`:
-
-      ```
-      Hello @all, this is the monthly release post that will go out on the 22nd,
-      announcing the new GitLab version. Look through it to see if we can make any
-      changes and feel free to comment with suggestions or questions!
-      ```
-
-      or, if the blog post is still very much a work in progress:
-
-      ```
-      Hello @all, this is the merge request for the monthly release post that will
-      go out on the 22nd, announcing the new GitLab version. Right now it's all
-      boilerplate, but feel free to remind us about things that shouldn't be left
-      out!
-      ```
 - [ ] Create another RC as needed.
 
 Keep in mind that:
@@ -295,11 +272,9 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
-  - [ ] Publish the release [blog post]
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release
 
 [regression issue]: LINK_TO_REGRESSION_ISSUE
-[blog post]: LINK_TO_WIP_BLOG_POST
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [CE stable branch]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
@@ -312,8 +287,6 @@ This way we ensure the release does not introduce new regressions.
 [tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
 [announce the deploy on Twitter]: https://gitlab.com/gitlab-org/takeoff#announce-the-deployment
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
-[`new_release_post` task]: https://gitlab.com/gitlab-com/www-gitlab-com/#create-release-blog-post
-[`www-gitlab-com` project]: https://gitlab.com/gitlab-com/www-gitlab-com/
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
 [Sync CE, EE, and Omnibus to `dev`]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/pro-tips.md#add-a-git-pdo-and-a-git-pdog-aliases
