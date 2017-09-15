@@ -37,16 +37,6 @@ describe Changelog::MarkdownGenerator do
       end
 
       it 'uses the current date for all other releases' do
-        version = Version.new('1.2.3')
-        generator = described_class.new(version, [])
-
-        Timecop.freeze(Time.local(1983, 7, 2))
-
-        expect(generator.to_s).to match(/\(1983-07-02\)$/)
-      end
-
-      # TODO (rspeicher): Removable when we remove the corresponding hack
-      it 'handles an EE release always returning 0 for its patch version' do
         version = Version.new('1.2.3-ee')
         generator = described_class.new(version, [])
 

@@ -46,6 +46,10 @@ class Version < String
     to_minor
   end
 
+  def monthly?
+    patch.zero? && !rc?
+  end
+
   def patch?
     patch.positive?
   end
