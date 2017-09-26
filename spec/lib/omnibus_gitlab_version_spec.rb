@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'version'
 
-describe OmnibusGitLabVersion do
+describe OmnibusGitlabVersion do
   def version(version_string)
     described_class.new(version_string)
   end

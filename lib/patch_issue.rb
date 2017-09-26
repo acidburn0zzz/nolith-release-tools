@@ -4,7 +4,7 @@ require_relative 'omnibus_gitlab_version'
 
 class PatchIssue < Issue
   def omnibus_version
-    @omnibus_version ||= OmnibusGitLabVersion.new(version.to_omnibus(ee: version.ee?))
+    @omnibus_version ||= OmnibusGitlabVersion.new(version.to_omnibus(ee: version.ee?))
   end
 
   def title

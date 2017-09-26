@@ -1,6 +1,6 @@
 require_relative 'version'
 
-class OmnibusGitLabVersion < Version
+class OmnibusGitlabVersion < Version
   VERSION_REGEX = %r{
     \A(?<major>\d+)
     \.(?<minor>\d+)

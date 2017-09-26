@@ -4,7 +4,7 @@ require_relative '../project/omnibus_gitlab'
 require 'time'
 
 module Release
-  class OmnibusGitLabRelease < BaseRelease
+  class OmnibusGitlabRelease < BaseRelease
     class VersionFileDoesNotExistError < StandardError; end
     class TemplateFileDoesNotExistError < StandardError; end
     class VersionStringNotFoundError < StandardError; end
@@ -104,7 +104,7 @@ module Release
     end
 
     def version_class
-      OmnibusGitLabVersion
+      OmnibusGitlabVersion
     end
 
     def bump_versions
