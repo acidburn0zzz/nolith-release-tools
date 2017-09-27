@@ -79,6 +79,11 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the takeoff project:
         bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
         ```
+  - [ ] Take notes of the time it took for the migrations to complete on the deployment to production.
+      ```
+      # On the takeoff repo
+      bundle exec rake "follow_migrations[production]"
+      ```
   - [ ] From the [build pipeline], [manually publish public packages]
   - [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc %>)
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
@@ -103,6 +108,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 ### Anytime after RC1 but before 22nd
 
+- [ ] Update the [blog post] `barometer section` with the migration types for this release, including the time they took to complete.
 - [ ] Create another RC as needed.
 
 Keep in mind that:
@@ -159,6 +165,11 @@ milestone using the
       ```sh
       # In the takeoff project:
       bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0]"
+      ```
+- [ ] Take notes of the time it took for the migrations to complete on the deployment to production.
+      ```
+      # On the takeoff repo
+      bundle exec rake "follow_migrations[production]"
       ```
 - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
 - [ ] From the [build pipeline], [manually publish public packages]
