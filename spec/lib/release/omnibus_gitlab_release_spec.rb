@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'release/omnibus_gitlab_release'
 
-describe Release::OmnibusGitLabRelease do
+describe Release::OmnibusGitlabRelease do
   describe 'security repo' do
     let(:omnibus_release) { described_class.new('1.0') }
     let(:error_message) do
@@ -17,7 +17,7 @@ describe Release::OmnibusGitLabRelease do
     it 'raises error if the repo variable is after the grace period' do
       Timecop.freeze(Time.utc(2017, 1, 2, 1)) do
         expect { omnibus_release.send(:prepare_security_release) }
-          .to raise_error(Release::OmnibusGitLabRelease::SecurityReleaseInProgressError, error_message)
+          .to raise_error(Release::OmnibusGitlabRelease::SecurityReleaseInProgressError, error_message)
       end
     end
 

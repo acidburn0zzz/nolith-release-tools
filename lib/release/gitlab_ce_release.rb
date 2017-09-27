@@ -17,7 +17,7 @@ module Release
     end
 
     def after_execute_hook
-      Release::OmnibusGitLabRelease.new(
+      Release::OmnibusGitlabRelease.new(
         version.to_omnibus(ee: version.ee?),
         options.merge(gitlab_repo_path: repository.path)
       ).execute

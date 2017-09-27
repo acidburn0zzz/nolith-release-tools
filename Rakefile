@@ -51,7 +51,7 @@ task :promote_security_release, [:version] do |_t, args|
   ENV['SECURITY'] = 'true'
   version = get_version(args)
 
-  Release::OmnibusGitLabRelease.new(version, security: true).promote_security_release
+  Release::OmnibusGitlabRelease.new(version, security: true).promote_security_release
 end
 
 desc "Sync master branch in remotes"
