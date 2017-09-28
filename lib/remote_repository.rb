@@ -23,7 +23,7 @@ class RemoteRepository
   attr_reader :path, :remotes, :canonical_remote, :global_depth
 
   def initialize(path, remotes, global_depth: 1)
-    stdout_puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
+    $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
     @path = path
     @global_depth = global_depth
 
@@ -44,24 +44,28 @@ class RemoteRepository
     base_cmd << "--depth=#{depth}" if depth
     base_cmd << remote.to_s
 
-    run_git([*base_cmd, ref]) unless run_git([*base_cmd, "#{ref}:#{ref}"])
+    _, status = run_git([*base_cmd, "#{ref}:#{ref}"])
+
+    unless status.success?
+      _, status = run_git([*base_cmd, ref])
+    end
+
+    status.success?
   end
 
-  def checkout_new_branch(branch, base_branch: 'master')
-    fetch(base_branch)
+  def checkout_new_branch(branch, base: 'master')
+    fetch(base)
 
-    unless run_git %W[checkout --quiet -b #{branch} #{base_branch}]
-      raise CannotCheckoutBranchError.new(branch)
-    end
+    _, status = run_git %W[checkout --quiet -b #{branch} #{base}]
+
+    status.success? || raise(CannotCheckoutBranchError.new(branch))
   end
 
   def create_tag(tag)
     message = "Version #{tag}"
-    unless run_git %W[tag -a #{tag} -m #{message}]
-      raise CannotCreateTagError.new(tag)
-    end
+    _, status = run_git %W[tag -a #{tag} -m "#{message}"]
 
-    tag
+    status.success? || raise(CannotCreateTagError.new(tag))
   end
 
   def write_file(file, content)
@@ -74,10 +78,12 @@ class RemoteRepository
     cmd = %w[commit --quiet]
     cmd << '--no-edit' if no_edit
     cmd << '--amend' if amend
-    cmd << "--author=#{author}" if author
-    cmd += ['--message', message] if message
+    cmd << %Q(--author="#{author}") if author
+    cmd += ['--message', %Q("#{message}")] if message
 
-    run_git cmd
+    _, status = run_git(cmd)
+
+    status.success?
   end
 
   def merge(upstream, into, no_ff: false)
@@ -85,32 +91,50 @@ class RemoteRepository
     cmd << '--no-ff' if no_ff
     cmd += [upstream, into]
 
-    run_git cmd
+    _, status = run_git(cmd)
+
+    status.success?
   end
 
   def status(short: false)
     cmd = %w[status]
     cmd << '--short' if short
 
-    run_git(cmd, output: true)
+    output, _ = run_git(cmd)
+
+    output
   end
 
-  def log(latest: false, no_merges: false, author_name: false, message: false, files: nil)
+  def log(latest: false, no_merges: false, format: nil, files: nil)
+    format_pattern =
+      case format
+      when :author
+        '%an'
+      when :message
+        '%B'
+      else
+        nil
+      end
+
     cmd = %w[log --date-order]
     cmd << '-1' if latest
     cmd << '--no-merges' if no_merges
-    cmd << "--pretty=format:'%an'" if author_name
-    cmd << "--pretty=format:'%B'" if message
-    cmd << '--' << files if files
+    cmd << "--pretty=format:'#{format_pattern}'" if format_pattern
+    if files
+      cmd << '--'
+      cmd += files
+    end
 
-    output = run_git(cmd, output: true)
-    output.squeeze!("\n") if message
+    output, _ = run_git(cmd)
+    output&.squeeze!("\n") if format_pattern == :message
 
     output
   end
 
   def head
-    run_git(%w[rev-parse --verify HEAD], output: true).chomp
+    output, _ = run_git(%w[rev-parse --verify HEAD])
+
+    output.chomp
   end
 
   def pull(ref, remote: canonical_remote.name, depth: global_depth)
@@ -119,11 +143,13 @@ class RemoteRepository
     cmd << remote.to_s
     cmd << ref
 
-    run_git(cmd)
+    _, status = run_git(cmd)
 
     if conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{ref} from #{remote}")
     end
+
+    status.success?
   end
 
   def pull_from_all_remotes(ref, depth: global_depth)
@@ -134,14 +160,16 @@ class RemoteRepository
 
   def push(remote, ref)
     cmd = %W[push #{remote} #{ref}:#{ref}]
+
     if ENV['TEST']
-      stdout_puts
-      stdout_puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
-      stdout_puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
+      $stdout.puts
+      $stdout.puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
+      $stdout.puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
 
       true
     else
-      run_git cmd
+      _, status = run_git(cmd)
+      status.success?
     end
   end
 
@@ -152,23 +180,17 @@ class RemoteRepository
   end
 
   def cleanup
-    stdout_puts "Removing #{path}...".colorize(:green) if Dir.exist?(path)
+    $stdout.puts "Removing #{path}...".colorize(:green) if Dir.exist?(path)
     FileUtils.rm_rf(path, secure: true)
   end
 
   def self.run_git(args, output: false)
     final_args = ['git', *args]
-    stdout_puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
+    $stdout.puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
 
-    if output
-      `#{final_args.join(' ')}`
-    else
-      system(*final_args)
-    end
-  end
+    cmd_output =`#{final_args.join(' ')} 2> /dev/null`
 
-  def self.stdout_puts(*args)
-    $stdout.puts(*args)
+    [cmd_output, $?]
   end
 
   private
@@ -181,16 +203,21 @@ class RemoteRepository
     new_remotes.each do |remote_name, remote_url|
       # Canonical remote doesn't need to be added twice
       next if remote_name == canonical_remote.name
+
       add_remote(remote_name, remote_url)
     end
   end
 
   def add_remote(name, url)
-    run_git %W[remote add #{name} #{url}]
+    _, status = run_git %W[remote add #{name} #{url}]
+
+    status.success?
   end
 
   def checkout_branch(branch)
-    run_git %W[checkout --quiet #{branch}]
+    _, status = run_git %W[checkout --quiet #{branch}]
+
+    status.success?
   end
 
   def in_path
@@ -206,10 +233,10 @@ class RemoteRepository
     end
   end
 
-  def run_git(args, output: false)
+  def run_git(args)
     ensure_repo_exist
     in_path do
-      self.class.run_git(args, output: output)
+      self.class.run_git(args)
     end
   end
 
@@ -220,12 +247,9 @@ class RemoteRepository
     cmd << "--depth=#{global_depth}" if global_depth
     cmd << '--origin' << canonical_remote.name.to_s << canonical_remote.url << path
 
-    unless self.class.run_git(cmd)
+    _, status = self.class.run_git(cmd)
+    unless status.success?
       raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}")
     end
-  end
-
-  def stdout_puts(*args)
-    self.class.stdout_puts(*args)
   end
 end
