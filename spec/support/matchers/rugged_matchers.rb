@@ -20,22 +20,142 @@ module RuggedMatchers
       .strip
   end
 
-  # Verify that `commit`'s tree contains `file_path`
-  matcher :have_blob do |file_path|
-    match do |commit|
-      tree = commit.tree
+  # Verify that the current HEAD is the given one
+  matcher :have_head do |head|
+    def denormalize_head(ref)
+      ref.sub(%r{\Arefs/heads/}, '')
+    end
 
-      tree.walk(:preorder).one? do |root, entry|
-        File.join(root, entry[:name]).sub(%r{\A/}, '') == file_path
+    match do |repository|
+      @repository = repository
+      @expected_head = denormalize_head(head)
+      @actual_head = denormalize_head(@repository.head.name)
+
+      @expected_head == @actual_head
+    end
+
+    failure_message do
+      "expected HEAD of #{File.join(@repository.workdir)} to be #{@expected_head}, but was #{@actual_head}"
+    end
+
+    failure_message_when_negated do
+      "expected HEAD of #{File.join(@repository.workdir)} not to be #{@expected_head}, but was #{@actual_head}"
+    end
+  end
+
+  # Verify that the current HEAD or given commit has the given title
+  matcher :have_commit_title do |title|
+    chain :for do |ref|
+      @ref = ref
+    end
+
+    match do |repository|
+      @repository = repository
+      @expected_title = title
+      commit = @ref ? @repository.rev_parse(@ref) : @repository.head.target
+      @actual_title = commit.message.lines.first.chomp
+
+      @expected_title == @actual_title
+    end
+
+    failure_message do
+      if @ref
+        %[expected last commit title of #{@ref} from #{File.join(@repository.workdir)} to be "#{@expected_title}", but was "#{@actual_title}"]
+      else
+        %[expected last commit title of HEAD from #{File.join(@repository.workdir)} to be "#{@expected_title}", but was "#{@actual_title}"]
       end
     end
 
-    failure_message do |commit|
-      "expected #{file_path} to exist in tree for #{commit.oid}"
+    failure_message_when_negated do
+      if @ref
+        %[expected last commit title of #{@ref} from #{File.join(@repository.workdir)} not to be "#{@expected_title}"]
+      else
+        %[expected last commit title of HEAD from #{File.join(@repository.workdir)} not to be "#{@expected_title}"]
+      end
+    end
+  end
+
+  # Verify that the current HEAD or given branch has the given number of commits
+  matcher :have_commits do |commits_count|
+    chain :for do |ref|
+      @ref = ref
     end
 
-    failure_message_when_negated do |commit|
-      "expected #{file_path} not to exist in tree for #{commit.oid}"
+    match do |repository|
+      @repository = repository
+      @ref_oid = (@ref ? @repository.rev_parse(@ref) : @repository.head).oid
+      @expected_commits_count = commits_count
+      # Thes following raises a Rugged::OdbError because Rugged tries to walk
+      # over commits that are on the remote only...
+      @actual_commits_count = Rugged::Walker.walk(repository, show: @ref_oid).count
+
+      @expected_commits_count == @actual_commits_count
+    end
+
+    failure_message do
+      if @ref
+        "expected #{@ref} of #{File.join(@repository.workdir)} to have #{@expected_commits_count} commits, but had #{@actual_commits_count} commits"
+      else
+        "expected HEAD of #{File.join(@repository.workdir)} to have #{@expected_commits_count} commits, but had #{@actual_commits_count} commits"
+      end
+    end
+
+    failure_message_when_negated do
+      if @ref
+        "expected #{@ref} of #{File.join(@repository.workdir)} not to have #{@expected_commits_count} commits"
+      else
+        "expected HEAD of #{File.join(@repository.workdir)} not to have #{@expected_commits_count} commits"
+      end
+    end
+  end
+
+  # Verify that `commit`'s tree contains `file_path`
+  matcher :have_blob do |file_path|
+    chain :for do |ref|
+      @ref = ref
+    end
+
+    chain :with do |content|
+      @content = content
+    end
+
+    match do |commit|
+      @repository = commit if commit.is_a?(Rugged::Repository)
+      ref =
+        if @repository
+          @ref ? @repository.rev_parse(@ref) : @repository.head.target
+        else
+          commit
+        end
+      @pretty_ref = @ref || ref.oid
+
+      blob = @repository.blob_at(ref.oid, file_path)
+
+      return false if blob.nil?
+      return true if @content.nil?
+
+      if @repository.nil?
+        raise ArgumentError.new('You must call the #have_blob matcher on a Rugged::Repository when using the :with chain method!')
+      end
+
+      @actual_content = blob.content
+
+      return @content == @actual_content
+    end
+
+    failure_message do
+      if @content
+        msg = %[expected #{file_path} to exist in tree for #{@pretty_ref} with "#{@content}" as content]
+        msg << %[ but contained "#{@actual_content}" instead] if @actual_content
+
+        msg
+      else
+        "expected #{file_path} to exist in tree for #{@pretty_ref}"
+      end
+    end
+
+    failure_message_when_negated do
+      "expected #{file_path} not to exist in tree for #{@pretty_ref}"
     end
   end
 
@@ -95,6 +215,10 @@ module RuggedMatchers
       end
     end
 
+    chain :at do |version|
+      @version = version
+    end
+
     match do |repository|
       @repository = repository
       @actual = normalize_path(file_path)
@@ -117,10 +241,6 @@ module RuggedMatchers
       else
         false
       end
-    end
-
-    chain :at do |version|
-      @version = version
     end
 
     failure_message do
@@ -151,6 +271,10 @@ module RuggedMatchers
   #   expect(repository).to_have_container_template('docer/openshift-template.json').match('gitlab/gitlab-ce:1.2.3-ce.0')
   #   expect(repository).not_to have_container_template('docer/openshift-template.json')
   matcher :have_container_template do |file_path|
+    chain :match do |match|
+      @match_data = match
+    end
+
     match do |repository|
       @actual = file_path
 
@@ -159,10 +283,6 @@ module RuggedMatchers
       rescue NoMethodError
         false
       end
-    end
-
-    chain :match do |match|
-      @match_data = match
     end
 
     failure_message do

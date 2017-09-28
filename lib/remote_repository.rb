@@ -1,5 +1,6 @@
 require 'colorize'
 require 'fileutils'
+require 'English'
 
 class RemoteRepository
   class CannotCloneError < StandardError; end
@@ -45,10 +46,7 @@ class RemoteRepository
     base_cmd << remote.to_s
 
     _, status = run_git([*base_cmd, "#{ref}:#{ref}"])
-
-    unless status.success?
-      _, status = run_git([*base_cmd, ref])
-    end
+    _, status = run_git([*base_cmd, ref]) unless status.success?
 
     status.success?
   end
@@ -78,8 +76,8 @@ class RemoteRepository
     cmd = %w[commit --quiet]
     cmd << '--no-edit' if no_edit
     cmd << '--amend' if amend
-    cmd << %Q(--author="#{author}") if author
-    cmd += ['--message', %Q("#{message}")] if message
+    cmd << %[--author="#{author}"] if author
+    cmd += ['--message', %["#{message}"]] if message
 
     _, status = run_git(cmd)
 
@@ -100,7 +98,7 @@ class RemoteRepository
     cmd = %w[status]
     cmd << '--short' if short
 
-    output, _ = run_git(cmd)
+    output, = run_git(cmd)
 
     output
   end
@@ -112,8 +110,6 @@ class RemoteRepository
         '%an'
       when :message
         '%B'
-      else
-        nil
       end
 
     cmd = %w[log --date-order]
@@ -125,14 +121,14 @@ class RemoteRepository
       cmd += files
     end
 
-    output, _ = run_git(cmd)
+    output, = run_git(cmd)
     output&.squeeze!("\n") if format_pattern == :message
 
     output
   end
 
   def head
-    output, _ = run_git(%w[rev-parse --verify HEAD])
+    output, = run_git(%w[rev-parse --verify HEAD])
 
     output.chomp
   end
@@ -188,9 +184,9 @@ class RemoteRepository
     final_args = ['git', *args]
     $stdout.puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
 
-    cmd_output =`#{final_args.join(' ')} 2> /dev/null`
+    cmd_output = `#{final_args.join(' ')} 2> /dev/null`
 
-    [cmd_output, $?]
+    [cmd_output, $CHILD_STATUS]
   end
 
   private
