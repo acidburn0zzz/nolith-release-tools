@@ -91,12 +91,13 @@ class GitlabClient
     milestone = milestone(project, title: merge_request.milestone)
 
     params = {
-      description:   merge_request.description,
-      assignee_id:   current_user.id,
-      labels:        merge_request.labels,
+      description: merge_request.description,
+      assignee_id: current_user.id,
+      labels: merge_request.labels,
       source_branch: merge_request.source_branch,
       target_branch: merge_request.target_branch,
-      milestone_id:  milestone.id
+      milestone_id: milestone.id,
+      remove_source_branch: true
     }
 
     client.create_merge_request(project.path, merge_request.title, params)
