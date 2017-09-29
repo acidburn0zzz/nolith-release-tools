@@ -21,12 +21,13 @@ describe GitlabClient do
 
     let(:default_params) do
       {
-        description:   merge_request.description,
-        assignee_id:   42,
-        labels:        merge_request.labels,
+        description: merge_request.description,
+        assignee_id: 42,
+        labels: merge_request.labels,
         source_branch: merge_request.source_branch,
         target_branch: 'master',
-        milestone_id: nil
+        milestone_id: nil,
+        remove_source_branch: true
       }
     end
 
