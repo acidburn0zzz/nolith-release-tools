@@ -335,7 +335,7 @@ describe RemoteRepository do
 
     context 'when author_name is true' do
       it 'shows authors only' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order --pretty=format:'%an'])
+        expect(subject).to receive(:run_git).with(%w[log --date-order --format='%an'])
 
         subject.log(format: :author)
       end
@@ -343,7 +343,7 @@ describe RemoteRepository do
 
     context 'when message is true' do
       it 'shows messages only' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order --pretty=format:'%B'])
+        expect(subject).to receive(:run_git).with(%w[log --date-order --format='%B'])
 
         subject.log(format: :message)
       end
@@ -353,12 +353,12 @@ describe RemoteRepository do
       it 'shows commits for the given files only' do
         expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md])
 
-        subject.log(files: %w[README.md])
+        subject.log(paths: %w[README.md])
       end
       it 'shows commits for the given file only' do
         expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md VERSION])
 
-        subject.log(files: %w[README.md VERSION])
+        subject.log(paths: %w[README.md VERSION])
       end
     end
   end

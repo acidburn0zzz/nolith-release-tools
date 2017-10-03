@@ -85,7 +85,7 @@ module RuggedMatchers
       @repository = repository
       @ref_oid = (@ref ? @repository.rev_parse(@ref) : @repository.head).oid
       @expected_commits_count = commits_count
-      # Thes following raises a Rugged::OdbError because Rugged tries to walk
+      # The following raises a Rugged::OdbError because Rugged tries to walk
       # over commits that are on the remote only...
       @actual_commits_count = Rugged::Walker.walk(repository, show: @ref_oid).count
 
@@ -109,7 +109,8 @@ module RuggedMatchers
     end
   end
 
-  # Verify that `commit`'s tree contains `file_path`
+  # Verify that `repository` contains `file_path` for HEAD or given `ref`, `with`
+  # the given optional content.
   matcher :have_blob do |file_path|
     chain :for do |ref|
       @ref = ref
@@ -119,14 +120,9 @@ module RuggedMatchers
       @content = content
     end
 
-    match do |commit|
-      @repository = commit if commit.is_a?(Rugged::Repository)
-      ref =
-        if @repository
-          @ref ? @repository.rev_parse(@ref) : @repository.head.target
-        else
-          commit
-        end
+    match do |repository|
+      @repository = repository
+      ref = @ref ? @repository.rev_parse(@ref) : @repository.head.target
       @pretty_ref = @ref || ref.oid
 
       blob = @repository.blob_at(ref.oid, file_path)

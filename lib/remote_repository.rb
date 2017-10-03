@@ -103,7 +103,7 @@ class RemoteRepository
     output
   end
 
-  def log(latest: false, no_merges: false, format: nil, files: nil)
+  def log(latest: false, no_merges: false, format: nil, paths: nil)
     format_pattern =
       case format
       when :author
@@ -115,10 +115,10 @@ class RemoteRepository
     cmd = %w[log --date-order]
     cmd << '-1' if latest
     cmd << '--no-merges' if no_merges
-    cmd << "--pretty=format:'#{format_pattern}'" if format_pattern
-    if files
+    cmd << "--format='#{format_pattern}'" if format_pattern
+    if paths
       cmd << '--'
-      cmd += files
+      cmd += paths
     end
 
     output, = run_git(cmd)
@@ -180,7 +180,7 @@ class RemoteRepository
     FileUtils.rm_rf(path, secure: true)
   end
 
-  def self.run_git(args, output: false)
+  def self.run_git(args)
     final_args = ['git', *args]
     $stdout.puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
 
