@@ -17,7 +17,7 @@ branches for the following repositories:
 
 **Developer** access is required to:
 
-* [cookbooks/takeoff](https://gitlab.com/gitlab-org/takeoff)
+* [gitlab-org/takeoff](https://gitlab.com/gitlab-org/takeoff)
 
 On GitHub you will need **Push** access to:
 
