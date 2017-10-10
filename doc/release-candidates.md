@@ -125,8 +125,7 @@ be [cherry-picked] into `X-Y-stable` by the release manager, or a second merge
 request targeting `X-Y-stable` (instead of `master`) should be opened.
 
 Developers are responsible for notifying the release manager that a merge
-request is ready to be moved into `X-Y-stable` by following the ["Change for
-stable release" process].
+request is ready to be moved into `X-Y-stable` by following the ["After the 7th" process].
 
 ---
 
@@ -154,7 +153,7 @@ bundle exec rake "release[8.2.0-rc2]"
 ```
 
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
-["Change for stable release" process]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+["After the 7th" process]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
 [cherry-picked]: pick-changes-into-stable.md
 
 ---
