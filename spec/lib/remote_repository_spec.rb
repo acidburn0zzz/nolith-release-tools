@@ -18,12 +18,14 @@ describe RemoteRepository do
   end
 
   describe '.get' do
-    it 'generates a name from the remote path' do
-      remotes = {
+    let(:remotes) do
+      {
         dev:    'https://example.com/foo/bar/dev.git',
         origin: 'https://gitlab.com/foo/bar/gitlab.git'
       }
+    end
 
+    it 'generates a name from the first remote' do
       expect(described_class).to receive(:new).with('/tmp/dev', anything, anything)
 
       described_class.get(remotes)
@@ -32,19 +34,19 @@ describe RemoteRepository do
     it 'accepts a repository name' do
       expect(described_class).to receive(:new).with('/tmp/foo', anything, anything)
 
-      described_class.get({}, 'foo')
-    end
-
-    it 'accepts a :global_depth option' do
-      expect(described_class).to receive(:new).with('/tmp/foo', anything, global_depth: 100)
-
-      described_class.get({}, 'foo', global_depth: 100)
+      described_class.get(remotes, 'foo')
     end
 
     it 'passes remotes to the initializer' do
-      expect(described_class).to receive(:new).with(anything, :remotes, anything)
+      expect(described_class).to receive(:new).with(anything, remotes, anything)
 
-      described_class.get(:remotes, 'foo')
+      described_class.get(remotes)
+    end
+
+    it 'accepts a :global_depth option' do
+      expect(described_class).to receive(:new).with(anything, anything, global_depth: 100)
+
+      described_class.get(remotes, global_depth: 100)
     end
   end
 
@@ -177,7 +179,7 @@ describe RemoteRepository do
       subject.ensure_branch_exists('branch-1')
       subject.create_tag('v42')
 
-      expect(rugged_repo.tags['v42']).not_to be_nil
+      expect(rugged_repo.tags['v42'].target).to eq(rugged_repo.branches['branch-1'].target)
     end
   end
 

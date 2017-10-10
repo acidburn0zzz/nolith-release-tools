@@ -35,11 +35,11 @@ module RuggedMatchers
     end
 
     failure_message do
-      "expected HEAD of #{File.join(@repository.workdir)} to be #{@expected_head}, but was #{@actual_head}"
+      %[expected HEAD of #{File.join(@repository.workdir)} to be "#{@expected_head}", but was "#{@actual_head}"]
     end
 
     failure_message_when_negated do
-      "expected HEAD of #{File.join(@repository.workdir)} not to be #{@expected_head}, but was #{@actual_head}"
+      %[expected HEAD of #{File.join(@repository.workdir)} not to be "#{@expected_head}", but was "#{@actual_head}"]
     end
   end
 
@@ -59,19 +59,11 @@ module RuggedMatchers
     end
 
     failure_message do
-      if @ref
-        %[expected last commit title of #{@ref} from #{File.join(@repository.workdir)} to be "#{@expected_title}", but was "#{@actual_title}"]
-      else
-        %[expected last commit title of HEAD from #{File.join(@repository.workdir)} to be "#{@expected_title}", but was "#{@actual_title}"]
-      end
+      %[expected last commit title of #{@ref || 'HEAD'} from #{File.join(@repository.workdir)} to be "#{@expected_title}", but was "#{@actual_title}"]
     end
 
     failure_message_when_negated do
-      if @ref
-        %[expected last commit title of #{@ref} from #{File.join(@repository.workdir)} not to be "#{@expected_title}"]
-      else
-        %[expected last commit title of HEAD from #{File.join(@repository.workdir)} not to be "#{@expected_title}"]
-      end
+      %[expected last commit title of #{@ref || 'HEAD'} from #{File.join(@repository.workdir)} not to be "#{@expected_title}"]
     end
   end
 
@@ -93,19 +85,11 @@ module RuggedMatchers
     end
 
     failure_message do
-      if @ref
-        "expected #{@ref} of #{File.join(@repository.workdir)} to have #{@expected_commits_count} commits, but had #{@actual_commits_count} commits"
-      else
-        "expected HEAD of #{File.join(@repository.workdir)} to have #{@expected_commits_count} commits, but had #{@actual_commits_count} commits"
-      end
+      "expected #{@ref || 'HEAD'} of #{File.join(@repository.workdir)} to have #{@expected_commits_count} commits, but had #{@actual_commits_count} commits"
     end
 
     failure_message_when_negated do
-      if @ref
-        "expected #{@ref} of #{File.join(@repository.workdir)} not to have #{@expected_commits_count} commits"
-      else
-        "expected HEAD of #{File.join(@repository.workdir)} not to have #{@expected_commits_count} commits"
-      end
+      "expected #{@ref || 'HEAD'} of #{File.join(@repository.workdir)} not to have #{@expected_commits_count} commits"
     end
   end
 
@@ -122,36 +106,29 @@ module RuggedMatchers
 
     match do |repository|
       @repository = repository
-      ref = @ref ? @repository.rev_parse(@ref) : @repository.head.target
-      @pretty_ref = @ref || ref.oid
-
-      blob = @repository.blob_at(ref.oid, file_path)
+      @commit = @ref ? @repository.rev_parse(@ref) : @repository.head.target
+      blob = @repository.blob_at(@commit.oid, file_path)
 
       return false if blob.nil?
       return true if @content.nil?
 
-      if @repository.nil?
-        raise ArgumentError.new('You must call the #have_blob matcher on a Rugged::Repository when using the :with chain method!')
-      end
-
       @actual_content = blob.content
 
-      return @content == @actual_content
+      @content == @actual_content
     end
 
     failure_message do
+      msg = "expected #{file_path} to exist in tree for #{@ref || @commit.oid}"
       if @content
-        msg = %[expected #{file_path} to exist in tree for #{@pretty_ref} with "#{@content}" as content]
+        msg << %[ with "#{@content}" as content]
         msg << %[ but contained "#{@actual_content}" instead] if @actual_content
-
-        msg
-      else
-        "expected #{file_path} to exist in tree for #{@pretty_ref}"
       end
+
+      msg
     end
 
     failure_message_when_negated do
-      "expected #{file_path} not to exist in tree for #{@pretty_ref}"
+      "expected #{file_path} not to exist in tree for #{@ref || @commit.oid}"
     end
   end
 
