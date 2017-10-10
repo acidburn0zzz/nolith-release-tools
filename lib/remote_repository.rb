@@ -1,6 +1,5 @@
 require 'colorize'
 require 'fileutils'
-require 'English'
 
 class RemoteRepository
   class CannotCloneError < StandardError; end
