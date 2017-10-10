@@ -17,7 +17,7 @@ branches for the following repositories:
 
 **Developer** access is required to:
 
-* [cookbooks/takeoff](https://gitlab.com/gitlab-org/takeoff)
+* [gitlab-org/takeoff](https://gitlab.com/gitlab-org/takeoff)
 
 On GitHub you will need **Push** access to:
 
@@ -25,7 +25,7 @@ On GitHub you will need **Push** access to:
 
 ### Chef Server
 
-First make sure you have a copy of the [takeoff project](https://gitlab.com/gitlab-org/takeoffo).
+First make sure you have a copy of the [takeoff project](https://gitlab.com/gitlab-org/takeoff).
 
 Now you need to request for an account on the Chef server, please [open a new issue](https://gitlab.com/gitlab-com/infrastructure/issues/new)
 and an operations engineer will provide you with a private key that you can
