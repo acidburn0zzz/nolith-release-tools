@@ -25,7 +25,7 @@ before starting the appointed release.
 - [ ] Master access on gitlab-omnibus (dev and com)
 - [ ] Get added to the [Release Managers team](https://github.com/orgs/gitlabhq/teams/release-managers) on GitHub.
 - [ ] Make sure you have VPN access (follow instructions from [creating client certificate](https://gitlab.com/gitlab-cookbooks/gitlab_openvpn#how-to-create-a-client-certificate)
-      up to and including google authenticator setup), and test by bringing VPN up and sshing into staging sidekiq node (`sidekiq-asap01.sv.stg.gitlab.com`)
+      up to and including google authenticator setup), and test by bringing VPN up and sshing into staging sidekiq node (`sidekiq-asap-01.sv.stg.gitlab.com`)
 
 ### First Tasks
 
