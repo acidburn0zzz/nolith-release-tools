@@ -27,21 +27,20 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
 #### RC1
 
-- [ ] Ensure `omnibus-gitlab` is ready to build packages by asking the Omnibus maintainers in Slack (`#build`)
 - Follow the [Creating RC1] guide:
   - [ ] Create MR on CE master updating the "Installation from Source" guide, creating the "Update" guides
   - [ ] Create MR on EE master creating the "CE to EE" guides
   - [ ] Create MR on CE master updating the gitignore and license templates
   - [ ] Create MR on CE master updating the dependencies license list
   - [ ] Ensure above MRs are merged and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
-- [ ] Follow steps to create a release candidate
+- Follow steps to create a release candidate
   - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
   - [ ] Cherry-pick changes into preparation MRs following their instructions
   - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
   milestone using the
   [`Pick into Stable` <%= version.to_minor %> merged merge requests] page
-  - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
-    - [ ] REFERENCE_TO_MR_TO_PICK
+  - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
+      - [ ] REFERENCE_TO_MR_TO_PICK
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
@@ -127,7 +126,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
 milestone using the
 [`Pick into Stable` <%= version.to_minor %> merged merge requests] page
-- [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
+- Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
