@@ -351,13 +351,20 @@ describe RemoteRepository do
       end
     end
 
-    context 'when :files is set' do
-      it 'shows commits for the given files only' do
+    context 'when :paths is set' do
+      it 'shows commits for the given file (as string) only' do
+        expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md])
+
+        subject.log(paths: 'README.md')
+      end
+
+      it 'shows commits for the given file (as array) only' do
         expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md])
 
         subject.log(paths: %w[README.md])
       end
-      it 'shows commits for the given file only' do
+
+      it 'shows commits for the given files only' do
         expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md VERSION])
 
         subject.log(paths: %w[README.md VERSION])
