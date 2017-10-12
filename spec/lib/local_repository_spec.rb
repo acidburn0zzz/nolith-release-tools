@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'local_repository'
 
-describe LocalRepository do
+describe LocalRepository, :silence_stdout do
   let(:fixture) { LocalRepositoryFixture.new }
   let(:repo_path) { File.join('/tmp', fixture.class.repository_name) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
@@ -42,7 +42,7 @@ describe LocalRepository do
 
       in_repo_path do
         repo.write_file('test', 'test')
-        repo.commit('test', 'test commit')
+        repo.commit('test', message: 'test commit')
       end
     end
 

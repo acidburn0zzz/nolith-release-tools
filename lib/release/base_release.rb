@@ -42,7 +42,7 @@ module Release
     end
 
     def repository
-      @repository ||= RemoteRepository.get(remotes)
+      @repository ||= RemoteRepository.get(remotes, global_depth: 100)
     end
 
     def prepare_release
@@ -88,7 +88,7 @@ module Release
     def bump_version(file_name, version)
       $stdout.puts "Update #{file_name} to #{version}...".colorize(:green)
       repository.write_file(file_name, "#{version}\n")
-      repository.commit(file_name, "Update #{file_name} to #{version}")
+      repository.commit(file_name, message: "Update #{file_name} to #{version}")
     end
 
     def create_tag(tag)

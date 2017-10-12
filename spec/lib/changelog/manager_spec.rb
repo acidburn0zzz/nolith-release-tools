@@ -56,11 +56,11 @@ describe Changelog::Manager do
 
       aggregate_failures do
         expect(master.target).to have_deleted(picked)
-        expect(master.target).to have_blob(unpicked)
+        expect(repository).to have_blob(unpicked).for('master')
 
         expect(stable.target).to have_deleted(picked)
         expect(stable.target).not_to have_deleted(unpicked)
-        expect(stable.target).not_to have_blob(unpicked)
+        expect(repository).not_to have_blob(unpicked).for(version.stable_branch)
       end
     end
 
@@ -111,15 +111,15 @@ describe Changelog::Manager do
       unpicked  = File.join(config.ce_path, 'group-specific-lfs.yml')
 
       aggregate_failures do
-        expect(ce_master_commit).to have_blob(unpicked)
+        expect(repository).to have_blob(unpicked).for('master')
         expect(ce_master_commit).to have_deleted(ce_picked)
 
         expect(ee_master_commit).to have_deleted(ee_picked)
-        expect(ee_master_commit).to have_blob(unpicked)
+        expect(repository).to have_blob(unpicked).for(ee_master_commit.oid)
 
         expect(ee_stable_commit).to have_deleted(ee_picked)
         expect(ee_stable_commit).not_to have_deleted(unpicked)
-        expect(ee_stable_commit).not_to have_blob(unpicked)
+        expect(repository).not_to have_blob(unpicked).for(ee_stable_commit.oid)
       end
     end
 
@@ -153,12 +153,10 @@ describe Changelog::Manager do
       unpicked1 = File.join(config.ce_path, 'fix-cycle-analytics-commits.yml')
       unpicked2 = File.join(config.ce_path, 'group-specific-lfs.yml')
 
-      commit = master.target
-
       aggregate_failures do
-        expect(commit).to have_blob(unpicked1)
-        expect(commit).to have_blob(unpicked2)
-        expect(commit).to have_blob(config.ce_log)
+        expect(repository).to have_blob(unpicked1).for('master')
+        expect(repository).to have_blob(unpicked2).for('master')
+        expect(repository).to have_blob(config.ce_log).for('master')
       end
     end
   end

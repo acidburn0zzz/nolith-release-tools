@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'release/omnibus_gitlab_release'
 
-describe Release::OmnibusGitlabRelease do
+describe Release::OmnibusGitlabRelease, :silence_stdout do
   describe 'security repo' do
     let(:omnibus_release) { described_class.new('1.0') }
     let(:error_message) do

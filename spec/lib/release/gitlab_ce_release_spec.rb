@@ -3,7 +3,7 @@ require 'rugged'
 
 require 'release/gitlab_ce_release'
 
-describe Release::GitlabCeRelease do
+describe Release::GitlabCeRelease, :silence_stdout do
   include RuggedMatchers
 
   # NOTE (rspeicher): There is some "magic" here that can be confusing.
@@ -52,6 +52,12 @@ describe Release::GitlabCeRelease do
   end
 
   describe '#execute' do
+    let(:changelog_manager) { double(release: true) }
+
+    before do
+      allow(Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
+    end
+
     { ce: '', ee: '-ee' }.each do |edition, suffix|
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
         let(:version)        { "9.1.24#{suffix}" }
@@ -61,7 +67,7 @@ describe Release::GitlabCeRelease do
 
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
-            expect(Changelog::Manager).to receive(:new).and_call_original
+            expect(changelog_manager).to receive(:release).with(version)
 
             execute(version, branch)
           end
@@ -139,7 +145,7 @@ describe Release::GitlabCeRelease do
 
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
-            expect(Changelog::Manager).to receive(:new).and_call_original
+            expect(changelog_manager).to receive(:release).with(version)
 
             execute(version, branch)
           end
