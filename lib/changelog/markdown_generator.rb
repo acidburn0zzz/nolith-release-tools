@@ -5,7 +5,8 @@ require_relative '../release'
 module Changelog
   class MarkdownGenerator
     # nil is the last type in the order
-    TYPE_ORDER = ['security', 'removed', 'fixed', 'deprecated', 'changed', 'added', 'other', nil].freeze
+    TYPE_ORDER = ['security', 'removed', 'fixed', 'deprecated', 'changed',
+                   'performance', 'added', 'other', nil].freeze
 
     attr_reader :version, :entries
 
