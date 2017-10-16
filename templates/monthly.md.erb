@@ -58,7 +58,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the release-tools project:
         bundle exec rake "release[<%= version.to_rc %>]"
         ```
-  - [ ] Check progress of [EE packages build] and [CE packages build]
+  - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_rc.tr('-', '+') %>.ee.0) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_rc.tr('-', '+') %>.ce.0)
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to staging
   - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
         ```sh
@@ -146,7 +146,7 @@ milestone using the
         # In the release-tools project:
         bundle exec rake "release[<%= version.to_rc(2) %>]"
         ```
-- [ ] Check progress of [EE packages build] and [CE packages build]
+- [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_rc(2).tr('-', '+') %>.ee.0) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_rc(2).tr('-', '+') %>.ce.0)
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
@@ -290,8 +290,6 @@ This way we ensure the release does not introduce new regressions.
 [Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [announce the deployment]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
-[CE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-[EE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
 [announce the deploy on Twitter]: https://gitlab.com/gitlab-org/takeoff#announce-the-deployment
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable
