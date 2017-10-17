@@ -101,8 +101,7 @@ official releases (and possibly backports).
 
 See [Security releases section of Maintenance document](https://docs.gitlab.com/ee/policy/maintenance.html#security-releases).
 
-Using the example above that means that `9-1-security` and `9-0-security` should also
-have merge requests. Each security release consists of at least three merge
+Using the `9-2-stable` example from earlier, this means that `security-9-1` and `security-9-0` should also have merge requests. Each security release consists of at least three merge
 requests.
 
 If a security fix warrants backporting to previous releases, doing a single blog
