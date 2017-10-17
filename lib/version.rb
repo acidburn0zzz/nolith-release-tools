@@ -143,9 +143,15 @@ class Version < String
     "#{major}.#{minor}"
   end
 
-  def to_omnibus(ee: false)
+  def to_omnibus(ee: false, for_rc: false)
     str = "#{to_patch}+"
-    str << "rc#{rc}." if rc?
+
+    if for_rc
+      str << "rc#{for_rc}."
+    elsif rc?
+      str << "rc#{rc}."
+    end
+
     str << (ee ? 'ee' : 'ce')
     str << '.0'
   end
