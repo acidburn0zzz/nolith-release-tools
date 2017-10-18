@@ -54,4 +54,65 @@ describe UpstreamMergeRequest do
   describe '#source_branch' do
     it { expect(subject.source_branch).to eq "ce-to-ee-#{Date.today.iso8601}" }
   end
+
+  describe '#description', vcr: { cassette_name: 'commit_author/to_gitlab' } do
+    subject { described_class.new(source_branch: 'ce-to-ee-123') }
+
+    context 'conflicts_data is empty' do
+      it 'returns a nice description' do
+        expect(subject.description).to eq('Congrats, no conflicts!')
+      end
+    end
+
+    context 'conflicts_data is not empty' do
+      let(:conflicts_data) do
+        [
+          { path: 'foo/bar.rb', user: 'John Doe', conflict_type: 'UU' },
+          { path: 'bar/baz.rb', user: '@rymai', conflict_type: 'AA' }
+        ]
+      end
+
+      before do
+        subject.conflicts_data = conflicts_data
+      end
+
+      it 'returns a description with checklist items for conflicting files' do
+        expect(subject.description).to eq <<~CONTENT
+          Files to resolve:
+
+          - [ ] `John Doe` Please resolve https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-123/foo/bar.rb (UU)
+          - [ ] `@rymai` Please resolve https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-123/bar/baz.rb (AA)
+
+          Try to resolve one file per commit, and then push (no force-push!) to the `ce-to-ee-123` branch.
+
+          Thanks in advance! ❤️
+
+          Note: This merge request was created by an automated script.
+          Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
+        CONTENT
+      end
+
+      context 'when mentioning people' do
+        before do
+          subject.mention_people = true
+        end
+
+        it 'returns a description with checklist items for conflicting files with usernames wrapped in backticks' do
+          expect(subject.description).to eq <<~CONTENT
+            Files to resolve:
+
+            - [ ] John Doe Please resolve https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-123/foo/bar.rb (UU)
+            - [ ] @rymai Please resolve https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-123/bar/baz.rb (AA)
+
+            Try to resolve one file per commit, and then push (no force-push!) to the `ce-to-ee-123` branch.
+
+            Thanks in advance! ❤️
+
+            Note: This merge request was created by an automated script.
+            Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
+          CONTENT
+        end
+      end
+    end
+  end
 end

@@ -64,9 +64,8 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
       end
 
       it 'returns the conflicts data' do
-        expect(subject.execute).to eq([
-          { user: 'Your Name', path: 'README.md', conflict_type: 'UU' }
-        ])
+        expect(subject.execute).to eq(
+          [{ user: 'Your Name', path: 'README.md', conflict_type: 'UU' }])
       end
 
       it 'commits the conflicts and includes `[ci skip]` in the commit message' do

@@ -126,15 +126,12 @@ task :upstream_merge do
     exit 1
   end
 
-  merge_request = UpstreamMergeRequest.new
+  merge_request = UpstreamMergeRequest.new(mention_people: mention?)
   merge = UpstreamMerge.new(
     origin: Project::GitlabEe.remotes[:gitlab],
     upstream: Project::GitlabCe.remotes[:gitlab],
-    merge_branch: merge_request.source_branch,
-    mention_people: mention?)
-
-  conflicts_data = merge.execute
-  merge_request.description(conflicts_data, mention_people: mention?)
+    merge_branch: merge_request.source_branch)
+  merge_request.conflicts_data = merge.execute
 
   $stdout.puts "\nFollowing is the decription of the MR that will be created:\n"
   $stdout.puts "```\n#{merge_request.description}\n```"
