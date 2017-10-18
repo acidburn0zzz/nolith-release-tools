@@ -65,7 +65,7 @@ class OmnibusReleaseFixture
     @fixture_path = fixture_path || default_fixture_path
   end
 
-  def build_fixture
+  def build_fixture(options = {})
     @repository = Rugged::Repository.init_at(fixture_path)
 
     commit_blob(path: 'README.md', content: '', message: 'Add empty README.md')

@@ -130,7 +130,8 @@ task :upstream_merge do
   merge = UpstreamMerge.new(
     origin: Project::GitlabEe.remotes[:gitlab],
     upstream: Project::GitlabCe.remotes[:gitlab],
-    merge_branch: merge_request.source_branch)
+    merge_branch: merge_request.source_branch,
+    mention_people: mention?)
 
   conflicts_data = merge.execute
   merge_request.description(conflicts_data, mention_people: mention?)

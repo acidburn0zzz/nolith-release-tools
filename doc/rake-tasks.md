@@ -157,6 +157,54 @@ TEST=true bundle exec rake "release[8.2.1]"
 SECURITY=true bundle exec rake "release[8.2.1]"
 ```
 
+## `security_release[version]`
+
+This task does the same as the `release[version]` task but force the
+`SECURITY=true` flag.
+
+### Examples
+
+```sh
+# Release 8.2 RC1:
+bundle exec rake "security_release[8.2.0-rc1]"
+
+# Release 8.2.3, but not for CE:
+CE=false bundle exec rake "security_release[8.2.3]"
+
+# Release 8.2.4, but not for EE:
+EE=false bundle exec rake "security_release[8.2.4]"
+
+# Don't push branches or tags to remotes:
+TEST=true bundle exec rake "security_release[8.2.1]"
+```
+
+## `upstream_merge`
+
+This task will:
+
+1. Fetch merge the latest CE `master` into the latest EE `master`
+1. Push the merge to a new –unique per day– branch
+1. Create a Merge Request that will include:
+  1. A list the files for which conflicts need to be resolved
+  1. Mentions of the latest modifiers of the conflicting files
+
+### Configuration
+
+| Option          | Purpose |
+| ------          | ------- |
+| `MENTION=false` | Don't mention people in the MR description (wrap their usernames in backticks) |
+| `TEST=true`     | Don't push the new branch, nor create a MR for it |
+
+### Examples
+
+```sh
+# Merge latest CE `master` into latest EE `master` and create a MR:
+bundle exec rake upstream_merge
+
+# Don't push the new branch nor create a MR for it:
+TEST=true bundle exec rake upstream_merge
+```
+
 ## `sync`
 
 This task ensures that the `master` branches for both CE and EE are in sync
