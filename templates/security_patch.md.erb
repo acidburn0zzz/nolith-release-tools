@@ -27,12 +27,33 @@
       I'm going to deploy `<%= version %>` to staging
       ```
 - [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
+      ```sh
+      # In the takeoff project:
+      bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
+      ```
+- [ ] In `#production`:
+
+      ```
+      I'm going to deploy `<%= version %>` to canary
+      ```
+- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
+      ```sh
+      # In the takeoff project:
+      bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
+      ```
 - [ ] In `#production`:
 
       ```
       I'm going to deploy `<%= version %>` to production
       ```
+- [ ] Make sure to [announce the deploy] on Twitter and GitLab.com
+  * With downtime: 1 hour before
+  * Without downtime: 15 minutes before
 - [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
+      ```sh
+      # In the takeoff project:
+      bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
+      ```
 - [ ] Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Mark any applicable previous releases as vulnerable on https://version.gitlab.com.
@@ -90,6 +111,7 @@ For references:
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 
 [staging.gitlab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
+[canary.gitlab.com]: https://canary.gitlab.com/
 [GitLab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 
 [publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
