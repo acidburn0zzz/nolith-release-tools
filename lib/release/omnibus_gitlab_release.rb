@@ -99,6 +99,11 @@ module Release
       @packagecloud ||= PackagecloudClient.new
     end
 
+    def repository
+      path_to_your_local_repo = File.join('/Users/remy/Code/GitLab/omnibus-gitlab')
+      @repository ||= RemoteRepository.new(path_to_your_local_repo, remotes, global_depth: 10)
+    end
+
     def remotes
       Project::OmnibusGitlab.remotes(dev_only: options[:security])
     end

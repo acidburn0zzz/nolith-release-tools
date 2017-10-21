@@ -27,7 +27,7 @@ class RemoteRepository
     @path = path
     @global_depth = global_depth
 
-    cleanup
+    cleanup if path.start_with?('/tmp')
 
     # Add remotes, performing the first clone as necessary
     self.remotes = remotes
@@ -36,7 +36,9 @@ class RemoteRepository
   def ensure_branch_exists(branch)
     fetch(branch)
 
-    checkout_branch(branch) || checkout_new_branch(branch)
+    checkout_branch(branch)
+  rescue CannotCheckoutBranchError
+    checkout_new_branch(branch)
   end
 
   def fetch(ref, remote: canonical_remote.name, depth: global_depth)
@@ -48,6 +50,12 @@ class RemoteRepository
     _, status = run_git([*base_cmd, ref]) unless status.success?
 
     status.success?
+  end
+
+  def checkout_branch(branch)
+    _, status = run_git %W[checkout --quiet #{branch}]
+
+    status.success? || raise(CannotCheckoutBranchError.new(branch))
   end
 
   def checkout_new_branch(branch, base: 'master')
@@ -205,12 +213,6 @@ class RemoteRepository
 
   def add_remote(name, url)
     _, status = run_git %W[remote add #{name} #{url}]
-
-    status.success?
-  end
-
-  def checkout_branch(branch)
-    _, status = run_git %W[checkout --quiet #{branch}]
 
     status.success?
   end

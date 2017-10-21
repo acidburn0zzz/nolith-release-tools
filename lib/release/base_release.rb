@@ -47,6 +47,7 @@ module Release
 
     def prepare_release
       $stdout.puts "Prepare repository...".colorize(:green)
+      repository.checkout_branch('master')
       repository.pull_from_all_remotes('master')
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
@@ -72,7 +73,7 @@ module Release
     end
 
     def after_release
-      repository.cleanup
+      # repository.cleanup
     end
 
     # Overridable

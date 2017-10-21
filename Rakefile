@@ -13,7 +13,7 @@ rescue LoadError
 end
 
 unless Rake.application.top_level_tasks.include?('default') || LocalRepository.ready?
-  abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
+  # abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
 desc "Create release"

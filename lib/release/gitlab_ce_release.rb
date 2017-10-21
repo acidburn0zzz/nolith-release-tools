@@ -6,6 +6,11 @@ module Release
   class GitlabCeRelease < BaseRelease
     private
 
+    def repository
+      path_to_your_local_repo = File.join('/Users/remy/Code/GitLab/gdk/gitlab')
+      @repository ||= RemoteRepository.new(path_to_your_local_repo, remotes, global_depth: 10)
+    end
+
     def remotes
       Project::GitlabCe.remotes(dev_only: options[:security])
     end
