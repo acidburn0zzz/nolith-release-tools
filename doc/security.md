@@ -99,15 +99,10 @@ official releases (and possibly backports).
 
 ### Backporting
 
-Backports should be provided for at least the previous two monthly releases. Using
-the example above that means that `9-1-security` and `9-0-security` should also
-have merge requests. Each security release consists of at least three merge
-requests.
+See [Security releases section of Maintenance document](https://docs.gitlab.com/ee/policy/maintenance.html#security-releases).
 
-For very serious security issues, there is
-[precedent](https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/)
-to backport security fixes to even more monthly releases of GitLab. This will be
-decided on a case-by-case basis.
+Using the `9-2-stable` example from earlier, this means that `security-9-1` and `security-9-0` should also have merge requests. Each security release consists of at least three merge
+requests.
 
 If a security fix warrants backporting to previous releases, doing a single blog
 post that mentions all of the patches at once is acceptable.
@@ -141,10 +136,10 @@ The title of the blog post should be of the format "GitLab Security Release: x.y
 ### Other communications about the Security Release
 
 Per the [checklist](https://about.gitlab.com/handbook/engineering/critical-release-process/),
-security releases need to be communicated about widely and loudly, using 
+security releases need to be communicated about widely and loudly, using
 - Twitter: consider adopting guidelines from how frequently we tweet, and with what timing
 from the [guidelines on Twitter use for deployments](https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md#twitter)
-- Security Newsletter: this is only sent out after the blog post is published, 
+- Security Newsletter: this is only sent out after the blog post is published,
 and the marketing team needs to be involved in sending the newsletter.
 
 ### After the release
