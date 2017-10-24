@@ -16,7 +16,8 @@ before starting the appointed release.
 
 - [ ] Make a note of your `dev` and `github` usernames and add them to this issue.
 - [ ] Use the [release manager infrastructure permissions template](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-manager.md#infrastructure-permissions-template) to request chef and SSH access: [link to infrastructure issue]
-- [ ] Make sure you have the [takeoff](https://gitlab.com/gitlab-org/takeoff) and [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, with all dependencies installed through [bundle](http://bundler.io/).
+- [ ] Make sure you have [takeoff](https://gitlab.com/gitlab-org/takeoff) cloned locally, and [set it up](https://gitlab.com/gitlab-org/takeoff/#getting-started)
+- [ ] Make sure you have [release-tools](https://gitlab.com/gitlab-org/release-tools) cloned locally, and [set it up](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/rake-tasks.md#setup)
 - [ ] If your ssh key has a passphrase, you will want to do `ssh-add` in your local takeoff repo
 - [ ] Read through the [release guides](https://gitlab.com/gitlab-org/release-tools/blob/master/README.md#guides)
 - [ ] Join #releases on Slack, and introduce yourself
