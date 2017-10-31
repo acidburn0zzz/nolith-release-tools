@@ -263,10 +263,24 @@ This way we ensure the release does not introduce new regressions.
 
 - Before 12:00 UTC:
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
-  - [ ] Do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
+        ```sh
+        # In the takeoff project:
+        bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
+        ```
+  - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
+  - [ ] If needed, do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [canary.gitlab.com]
+        ```sh
+        # In the takeoff project:
+        bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
+        ```
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
   - [ ] Publicly [announce the deploy on Twitter], at this point the deploy alert banner on GitLab.com should already be up.
-  - [ ] Do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to GitLab.com
+  - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to GitLab.com
+        ```sh
+        # In the takeoff project:
+        bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
+        ```
   - [ ] Create the first patch issue using the [`patch_issue` task]:
 
       ```sh
