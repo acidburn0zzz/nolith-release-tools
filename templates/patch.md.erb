@@ -1,3 +1,4 @@
+- [ ] Schedule the patch release by setting a **Due date**
 - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Cherry-pick changes into preparation MRs following their instructions
 - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
@@ -6,6 +7,7 @@
 - [ ] Check for merge requests marked [`Pick into Backports`] and cherry-pick those which should go into this release.
 - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Where appropriate, ensure each has made it into both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
+- [ ] Make sure the **Due date** is up-to-date
 - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
 - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
@@ -99,3 +101,6 @@ For references:
 
 [manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
+
+/milestone %"<%= version.to_minor %>"
+/due 7 days
