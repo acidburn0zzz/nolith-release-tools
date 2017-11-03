@@ -2,8 +2,8 @@ require 'spec_helper'
 
 require 'commit_author'
 
-describe CommitAuthor, :aggregate_failures do
-  describe '#to_gitlab', vcr: { cassette_name: 'commit_author/to_gitlab' } do
+describe CommitAuthor, vcr: { cassette_name: 'team' } do
+  describe '#to_gitlab' do
     let(:git_author) { 'Your Name' }
 
     subject { described_class.new(git_author) }

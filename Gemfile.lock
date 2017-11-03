@@ -109,6 +109,7 @@ DEPENDENCIES
   colorize
   dotenv (~> 2.2.0)
   gitlab (~> 4.2.0)
+  httparty (~> 0.15.6)
   packagecloud-ruby!
   pry
   rake
@@ -123,4 +124,4 @@ DEPENDENCIES
   weekdays (~> 1.0.0)
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
