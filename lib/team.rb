@@ -6,6 +6,10 @@ class Team
     TeamMember.new(name: 'blackst0ne', username: 'blackst0ne')
   ].freeze
 
+  def initialize(members: nil)
+    @members = members
+  end
+
   # Return an array of TeamMember
   def to_a
     members

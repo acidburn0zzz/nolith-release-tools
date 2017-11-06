@@ -1,24 +1,12 @@
+require_relative 'team'
+
 class CommitAuthor
-  # Mappings from actual Git committer names to team page's names.
-  # https://about.gitlab.com/team/
-  GIT_NAMES_TO_TEAM_PAGE_NAMES = {
-    'Luke "Jared" Bennett' => "Luke 'Jared' Bennett",
-    'Achilleas Pipinellis' => "Achilleas 'Axil' Pipinellis",
-    'Kamil Trzcinski' => 'Kamil Trzciński',
-    'Ruben Davila' => 'Rubén Dávila',
-    'Nick Thomas' => "Nicholas 'Nick' Thomas",
-    'Lin Jen-Shin' => 'Jen-Shin Lin',
-    'Douglas Barbosa Alexandre' => 'Douglas Alexandre',
-    'Jarka Kadlecova' => "Jaroslava 'Jarka' Kadlecová",
-    'Balasankar C' => 'Balasankar "Balu" C',
-    'winniehell' => 'Winnie Hellmann',
-    'kushalpandya' => 'Kushal Pandya'
-  }.freeze
+  attr_reader :team, :git_name, :git_names_to_team_names
 
-  attr_reader :git_name
-
-  def initialize(git_name)
+  def initialize(git_name, team: Team.new, git_names_to_team_names: default_git_names_to_team_names)
+    @team = team
     @git_name = git_name
+    @git_names_to_team_names = git_names_to_team_names
   end
 
   def to_gitlab(reference: false)
@@ -31,17 +19,15 @@ class CommitAuthor
 
   private
 
-  def gitlab_username
-    return @gitlab_username if defined?(@gitlab_username)
+  def default_git_names_to_team_names
+    YAML.load_file(File.expand_path('../git_names_to_team_names.yml', __dir__))
+  end
 
-    @gitlab_username ||= gitlab_team.find_by_name(canonical_name)&.username
+  def gitlab_username
+    @gitlab_username ||= team.find_by_name(canonical_name)&.username
   end
 
   def canonical_name
-    @canonical_name ||= GIT_NAMES_TO_TEAM_PAGE_NAMES.fetch(git_name, git_name)
-  end
-
-  def gitlab_team
-    @gitlab_team ||= Team.new
+    @canonical_name ||= git_names_to_team_names.fetch(git_name, git_name)
   end
 end
