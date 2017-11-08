@@ -63,7 +63,6 @@ Make sure to set the issue to **confidential** and include your SSH username and
 
 ```
 ## What
-- [ ] Master access to chef repo until end of Release Manager duties including patch releases
 - [ ] Access to chef-server
 - [ ] SSH access for release manager
 - [ ] Added to the `release-manager` group in Cog in `#production` so you can tweet and broadcast messages.
