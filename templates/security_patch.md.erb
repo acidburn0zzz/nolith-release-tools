@@ -14,7 +14,7 @@
   - [ ] If the vulnerability was responsibly disclosed to us by a security researcher, ensure they're [publicly acknowledged] and thank them again privately as well.
 - [ ] Ensure [tests are green on CE]
 - [ ] Ensure [tests are green on EE]
-- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate` =>
+- [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh
