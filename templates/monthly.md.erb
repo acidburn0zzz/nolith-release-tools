@@ -2,6 +2,13 @@
 
 Stable branch should be created after the 7th. The 7th is the last date to reliably get things in.
 
+- [ ] Create the <%= version.picking_label %> group label if it doesn't exist: https://gitlab.com/groups/gitlab-org/labels/new
+  - Title: `Pick into <%= version.to_minor %>`
+  - Description:
+
+    ```
+    Merge requests to cherry-pick into the `<%= version.stable_branch %>` branch. Remove the label once picked.
+    ```
 - [ ] In `#development`:
 
     ```
@@ -12,7 +19,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
     will be cherry-picked into `<%= version.stable_branch %>`.
 
     Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
-    and the `Pick into Stable` label.
+    and the `Pick into <%= version.to_minor %>` label.
 
     From now on, please follow the "After the 7th" process:
     https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
@@ -32,13 +39,11 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Create MR on EE master creating the "CE to EE" guides
   - [ ] Create MR on CE master updating the gitignore and license templates
   - [ ] Create MR on CE master updating the dependencies license list
-  - [ ] Ensure above MRs are merged and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
+  - [ ] Ensure above MRs are merged and marked <%= version.picking_label %>
 - Follow steps to create a release candidate
   - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
   - [ ] Cherry-pick changes into preparation MRs following their instructions
-  - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
-  milestone using the
-  [`Pick into Stable` <%= version.to_minor %> merged merge requests] page
+  - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
   - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
       - [ ] REFERENCE_TO_MR_TO_PICK
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
@@ -123,9 +128,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 
 - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Cherry-pick changes into preparation MRs following their instructions
-- [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
-milestone using the
-[`Pick into Stable` <%= version.to_minor %> merged merge requests] page
+- [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
 - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
@@ -316,7 +319,7 @@ This way we ensure the release does not introduce new regressions.
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 [`regression_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
-[`Pick into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+Stable&milestone_title=<%= version.milestone_name %>&scope=all&sort=id_desc&state=merged
+[Merged MRs list]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+<%= version.to_minor %>&scope=all&sort=id_desc&state=merged
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [canary.gitlab.com]: https://canary.gitlab.com/
