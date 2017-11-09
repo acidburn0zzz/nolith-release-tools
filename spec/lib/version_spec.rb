@@ -365,4 +365,13 @@ describe Version do
     it { expect(version('1.2.3.4')).not_to be_valid }
     it { expect(version('wow')).not_to be_valid }
   end
+
+  describe '#picking_label' do
+    it { expect(version('1.2.3').picking_label).to eq(%[~"Pick into 1.2"]) }
+    it { expect(version('11.22.33').picking_label).to eq(%[~"Pick into 11.22"]) }
+    it { expect(version('2.2.3-rc1').picking_label).to eq(%[~"Pick into 2.2"]) }
+    it { expect(version('2.2.3.rc1').picking_label).not_to eq(%[~"Pick into 2.2"]) }
+    it { expect(version('1.2.3.4').picking_label).not_to eq(%[~"Pick into 1.2"]) }
+    it { expect(version('wow').picking_label).not_to eq(%[~"Pick into wow"]) }
+  end
 end

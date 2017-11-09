@@ -174,6 +174,10 @@ class Version < String
     self =~ self.class::VERSION_REGEX
   end
 
+  def picking_label
+    %[~"Pick into #{to_minor}"]
+  end
+
   private
 
   def tag_for(version, ee: false)
