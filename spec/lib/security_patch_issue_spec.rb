@@ -26,7 +26,6 @@ describe SecurityPatchIssue do
     it 'includes steps to push to dev only' do
       issue = described_class.new(version: Version.new('8.3.1-rc2'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       aggregate_failures do
@@ -42,7 +41,6 @@ describe SecurityPatchIssue do
     it 'includes a step to create the blog post in a private snippet' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include 'While waiting for tests to be green, now is a good time to start on [the blog post], **in a private snippet**: BLOG_POST_SNIPPET'
@@ -51,7 +49,6 @@ describe SecurityPatchIssue do
     it 'includes a step to perform a security release' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include 'SECURITY=true bundle exec rake "release[8.3.1]"'
@@ -60,7 +57,6 @@ describe SecurityPatchIssue do
     it 'includes a step to redact sensitive information from confidential security issues' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include 'Check any sensitive information from the confidential security issues, and redact them if needed'
@@ -69,7 +65,6 @@ describe SecurityPatchIssue do
     it 'includes a step to make the confidential security issues public' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include 'Make the confidential security issues public'
@@ -78,7 +73,6 @@ describe SecurityPatchIssue do
     it 'includes a step to publish the packages one tag at a time' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include 'Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.'

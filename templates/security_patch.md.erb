@@ -71,13 +71,6 @@
       GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES
       ```
 - [ ] Coordinate with the Marketing team to send out a security newsletter
-- In the [<%= regression_issue.title %>](<%= regression_issue.url %>) issue:
-  - [ ] Add the following notice:
-
-      ```
-      `<%= version %>` has been tagged, further fixes will go into `<%= version.next_patch %>` as necessary.
-      ```
-  - [ ] Remove notes for the regressions fixed by version `<%= version %>`
 - [ ] Cherry-pick the merges from the `security` branch into `master` and push to all remotes.
 - [ ] Add [`omnibus-gitlab/<%= omnibus_version.tag %>` CHANGELOG.md][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG.md][omnibus-master-changelog]
 

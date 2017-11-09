@@ -90,28 +90,6 @@ bundle exec rake "security_patch_issue[8.3.1]"
     https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
-## `regression_issue[version]`
-
-This task will either return the URL of a regression issue if one already exists
-for `version`, or it will create a new one and return the URL.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "X.Y Regressions" (e.g., "8.3 Regressions")
-- Its description is the regression issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-
-### Examples
-
-```sh
-bundle exec rake "regression_issue[8.3.0]"
-
---> Issue "8.3 Regressions" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/4127
-```
-
 ## `release[version]`
 
 This task will:

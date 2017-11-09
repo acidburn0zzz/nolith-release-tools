@@ -52,7 +52,7 @@ Completing release tasks on time is very important. If you experience problems w
 release tasks and you don't know who to ask then you should contact someone from this list:
 
 * Build Lead [@marin](https://gitlab.com/marin)
-* VP of Engineering [@stanhu](https://gitlab.com/stanhu)
+* VP of Engineering [@edjdev](https://gitlab.com/edjdev)
 * CTO [@dzaporozhets](https://gitlab.com/dzaporozhets)
 
 The earlier we determine problem or delay in release - the easier it is to fix it.
