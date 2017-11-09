@@ -59,9 +59,6 @@ missing commits.
    [post a note](pro-tips.md#leave-notes-to-yourself) in the merge request's
    discussion.
 
-1. [Update any notes](pro-tips.md#update-the-regression-issue) from the
-   regression issue to reflect their latest status.
-
 [cherry-picked]: pro-tips.md#add-a-git-cherry-pick-alias
 
 ---

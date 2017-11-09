@@ -1,5 +1,4 @@
 require_relative 'merge_request'
-require_relative 'regression_issue'
 require_relative 'omnibus_gitlab_version'
 require_relative 'branch'
 

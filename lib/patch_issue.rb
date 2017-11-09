@@ -1,5 +1,4 @@
 require_relative 'issue'
-require_relative 'regression_issue'
 require_relative 'omnibus_gitlab_version'
 
 class PatchIssue < Issue
@@ -13,10 +12,6 @@ class PatchIssue < Issue
 
   def labels
     'Release'
-  end
-
-  def regression_issue
-    @regression_issue ||= RegressionIssue.new(version: version)
   end
 
   protected

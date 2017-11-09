@@ -96,17 +96,10 @@ Unfortunately, this isn't [100% fool-proof].
 [leave a note]: https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/2530#note_3332148
 [100% fool-proof]: https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/2530#note_3347972
 
-## Update the Regression Issue
-
-The [regressions issue](rake-tasks.md#regression_issueversion) is your overview
-of the regressions issues that are still not addressed in the current version.
-After each new version (RC, stable or patches), you should delete the notes for
-regressions that are fixed and released.
-
 ## Use a clipboard history or text expander app
 
-So now that you're constantly [adding notes to yourself] and [updating regression notes],
-you might find yourself typing the same things over and over. Unacceptable!
+So now that you're constantly [adding notes to yourself], you might find
+yourself typing the same things over and over. Unacceptable!
 
 > I use the [Clipboard History and Snippets](https://www.alfredapp.com/help/features/clipboard/)
 > feature from Alfred on OS X so that adding something like "Picked into
@@ -122,7 +115,6 @@ you might find yourself typing the same things over and over. Unacceptable!
 > -- @rymai
 
 [adding notes to yourself]: #leave-notes-to-yourself
-[updating regression notes]: #update-the-regression-issue
 
 ## Keep `#releases` in Slack updated
 

@@ -18,7 +18,6 @@ describe PatchIssue do
     it 'includes the stable branch names' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       aggregate_failures do
@@ -32,21 +31,9 @@ describe PatchIssue do
     it 'includes the full version' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
-      allow(issue).to receive(:regression_issue).and_return(spy)
       content = issue.description
 
       expect(content).to include '8.3.1'
-    end
-
-    it 'includes a link to the regression issue' do
-      issue = described_class.new(version: Version.new('8.3.1'))
-
-      allow(issue).to receive(:regression_issue)
-        .and_return(double(title: '8.3 Regressions', url: 'https://example.com'))
-      content = issue.description
-
-      expect(content).to include 'In the [8.3 Regressions](https://example.com) issue'
-      expect(content).to include '`8.3.1` has been tagged, further fixes will go into `8.3.2` as necessary.'
     end
   end
 
@@ -55,16 +42,6 @@ describe PatchIssue do
       issue = described_class.new(version: Version.new(''))
 
       expect(issue.labels).to eq 'Release'
-    end
-  end
-
-  describe '#regression_issue' do
-    it 'returns a RegressionIssue object' do
-      version = Version.new('8.3.1')
-      issue = described_class.new(version: version)
-
-      expect(RegressionIssue).to receive(:new).with(version: version).and_call_original
-      expect(issue.regression_issue).to be_kind_of(RegressionIssue)
     end
   end
 end
