@@ -4,8 +4,20 @@ require 'active_support/core_ext/object/blank'
 module Changelog
   # Represents a Rugged::Blob and its changelog entry
   class Entry
-    attr_reader :path, :blob
-    attr_reader :type, :title, :id, :author
+    attr_reader :author, :blob, :id, :path, :title, :type
+
+    # Types are not sorted by ABC intentionally.
+    # The markdown output is generated going through this array down.
+    TYPES = %w[
+      security
+      removed
+      fixed
+      deprecated
+      changed
+      performance
+      added
+      other
+    ].freeze
 
     # path - Path to the blob, relative to the Repository root
     # blob - Underlying Rugged::Blob object
@@ -18,7 +30,6 @@ module Changelog
 
     def to_s
       str = ""
-      str << "[#{type.upcase}] " if type.present?
       str << "#{title}.".gsub(/\.{2,}$/, '.')
       str << " !#{id}" if id.present?
       str << " (#{author})" if author.present?
@@ -35,12 +46,10 @@ module Changelog
     def parse_blob(content)
       yaml = YAML.safe_load(content)
 
-      @type   = yaml['type']
-      @title  = yaml['title']
-      @id     = parse_id(yaml)
       @author = yaml['author']
-
-      @id = @id.to_i if @id.present? # We don't want `nil` to become `0`
+      @id     = parse_id(yaml)
+      @title  = yaml['title']
+      @type   = parse_type(yaml)
     rescue StandardError # rubocop:disable Lint/HandleExceptions
       # noop
     end
@@ -49,7 +58,16 @@ module Changelog
       id = yaml['merge_request'] || yaml['id']
       id.to_s.gsub!(/[^\d]/, '')
 
-      id
+      # We don't want `nil` to become `0`
+      id.present? ? id.to_i : id
+    end
+
+    # Any type (including invalid ones) which are not included in the `TYPES` constant
+    # we define as `other`.
+    def parse_type(yaml)
+      type = yaml['type'].downcase
+
+      TYPES.include?(type) ? type : 'other'
     end
   end
 end

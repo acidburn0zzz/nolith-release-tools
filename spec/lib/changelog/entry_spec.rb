@@ -45,6 +45,24 @@ describe Changelog::Entry do
 
       expect { described_class.new('foo/bar', blob) }.not_to raise_error
     end
+
+    it 'handles an empty type' do
+      entry = entry('type' => '')
+
+      expect(entry.type).to eq('other')
+    end
+
+    it 'handles an invalid type' do
+      entry = entry('type' => '*invalid_type!@#')
+
+      expect(entry.type).to eq('other')
+    end
+
+    it 'handles any case of type' do
+      entry = entry('type' => 'SecURIty')
+
+      expect(entry.type).to eq('security')
+    end
   end
 
   describe '#to_s' do
@@ -78,10 +96,10 @@ describe Changelog::Entry do
       expect(entry.to_s).to eq 'Foo. !1234 (Joe Smith)'
     end
 
-    it 'includes the type when available' do
+    it 'does not include the type' do
       entry = entry('title' => 'Foo.', 'type' => 'added')
 
-      expect(entry.to_s).to eq '[ADDED] Foo.'
+      expect(entry.to_s).not_to include('ADDED')
     end
   end
 
