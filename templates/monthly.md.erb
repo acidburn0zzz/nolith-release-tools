@@ -20,7 +20,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
 - [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
-- [ ] Merge [GitLab CE into EE] on the stable branches
+- [ ] Merge Gitlab CE into EE on stable branches following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
 - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
 - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
@@ -311,7 +311,6 @@ This way we ensure the release does not introduce new regressions.
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
 [Sync CE, EE, and Omnibus to `dev`]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/pro-tips.md#add-a-git-pdo-and-a-git-pdog-aliases
 [Creating subsequent RCs]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-subsequent-rcs
-[GitLab CE into EE]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
