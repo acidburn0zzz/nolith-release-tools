@@ -86,6 +86,9 @@ module Release
     end
 
     def bump_version(file_name, version)
+      file = File.join(repository.path, file_name)
+      return if File.read(file).chomp == version
+
       $stdout.puts "Update #{file_name} to #{version}...".colorize(:green)
       repository.write_file(file_name, "#{version}\n")
       repository.commit(file_name, message: "Update #{file_name} to #{version}")
