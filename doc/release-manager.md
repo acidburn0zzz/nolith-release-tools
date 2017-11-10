@@ -46,11 +46,11 @@ before starting the appointed release.
 
 ### Usernames
 
-| | Username |
-|-|-------------------|
-| Gitlab.com |  |
-| dev |  |
-| github |  |
+|            | Username |
+|:-----------|:---------|
+| Gitlab.com |          |
+| dev        |          |
+| github     |          |
 
 
 ```
@@ -63,8 +63,9 @@ Make sure to set the issue to **confidential** and include your SSH username and
 
 ```
 ## What
-- [ ] Access to chef-server
+- [ ] Access to the VPN
 - [ ] SSH access for release manager
+- [ ] Access to chef-server
 - [ ] Added to the `release-manager` group in Cog in `#production` so you can tweet and broadcast messages.
   - A Cog admin in `#production` can run `!group-member-add release-manager <your handle>`, or you could be [manually added to Marvin](https://gitlab.com/gitlab-com/runbooks/blob/master/howto/manage-cog.md#add-a-user)
 
