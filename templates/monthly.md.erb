@@ -41,7 +41,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Create MR on CE master updating the dependencies license list
   - [ ] Ensure above MRs are merged and marked <%= version.picking_label %>
 - Follow steps to create a release candidate
-  - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+  - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
   - [ ] Cherry-pick changes into preparation MRs following their instructions
   - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
   - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
@@ -119,7 +119,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 ```
 #### RC2
 
-- [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+- [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Cherry-pick changes into preparation MRs following their instructions
 - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
 - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
