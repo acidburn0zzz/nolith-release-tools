@@ -355,6 +355,17 @@ describe Version do
         end
       end
     end
+
+    context 'when version is for runner' do
+      it 'has a dot between rc number' do
+        aggregate_failures do
+          expect(version('8.3').to_rc(3, runner: true)).to eq '8.3.0-rc.3'
+          expect(version('8.3-rc2').to_rc(3, runner: true)).to eq '8.3.0-rc.3'
+          expect(version('8.3.0-rc2').to_rc(3, runner: true)).to eq '8.3.0-rc.3'
+          expect(version('8.3.0-ee').to_rc(3, runner: true)).to eq '8.3.0-rc.3-ee'
+        end
+      end
+    end
   end
 
   describe '#valid?' do

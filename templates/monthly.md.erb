@@ -32,6 +32,15 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
 - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
 
+### First working day after 12th
+
+#### Tag RC1 for [runner]
+
+Following the [runner release process](https://gitlab.com/gitlab-org/gitlab-runner/tree/master/docs/release_process):
+
+- [ ] Tag `<%= version.to_rc(1, runner: true) %>` on [runner] master branch
+- [ ] Deploy the RC to `docker-ci-X.gitlap.com`. TODO: How?
+
 #### RC1
 
 - Follow the [Creating RC1] guide:
@@ -120,6 +129,8 @@ cherry-picked into `<%= version.stable_branch %>`.
 #### RC2
 
 - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+- [ ] Tag `<%= version.to_rc(2, runner: true) %>` on [runner] master branch
+- [ ] Deploy the RC to `shared-runners-manager-X.gitlab.com`. TODO: How?
 - [ ] Cherry-pick changes into preparation MRs following their instructions
 - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
 - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
@@ -182,6 +193,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 
 - Before 13:00 UTC:
   - Final RC is ready for tagging. Including changes at this stage requires signoff from VP of Eng.
+    - [ ] Tag `<%= version.to_rc(21, runner: true) %>` on [runner] master branch
     - [ ] Ensure tests are green on [CE stable branch]
     - [ ] Ensure tests are green on [EE stable branch]
     - [ ] Ensure tests are green on [Omnibus CE stable branch]
@@ -234,6 +246,14 @@ cherry-picked into `<%= version.stable_branch %>`.
 
 No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
+
+- Prepare to release [runner]:
+  - [ ] Update the CHANGELOG file with entries for current release. TODO: How?
+  - [ ] Tag `<%= version.tag %>` on [runner] master branch
+  - [ ] Create the `<%= version.stable_branch %>` on the current master
+  - [ ] Increase version number in `VERSION` file. TODO: How?
+  - [ ] Deploy stable version to `docker-ci-X.gitlap.com` and `shared-runners-manager-X.gitlab.com`. TODO: How?
+  - [ ] Make sure release blog post does mention this runner update
 
 - At 8:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from VP of Eng.):
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
@@ -290,6 +310,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release
 
+[runner]: https://gitlab.com/gitlab-org/gitlab-runner
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [CE stable branch]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
 [EE stable branch]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>

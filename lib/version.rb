@@ -164,9 +164,14 @@ class Version < String
     "#{major}.#{minor}.#{patch}"
   end
 
-  def to_rc(number = 1)
-    "#{to_patch}-rc#{number}".tap do |version|
-      version << '-ee' if ee?
+  def to_rc(number = 1, runner: false)
+    number = ".#{number}" if runner
+    result = "#{to_patch}-rc#{number}"
+
+    if ee?
+      "#{result}-ee"
+    else
+      result
     end
   end
 
