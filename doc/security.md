@@ -123,6 +123,29 @@ $ git push dev X-Y-stable-ee
 **Note:** Please change `FETCH_HEAD` to `dev/X-Y-stable` in the commit message so it's
 obvious what was the merge remotes & branches when viewing the history.
 
+### Picking security patches into master
+
+To merge security patches into `master`, one way to do this is to create a
+patch set between two tags and apply these commits to master. For example,
+let's assume `v10.1.2` was the latest security release. Generate the patch
+set against `v10.1.1` by doing:
+
+```shell
+$ git checkout v10.1.2
+$ git format-patch v10.1.1 --stdout > security-release.patch
+```
+
+Inspect `security-release.patch` and confirm that it contains the expected
+changes. To apply this patch:
+
+```shell
+$ git checkout master
+$ git am security-release.patch
+```
+
+It's possible this patch does not apply cleanly to `master`, but `git am`
+gives you a chance to abort or resolve conflicts.
+
 ### About the blog post
 
 Create the blog post merge request **only once all the EE and CE packages are built and
