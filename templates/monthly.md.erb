@@ -34,7 +34,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Create MR on CE master updating the dependencies license list
   - [ ] Ensure above MRs are merged and marked `Pick into Stable` for milestone `<%= version.to_minor %>`
 - Follow steps to create a release candidate
-  - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+  - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
   - [ ] Cherry-pick changes into preparation MRs following their instructions
   - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
   milestone using the
@@ -121,7 +121,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 ```
 #### RC2
 
-- [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+- [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Cherry-pick changes into preparation MRs following their instructions
 - [ ] Cherry-pick remaining merge requests labeled `Pick into Stable` for the current
 milestone using the
