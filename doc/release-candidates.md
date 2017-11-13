@@ -32,7 +32,7 @@ available under [`gitlab/unstable`].
 
 ### Creating RC1
 
-#### Step 1: Update the "Installation from Source" guide
+#### Step 1: Update the ["Installation from Source" guide]
 
 > **Note:** This only needs to be done for the GitLab CE repository. Changes
 will be merged into GitLab EE.
@@ -42,6 +42,8 @@ will be merged into GitLab EE.
 1. Depending on changes in the upcoming release, you may need to add or remove
    sections. For example, in GitLab 8.0 we had to add the section about
    installing `gitlab-workhorse` (called `gitlab-git-http-server` at the time).
+
+["Installation from Source" guide]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/install/installation.md
 
 #### Step 2: Create the "Update" guides
 
