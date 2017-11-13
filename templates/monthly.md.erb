@@ -50,7 +50,7 @@ Following the [runner release process](https://gitlab.com/gitlab-org/gitlab-runn
   - [ ] Create MR on CE master updating the dependencies license list
   - [ ] Ensure above MRs are merged and marked <%= version.picking_label %>
 - Follow steps to create a release candidate
-  - [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+  - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
   - [ ] Cherry-pick changes into preparation MRs following their instructions
   - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
   - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
@@ -128,7 +128,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 ```
 #### RC2
 
-- [ ] Create preperation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+- [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Tag `<%= version.to_rc(2, runner: true) %>` on [runner] master branch
 - [ ] Deploy the RC to `shared-runners-manager-X.gitlab.com`. TODO: How?
 - [ ] Cherry-pick changes into preparation MRs following their instructions
