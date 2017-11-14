@@ -253,6 +253,22 @@ describe RemoteRepository do
         expect(log_lines).to start_with("Your Name\n")
       end
     end
+
+    context 'when the Git command fails' do
+      let(:error) { 'error message' }
+
+      before do
+        allow(subject).to receive(:run_git).with(%w[add README.md])
+        expect(subject).to receive(:run_git).with(%w[commit])
+        .and_return([error, double(success?: false)])
+      end
+
+      it 'raises a CannotCommitError exception' do
+        expect do
+          subject.commit(%w[README.md])
+        end.to raise_error(RemoteRepository::CannotCommitError, error)
+      end
+    end
   end
 
   describe '#merge', :silence_stdout, :aggregate_failures do
@@ -352,19 +368,13 @@ describe RemoteRepository do
     end
 
     context 'when :paths is set' do
-      it 'shows commits for the given file (as string) only' do
+      it 'shows commits for the given file when :paths is a string' do
         expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md])
 
         subject.log(paths: 'README.md')
       end
 
-      it 'shows commits for the given file (as array) only' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md])
-
-        subject.log(paths: %w[README.md])
-      end
-
-      it 'shows commits for the given files only' do
+      it 'shows commits for the given files when :paths is an array' do
         expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md VERSION])
 
         subject.log(paths: %w[README.md VERSION])
