@@ -118,26 +118,19 @@ end
 
 desc "Create a CE upstream merge request on EE"
 task :upstream_merge do
-  open_merge_requests = UpstreamMergeRequest.open_mrs
+  result = Services::UpstreamMergeService.new
+    .perform(dry_run: dry_run?, mention_people: mention?, force: force?)
 
-  if open_merge_requests.any?
-    $stdout.puts "--> An upstream merge request already exists.".red
-    $stdout.puts "    #{open_merge_requests.first.url}"
-    exit 1
+  if result.success?
+    upstream_mr = result.payload[:upstream_mr]
+    $stdout.puts <<~SUCCESS_MESSAGE.colorize(upstream_mr.exists? ? :green : :yellow)
+      --> Merge request "#{upstream_mr.title}" #{'not ' unless upstream_mr.exists?}created.
+          #{upstream_mr.url}
+    SUCCESS_MESSAGE
+  elsif result.payload[:in_progress_mr_url]
+    $stdout.puts <<~ERROR_MESSAGE.colorize(:red)
+    --> An upstream merge request already exists.
+        #{result.payload[:in_progress_mr_url]}
+    ERROR_MESSAGE
   end
-
-  merge_request = UpstreamMergeRequest.new(mention_people: mention?)
-  merge = UpstreamMerge.new(
-    origin: Project::GitlabEe.remotes[:gitlab],
-    upstream: Project::GitlabCe.remotes[:gitlab],
-    merge_branch: merge_request.source_branch)
-  merge_request.conflicts_data = merge.execute
-
-  $stdout.puts "\nFollowing is the decription of the MR that will be created:\n"
-  $stdout.puts "```\n#{merge_request.description}\n```"
-
-  mr_created = !dry_run? && merge_request.create
-
-  $stdout.puts "--> Merge request \"#{merge_request.title}\" #{'not ' unless mr_created}created.".green
-  $stdout.puts "    #{merge_request.url}"
 end

@@ -13,6 +13,10 @@ def dry_run?
   ENV['TEST'].present?
 end
 
+def force?
+  ENV['FORCE'].present?
+end
+
 def skip?(repo)
   ENV[repo.upcase] == 'false'
 end
