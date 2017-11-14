@@ -26,12 +26,12 @@ class ConflictualFixture
     )
   end
 
-  def unique_update_to_file!(file, commit_options = {})
+  def unique_update_to_file!(file, options = {})
     commit_blob(
       path:    file,
       content: "Content of #{file} in #{fixture_path} is #{SecureRandom.hex}",
       message: "Unique change to #{file}",
-      author: commit_options[:author]
+      author: options[:author]
     )
   end
 end

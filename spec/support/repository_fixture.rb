@@ -14,7 +14,6 @@ module RepositoryFixture
   end
 
   def wipe_fixture!
-    puts "Wiping #{fixture_path}: #{Dir.exist?(fixture_path)}"
     FileUtils.rm_r(fixture_path) if Dir.exist?(fixture_path)
     FileUtils.mkdir_p(fixture_path)
     @repository = nil
@@ -30,12 +29,12 @@ module RepositoryFixture
 
   private
 
-  # Commit multiple `VERSION`-type files at once
+  # Commit multiple files at once
   #
   # files - A Hash of filename => content pairs
   #
   # Returns the Rugged::Commit object
-  def commit_version_blobs(files)
+  def commit_blobs(files, message: nil, author: nil)
     index = repository.index
 
     files.each do |path, content|
@@ -43,26 +42,7 @@ module RepositoryFixture
       index.add(path: path, oid: oid, mode: 0o100644)
     end
 
-    message = "Add #{files.keys.join(', ')}"
-
-    commit = Rugged::Commit.create(
-      repository,
-      tree: index.write_tree(repository),
-      message: message,
-      parents: repository.empty? ? [] : [repository.head.target].compact,
-      update_ref: 'HEAD'
-    )
-
-    repository.checkout_head(strategy: :force)
-
-    commit
-  end
-
-  def commit_blob(path:, content:, message:, author: nil)
-    index = repository.index
-
-    oid = repository.write(content, :blob)
-    index.add(path: path, oid: oid, mode: 0o100644)
+    message ||= "Add #{files.keys.join(', ')}"
 
     commit = Rugged::Commit.create(
       repository,
@@ -76,6 +56,10 @@ module RepositoryFixture
     repository.checkout_head(strategy: :force)
 
     commit
+  end
+
+  def commit_blob(path:, content:, message:, author: nil)
+    commit_blobs({ path => content }, message: message, author: author)
   end
 
   def default_fixture_path

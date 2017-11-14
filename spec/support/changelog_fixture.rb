@@ -11,6 +11,10 @@ require_relative 'repository_fixture'
 class ChangelogFixture
   include RepositoryFixture
 
+  def self.repository_name
+    'changelog'
+  end
+
   def build_fixture(options = {})
     build_master
 
@@ -57,10 +61,6 @@ class ChangelogFixture
 
   def config
     Changelog::Config
-  end
-
-  def default_fixture_path
-    File.expand_path("../fixtures/repositories/changelog", __dir__)
   end
 
   # Set up initial `master` state
@@ -178,25 +178,6 @@ class ChangelogFixture
     )
 
     repository.checkout_head(strategy: :force)
-  end
-
-  def commit_blob(path:, content:, message:)
-    index = repository.index
-
-    oid = repository.write(content, :blob)
-    index.add(path: path, oid: oid, mode: 0o100644)
-
-    commit = Rugged::Commit.create(
-      repository,
-      tree: index.write_tree(repository),
-      message: message,
-      parents: repository.empty? ? [] : [repository.head.target].compact,
-      update_ref: 'HEAD'
-    )
-
-    repository.checkout_head(strategy: :force)
-
-    commit
   end
 
   # Copy-pasta from gitlab_git
