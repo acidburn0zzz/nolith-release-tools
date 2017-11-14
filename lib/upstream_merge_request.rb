@@ -24,20 +24,23 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   def title
-    @title ||= "CE upstream - #{Date.today.strftime('%A')}"
+    self[:title] ||= "CE upstream - #{Date.today.strftime('%A')}"
   end
 
   def description
-    if conflicts_data.empty?
+    if conflicts.empty?
       'Congrats, no conflicts!'
     else
-      description = conflicts_data.reduce("Files to resolve:\n") do |text, conflict|
+      out = StringIO.new
+      out.puts("Files to resolve:\n\n")
+      conflicts.each do |conflict|
         username = CommitAuthor.new(conflict[:user]).to_gitlab(reference: true)
         username = "`#{username}`" unless self[:mention_people]
 
-        text << "\n" << conflict_checklist_item(user: username, file: conflict[:path], conflict_type: conflict[:conflict_type])
+        out.puts conflict_checklist_item(user: username, file: conflict[:path], conflict_type: conflict[:conflict_type])
       end
-      description << "\n\n" << (UPSTREAM_MR_DESCRIPTION % source_branch)
+      out.puts "\n#{UPSTREAM_MR_DESCRIPTION % source_branch}"
+      out.string
     end
   end
 
@@ -51,11 +54,11 @@ class UpstreamMergeRequest < MergeRequest
 
   private
 
-  def conflicts_data
-    self[:conflicts_data] || []
+  def conflicts
+    self[:conflicts] || []
   end
 
   def conflict_checklist_item(user:, file:, conflict_type:)
-    "- [ ] #{user} Please resolve https://gitlab.com/gitlab-org/gitlab-ee/blob/#{source_branch}/#{file} (#{conflict_type})"
+    "- [ ] #{user} Please resolve [(#{conflict_type}) `#{file}`](https://gitlab.com/#{project.path}/blob/#{source_branch}/#{file})"
   end
 end
