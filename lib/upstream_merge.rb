@@ -13,10 +13,10 @@ class UpstreamMerge
 
   def execute
     prepare_upstream_merge
-    execute_upstream_merge
+    conflicts = execute_upstream_merge
     after_upstream_merge
 
-    conflicts_data
+    conflicts
   end
 
   private
@@ -32,13 +32,17 @@ class UpstreamMerge
 
   def execute_upstream_merge
     merge_no_ff
+    conflicts = compute_conflicts
+    conflicting_files = conflicts.map { |conflict_data| conflict_data[:path] }
 
-    if conflicts?
+    if conflicts.present?
       repository.commit(conflicting_files, no_edit: true)
       add_ci_skip_to_merge_commit
     end
 
     repository.push(origin, merge_branch)
+
+    conflicts
   end
 
   def after_upstream_merge
@@ -50,34 +54,20 @@ class UpstreamMerge
     repository.merge('upstream/master', merge_branch, no_ff: true)
   end
 
-  def conflicts?
-    conflicts_data.present?
-  end
-
-  def conflicts_data
-    @conflicts_data ||= begin
-      repository.status(short: true).lines.each_with_object([]) do |line, files|
-        path = line.sub(CONFLICT_MARKER_REGEX, '').chomp
-        # Store the file as key and conflict type as value, e.g.: { path: 'foo.rb', conflict_type: 'UU' }
-        files << { user: last_modifier(path), path: path, conflict_type: line[0, 2] } if line =~ CONFLICT_MARKER_REGEX
-      end
+  def compute_conflicts
+    repository.status(short: true).lines.each_with_object([]) do |line, files|
+      path = line.sub(CONFLICT_MARKER_REGEX, '').chomp
+      # Store the file as key and conflict type as value, e.g.: { path: 'foo.rb', conflict_type: 'UU' }
+      files << { user: last_modifier(path), path: path, conflict_type: line[0, 2] } if line =~ CONFLICT_MARKER_REGEX
     end
   end
 
-  def conflicting_files
-    @conflicting_files ||= conflicts_data.map { |conflict_data| conflict_data[:path] }
-  end
-
   def add_ci_skip_to_merge_commit
-    repository.commit(nil, amend: true, message: latest_commit_message << "\n[ci skip]")
+    repository.commit(nil, amend: true, message: "#{latest_commit_message}\n[ci skip]")
   end
 
   def latest_commit_message
     repository.log(latest: true, format: :message).chomp
-  end
-
-  def conflicting_file_checklist_item(user:, sha:, file:, conflict_type:)
-    "- [ ] #{user} Please resolve https://gitlab.com/gitlab-org/gitlab-ee/blob/#{sha}/#{file} (#{conflict_type})"
   end
 
   def last_modifier(file)
