@@ -192,7 +192,7 @@ This task will:
 
 | Option          | Purpose |
 | ------          | ------- |
-| `MENTION=false` | Don't mention people in the MR description (wrap their usernames in backticks) |
+| `NO_MENTION=true` | Don't mention people in the MR description (wrap their usernames in backticks) |
 | `TEST=true`     | Don't push the new branch, nor create a MR for it |
 | `FORCE=true`    | Create a branch and MR even if another upstream merge is already in progress |
 

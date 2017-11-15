@@ -118,8 +118,9 @@ end
 
 desc "Create a CE upstream merge request on EE"
 task :upstream_merge do
-  result = Services::UpstreamMergeService.new
-    .perform(dry_run: dry_run?, mention_people: mention?, force: force?)
+  result = Services::UpstreamMergeService
+    .new(dry_run: dry_run?, mention_people: !no_mention?, force: force?)
+    .perform
 
   if result.success?
     upstream_mr = result.payload[:upstream_mr]
