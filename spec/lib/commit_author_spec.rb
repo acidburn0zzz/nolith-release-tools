@@ -42,14 +42,12 @@ describe CommitAuthor do
     shared_examples 'an author not from the team' do |git_name|
       it "returns their Git name: #{git_name}" do
         expect(subject.to_gitlab).to eq(git_name)
-        expect(subject.to_gitlab(reference: true)).to eq(git_name)
       end
     end
 
     shared_examples 'an author from the team' do |gitlab_username|
       it "returns their GitLab username: #{gitlab_username}" do
-        expect(subject.to_gitlab).to eq(gitlab_username)
-        expect(subject.to_gitlab(reference: true)).to eq("@#{gitlab_username}")
+        expect(subject.to_gitlab).to eq("@#{gitlab_username}")
       end
     end
 

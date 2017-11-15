@@ -16,8 +16,7 @@ describe GitlabClient do
         labels: 'CE upstream',
         source_branch: 'feature',
         target_branch: 'master',
-        milestone: nil,
-        remove_source_branch: true)
+        milestone: nil)
     end
 
     let(:default_params) do

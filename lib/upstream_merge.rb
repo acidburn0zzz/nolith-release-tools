@@ -3,7 +3,7 @@ require_relative 'remote_repository'
 class UpstreamMerge
   attr_reader :origin, :upstream, :merge_branch
 
-  CONFLICT_MARKER_REGEX = /\A[A-Z]{2} /
+  CONFLICT_MARKER_REGEX = /\A(?<conflict_type>[ADU]{2}) /
 
   def initialize(origin:, upstream:, merge_branch:)
     @origin = origin
@@ -31,7 +31,9 @@ class UpstreamMerge
   end
 
   def execute_upstream_merge
-    merge_no_ff
+    repository.fetch('master', remote: :upstream)
+    repository.merge('upstream/master', merge_branch, no_ff: true)
+
     conflicts = compute_conflicts
     conflicting_files = conflicts.map { |conflict_data| conflict_data[:path] }
 
@@ -49,16 +51,13 @@ class UpstreamMerge
     repository.cleanup
   end
 
-  def merge_no_ff
-    repository.fetch('master', remote: :upstream)
-    repository.merge('upstream/master', merge_branch, no_ff: true)
-  end
-
   def compute_conflicts
     repository.status(short: true).lines.each_with_object([]) do |line, files|
       path = line.sub(CONFLICT_MARKER_REGEX, '').chomp
       # Store the file as key and conflict type as value, e.g.: { path: 'foo.rb', conflict_type: 'UU' }
-      files << { user: last_modifier(path), path: path, conflict_type: line[0, 2] } if line =~ CONFLICT_MARKER_REGEX
+      if line =~ CONFLICT_MARKER_REGEX
+        files << { user: last_modifier(path), path: path, conflict_type: $LAST_MATCH_INFO[:conflict_type] }
+      end
     end
   end
 

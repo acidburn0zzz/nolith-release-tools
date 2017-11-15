@@ -2,25 +2,26 @@ require_relative 'commit_author'
 require_relative 'merge_request'
 
 class UpstreamMergeRequest < MergeRequest
-  PROJECT = Project::GitlabEe
-  LABELS = 'CE upstream'.freeze
-  UPSTREAM_MR_DESCRIPTION = <<~DESCRIPTION.freeze
-    Try to resolve one file per commit, and then push (no force-push!) to the `%s` branch.
+  def self.project
+    Project::GitlabEe
+  end
 
-    Thanks in advance! ❤️
-
-    Note: This merge request was created by an automated script.
-    Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
-  DESCRIPTION
+  def self.labels
+    'CE upstream'.freeze
+  end
 
   def self.open_mrs
     GitlabClient
-      .merge_requests(PROJECT, labels: LABELS, state: 'opened')
+      .merge_requests(project, labels: labels, state: 'opened')
       .select { |mr| mr.target_branch == 'master' }
   end
 
   def project
-    PROJECT
+    self.class.project
+  end
+
+  def labels
+    self.class.labels
   end
 
   def title
@@ -29,23 +30,27 @@ class UpstreamMergeRequest < MergeRequest
 
   def description
     if conflicts.empty?
-      'Congrats, no conflicts!'
+      '**Congrats, no conflicts!** :tada:'
     else
       out = StringIO.new
       out.puts("Files to resolve:\n\n")
       conflicts.each do |conflict|
-        username = CommitAuthor.new(conflict[:user]).to_gitlab(reference: true)
+        username = CommitAuthor.new(conflict[:user]).to_gitlab
         username = "`#{username}`" unless self[:mention_people]
 
         out.puts conflict_checklist_item(user: username, file: conflict[:path], conflict_type: conflict[:conflict_type])
       end
-      out.puts "\n#{UPSTREAM_MR_DESCRIPTION % source_branch}"
+      out.puts
+      out.puts <<~DESCRIPTION.freeze
+        Try to resolve one file per commit, and then push (no force-push!) to the `#{source_branch}` branch.
+
+        Thanks in advance! :heart:
+
+        Note: This merge request was created by an automated script.
+        Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
+      DESCRIPTION
       out.string
     end
-  end
-
-  def labels
-    LABELS
   end
 
   def source_branch

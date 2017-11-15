@@ -16,14 +16,6 @@ describe Issuable do
 
   describe '#description' do
     it { expect(subject.description).to eq RUBY_VERSION }
-
-    context 'when a description is set' do
-      subject { described_class.new(description: 'Hello World!') }
-
-      it 'returns the given description' do
-        expect(subject.description).to eq('Hello World!')
-      end
-    end
   end
 
   describe '#project' do

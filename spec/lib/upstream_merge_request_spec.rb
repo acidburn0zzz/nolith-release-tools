@@ -4,68 +4,68 @@ require 'upstream_merge_request'
 
 describe UpstreamMergeRequest do
   around do |example|
-    Timecop.freeze do
+    Timecop.freeze(2017, 11, 15) do
       example.run
     end
   end
 
+  describe '.project' do
+    it { expect(described_class.project).to eq Project::GitlabEe }
+  end
+
+  describe '.labels' do
+    it { expect(described_class.labels).to eq 'CE upstream' }
+  end
+
   describe '.open_mrs' do
+    before do
+      expect(GitlabClient).to receive(:merge_requests)
+        .with(described_class.project, labels: described_class.labels, state: 'opened')
+        .and_return(merge_requests)
+    end
+
     context 'when no open upstream MR exists' do
-      before do
-        allow(GitlabClient).to receive(:merge_requests)
-          .with(Project::GitlabEe, labels: described_class::LABELS, state: 'opened')
-          .and_return([])
-      end
+      let(:merge_requests) { [] }
 
       it { expect(described_class.open_mrs).to be_empty }
     end
 
     context 'when an open upstream MR exists' do
-      let(:mr) { double(target_branch: 'master') }
+      let(:merge_requests) { [double(target_branch: 'master')] }
 
-      before do
-        allow(GitlabClient).to receive(:merge_requests)
-          .with(Project::GitlabEe, labels: described_class::LABELS, state: 'opened')
-          .and_return([mr])
+      context 'and the target branch is master' do
+        it { expect(described_class.open_mrs).to eq(merge_requests) }
       end
 
-      it { expect(described_class.open_mrs).to eq([mr]) }
-    end
+      context 'and the target_branch is not master' do
+        let(:merge_requests) { [double(target_branch: '9-5-stable')] }
 
-    context 'when an open MR exists but the target_branch is not master' do
-      let(:mr) { double(target_branch: '9-5-stable') }
-
-      before do
-        allow(GitlabClient).to receive(:merge_requests)
-          .with(Project::GitlabEe, labels: described_class::LABELS, state: 'opened')
-          .and_return([mr])
+        it { expect(described_class.open_mrs).to be_empty }
       end
-
-      it { expect(described_class.open_mrs).to be_empty }
     end
   end
 
   describe '#project' do
-    it { expect(subject.project).to eq Project::GitlabEe }
+    it { expect(subject.project).to eq described_class.project }
+  end
+
+  describe '#labels' do
+    it { expect(subject.labels).to eq described_class.labels }
   end
 
   describe '#title' do
-    it 'generates a relavant title' do
-      Timecop.freeze do
-        expect(subject.title).to eq "CE upstream - #{Date.today.strftime('%A')}"
-      end
+    it 'generates a relevant title' do
+      expect(subject.title).to eq 'CE upstream - Wednesday'
     end
   end
 
   describe '#labels' do
-    it { expect(subject.labels).to eq described_class::LABELS }
+    it { expect(subject.labels).to eq described_class.labels }
   end
 
   describe '#source_branch' do
     it 'generates a relavant source branch name' do
-      Timecop.freeze do
-        expect(subject.source_branch).to eq "ce-to-ee-#{Date.today.iso8601}"
-      end
+      expect(subject.source_branch).to eq 'ce-to-ee-2017-11-15'
     end
   end
 
@@ -79,20 +79,16 @@ describe UpstreamMergeRequest do
 
     context 'conflicts is empty' do
       it 'returns a nice description' do
-        expect(subject.description).to eq('Congrats, no conflicts!')
+        expect(subject.description).to eq('**Congrats, no conflicts!** :tada:')
       end
     end
 
     context 'conflicts is not empty' do
-      let(:conflicts) do
-        [
+      before do
+        subject.conflicts = [
           { path: 'foo/bar.rb', user: 'John Doe', conflict_type: 'UU' },
           { path: 'bar/baz.rb', user: 'Rémy Coutable', conflict_type: 'AA' }
         ]
-      end
-
-      before do
-        subject.conflicts = conflicts
       end
 
       it 'returns a description with checklist items for conflicting files' do
@@ -104,7 +100,7 @@ describe UpstreamMergeRequest do
 
           Try to resolve one file per commit, and then push (no force-push!) to the `ce-to-ee-123` branch.
 
-          Thanks in advance! ❤️
+          Thanks in advance! :heart:
 
           Note: This merge request was created by an automated script.
           Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
@@ -116,20 +112,9 @@ describe UpstreamMergeRequest do
           subject.mention_people = true
         end
 
-        it 'returns a description with checklist items for conflicting files with usernames wrapped in backticks' do
-          expect(subject.description).to eq <<~CONTENT
-            Files to resolve:
-
-            - [ ] John Doe Please resolve [(UU) `foo/bar.rb`](https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-123/foo/bar.rb)
-            - [ ] @rymai Please resolve [(AA) `bar/baz.rb`](https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-123/bar/baz.rb)
-
-            Try to resolve one file per commit, and then push (no force-push!) to the `ce-to-ee-123` branch.
-
-            Thanks in advance! ❤️
-
-            Note: This merge request was created by an automated script.
-            Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
-          CONTENT
+        it 'does not wrap usernames in backticks' do
+          expect(subject.description).to include('@rymai')
+          expect(subject.description).not_to include('`@rymai`')
         end
       end
     end

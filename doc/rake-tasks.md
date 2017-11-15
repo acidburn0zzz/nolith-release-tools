@@ -183,7 +183,7 @@ TEST=true bundle exec rake "security_release[8.2.1]"
 This task will:
 
 1. Merge the latest CE `master` into the latest EE `master`
-1. Push the merge to a new –unique per day– branch
+1. Push the merge to a new (unique per day) branch
 1. Create a Merge Request that will include:
   1. A list the files for which conflicts need to be resolved
   1. Mentions of the last ones who updated the conflicting files
@@ -194,7 +194,7 @@ This task will:
 | ------          | ------- |
 | `MENTION=false` | Don't mention people in the MR description (wrap their usernames in backticks) |
 | `TEST=true`     | Don't push the new branch, nor create a MR for it |
-| `FORCE=true`    | Create a branch and MR even if one is already in progress |
+| `FORCE=true`    | Create a branch and MR even if another upstream merge is already in progress |
 
 ### Examples
 

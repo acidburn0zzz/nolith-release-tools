@@ -123,10 +123,16 @@ task :upstream_merge do
 
   if result.success?
     upstream_mr = result.payload[:upstream_mr]
-    $stdout.puts <<~SUCCESS_MESSAGE.colorize(upstream_mr.exists? ? :green : :yellow)
-      --> Merge request "#{upstream_mr.title}" #{'not ' unless upstream_mr.exists?}created.
-          #{upstream_mr.url}
-    SUCCESS_MESSAGE
+    if upstream_mr.exists?
+      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:green)
+        --> Merge request "#{upstream_mr.title}" created.
+            #{upstream_mr.url}
+      SUCCESS_MESSAGE
+    else
+      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
+        --> Merge request "#{upstream_mr.title}" not created.
+      SUCCESS_MESSAGE
+    end
   elsif result.payload[:in_progress_mr_url]
     $stdout.puts <<~ERROR_MESSAGE.colorize(:red)
     --> An upstream merge request already exists.

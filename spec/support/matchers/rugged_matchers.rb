@@ -67,6 +67,30 @@ module RuggedMatchers
     end
   end
 
+  # Verify that the current HEAD or given commit has the given message
+  matcher :have_commit_message do |message|
+    chain :for do |ref|
+      @ref = ref
+    end
+
+    match do |repository|
+      @repository = repository
+      @expected_message = message
+      commit = @ref ? @repository.rev_parse(@ref) : @repository.head.target
+      @actual_message = commit.message
+
+      @expected_message == @actual_message
+    end
+
+    failure_message do
+      %[expected last commit title of #{@ref || 'HEAD'} from #{File.join(@repository.workdir)} to be \n\n```\n#{@expected_message}\n```\n\nbut was\n\n```\n#{@actual_message}\n```]
+    end
+
+    failure_message_when_negated do
+      %[expected last commit title of #{@ref || 'HEAD'} from #{File.join(@repository.workdir)} not to be \n\n```#{@expected_message}\n```]
+    end
+  end
+
   # Verify that the current HEAD or given branch has the given number of commits
   matcher :have_commits do |commits_count|
     chain :for do |ref|

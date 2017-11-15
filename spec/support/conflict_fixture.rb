@@ -3,11 +3,11 @@ require 'rugged'
 
 require_relative 'repository_fixture'
 
-class ConflictualFixture
+class ConflictFixture
   include RepositoryFixture
 
   def self.repository_name
-    'conflictual'
+    'conflict'
   end
 
   def build_fixture(options = {})
@@ -26,7 +26,7 @@ class ConflictualFixture
     )
   end
 
-  def unique_update_to_file!(file, options = {})
+  def unique_update_to_file(file, options = {})
     commit_blob(
       path:    file,
       content: "Content of #{file} in #{fixture_path} is #{SecureRandom.hex}",

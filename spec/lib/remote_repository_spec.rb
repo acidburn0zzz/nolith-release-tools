@@ -260,13 +260,12 @@ describe RemoteRepository do
       before do
         allow(subject).to receive(:run_git).with(%w[add README.md])
         expect(subject).to receive(:run_git).with(%w[commit])
-        .and_return([error, double(success?: false)])
+          .and_return([error, double(success?: false)])
       end
 
       it 'raises a CannotCommitError exception' do
-        expect do
-          subject.commit(%w[README.md])
-        end.to raise_error(RemoteRepository::CannotCommitError, error)
+        expect { subject.commit(%w[README.md]) }
+          .to raise_error(RemoteRepository::CannotCommitError, error)
       end
     end
   end

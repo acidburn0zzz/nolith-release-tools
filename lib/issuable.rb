@@ -8,7 +8,7 @@ class Issuable < OpenStruct
   end
 
   def description
-    self[:description] || ERB.new(template).result(binding)
+    ERB.new(template).result(binding)
   end
 
   def project
