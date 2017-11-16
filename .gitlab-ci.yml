@@ -1,28 +1,26 @@
 image: "dev.gitlab.org:5005/gitlab/gitlab-build-images:ruby-2.3-git-2.7-phantomjs-2.1"
 
+stages:
+  - test
+  - deploy
+  - automation
+
 cache:
   key: "ruby-231"
   paths:
   - vendor/ruby
 
+before_script:
+  - bundle install --jobs $(nproc) --retry 3
+
 rubocop:
   stage: test
   script:
-    - which ruby
-    - ruby -v
-    - gem install bundler --no-ri --no-rdoc
-    - bundle install --jobs $(nproc) "${FLAGS[@]}"
     - bundle exec rubocop
 
 specs:
   stage: test
   script:
-    - apt-get update -yqqq
-    - apt-get install -yqqq --force-yes cmake
-    - which ruby
-    - ruby -v
-    - gem install bundler --no-ri --no-rdoc
-    - bundle install --jobs $(nproc) "${FLAGS[@]}"
     - cp .env.example .env
     - git config --global user.email "you@example.com"
     - git config --global user.name "Your Name"
@@ -34,6 +32,7 @@ specs:
 
 pages:
   stage: deploy
+  before_script: []
   script:
     - mkdir -p public/
     - mv coverage/ public/
@@ -44,3 +43,21 @@ pages:
       - public/
   only:
     - master
+  except:
+    - schedules
+
+upstream-merge:
+  stage: automation
+  before_script:
+    - bundle install --jobs $(nproc) --retry 3
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$AUTO_UPSTREAM_MERGE_BOT_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - git config --global user.email "gitlab-bot@gitlab.com"
+    - git config --global user.name "GitLab Bot"
+    - mkdir -p ~/.ssh
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+  script:
+    - bundle exec rake upstream_merge
+  only:
+    - schedules
