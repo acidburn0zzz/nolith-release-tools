@@ -9,9 +9,9 @@ class CommitAuthor
     @git_names_to_team_names = git_names_to_team_names
   end
 
-  def to_gitlab(reference: false)
+  def to_gitlab
     if gitlab_username
-      reference ? "@#{gitlab_username}" : gitlab_username
+      "@#{gitlab_username}"
     else
       git_name
     end

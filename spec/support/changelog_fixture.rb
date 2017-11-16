@@ -4,28 +4,18 @@ require 'rugged'
 require 'changelog/config'
 require 'version'
 
+require_relative 'repository_fixture'
+
 # Builds a fixture repository used in testing Changelog auto-generation
 # functionality
 class ChangelogFixture
-  attr_reader :fixture_path, :repository
+  include RepositoryFixture
 
-  def initialize(fixture_path = nil)
-    @fixture_path = fixture_path || default_fixture_path
+  def self.repository_name
+    'changelog'
   end
 
-  def rebuild_fixture!
-    wipe_fixture!
-    build_fixture
-  end
-
-  def wipe_fixture!
-    FileUtils.rm_r(fixture_path) if Dir.exist?(fixture_path)
-    FileUtils.mkdir_p(fixture_path)
-  end
-
-  def build_fixture
-    @repository = Rugged::Repository.init_at(fixture_path)
-
+  def build_fixture(options = {})
     build_master
 
     branches = {}
@@ -71,10 +61,6 @@ class ChangelogFixture
 
   def config
     Changelog::Config
-  end
-
-  def default_fixture_path
-    File.expand_path("../fixtures/repositories/changelog", __dir__)
   end
 
   # Set up initial `master` state
@@ -158,7 +144,7 @@ class ChangelogFixture
     )
 
     # Merge branch into master
-    merge_commit = merge(branch.name, 'master', message: <<-MSG.strip_heredoc)
+    merge_commit = merge(branch.name, 'master', message: <<~MSG)
       Merge branch '#{branch.name}' into 'master'
 
       #{entry['title']}
@@ -192,25 +178,6 @@ class ChangelogFixture
     )
 
     repository.checkout_head(strategy: :force)
-  end
-
-  def commit_blob(path:, content:, message:)
-    index = repository.index
-
-    oid = repository.write(content, :blob)
-    index.add(path: path, oid: oid, mode: 0o100644)
-
-    commit = Rugged::Commit.create(
-      repository,
-      tree: index.write_tree(repository),
-      message: message,
-      parents: repository.empty? ? [] : [repository.head.target].compact,
-      update_ref: 'HEAD'
-    )
-
-    repository.checkout_head(strategy: :force)
-
-    commit
   end
 
   # Copy-pasta from gitlab_git

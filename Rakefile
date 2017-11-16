@@ -107,3 +107,29 @@ task :security_patch_issue, [:version] do |_t, args|
 
   create_or_show_issue(issue)
 end
+
+desc "Create a CE upstream merge request on EE"
+task :upstream_merge do
+  result = Services::UpstreamMergeService
+    .new(dry_run: dry_run?, mention_people: !no_mention?, force: force?)
+    .perform
+
+  if result.success?
+    upstream_mr = result.payload[:upstream_mr]
+    if upstream_mr.exists?
+      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:green)
+        --> Merge request "#{upstream_mr.title}" created.
+            #{upstream_mr.url}
+      SUCCESS_MESSAGE
+    else
+      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
+        --> Merge request "#{upstream_mr.title}" not created.
+      SUCCESS_MESSAGE
+    end
+  elsif result.payload[:in_progress_mr_url]
+    $stdout.puts <<~ERROR_MESSAGE.colorize(:red)
+    --> An upstream merge request already exists.
+        #{result.payload[:in_progress_mr_url]}
+    ERROR_MESSAGE
+  end
+end
