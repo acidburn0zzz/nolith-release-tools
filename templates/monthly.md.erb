@@ -93,10 +93,10 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
   - [ ] Post a [tweet about] the `<%= version.to_rc %>` release:
 
-        ```
-        GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
-        Use at your own risk.
-        ```
+      ```
+    !tweet "GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk."
+      ```
 
 #### QA
 
@@ -173,8 +173,8 @@ cherry-picked into `<%= version.stable_branch %>`.
 - [ ] Post a [tweet about] the `<%= version.to_rc(2) %>` release:
 
       ```
-      GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
-      Use at your own risk.
+    !tweet "GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
+    Use at your own risk."
       ```
 ```
 
@@ -220,8 +220,8 @@ cherry-picked into `<%= version.stable_branch %>`.
     - [ ] Post a [tweet about] the `<%= version.to_rc(21) %>` release:
 
         ```
-        GitLab <%= version.to_rc(21) %> is available: https://packages.gitlab.com/gitlab/unstable
-        Use at your own risk.
+      !tweet "GitLab <%= version.to_rc(21) %> is available: https://packages.gitlab.com/gitlab/unstable
+      Use at your own risk."
         ```
 
 - At 15:00 UTC:
