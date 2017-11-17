@@ -134,6 +134,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 #### RC2
 
 - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
+- [ ] Check if pipeline for `<%= version.stable_branch %>` is passing: [![pipeline status](https://gitlab.com/gitlab-org/gitlab-runner/badges/<%= version.stable_branch %>/pipeline.svg)](https://gitlab.com/gitlab-org/gitlab-runner/commits/<%= version.stable_branch %>)
 - [ ] Tag and push `<%= version.to_rc(2, runner: true) %>` on [runner] `<%= version.stable_branch %>`
 - [ ] And [deploy runner] `<%= version.to_rc(2, runner: true) %>` to `shared-runners-manager-X.gitlab.com`
 - [ ] Cherry-pick changes into preparation MRs following their instructions
@@ -198,7 +199,8 @@ cherry-picked into `<%= version.stable_branch %>`.
 
 - Before 13:00 UTC:
   - Final RC is ready for tagging. Including changes at this stage requires signoff from VP of Eng.
-    - [ ] Tag `<%= version.to_rc(2, runner: true) %>` on [runner] `<%= version.to_rc(2, runner: true) %>` branch
+    - [ ] Check if pipeline for `<%= version.stable_branch %>` is passing: [![pipeline status](https://gitlab.com/gitlab-org/gitlab-runner/badges/<%= version.stable_branch %>/pipeline.svg)](https://gitlab.com/gitlab-org/gitlab-runner/commits/<%= version.stable_branch %>)
+    - [ ] Tag `<%= version.to_rc(21, runner: true) %>` on [runner] `<%= version.to_rc(21, runner: true) %>` branch
     - [ ] Ensure tests are green on [CE stable branch]
     - [ ] Ensure tests are green on [EE stable branch]
     - [ ] Ensure tests are green on [Omnibus CE stable branch]
@@ -253,6 +255,7 @@ No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
 
 - Prepare to release [runner]:
+  - [ ] Check if pipeline for `<%= version.stable_branch %>` is passing: [![pipeline status](https://gitlab.com/gitlab-org/gitlab-runner/badges/<%= version.stable_branch %>/pipeline.svg)](https://gitlab.com/gitlab-org/gitlab-runner/commits/<%= version.stable_branch %>)
   - [ ] Tag and push `<%= version.to_patch %>` on [runner] `<%= version.stable_branch %>`
   - [ ] And [deploy runner] `<%= version.to_patch %>` to `docker-ci-X.gitlap.com` and `shared-runners-manager-X.gitlab.com`
   - [ ] Make sure release blog post does mention this runner update
