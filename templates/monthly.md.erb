@@ -150,16 +150,16 @@ cherry-picked into `<%= version.stable_branch %>`.
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(for_rc: 2, ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(for_rc: 2) %>)
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
-      ```sh
-      # In the takeoff project:
-      bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0]"
-      ```
+    ```sh
+    # In the takeoff project:
+    bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0]"
+    ```
 - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to canary
 - [ ] If needed, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [canary.gitlab.com]
-      ```sh
-      # In the takeoff project:
-      bundle exec rake "deploy[canary, <%= version.to_rc(2) %>.ee.0]"
-      ```
+    ```sh
+    # In the takeoff project:
+    bundle exec rake "deploy[canary, <%= version.to_rc(2) %>.ee.0]"
+    ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to production
 - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
     * With downtime: 1 hour before
@@ -174,24 +174,24 @@ cherry-picked into `<%= version.stable_branch %>`.
     !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc(2) %>"
     ```
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
-      ```sh
-      # In the takeoff project:
-      bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0]"
-      ```
+    ```sh
+    # In the takeoff project:
+    bundle exec rake "deploy[production, <%= version.to_rc(2) %>.ee.0]"
+    ```
 - [ ] Take notes of the time it took for the migrations to complete on the deployment to production.
-      ```
-      # On the takeoff repo
-      bundle exec rake "follow_migrations[production]"
-      ```
+    ```
+    # On the takeoff repo
+    bundle exec rake "follow_migrations[production]"
+    ```
 - [ ] From the [build pipeline], [manually publish public packages]
 - [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(2) %>)
 - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
 - [ ] Post a [tweet about] the `<%= version.to_rc(2) %>` release:
 
-      ```
+    ```
     !tweet "GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
     Use at your own risk."
-      ```
+    ```
 ```
 
 ### 21st final RC
@@ -205,11 +205,10 @@ cherry-picked into `<%= version.stable_branch %>`.
     - [ ] In `#releases`: I'm going to tag final RC release
     - [ ] Replace XX in the tasks below with the RC version number:
     - [ ] Tag the final RC version using the [`release` task],
-
-          ```sh
-          # In the release-tools project:
-          bundle exec rake "release[<%= version.to_rc(21) %>]"
-          ```
+        ```sh
+        # In the release-tools project:
+        bundle exec rake "release[<%= version.to_rc(21) %>]"
+        ```
     - [ ] Check progress of [EE packages build] and [CE packages build]
     - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to staging
     - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [staging.gitlab.com]
@@ -246,10 +245,10 @@ cherry-picked into `<%= version.stable_branch %>`.
     - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
     - [ ] Post a [tweet about] the `<%= version.to_rc(21) %>` release:
 
-        ```
+      ```
       !tweet "GitLab <%= version.to_rc(21) %> is available: https://packages.gitlab.com/gitlab/unstable
       Use at your own risk."
-        ```
+      ```
 
 - At 15:00 UTC:
   - [ ] If the final RC is not tagged and deployed by this time, notify the [Build Lead](doc/monthly.md#getting-help)
