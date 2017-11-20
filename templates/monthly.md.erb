@@ -78,13 +78,13 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         * With downtime: 1 hour before
         ```
         !tweet "We will be deploying GitLab EE <%= version.to_rc %> starting at X:Y UTC, 15 mins of downtime expected"
-        !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc %>.
+        !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc %>.
         For status updates during the downtime, please follow [@gitlabstatus](https://twitter.com/gitlabstatus)"
         ```
         * Without downtime: 15 minutes before
         ```
         !tweet "We are about to deploy GitLab EE <%= version.to_rc %> starting at X:Y UTC"
-        !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc %>"
+        !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc %>"
         ```
   - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to GitLab.com
         ```sh
@@ -165,13 +165,13 @@ cherry-picked into `<%= version.stable_branch %>`.
     * With downtime: 1 hour before
     ```
     !tweet "We will be deploying GitLab EE <%= version.to_rc(2) %> starting at X:Y UTC, 15 mins of downtime expected"
-    !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc(2) %>.
+    !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc(2) %>.
     For status updates during the downtime, please follow [@gitlabstatus](https://twitter.com/gitlabstatus)"
     ```
     * Without downtime: 15 minutes before
     ```
     !tweet "We are about to deploy GitLab EE <%= version.to_rc(2) %> starting at X:Y UTC"
-    !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc(2) %>"
+    !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc(2) %>"
     ```
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
     ```sh
@@ -227,13 +227,13 @@ cherry-picked into `<%= version.stable_branch %>`.
         * With downtime: 1 hour before
         ```
         !tweet "We will be deploying GitLab EE <%= version.to_rc(2) %> starting at X:Y UTC, 15 mins of downtime expected"
-        !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc(2) %>.
+        !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc(2) %>.
         For status updates during the downtime, please follow [@gitlabstatus](https://twitter.com/gitlabstatus)"
         ```
         * Without downtime: 15 minutes before
         ```
         !tweet "We are about to deploy GitLab EE <%= version.to_rc(2) %> starting at X:Y UTC"
-        !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_rc(2) %>"
+        !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc(2) %>"
         ```
     - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to GitLab.com
         ```sh
@@ -299,13 +299,13 @@ This way we ensure the release does not introduce new regressions.
         * With downtime: 1 hour before
         ```
         !tweet "We will be deploying GitLab EE <%= version.to_patch %> starting at X:Y UTC, 15 mins of downtime expected"
-        !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_patch %>.
+        !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>.
         For status updates during the downtime, please follow [@gitlabstatus](https://twitter.com/gitlabstatus)"
         ```
         * Without downtime: 15 minutes before
         ```
         !tweet "We are about to deploy GitLab EE <%= version.to_patch %> starting at X:Y UTC"
-        !broadcast --start A:B --end X:Y "We are currently deploying GitLab EE <%= version.to_patch %>"
+        !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>"
         ```
   - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to GitLab.com
         ```sh
