@@ -251,17 +251,17 @@ cherry-picked into `<%= version.stable_branch %>`.
       ```
 
 - At 15:00 UTC:
-  - [ ] If the final RC is not tagged and deployed by this time, notify the [Build Lead](doc/monthly.md#getting-help)
+  - [ ] If the final RC is not tagged and deployed by this time, notify the [Build Lead][Getting help]
 
 - At 20:00 UTC:
-  - [ ] If the final RC is not tagged and deployed by this time, notify the [VP of Engineering](doc/monthly.md#getting-help)
+  - [ ] If the final RC is not tagged and deployed by this time, notify the [VP of Engineering][Getting help]
 
 ### 22nd, the release day:
 
 No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
 
-- At 8:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from VP of Eng.):
+- At 8:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from [VP of Eng.][Getting help]):
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
@@ -269,7 +269,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Ensure tests are green on [EE stable branch]
   - [ ] Ensure tests are green on [Omnibus CE stable branch]
   - [ ] Ensure tests are green on [Omnibus EE stable branch]
-  - [ ] If at this time final release is not ready for tagging, notify the [CTO](doc/monthly.md#getting-help)
+  - [ ] If at this time final release is not ready for tagging, notify the [CTO][Getting help]
 
 - Before 10:00 UTC:
   - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
@@ -348,5 +348,6 @@ This way we ensure the release does not introduce new regressions.
 [canary.gitlab.com]: https://canary.gitlab.com/
 [manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
+[Getting help]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/monthly.md#getting-help
 
 /milestone %"<%= version.to_minor %>"
