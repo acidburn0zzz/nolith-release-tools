@@ -87,10 +87,10 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc %>"
         ```
   - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to GitLab.com
-        ```sh
-        # In the takeoff project:
-        bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
-        ```
+      ```sh
+      # In the takeoff project:
+      bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
+      ```
   - [ ] Take notes of the time it took for the migrations to complete on the deployment to production.
       ```
       # On the takeoff repo
@@ -284,12 +284,14 @@ This way we ensure the release does not introduce new regressions.
 - Before 12:00 UTC:
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
   - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
+
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
         ```
   - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
   - [ ] If needed, do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [canary.gitlab.com]
+
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
@@ -308,16 +310,17 @@ This way we ensure the release does not introduce new regressions.
         !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>"
         ```
   - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to GitLab.com
+
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
         ```
   - [ ] Create the first patch issue using the [`patch_issue` task]:
 
-      ```sh
-      # In the release-tools project:
-      bundle exec rake "patch_issue[<%= version.next_patch %>]"
-      ```
+        ```sh
+        # In the release-tools project:
+        bundle exec rake "patch_issue[<%= version.next_patch %>]"
+        ```
   - [ ] If at this point final release is not ready for public, notify the [CEO](https://about.gitlab.com/team/#sytses)
 
 - At 15:00 UTC:
