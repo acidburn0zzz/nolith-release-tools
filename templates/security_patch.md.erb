@@ -27,7 +27,7 @@
       I'm going to deploy `<%= version %>` to staging
       ```
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
-- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the takeoff project:
       bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
@@ -38,7 +38,7 @@
       I'm going to deploy `<%= version %>` to canary
       ```
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
-- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
+- [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
       ```sh
       # In the takeoff project:
       bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
@@ -49,10 +49,19 @@
       I'm going to deploy `<%= version %>` to production
       ```
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
-- [ ] Make sure to [announce the deploy] on Twitter and GitLab.com
-  * With downtime: 1 hour before
-  * Without downtime: 15 minutes before
-- [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
+- [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
+      * With downtime: 1 hour before
+      ```
+      !tweet "We will be deploying GitLab EE <%= version.to_patch %> starting at X:Y UTC, 15 mins of downtime expected"
+      !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>.
+      For status updates during the downtime, please follow [@gitlabstatus](https://twitter.com/gitlabstatus)"
+      ```
+      * Without downtime: 15 minutes before
+      ```
+      !tweet "We are about to deploy GitLab EE <%= version.to_patch %> starting at X:Y UTC"
+      !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>"
+      ```
+- [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
       ```sh
       # In the takeoff project:
       bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
