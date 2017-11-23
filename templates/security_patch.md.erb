@@ -26,6 +26,7 @@
       ```
       I'm going to deploy `<%= version %>` to staging
       ```
+- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the takeoff project:
@@ -36,6 +37,7 @@
       ```
       I'm going to deploy `<%= version %>` to canary
       ```
+- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] Deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
       ```sh
       # In the takeoff project:
@@ -46,6 +48,7 @@
       ```
       I'm going to deploy `<%= version %>` to production
       ```
+- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] Make sure to [announce the deploy] on Twitter and GitLab.com
   * With downtime: 1 hour before
   * Without downtime: 15 minutes before
