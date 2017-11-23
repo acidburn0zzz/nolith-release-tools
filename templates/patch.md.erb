@@ -12,7 +12,7 @@
 - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog]
-- [ ] While waiting for tests to be green, now is a good time to start on the blog post: BLOG_POST_MR
+- [ ] While waiting for tests to be green, now is a good time to [create the blog post MR]. Look at previous MRs for examples. => BLOG_POST_MR
 - [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
 - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
 - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
@@ -93,6 +93,8 @@ For references:
 
 [manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
+
+[create the blog post MR]: https://about.gitlab.com/handbook/marketing/blog/release-posts/#release-posts
 
 /milestone %"<%= version.to_minor %>"
 /due 7 days
