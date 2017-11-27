@@ -30,7 +30,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] Merge Gitlab CE into EE on stable branches following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
 - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
-- [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
+- [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
 
 #### RC1
 
@@ -49,7 +49,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
-  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
   - [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
   - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
@@ -62,18 +62,21 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(for_rc: 1, ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(for_rc: 1) %>)
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to staging
-  - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
+  - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+  - [ ] On video call, [deploy] release [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [staging.gitlab.com]
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[staging, <%= version.to_rc %>.ee.0]"
         ```
-  - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_rc %>` to canary
-  - [ ] If needed, do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [canary.gitlab.com]
+  - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to canary
+  - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+  - [ ] On video call, [deploy] release [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [canary.gitlab.com]
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[canary, <%= version.to_rc %>.ee.0]"
         ```
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to production
+  - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
         * With downtime: 1 hour before
         ```
@@ -86,7 +89,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         !tweet "We are about to deploy GitLab EE <%= version.to_rc %> starting at X:Y UTC"
         !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc %>"
         ```
-  - [ ] Do the [deploy] of [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to GitLab.com
+  - [ ] On video call, [deploy] release [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to GitLab.com
       ```sh
       # In the takeoff project:
       bundle exec rake "deploy[production, <%= version.to_rc %>.ee.0]"
@@ -136,7 +139,7 @@ cherry-picked into `<%= version.stable_branch %>`.
   - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
-  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
   - [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
   - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
@@ -149,18 +152,21 @@ cherry-picked into `<%= version.stable_branch %>`.
         ```
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(for_rc: 2, ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(for_rc: 2) %>)
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to staging
+- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [staging.gitlab.com]
     ```sh
     # In the takeoff project:
     bundle exec rake "deploy[staging, <%= version.to_rc(2) %>.ee.0]"
     ```
-- [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to canary
-- [ ] If needed, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [canary.gitlab.com]
+- [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to canary
+- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+- [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [canary.gitlab.com]
     ```sh
     # In the takeoff project:
     bundle exec rake "deploy[canary, <%= version.to_rc(2) %>.ee.0]"
     ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to production
+- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
     * With downtime: 1 hour before
     ```
@@ -211,18 +217,21 @@ cherry-picked into `<%= version.stable_branch %>`.
         ```
     - [ ] Check progress of [EE packages build] and [CE packages build]
     - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to staging
+    - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
     - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [staging.gitlab.com]
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[staging, <%= version.to_rc(21) %>.ee.0]"
         ```
-    - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to canary
-    - [ ] If needed, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [canary.gitlab.com]
+    - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to canary
+    - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+    - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [canary.gitlab.com]
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[canary, <%= version.to_rc(21) %>.ee.0]"
         ```
     - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to production
+    - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
     - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
         * With downtime: 1 hour before
         ```
@@ -264,7 +273,7 @@ This way we ensure the release does not introduce new regressions.
 - At 8:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from [VP of Eng.][Getting help]):
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
-  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable)
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Ensure tests are green on [CE stable branch]
   - [ ] Ensure tests are green on [EE stable branch]
   - [ ] Ensure tests are green on [Omnibus CE stable branch]
@@ -283,20 +292,23 @@ This way we ensure the release does not introduce new regressions.
 
 - Before 12:00 UTC:
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
+  - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [staging.gitlab.com]
 
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
         ```
-  - [ ] If needed, in `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
-  - [ ] If needed, do the [deploy] of [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [canary.gitlab.com]
+  - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
+  - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+  - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [canary.gitlab.com]
 
         ```sh
         # In the takeoff project:
         bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
         ```
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
+  - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
         * With downtime: 1 hour before
         ```
