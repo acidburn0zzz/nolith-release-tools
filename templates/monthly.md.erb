@@ -324,6 +324,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] If at this point final release is not ready for public, notify the [CEO](https://about.gitlab.com/team/#sytses)
 
 - At 15:00 UTC:
+  - Make sure that neither packages nor blog post get published before that time without approval by the marketing team.
   - [ ] From the [build pipeline], [manually publish public packages]
   - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
