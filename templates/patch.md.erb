@@ -40,16 +40,17 @@
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
+      ```
+      !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>.
+      For status updates, please follow https://twitter.com/GitLabStatus"
+      ```
       * With downtime: 1 hour before
       ```
       !tweet "We will be deploying GitLab EE <%= version.to_patch %> starting at X:Y UTC, 15 mins of downtime expected"
-      !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>.
-      For status updates during the downtime, please follow [@gitlabstatus](https://twitter.com/gitlabstatus)"
       ```
       * Without downtime: 15 minutes before
       ```
       !tweet "We are about to deploy GitLab EE <%= version.to_patch %> starting at X:Y UTC"
-      !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>"
       ```
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
       ```sh
