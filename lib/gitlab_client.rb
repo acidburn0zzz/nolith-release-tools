@@ -11,7 +11,7 @@ class GitlabClient
   end
 
   def self.current_user
-    @current_user ||= Gitlab.user
+    @current_user ||= client.user
   end
 
   def self.issues(project = Project::GitlabCe, options = {})
