@@ -7,6 +7,7 @@ class RemoteRepository
   class CannotCommitError < StandardError; end
   class CannotCreateTagError < StandardError; end
   class CannotPullError < StandardError; end
+  class CannotPushError < StandardError; end
 
   CanonicalRemote = Struct.new(:name, :url)
 
@@ -139,10 +140,14 @@ class RemoteRepository
     cmd << remote.to_s
     cmd << ref
 
-    _, status = run_git(cmd)
+    cmd_output, status = run_git(cmd)
 
     if conflicts?
       raise CannotPullError.new("Conflicts were found when pulling #{ref} from #{remote}")
+    end
+
+    unless status.success?
+      raise CannotPullError.new("Failed to pull #{ref} from #{remote}:\n#{cmd_output}")
     end
 
     status.success?
@@ -164,7 +169,12 @@ class RemoteRepository
 
       true
     else
-      _, status = run_git(cmd)
+      cmd_output, status = run_git(cmd)
+
+      unless status.success?
+        raise CannotPushError.new("Failed to push #{ref} to #{remote}:\n#{cmd_output}")
+      end
+
       status.success?
     end
   end
