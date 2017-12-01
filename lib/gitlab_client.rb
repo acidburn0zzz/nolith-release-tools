@@ -2,6 +2,8 @@ require_relative 'project/gitlab_ce'
 require_relative 'project/gitlab_ee'
 
 class GitlabClient
+  DEFAULT_GITLAB_API_ENDPOINT = 'https://gitlab.com/api/v4'.freeze
+
   class MissingMilestone
     def id
       nil
@@ -9,7 +11,7 @@ class GitlabClient
   end
 
   def self.current_user
-    @current_user ||= Gitlab.user
+    @current_user ||= client.user
   end
 
   def self.issues(project = Project::GitlabCe, options = {})
@@ -165,7 +167,10 @@ class GitlabClient
   end
 
   def self.client
-    @client ||= Gitlab.client(endpoint: ENV['GITLAB_API_ENDPOINT'], private_token: ENV['GITLAB_API_PRIVATE_TOKEN'])
+    @client ||= Gitlab.client(
+      endpoint: ENV.fetch('GITLAB_API_ENDPOINT', DEFAULT_GITLAB_API_ENDPOINT),
+      private_token: ENV['GITLAB_API_PRIVATE_TOKEN']
+    )
   end
 
   private_class_method :client

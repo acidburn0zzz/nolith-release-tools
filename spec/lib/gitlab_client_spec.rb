@@ -3,6 +3,12 @@ require 'spec_helper'
 require 'gitlab_client'
 
 describe GitlabClient do
+  describe '.current_user' do
+    it 'returns the current user', vcr: { cassette_name: 'current_user' } do
+      expect(described_class.current_user).not_to be_nil
+    end
+  end
+
   describe '.create_merge_request' do
     before do
       allow(described_class).to receive(:current_user).and_return(double(id: 42))
