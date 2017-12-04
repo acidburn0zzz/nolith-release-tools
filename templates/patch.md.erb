@@ -5,16 +5,14 @@
 - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Where appropriate, ensure each has made it into both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Make sure the **Due date** is up-to-date
-- [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+- [ ] If you didn't merge CE into EE in the preparation branches, or if the CE stable branch had additional commits, merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide. (In general this should be unnecessary.)
+- [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
 - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
 - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
 - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
 - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog]
 - [ ] Check [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog]
-- [ ] While waiting for tests to be green, now is a good time to [create the blog post MR]. Look at previous MRs for examples. => BLOG_POST_MR
-- [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
-- [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
 - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
@@ -22,6 +20,7 @@
       # In the release-tools project:
       bundle exec rake "release[<%= version.to_patch %>]"
       ```
+- [ ] While waiting for packages to build, now is a good time to [create the blog post MR]. Look at previous MRs for examples. => BLOG_POST_MR
 - [ ] Check progress of [EE packages build] and [CE packages build]
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
@@ -72,10 +71,20 @@
 ---
 
 For references:
-- https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+
+On gitlab.com
+
+- https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+- https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
+- https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+
+On gitlab.org
+
 - https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-- https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+- https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+- https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 
 [Merged MRs list]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+<%= version.to_minor %>&scope=all&sort=id_desc&state=merged
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
@@ -83,10 +92,8 @@ For references:
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
 
-[CE stable branch]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[EE stable branch]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-[Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-[Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
+[Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [CE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 [EE packages build]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 
