@@ -46,13 +46,12 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
   - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
       - [ ] REFERENCE_TO_MR_TO_PICK
-  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] If you didn't merge CE into EE in the preparation branches, or if the CE stable branch had additional commits, merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide. (In general this should be unnecessary.)
+  - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
-  - [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
-  - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
@@ -137,13 +136,12 @@ cherry-picked into `<%= version.stable_branch %>`.
 - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
-  - [ ] Merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide
+  - [ ] If you didn't merge CE into EE in the preparation branches, or if the CE stable branch had additional commits, merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide. (In general this should be unnecessary.)
+  - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
   - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
-  - [ ] Ensure builds are green on [CE stable branch] and [EE stable branch]
-  - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
   - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
   - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
@@ -274,13 +272,13 @@ No new code is added to release that was not included in the last RC.
 This way we ensure the release does not introduce new regressions.
 
 - At 8:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from [VP of Eng.][Getting help]):
-  - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
-  - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
-  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Ensure tests are green on [CE stable branch]
   - [ ] Ensure tests are green on [EE stable branch]
   - [ ] Ensure tests are green on [Omnibus CE stable branch]
   - [ ] Ensure tests are green on [Omnibus EE stable branch]
+  - [ ] Sync stable branches: CE, EE, and Omnibus to `dev`, CE and Omnibus to `github`
+  - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
+  - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] If at this time final release is not ready for tagging, notify the [CTO][Getting help]
 
 - Before 10:00 UTC:
@@ -348,10 +346,10 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
-[CE stable branch]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[EE stable branch]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-[Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-[Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[CE stable branch]: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
+[EE stable branch]: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+[Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
+[Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [announce the deployment]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
 [tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
 [`gitlab/unstable`]: https://packages.gitlab.com/gitlab/unstable

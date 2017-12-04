@@ -28,7 +28,7 @@ describe MonthlyIssue do
 
       content = issue.description
 
-      expect(content).to include('Merge CE `8-3-stable` into EE `8-3-stable-ee`')
+      expect(content).to include('merge CE `8-3-stable` into EE `8-3-stable-ee`')
     end
 
     it "includes the version number" do
