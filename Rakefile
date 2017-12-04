@@ -12,7 +12,7 @@ rescue LoadError
   # no rspec available
 end
 
-unless Rake.application.top_level_tasks.include?('default') || LocalRepository.ready?
+unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || LocalRepository.ready?
   abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
