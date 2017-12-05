@@ -46,7 +46,9 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_issue(issue, project = Project::GitlabCe)
-    milestone = milestone(project, title: issue.version.milestone_name)
+    milestone_title = issue.version.milestone_name
+    milestone = milestone(project, title: milestone_title)
+    raise "Milestone #{milestone_title} not found for project #{project.path}!" if milestone.id.nil?
 
     client.create_issue(project.path, issue.title,
       description:  issue.description,
@@ -90,7 +92,9 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_merge_request(merge_request, project = Project::GitlabCe)
-    milestone = milestone(project, title: merge_request.milestone)
+    milestone_title = merge_request.milestone
+    milestone = milestone(project, title: milestone_title)
+    raise "Milestone #{milestone_title} not found for project #{project.path}!" if milestone.id.nil?
 
     params = {
       description: merge_request.description,
