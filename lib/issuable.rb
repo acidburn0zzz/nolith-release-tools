@@ -32,7 +32,7 @@ class Issuable < OpenStruct
   end
 
   def url
-    raise NotImplementedError
+    remote_issuable.web_url
   end
 
   private
