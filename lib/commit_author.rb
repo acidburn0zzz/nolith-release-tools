@@ -19,8 +19,17 @@ class CommitAuthor
 
   private
 
+  def mapping_file
+    @mapping_file ||= File.expand_path('../git_names_to_team_names.yml', __dir__)
+  end
+
   def default_git_names_to_team_names
-    YAML.load_file(File.expand_path('../git_names_to_team_names.yml', __dir__))
+    @default_git_names_to_team_names ||=
+      if File.exist?(mapping_file)
+        YAML.load_file(mapping_file)
+      else
+        {}
+      end
   end
 
   def gitlab_username

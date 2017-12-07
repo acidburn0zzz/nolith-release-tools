@@ -22,8 +22,28 @@ describe CommitAuthor do
   end
 
   describe '#git_names_to_team_names' do
-    it 'loads git_names_to_team_names from a YAML file' do
-      expect(subject.git_names_to_team_names).to be_a(Hash)
+    let(:mapping_file) { File.expand_path('../../git_names_to_team_names.yml', __dir__) }
+
+    context 'when mapping file exists' do
+      before do
+        expect(File).to receive(:exist?).with(mapping_file).and_return(true)
+      end
+
+      it 'loads git_names_to_team_names from a YAML file' do
+        expect(YAML).to receive(:load_file).with(mapping_file).and_return(a: 'A')
+        expect(subject.git_names_to_team_names).to eq(a: 'A')
+      end
+    end
+
+    context 'when mapping file does not exist' do
+      before do
+        expect(File).to receive(:exist?).with(mapping_file).and_return(false)
+      end
+
+      it 'loads git_names_to_team_names from a YAML file' do
+        expect(YAML).not_to receive(:load_file)
+        expect(subject.git_names_to_team_names).to eq({})
+      end
     end
 
     it 'accepts a custom git_names_to_team_names' do
