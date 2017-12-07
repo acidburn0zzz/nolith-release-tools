@@ -144,32 +144,6 @@ class GitlabClient
       .detect { |i| i.title == merge_request.title }
   end
 
-  # Returns the URL of an issue in the given project based on the provided issue
-  #
-  # issue - An object that responds to the following messages:
-  #   :iid - Issue IID String
-  # project - An object that responds to :path
-  #
-  # Returns an URL
-  def self.issue_url(issue, project = Project::GitlabCe)
-    return '' if issue.iid.nil?
-
-    "https://gitlab.com/#{project.path}/issues/#{issue.iid}"
-  end
-
-  # Returns the URL of a merge request in the given project based on the provided merge request
-  #
-  # merge_request - An object that responds to the following messages:
-  #   :iid - Merge request IID String
-  # project - An object that responds to :path
-  #
-  # Returns an URL
-  def self.merge_request_url(merge_request, project = Project::GitlabCe)
-    return '' if merge_request.iid.nil?
-
-    "https://gitlab.com/#{project.path}/merge_requests/#{merge_request.iid}"
-  end
-
   def self.client
     @client ||= Gitlab.client(
       endpoint: ENV.fetch('GITLAB_API_ENDPOINT', DEFAULT_GITLAB_API_ENDPOINT),

@@ -21,8 +21,4 @@ class MergeRequest < Issuable
   def remote_issuable
     @remote_issuable ||= GitlabClient.find_merge_request(self, project)
   end
-
-  def url
-    GitlabClient.merge_request_url(self, project)
-  end
 end

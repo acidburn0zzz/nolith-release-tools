@@ -10,10 +10,6 @@ class Issue < Issuable
     @remote_issuable ||= GitlabClient.find_issue(self, project)
   end
 
-  def url
-    GitlabClient.issue_url(self, project)
-  end
-
   def confidential?
     false
   end

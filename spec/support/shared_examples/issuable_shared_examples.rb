@@ -48,9 +48,10 @@ RSpec.shared_examples 'issuable #remote_issuable' do |find_issuable_method|
   end
 end
 
-RSpec.shared_examples 'issuable #url' do |issuable_url_method|
+RSpec.shared_examples 'issuable #url' do
   it 'returns the remote_issuable url' do
-    expect(GitlabClient).to receive(issuable_url_method).with(subject, Project::GitlabCe).and_return('https://example.com/')
+    remote_issuable = instance_double('dummy remote_issuable', web_url: 'https://example.com/')
+    expect(subject).to receive(:remote_issuable).and_return(remote_issuable)
     expect(subject.url).to eq 'https://example.com/'
   end
 end
