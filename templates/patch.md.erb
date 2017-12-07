@@ -27,14 +27,14 @@
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the takeoff project:
-      bundle exec rake "deploy[staging, <%= version.to_patch %>-ee.0]"
+      bin/takeoff-deploy -e staging -v <%= version.to_patch %>-ee.0"
       ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
       ```sh
       # In the takeoff project:
-      bundle exec rake "deploy[canary, <%= version.to_patch %>-ee.0]"
+      bin/takeoff-deploy -e canary -v <%= version.to_patch %>-ee.0"
       ```
 - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
@@ -54,7 +54,7 @@
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to GitLab.com
       ```sh
       # In the takeoff project:
-      bundle exec rake "deploy[production, <%= version.to_patch %>-ee.0]"
+      bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0"
       ```
 - [ ] From the [build pipeline], [manually publish public packages]
 - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
