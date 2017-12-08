@@ -56,16 +56,20 @@
       ```
       * With downtime: 1 hour before
       ```
-      !tweet "We will be deploying GitLab EE <%= version.to_patch %> starting at X:Y UTC, 15 mins of downtime expected"
+      !tweet "We will be deploying GitLab EE <%= version.to_patch %> on gitlab.com starting at X:Y UTC, 15 mins of downtime expected"
       ```
       * Without downtime: 15 minutes before
       ```
-      !tweet "We are about to deploy GitLab EE <%= version.to_patch %> starting at X:Y UTC"
+      !tweet "We are about to deploy GitLab EE <%= version.to_patch %> on gitlab.com starting at X:Y UTC"
       ```
 - [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
       ```sh
       # In the takeoff project:
       bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0"
+      ```
+- [ ] Tweet that the deployment has finished:
+      ```
+      !tweet "GitLab EE <%= version.to_patch %> has been deployed on gitlab.com."
       ```
 - [ ] Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
