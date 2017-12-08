@@ -43,7 +43,7 @@ describe SecurityPatchIssue do
 
       content = issue.description
 
-      expect(content).to include 'While waiting for tests to be green, now is a good time to start on [the blog post], **in a private snippet**: BLOG_POST_SNIPPET'
+      expect(content).to include 'While waiting for tests to be green, now is a good time to start on [the blog post], **in a private snippet**'
     end
 
     it 'includes a step to perform a security release' do
