@@ -94,7 +94,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       # In the takeoff project:
       bin/takeoff-deploy -e production -v <%= version.to_rc %>.ee.0"
       ```
-  - [ ] Tweet that the deployment has finished:
+  - [ ] Tweet in the `#production` channel that the deployment has finished:
       ```
       !tweet "GitLab EE <%= version.to_rc %> has been deployed on gitlab.com."
       ```
@@ -188,7 +188,7 @@ cherry-picked into `<%= version.stable_branch %>`.
     # In the takeoff project:
     bin/takeoff-deploy -e production -v <%= version.to_rc(2) %>.ee.0"
     ```
-- [ ] Tweet that the deployment has finished:
+- [ ] Tweet in the `#production` channel that the deployment has finished:
       ```
       !tweet "GitLab EE <%= version.to_rc(2) %> has been deployed on gitlab.com."
       ```
@@ -258,7 +258,7 @@ cherry-picked into `<%= version.stable_branch %>`.
         # In the takeoff project:
         bin/takeoff-deploy -e production -v <%= version.to_rc(21) %>.ee.0"
         ```
-    - [ ] Tweet that the deployment has finished:
+    - [ ] Tweet in the `#production` channel that the deployment has finished:
         ```
         !tweet "GitLab EE <%= version.to_rc(21) %> has been deployed on gitlab.com."
         ```
@@ -341,7 +341,7 @@ This way we ensure the release does not introduce new regressions.
         # In the takeoff project:
         bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0"
         ```
-  - [ ] Tweet that the deployment has finished:
+  - [ ] Tweet in the `#production` channel that the deployment has finished:
         ```
         !tweet "GitLab EE <%= version.to_patch %> has been deployed on gitlab.com."
         ```
