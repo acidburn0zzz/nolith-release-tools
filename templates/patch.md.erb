@@ -61,10 +61,10 @@
 - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Deploy the blog post
-- [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead):
+- [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead) in the `#releases` channel:
 
       ```
-      GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES
+      !tweet "GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES"
       ```
 - [ ] Add [`omnibus-gitlab/<%= omnibus_version.tag %>` CHANGELOG.md][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG.md][omnibus-master-changelog]
 
