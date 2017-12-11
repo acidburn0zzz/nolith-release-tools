@@ -6,5 +6,25 @@ describe MergeRequest do
   it_behaves_like 'issuable #initialize'
   it_behaves_like 'issuable #create', :create_merge_request
   it_behaves_like 'issuable #remote_issuable', :find_merge_request
-  it_behaves_like 'issuable #url', :merge_request_url
+  it_behaves_like 'issuable #url'
+
+  describe '#source_branch' do
+    it 'raises if source_branch is not set' do
+      expect { described_class.new.source_branch }.to raise_error(ArgumentError, 'Please set a `source_branch`!')
+    end
+
+    it 'can be set' do
+      expect(described_class.new(source_branch: 'foo').source_branch).to eq('foo')
+    end
+  end
+
+  describe '#target_branch' do
+    it 'defaults to `master`' do
+      expect(described_class.new.target_branch).to eq('master')
+    end
+
+    it 'can be set' do
+      expect(described_class.new(target_branch: 'foo').target_branch).to eq('foo')
+    end
+  end
 end

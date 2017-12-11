@@ -4,6 +4,7 @@ require 'fileutils'
 class RemoteRepository
   class CannotCloneError < StandardError; end
   class CannotCheckoutBranchError < StandardError; end
+  class CannotCommitError < StandardError; end
   class CannotCreateTagError < StandardError; end
   class CannotPullError < StandardError; end
 
@@ -72,15 +73,15 @@ class RemoteRepository
   def commit(files, no_edit: false, amend: false, message: nil, author: nil)
     run_git ['add', *Array(files)] if files
 
-    cmd = %w[commit --quiet]
+    cmd = %w[commit]
     cmd << '--no-edit' if no_edit
     cmd << '--amend' if amend
     cmd << %[--author="#{author}"] if author
     cmd += ['--message', %["#{message}"]] if message
 
-    _, status = run_git(cmd)
+    out, status = run_git(cmd)
 
-    status.success?
+    status.success? || raise(CannotCommitError.new(out))
   end
 
   def merge(upstream, into, no_ff: false)
@@ -117,7 +118,7 @@ class RemoteRepository
     cmd << "--format='#{format_pattern}'" if format_pattern
     if paths
       cmd << '--'
-      cmd += paths
+      cmd += Array(paths)
     end
 
     output, = run_git(cmd)
@@ -181,9 +182,9 @@ class RemoteRepository
 
   def self.run_git(args)
     final_args = ['git', *args]
-    $stdout.puts "[#{Time.now}] --> #{final_args.join(' ')}".colorize(:cyan)
+    $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
 
-    cmd_output = `#{final_args.join(' ')} 2> /dev/null`
+    cmd_output = `#{final_args.join(' ')} 2>&1`
 
     [cmd_output, $CHILD_STATUS]
   end

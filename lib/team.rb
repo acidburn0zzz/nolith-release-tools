@@ -1,4 +1,4 @@
-require 'team_member'
+require_relative 'team_member'
 
 class Team
   TEAM_DATA_URL = 'https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/team.yml'.freeze

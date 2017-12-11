@@ -98,7 +98,7 @@ describe PatchPreparationMergeRequest do
     end
 
     it 'includes pick-into-stable URL for finding MRs' do
-      expect(merge_request.description).to include "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests?label_name%5B%5D=Pick+into+9.4&scope=all&sort=updated_asc&state=merged"
+      expect(merge_request.description).to include "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests?label_name%5B%5D=Pick+into+9.4&scope=all&state=merged"
       expect(ee_merge_request.description).to include "gitlab-ee/merge_requests?label_name%5B%5D=Pick+into+9.4"
     end
 

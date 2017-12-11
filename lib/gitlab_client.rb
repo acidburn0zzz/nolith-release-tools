@@ -2,6 +2,8 @@ require_relative 'project/gitlab_ce'
 require_relative 'project/gitlab_ee'
 
 class GitlabClient
+  DEFAULT_GITLAB_API_ENDPOINT = 'https://gitlab.com/api/v4'.freeze
+
   class MissingMilestone
     def id
       nil
@@ -9,7 +11,7 @@ class GitlabClient
   end
 
   def self.current_user
-    @current_user ||= Gitlab.user
+    @current_user ||= client.user
   end
 
   def self.issues(project = Project::GitlabCe, options = {})
@@ -44,7 +46,9 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_issue(issue, project = Project::GitlabCe)
-    milestone = milestone(project, title: issue.version.milestone_name)
+    milestone_title = issue.version.milestone_name
+    milestone = milestone(project, title: milestone_title)
+    raise "Milestone #{milestone_title} not found for project #{project.path}!" if milestone.id.nil?
 
     client.create_issue(project.path, issue.title,
       description:  issue.description,
@@ -88,7 +92,9 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_merge_request(merge_request, project = Project::GitlabCe)
-    milestone = milestone(project, title: merge_request.milestone)
+    milestone_title = merge_request.milestone
+    milestone = milestone(project, title: milestone_title)
+    raise "Milestone #{milestone_title} not found for project #{project.path}!" if milestone.id.nil?
 
     params = {
       description: merge_request.description,
@@ -138,34 +144,11 @@ class GitlabClient
       .detect { |i| i.title == merge_request.title }
   end
 
-  # Returns the URL of an issue in the given project based on the provided issue
-  #
-  # issue - An object that responds to the following messages:
-  #   :iid - Issue IID String
-  # project - An object that responds to :path
-  #
-  # Returns an URL
-  def self.issue_url(issue, project = Project::GitlabCe)
-    return '' if issue.iid.nil?
-
-    "https://gitlab.com/#{project.path}/issues/#{issue.iid}"
-  end
-
-  # Returns the URL of a merge request in the given project based on the provided merge request
-  #
-  # merge_request - An object that responds to the following messages:
-  #   :iid - Merge request IID String
-  # project - An object that responds to :path
-  #
-  # Returns an URL
-  def self.merge_request_url(merge_request, project = Project::GitlabCe)
-    return '' if merge_request.iid.nil?
-
-    "https://gitlab.com/#{project.path}/merge_requests/#{merge_request.iid}"
-  end
-
   def self.client
-    @client ||= Gitlab.client(endpoint: ENV['GITLAB_API_ENDPOINT'], private_token: ENV['GITLAB_API_PRIVATE_TOKEN'])
+    @client ||= Gitlab.client(
+      endpoint: ENV.fetch('GITLAB_API_ENDPOINT', DEFAULT_GITLAB_API_ENDPOINT),
+      private_token: ENV['GITLAB_API_PRIVATE_TOKEN']
+    )
   end
 
   private_class_method :client

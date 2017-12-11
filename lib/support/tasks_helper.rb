@@ -9,12 +9,24 @@ def get_version(args)
   version
 end
 
+def dry_run?
+  ENV['TEST'].present?
+end
+
+def force?
+  ENV['FORCE'].present?
+end
+
 def skip?(repo)
   ENV[repo.upcase] == 'false'
 end
 
 def security_release?
   ENV['SECURITY'] == 'true'
+end
+
+def no_mention?
+  ENV['NO_MENTION'].present?
 end
 
 def create_or_show_issuable(issuable, type)
