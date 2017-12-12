@@ -24,6 +24,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
     From now on, please follow the "After the 7th" process:
     https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
     ```
+- [ ] Make sure the latest [CE to EE] on `master` branches is merged (it will reduce conflicts in the future). Ask in `#ce-to-ee` when in doubt.
 - [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
 - [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
@@ -345,6 +346,7 @@ This way we ensure the release does not introduce new regressions.
   - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release in the `#releases` channel
 
+[CE to EE]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name[]=CE+upstream&scope=all&state=all
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 [CE stable branch]: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
 [EE stable branch]: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
