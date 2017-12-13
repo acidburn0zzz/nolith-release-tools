@@ -9,6 +9,39 @@ describe GitlabClient do
     end
   end
 
+  describe '.milestones', vcr: { cassette_name: 'merge_requests/with_milestone' } do
+    it 'returns a list of milestones' do
+      response = described_class.milestones
+
+      expect(response.map(&:title)).to include('9.4')
+    end
+  end
+
+  describe '.milestone', vcr: { cassette_name: 'merge_requests/with_milestone' } do
+    context 'when the milestone title is nil' do
+      it 'returns a MissingMilestone' do
+        milestone = described_class.milestone(title: nil)
+
+        expect(milestone).to be_a(described_class::MissingMilestone)
+        expect(milestone.id).to be_nil
+      end
+    end
+
+    context 'when the milestone exists' do
+      it 'returns the milestone' do
+        response = described_class.milestone(title: '9.4')
+
+        expect(response.title).to eq('9.4')
+      end
+    end
+
+    context 'when the milestone does not exist' do
+      it 'raises an exception' do
+        expect { described_class.milestone(title: 'not-existent') }.to raise_error('Milestone not-existent not found for project gitlab-org/gitlab-ce!')
+      end
+    end
+  end
+
   describe '.create_merge_request' do
     before do
       allow(described_class).to receive(:current_user).and_return(double(id: 42))
@@ -22,7 +55,7 @@ describe GitlabClient do
         labels: 'CE upstream',
         source_branch: 'feature',
         target_branch: 'master',
-        milestone: '42.0')
+        milestone: nil)
     end
 
     let(:default_params) do
@@ -32,12 +65,12 @@ describe GitlabClient do
         labels: merge_request.labels,
         source_branch: merge_request.source_branch,
         target_branch: 'master',
-        milestone_id: 42,
+        milestone_id: nil,
         remove_source_branch: true
       }
     end
 
-    it 'creates a merge request against master on the GitLab CE project', vcr: { cassette_name: 'milestones/42' } do
+    it 'creates a merge request against master on the GitLab CE project' do
       expect(described_class.__send__(:client))
         .to receive(:create_merge_request).with(
           Project::GitlabCe.path,
@@ -48,7 +81,7 @@ describe GitlabClient do
     end
 
     context 'when passing a project' do
-      it 'creates a merge request in the given project', vcr: { cassette_name: 'milestones/42' } do
+      it 'creates a merge request in the given project' do
         expect(described_class.__send__(:client))
           .to receive(:create_merge_request).with(
             Project::GitlabEe.path,
@@ -64,7 +97,7 @@ describe GitlabClient do
         allow(merge_request).to receive(:target_branch).and_return('stable')
       end
 
-      it 'creates a merge request against the given target branch', vcr: { cassette_name: 'milestones/42' } do
+      it 'creates a merge request against the given target branch' do
         expect(described_class.__send__(:client))
           .to receive(:create_merge_request).with(
             Project::GitlabEe.path,
@@ -75,11 +108,13 @@ describe GitlabClient do
       end
     end
 
-    context 'without miletone', vcr: { cassette_name: 'merge_requests/create_milestone' } do
+    context 'with milestone', vcr: { cassette_name: 'merge_requests/with_milestone' } do
       it 'sets milestone id' do
-        allow(merge_request).to receive(:milestone).and_return('not-existant')
+        allow(merge_request).to receive(:milestone).and_return('9.4')
 
-        expect { described_class.create_merge_request(merge_request) }.to raise_error('Milestone not-existant not found for project gitlab-org/gitlab-ce!')
+        response = described_class.create_merge_request(merge_request)
+
+        expect(response.milestone.title).to eq '9.4'
       end
     end
   end
