@@ -96,6 +96,10 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       # In the takeoff project:
       bin/takeoff-deploy -e production -v <%= version.to_rc %>.ee.0"
       ```
+  - [ ] Tweet in the `#production` channel that the deployment has finished:
+      ```
+      !tweet "GitLab EE <%= version.to_rc %> has been deployed."
+      ```
   - [ ] Take notes of the time it took for the migrations to complete on the deployment to production.
       ```
       # On the takeoff repo
@@ -186,6 +190,10 @@ cherry-picked into `<%= version.stable_branch %>`.
     # In the takeoff project:
     bin/takeoff-deploy -e production -v <%= version.to_rc(2) %>.ee.0"
     ```
+- [ ] Tweet in the `#production` channel that the deployment has finished:
+      ```
+      !tweet "GitLab EE <%= version.to_rc(2) %> has been deployed."
+      ```
 - [ ] Take notes of the time it took for the migrations to complete on the deployment to production.
     ```
     # On the takeoff repo
@@ -251,6 +259,10 @@ cherry-picked into `<%= version.stable_branch %>`.
         ```sh
         # In the takeoff project:
         bin/takeoff-deploy -e production -v <%= version.to_rc(21) %>.ee.0"
+        ```
+    - [ ] Tweet in the `#production` channel that the deployment has finished:
+        ```
+        !tweet "GitLab EE <%= version.to_rc(21) %> has been deployed."
         ```
     - [ ] From the [build pipeline], [manually publish public packages]
     - [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version.to_rc(21) %>)
@@ -330,6 +342,10 @@ This way we ensure the release does not introduce new regressions.
         ```sh
         # In the takeoff project:
         bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0"
+        ```
+  - [ ] Tweet in the `#production` channel that the deployment has finished:
+        ```
+        !tweet "GitLab EE <%= version.to_patch %> has been deployed."
         ```
   - [ ] Create the first patch issue using the [`patch_issue` task]:
 

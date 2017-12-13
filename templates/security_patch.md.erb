@@ -67,6 +67,10 @@
       # In the takeoff project:
       bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0"
       ```
+- [ ] Tweet in the `#production` channel that the deployment has finished:
+      ```
+      !tweet "GitLab EE <%= version.to_patch %> has been deployed."
+      ```
 - [ ] Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.
 - [ ] Create the `<%= version %>` version on https://version.gitlab.com
 - [ ] Mark any applicable previous releases as vulnerable on https://version.gitlab.com.
