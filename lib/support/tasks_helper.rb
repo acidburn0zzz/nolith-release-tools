@@ -36,6 +36,7 @@ def create_or_show_issuable(issuable, type)
     exit 1
   else
     issuable.create
+    raise "No #{type} was created!" unless issuable.exists?
     $stdout.puts "--> #{type} \"#{issuable.title}\" created.".green
     $stdout.puts "    #{issuable.url}"
   end

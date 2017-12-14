@@ -3,7 +3,7 @@ require_relative 'gitlab_client'
 
 class Issue < Issuable
   def create
-    GitlabClient.create_issue(self, project)
+    @remote_issuable = GitlabClient.create_issue(self, project)
   end
 
   def remote_issuable

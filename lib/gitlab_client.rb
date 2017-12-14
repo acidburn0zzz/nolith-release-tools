@@ -46,12 +46,9 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_issue(issue, project = Project::GitlabCe)
-    milestone = milestone(project, title: issue.version.milestone_name)
-
     client.create_issue(project.path, issue.title,
       description:  issue.description,
       assignee_id:  current_user.id,
-      milestone_id: milestone.id,
       labels: issue.labels,
       confidential: issue.confidential?)
   end
@@ -90,15 +87,12 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_merge_request(merge_request, project = Project::GitlabCe)
-    milestone = milestone(project, title: merge_request.milestone)
-
     params = {
       description: merge_request.description,
       assignee_id: current_user.id,
       labels: merge_request.labels,
       source_branch: merge_request.source_branch,
       target_branch: merge_request.target_branch,
-      milestone_id: milestone.id,
       remove_source_branch: true
     }
 
@@ -115,11 +109,10 @@ class GitlabClient
   # Returns a Gitlab::ObjectifiedHash object, or nil
   def self.find_issue(issue, project = Project::GitlabCe)
     opts = {
-      labels: issue.labels,
-      milestone: issue.version.milestone_name
+      labels: issue.labels
     }
 
-    issues(project, opts).detect { |i| i.title == issue.title }
+    issues(project, opts).detect { |i| i.title == issue.title && i.milestone&.title == issue.version.milestone_name }
   end
 
   # Find an open merge request in the given project based on the provided merge request
@@ -137,7 +130,7 @@ class GitlabClient
     }
 
     merge_requests(project, opts)
-      .detect { |i| i.title == merge_request.title }
+      .detect { |i| i.title == merge_request.title && i.milestone&.title == merge_request.version.milestone_name }
   end
 
   def self.client
