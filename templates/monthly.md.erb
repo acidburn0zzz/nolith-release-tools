@@ -69,6 +69,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the takeoff project:
         bin/takeoff-deploy -e staging -v <%= version.to_rc %>.ee.0"
         ```
+  - [ ] Share the output of the migrations from the takeoff script in this issue via a snippet. Flag any migrations that take more than 5 minutes to run.
   - [ ] Make sure that the database migrations complete in a timely manner. If you see a migration taking too long in staging, stop right there and ping `@db-team` in Slack. What you're witnessing has the potential to take down production for a long time. The statement "Don't worry: it'll be faster in production" is a false myth that has been disproven every single time that this has happened in the past.
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to canary
   - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
@@ -164,6 +165,7 @@ cherry-picked into `<%= version.stable_branch %>`.
     # In the takeoff project:
     bin/takeoff-deploy -e staging -v <%= version.to_rc(2) %>.ee.0"
     ```
+- [ ] Share the output of the migrations from the takeoff script in this issue via a snippet. Flag any migrations that take more than 5 minutes to run.
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to canary
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [canary.gitlab.com]
