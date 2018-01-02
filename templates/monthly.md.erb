@@ -71,6 +71,9 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         ```
   - [ ] Share the output of the migrations from the takeoff script in this issue via a snippet. Flag any migrations that take more than 5 minutes to run.
   - [ ] Make sure that the database migrations complete in a timely manner. If you see a migration taking too long in staging, stop right there and ping `@db-team` in Slack. What you're witnessing has the potential to take down production for a long time. The statement "Don't worry: it'll be faster in production" is a false myth that has been disproven every single time that this has happened in the past.
+  - [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+  - [ ] Announce with an `@product-team` mention on the `#product` Slack channel: @product-team `<%= version.to_rc %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+  - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on staging and the release can proceed
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to canary
   - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] On video call, [deploy] release [`<%= version.to_rc %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc %>.ee.0_amd64.deb) to [canary.gitlab.com]
@@ -78,6 +81,8 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
         # In the takeoff project:
         bin/takeoff-deploy -e canary -v <%= version.to_rc %>.ee.0"
         ```
+  - [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc %>` has been deployed to canary. Blog post draft: MERGE_REQUEST_URL
+  - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on canary and the release can proceed
   - [ ] In `#production`: I'm going to deploy `<%= version.to_rc %>` to production
   - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
@@ -166,6 +171,9 @@ cherry-picked into `<%= version.stable_branch %>`.
     bin/takeoff-deploy -e staging -v <%= version.to_rc(2) %>.ee.0"
     ```
 - [ ] Share the output of the migrations from the takeoff script in this issue via a snippet. Flag any migrations that take more than 5 minutes to run.
+- [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc(2) %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+- [ ] Announce with an `@product-team` mention on the `#product` Slack channel: @product-team `<%= version.to_rc(2) %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+- [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on staging and the release can proceed
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to canary
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to [canary.gitlab.com]
@@ -173,6 +181,8 @@ cherry-picked into `<%= version.stable_branch %>`.
     # In the takeoff project:
     bin/takeoff-deploy -e canary -v <%= version.to_rc(2) %>.ee.0"
     ```
+- [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc(2) %>` has been deployed to canary. Blog post draft: MERGE_REQUEST_URL
+- [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on canary and the release can proceed
 - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(2) %>` to production
 - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
 - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
@@ -236,6 +246,9 @@ cherry-picked into `<%= version.stable_branch %>`.
         # In the takeoff project:
         bin/takeoff-deploy -e staging -v <%= version.to_rc(21) %>.ee.0"
         ```
+    - [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc(21) %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+    - [ ] Announce with an `@product-team` mention on the `#product` Slack channel: @product-team `<%= version.to_rc(21) %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+    - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on staging and the release can proceed
     - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to canary
     - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
     - [ ] On video call, [deploy] release [`<%= version.to_rc(21) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(21) %>.ee.0_amd64.deb) to [canary.gitlab.com]
@@ -243,6 +256,8 @@ cherry-picked into `<%= version.stable_branch %>`.
         # In the takeoff project:
         bin/takeoff-deploy -e canary -v <%= version.to_rc(21) %>.ee.0"
         ```
+    - [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc(21) %>` has been deployed to canary. Blog post draft: MERGE_REQUEST_URL
+    - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on canary and the release can proceed
     - [ ] In `#production`: I'm going to deploy `<%= version.to_rc(21) %>` to production
     - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
     - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
@@ -317,6 +332,8 @@ This way we ensure the release does not introduce new regressions.
         # In the takeoff project:
         bin/takeoff-deploy -e staging -v <%= version.to_patch %>-ee.0"
         ```
+  - [ ] Announce on the `#releases` Slack channels: `<%= version.to_patch %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+  - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on staging and the release can proceed
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
   - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] On video call, [deploy] release [`<%= version.to_patch %>`](https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_<%= version.to_patch %>-ee.0_amd64.deb) to [canary.gitlab.com]
@@ -325,6 +342,8 @@ This way we ensure the release does not introduce new regressions.
         # In the takeoff project:
         bin/takeoff-deploy -e canary -v <%= version.to_patch %>-ee.0"
         ```
+  - [ ] Announce on the `#releases` Slack channels: `<%= version.to_patch %>` has been deployed to canary. Blog post draft: MERGE_REQUEST_URL
+  - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on canary and the release can proceed
   - [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
   - [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
   - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
