@@ -7,5 +7,9 @@ module Project
         self::REMOTES
       end
     end
+
+    def self.group
+      'gitlab-org'
+    end
   end
 end

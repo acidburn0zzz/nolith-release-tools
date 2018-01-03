@@ -9,7 +9,7 @@ module Project
     }.freeze
 
     def self.path
-      'gitlab-org/omnibus-gitlab'
+      "#{group}/omnibus-gitlab"
     end
   end
 end

@@ -357,4 +357,83 @@ http_interactions:
         Edwards-Jones","gitlabname":"jamedjo","id":654619,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/gitlab/avatar/654619/avatar.png","web_url":"https://gitlab.com/jamedjo"},"source_project_id":13083,"target_project_id":13083,"labels":[],"work_in_progress":true,"milestone":{"id":272462,"iid":37,"project_id":13083,"group_id":null,"title":"9.4","description":"","state":"active","created_at":"2017-02-24T13:49:25.412Z","updated_at":"2017-04-07T14:52:33.376Z","due_date":"2017-07-21","start_date":"2017-06-08"},"merge_when_pipeline_succeeds":false,"merge_status":"unchecked","sha":null,"merge_commit_sha":null,"gitlab_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/13294","subscribed":true}'
     http_version: 
   recorded_at: Thu, 03 Aug 2017 21:27:40 GMT
+- request:
+    method: get
+    uri: "[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 03 Jan 2018 18:38:05 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2714'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"a3b0b813049e38739f51831f8dbc032a"
+      Link:
+      - <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+        rel="first", <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 77367c24-5a8b-44f3-868c-03f358b3923f
+      X-Runtime:
+      - '0.227178'
+      X-Total:
+      - '11'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '7'
+      Ratelimit-Remaining:
+      - '593'
+      Ratelimit-Reset:
+      - '1515004745'
+      Ratelimit-Resettime:
+      - Thu, 03 Jan 2018 18:39:05 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":427855,"iid":11,"group_id":9970,"title":"Next 3-6 months","description":"Bigger
+        issues we plan to ship in the next 3-6 months, but don''t have a designated
+        release yet. \r\n\r\nDO NOT add small changes, bugs, regressions to this milestone.","state":"active","created_at":"2017-12-11T16:26:55.828Z","updated_at":"2017-12-11T16:26:55.828Z","due_date":"2020-02-01","start_date":null},{"id":427853,"iid":10,"group_id":9970,"title":"Next
+        2-3 months","description":"Bigger issues we plan to ship in the next 2-3 months,
+        but don''t have a designated release yet. \r\n\r\nDO NOT add small changes,
+        bugs, regressions to this milestone.","state":"active","created_at":"2017-12-11T16:26:33.141Z","updated_at":"2017-12-11T16:26:33.141Z","due_date":"2020-01-01","start_date":null},{"id":424944,"iid":9,"group_id":9970,"title":"10.7","description":"","state":"active","created_at":"2017-12-06T16:45:41.880Z","updated_at":"2017-12-06T16:45:41.880Z","due_date":"2018-04-22","start_date":"2018-03-08"},{"id":416486,"iid":8,"group_id":9970,"title":"10.6","description":"","state":"active","created_at":"2017-11-21T20:05:35.697Z","updated_at":"2017-11-21T20:05:35.697Z","due_date":"2018-03-22","start_date":"2018-02-08"},{"id":404412,"iid":7,"group_id":9970,"title":"10.5","description":"","state":"active","created_at":"2017-11-02T10:41:09.107Z","updated_at":"2017-11-02T10:42:17.019Z","due_date":"2018-02-22","start_date":"2018-01-08"},{"id":381642,"iid":6,"group_id":9970,"title":"Next
+        6-12 months","description":"","state":"active","created_at":"2017-09-26T10:12:43.523Z","updated_at":"2017-10-16T19:25:05.241Z","due_date":"2020-03-01","start_date":null},{"id":362887,"iid":5,"group_id":9970,"title":"11.0","description":"","state":"active","created_at":"2017-08-22T11:26:37.313Z","updated_at":"2017-08-22T11:26:37.313Z","due_date":null,"start_date":null},{"id":360828,"iid":4,"group_id":9970,"title":"10.4","description":"","state":"active","created_at":"2017-08-16T16:52:35.085Z","updated_at":"2017-08-16T16:52:35.085Z","due_date":"2018-01-22","start_date":"2017-12-08"},{"id":360827,"iid":3,"group_id":9970,"title":"10.3","description":"","state":"active","created_at":"2017-08-16T16:51:52.890Z","updated_at":"2017-08-16T16:51:52.890Z","due_date":"2017-12-22","start_date":"2017-11-08"},{"id":349702,"iid":2,"group_id":9970,"title":"10.2","description":"","state":"active","created_at":"2017-07-24T13:53:41.702Z","updated_at":"2017-07-27T14:38:42.007Z","due_date":"2017-11-22","start_date":"2017-10-08"},{"id":349690,"iid":1,"group_id":9970,"title":"10.1","description":"","state":"active","created_at":"2017-07-24T13:26:40.259Z","updated_at":"2017-10-23T19:45:18.633Z","due_date":"2017-10-22","start_date":"2017-09-08"}]'
+    http_version: 
+  recorded_at: Wed, 03 Jan 2018 18:38:05 GMT
 recorded_with: VCR 2.9.3
