@@ -121,15 +121,19 @@ task :upstream_merge do
         --> Merge request "#{upstream_mr.title}" created.
             #{upstream_mr.url}
       SUCCESS_MESSAGE
+      SlackWebhook.new_merge_request(upstream_mr)
     else
       $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
         --> Merge request "#{upstream_mr.title}" not created.
       SUCCESS_MESSAGE
+      SlackWebhook.missing_merge_request(upstream_mr)
     end
-  elsif result.payload[:in_progress_mr_url]
+  elsif result.payload[:in_progress_mr]
+    in_progress_mr = result.payload[:in_progress_mr]
     $stdout.puts <<~ERROR_MESSAGE.colorize(:red)
     --> An upstream merge request already exists.
-        #{result.payload[:in_progress_mr_url]}
+        #{in_progress_mr.url}
     ERROR_MESSAGE
+    SlackWebhook.existing_merge_request(in_progress_mr)
   end
 end

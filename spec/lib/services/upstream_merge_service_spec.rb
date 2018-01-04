@@ -52,15 +52,17 @@ describe Services::UpstreamMergeService do
   describe '#perform' do
     context 'when open upstream MR exists' do
       context 'when not forced' do
+        let(:in_progress_mr) { double(web_url: 'http://foo.bar') }
+
         before do
-          expect(UpstreamMergeRequest).to receive(:open_mrs).and_return([double(web_url: 'http://foo.bar')])
+          expect(UpstreamMergeRequest).to receive(:open_mrs).and_return([in_progress_mr])
         end
 
         it 'returns a non-successful result object' do
           result = subject.perform
 
           expect(result).not_to be_success
-          expect(result.payload).to eq({ in_progress_mr_url: 'http://foo.bar' })
+          expect(result.payload).to eq({ in_progress_mr: in_progress_mr })
         end
       end
 

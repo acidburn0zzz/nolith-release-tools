@@ -30,7 +30,7 @@ module Services
 
       Result.new(true, { upstream_mr: upstream_merge_request })
     rescue UpstreamMergeInProgressError
-      return Result.new(false, { in_progress_mr_url: open_merge_requests.first.web_url })
+      return Result.new(false, { in_progress_mr: open_merge_requests.first })
     end
 
     def upstream_merge_request
