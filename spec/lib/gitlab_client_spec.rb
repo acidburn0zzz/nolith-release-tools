@@ -10,10 +10,10 @@ describe GitlabClient do
   end
 
   describe '.milestones', vcr: { cassette_name: 'merge_requests/with_milestone' } do
-    it 'returns a list of milestones' do
+    it 'returns a combination of project and group milestones' do
       response = described_class.milestones
 
-      expect(response.map(&:title)).to include('9.4')
+      expect(response.map(&:title)).to include('9.4', '10.4')
     end
   end
 

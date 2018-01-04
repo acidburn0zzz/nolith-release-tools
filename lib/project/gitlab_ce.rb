@@ -9,7 +9,7 @@ module Project
     }.freeze
 
     def self.path
-      'gitlab-org/gitlab-ce'
+      "#{group}/gitlab-ce"
     end
   end
 end

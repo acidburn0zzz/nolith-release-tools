@@ -8,7 +8,7 @@ module Project
     }.freeze
 
     def self.path
-      'gitlab-org/gitlab-ee'
+      "#{group}/gitlab-ee"
     end
   end
 end
