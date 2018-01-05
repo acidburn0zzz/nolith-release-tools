@@ -66,6 +66,17 @@ If the latest GitLab release is 9.2, first create a merge request against the
 `security-9-2` branch. If that branch does not yet exist, create it by branching
 off of the latest stable release. In this case that would be `9-2-stable`.
 
+To avoid leaking changes, be careful NOT to merge changes into `master` on
+`dev` or GitLab.com before the security patch has been released
+publicly. Pushing to `master` increases the chance that a security patch may
+be accidentally disclosed during a sync of the two remotes. Pushing security
+patches to the `master` branch on `dev` also prevents upstream commits from
+making it to `dev`, making nightly builds less useful.
+
+However, since the changes do need to make it into `master` eventually, you
+should start a WIP merge request with `master` as the target branch to ensure
+the changes apply cleanly and pass tests.
+
 ### 1. Create an issue to track the security patch release
 
 In order to keep track of the various tasks that need to happen before a security
