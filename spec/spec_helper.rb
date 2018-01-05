@@ -6,6 +6,8 @@ require_relative 'support/simplecov'
 
 require_relative('../init.rb')
 require 'active_support/core_ext/string/strip'
+require 'active_support/core_ext/object/inclusion'
+require 'rspec-parameterized'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
