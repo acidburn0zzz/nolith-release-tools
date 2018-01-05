@@ -102,8 +102,14 @@ describe UpstreamMergeRequest do
 
           Thanks in advance! :heart:
 
+          @rymai After you resolved the conflicts,
+          please assign to the next person. If you're the last one to resolve
+          the conflicts, please push this to be merged.
+
           Note: This merge request was created by an automated script.
           Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
+
+          /assign @rymai
         CONTENT
       end
 
@@ -116,6 +122,89 @@ describe UpstreamMergeRequest do
           expect(subject.description).to include('@rymai')
           expect(subject.description).not_to include('`@rymai`')
         end
+      end
+    end
+  end
+
+  describe '#responsible_gitlab_username' do
+    subject do
+      merge_request.__send__(:responsible_gitlab_username)
+    end
+
+    let(:merge_request) { described_class.new }
+
+    before do
+      allow(merge_request)
+        .to receive(:most_mentioned_gitlab_username)
+        .and_return(most_mentioned)
+    end
+
+    context 'when there is a most mentioned gitlab username' do
+      let(:most_mentioned) { '@gitlab' }
+
+      it 'picks the most mentioned one' do
+        expect(subject).to eq(most_mentioned)
+      end
+    end
+
+    context 'when there is not a most mentioned gitlab username' do
+      let(:most_mentioned) { nil }
+
+      it 'picks one from the CE to EE team' do
+        expect(subject).to be_in(
+          described_class::CE_TO_EE_TEAM.map { |name| "@#{name}" }
+        )
+      end
+    end
+  end
+
+  describe '#most_mentioned_gitlab_username' do
+    subject do
+      merge_request.__send__(:most_mentioned_gitlab_username)
+    end
+
+    let(:merge_request) { described_class.new }
+    let(:authors) { %w[Apple Pineapple @gitlab Orange] }
+
+    before do
+      allow(merge_request)
+        .to receive_message_chain(:authors, :values)
+        .and_return(authors)
+    end
+
+    it 'only picks users starting with @' do
+      expect(subject).to eq('@gitlab')
+    end
+  end
+
+  describe '#sample_most_duplicated' do
+    using RSpec::Parameterized::TableSyntax
+
+    subject do
+      described_class.new.__send__(:sample_most_duplicated, array)
+    end
+
+    context 'when the array contains one most duplicated element' do
+      where(:picked, :array) do
+        1    | [1, 3, 5, 7, 9, 1, 3, 1]
+        'a'  | %w[this is a pen and that's a mouse]
+        true | [false, true, false, true, true]
+      end
+
+      with_them do
+        it { is_expected.to eq(picked) }
+      end
+    end
+
+    context 'when the array contains more than one most duplicated element' do
+      where(:possible_picks, :array) do
+        [1, 3]        | [1, 3, 5, 7, 9, 1, 3]
+        %w[is a]      | %w[this is a pen and that is a mouse]
+        [true, false] | [false, true, false, true, nil]
+      end
+
+      with_them do
+        it { is_expected.to be_in(possible_picks) }
       end
     end
   end
