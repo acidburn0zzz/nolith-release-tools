@@ -90,6 +90,7 @@ describe PatchPreparationMergeRequest do
 
   describe '#description' do
     before do
+      allow_any_instance_of(MonthlyIssue).to receive(:url).and_return('https://dummy-issue.url')
       allow_any_instance_of(PatchIssue).to receive(:url).and_return('https://dummy-issue.url')
     end
 

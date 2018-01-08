@@ -76,7 +76,11 @@ class PatchPreparationMergeRequest < MergeRequest
   end
 
   def main_release_issue
-    PatchIssue.new(version: version)
+    if version.patch.zero?
+      MonthlyIssue.new(version: version)
+    else
+      PatchIssue.new(version: version)
+    end
   end
 
   def template_path
