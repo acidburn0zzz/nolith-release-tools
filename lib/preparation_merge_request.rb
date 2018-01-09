@@ -2,7 +2,7 @@ require_relative 'merge_request'
 require_relative 'omnibus_gitlab_version'
 require_relative 'branch'
 
-class PatchPreparationMergeRequest < MergeRequest
+class PreparationMergeRequest < MergeRequest
   def title
     "WIP: Prepare #{full_patch_or_rc_version} release"
   end

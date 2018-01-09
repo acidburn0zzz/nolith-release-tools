@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-require 'patch_preparation_merge_request'
+require 'preparation_merge_request'
 require 'version'
 
-describe PatchPreparationMergeRequest do
+describe PreparationMergeRequest do
   it_behaves_like 'issuable #initialize'
   it_behaves_like 'issuable #create', :create_merge_request
 
