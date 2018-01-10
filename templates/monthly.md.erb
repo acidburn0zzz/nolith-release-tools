@@ -119,7 +119,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
     ```
     !tweet "GitLab <%= version.to_rc %> is available: https://packages.gitlab.com/gitlab/unstable
-    This is a release candidate, we'll release <%= version %>.0 on the 22nd of this month."
+    This is a release candidate, we'll release <%= version.to_minor %> on the 22nd of this month."
     ```
 
 #### QA
@@ -219,7 +219,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 
     ```
     !tweet "GitLab <%= version.to_rc(2) %> is available: https://packages.gitlab.com/gitlab/unstable
-    This is a release candidate, we'll release <%= version %>.0 on the 22nd of this month."
+    This is a release candidate, we'll release <%= version.to_minor %> on the 22nd of this month."
     ```
 ```
 
@@ -289,7 +289,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 
       ```
       !tweet "GitLab <%= version.to_rc(21) %> is available: https://packages.gitlab.com/gitlab/unstable
-      This is a release candidate, we'll release <%= version %>.0 on the 22nd of this month."
+      This is a release candidate, we'll release <%= version.to_minor %> on the 22nd of this month."
       ```
 
 - At 15:00 UTC:
