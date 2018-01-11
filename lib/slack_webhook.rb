@@ -1,4 +1,4 @@
-require 'time_util'
+require_relative 'time_util'
 
 class SlackWebhook
   NoWebhookURLError = Class.new(StandardError)
