@@ -19,6 +19,12 @@ class Issuable < OpenStruct
     remote_issuable&.iid
   end
 
+  def created_at
+    self[:created_at] = Time.parse(self[:created_at]) if self[:created_at]&.is_a?(String)
+
+    super
+  end
+
   def exists?
     !remote_issuable.nil?
   end
