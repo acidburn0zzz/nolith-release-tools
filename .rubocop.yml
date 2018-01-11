@@ -6,6 +6,7 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: false
   Exclude:
+    - 'vendor/**/*'
     - Rakefile
 
 # Gems in consecutive lines should be alphabetically sorted
@@ -1051,4 +1052,3 @@ RSpec/SubjectStub:
 # Prefer using verifying doubles over normal doubles.
 RSpec/VerifiedDoubles:
   Enabled: false
-
