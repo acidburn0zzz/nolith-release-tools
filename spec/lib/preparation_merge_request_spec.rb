@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-require 'patch_preparation_merge_request'
+require 'preparation_merge_request'
 require 'version'
 
-describe PatchPreparationMergeRequest do
+describe PreparationMergeRequest do
   it_behaves_like 'issuable #initialize'
   it_behaves_like 'issuable #create', :create_merge_request
 
@@ -90,6 +90,7 @@ describe PatchPreparationMergeRequest do
 
   describe '#description' do
     before do
+      allow_any_instance_of(MonthlyIssue).to receive(:url).and_return('https://dummy-issue.url')
       allow_any_instance_of(PatchIssue).to receive(:url).and_return('https://dummy-issue.url')
     end
 

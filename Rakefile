@@ -95,7 +95,7 @@ desc "Create merge requests for patch release"
 task :patch_merge_request, [:version] do |_t, args|
   version = get_version(args)
 
-  merge_request = PatchPreparationMergeRequest.new(version: version)
+  merge_request = PreparationMergeRequest.new(version: version)
   merge_request.create_branch!
   create_or_show_merge_request(merge_request)
 end
