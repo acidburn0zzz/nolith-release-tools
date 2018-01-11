@@ -14,6 +14,12 @@ class MergeRequest < Issuable
     self[:target_branch] || 'master'
   end
 
+  def created_at
+    self[:created_at] = Time.parse(self[:created_at]) if self[:created_at]&.is_a?(String)
+
+    super
+  end
+
   def create
     GitlabClient.create_merge_request(self, project)
   end
