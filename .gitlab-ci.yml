@@ -8,10 +8,10 @@ stages:
 cache:
   key: "ruby-231"
   paths:
-  - vendor/ruby
+    - vendor/ruby
 
 before_script:
-  - bundle install --jobs $(nproc) --retry 3
+  - bundle install --jobs $(nproc) --retry 3 --path vendor
 
 rubocop:
   stage: test
