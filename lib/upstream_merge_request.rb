@@ -1,4 +1,5 @@
 require_relative 'commit_author'
+require_relative 'gitlab_client'
 require_relative 'merge_request'
 
 require 'active_support/core_ext/hash/transform_values'

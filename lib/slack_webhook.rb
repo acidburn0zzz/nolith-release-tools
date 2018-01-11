@@ -15,8 +15,9 @@ class SlackWebhook
   end
 
   def self.existing_merge_request(merge_request)
+    created_at = Time.parse(merge_request.created_at)
     text = <<~SLACK_MESSAGE.strip
-      Tried to create a new merge request but <#{merge_request.url}|this one> from #{TimeUtil.time_ago(merge_request.created_at)} is still pending!
+      Tried to create a new merge request but <#{merge_request.url}|this one> from #{TimeUtil.time_ago(created_at)} is still pending!
     SLACK_MESSAGE
 
     new.fire_hook(text: text)
