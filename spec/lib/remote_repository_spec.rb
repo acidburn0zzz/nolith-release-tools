@@ -329,14 +329,14 @@ describe RemoteRepository do
     end
 
     it 'shows commits' do
-      expect(subject).to receive(:run_git).with(%w[log --date-order])
+      expect(subject).to receive(:run_git).with(%w[log --author-date-order])
 
       subject.log
     end
 
     context 'when latest is true' do
       it 'shows only the latest commit' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order -1])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order -1])
 
         subject.log(latest: true)
       end
@@ -344,7 +344,7 @@ describe RemoteRepository do
 
     context 'when no_merges is true' do
       it 'shows non-merge commits' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order --no-merges])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order --no-merges])
 
         subject.log(no_merges: true)
       end
@@ -352,7 +352,7 @@ describe RemoteRepository do
 
     context 'when author_name is true' do
       it 'shows authors only' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order --format='%an'])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order --format='%an'])
 
         subject.log(format: :author)
       end
@@ -360,7 +360,7 @@ describe RemoteRepository do
 
     context 'when message is true' do
       it 'shows messages only' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order --format='%B'])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order --format='%B'])
 
         subject.log(format: :message)
       end
@@ -368,13 +368,13 @@ describe RemoteRepository do
 
     context 'when :paths is set' do
       it 'shows commits for the given file when :paths is a string' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order -- README.md])
 
         subject.log(paths: 'README.md')
       end
 
       it 'shows commits for the given files when :paths is an array' do
-        expect(subject).to receive(:run_git).with(%w[log --date-order -- README.md VERSION])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order -- README.md VERSION])
 
         subject.log(paths: %w[README.md VERSION])
       end
