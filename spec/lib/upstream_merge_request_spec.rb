@@ -73,8 +73,8 @@ describe UpstreamMergeRequest do
     subject { described_class.new(source_branch: 'ce-to-ee-123') }
 
     before do
-      allow(CommitAuthor).to receive(:new).with('John Doe').and_return(double(to_gitlab: 'John Doe'))
-      allow(CommitAuthor).to receive(:new).with('Rémy Coutable').and_return(double(to_gitlab: '@rymai'))
+      allow(CommitAuthor).to receive(:new).with('John Doe', team: an_instance_of(Team)).and_return(double(to_gitlab: 'John Doe'))
+      allow(CommitAuthor).to receive(:new).with('Rémy Coutable', team: an_instance_of(Team)).and_return(double(to_gitlab: '@rymai'))
     end
 
     context 'conflicts is empty' do

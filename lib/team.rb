@@ -1,7 +1,9 @@
+require 'json'
 require_relative 'team_member'
 
 class Team
-  TEAM_DATA_URL = 'https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/team.yml'.freeze
+  USERS_API_URL = 'https://gitlab.com/api/v4/projects/278964/users.json'.freeze
+
   CORE_TEAM = [
     TeamMember.new(name: 'blackst0ne', username: 'blackst0ne')
   ].freeze
@@ -23,12 +25,21 @@ class Team
 
   def members
     @members ||= begin
-      response = HTTParty.get(TEAM_DATA_URL)
+      members = []
 
-      members =
-        YAML.safe_load(response.body).map do |member|
-          TeamMember.new(name: member['name'], username: member['gitlab'])
+      100.times do |i|
+        response = HTTParty.get("#{USERS_API_URL}?per_page=100&page=#{i}")
+
+        users = JSON.parse(response.body)
+
+        break if users.empty?
+
+        users.each do |user|
+          members << TeamMember.new(name: user['name'], username: user['username'])
         end
+
+        break if response.headers['x-next-page'].empty?
+      end
 
       members + CORE_TEAM
     end

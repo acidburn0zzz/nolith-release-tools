@@ -81,9 +81,11 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   def authors
+    team = Team.new
+
     @authors ||=
       conflicts.each_with_object({}) do |conflict, result|
-        result[conflict[:path]] = CommitAuthor.new(conflict[:user]).to_gitlab
+        result[conflict[:path]] = CommitAuthor.new(conflict[:user], team: team).to_gitlab
       end
   end
 

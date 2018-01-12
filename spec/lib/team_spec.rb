@@ -6,12 +6,8 @@ describe Team do
   let(:team_member_1) { TeamMember.new(name: 'Mickael Mike', username: 'mike') }
 
   describe '#initialize' do
-    it 'default to the GitLab Inc team' do
-      expect(HTTParty).to receive(:get)
-        .with('https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/team.yml')
-        .and_return(double(body: YAML.dump([{ 'name' => 'Sid Sijbrandij', 'gitlab' => 'sytses' }])))
-
-      expect(subject.find_by_name('Sid Sijbrandij').username).to eq('sytses')
+    it 'downloads GitLab EE members via API', vcr: { cassette_name: 'gitlab-ee-users' } do
+      expect(subject.find_by_name('Dmitriy Zaporozhets').username).to eq('dzaporozhets')
     end
 
     it 'accepts a custom team' do
