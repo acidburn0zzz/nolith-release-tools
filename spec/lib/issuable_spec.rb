@@ -41,6 +41,20 @@ describe Issuable do
     end
   end
 
+  describe '#created_at' do
+    context 'when passed a String' do
+      it 'returns a Time' do
+        expect(TestIssuable.new(created_at: '2018-01-01').created_at).to eq(Time.new(2018, 1, 1))
+      end
+    end
+
+    context 'when passed a Time' do
+      it 'returns a Time' do
+        expect(TestIssuable.new(created_at: Time.new(2018, 1, 1)).created_at).to eq(Time.new(2018, 1, 1))
+      end
+    end
+  end
+
   describe '#exists?' do
     context 'when remote subject does not exist' do
       before do
