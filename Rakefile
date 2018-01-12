@@ -126,7 +126,7 @@ task :upstream_merge do
       $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
         --> Merge request "#{upstream_mr.title}" not created.
       SUCCESS_MESSAGE
-      SlackWebhook.missing_merge_request(upstream_mr) unless dry_run?
+      SlackWebhook.missing_merge_request unless dry_run?
     end
   elsif result.payload[:in_progress_mr]
     in_progress_mr = result.payload[:in_progress_mr]

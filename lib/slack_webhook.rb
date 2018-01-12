@@ -23,9 +23,9 @@ class SlackWebhook
     new.fire_hook(text: text)
   end
 
-  def self.missing_merge_request(merge_request)
+  def self.missing_merge_request
     text = <<~SLACK_MESSAGE.strip
-      The latest upstream merge MR could not be created! Please have a look at https://gitlab.com/gitlab-org/release-tools/-/jobs/#{ENV['CI_JOB_ID']}.
+      The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{ENV['CI_JOB_ID']}>.
     SLACK_MESSAGE
 
     new.fire_hook(text: text)
@@ -38,10 +38,10 @@ class SlackWebhook
   end
 
   def fire_hook(text:, channel: nil)
-    options = { body: { text: text } }
-    options[:body][:channel] = channel if channel
+    body = { text: text }
+    body[:channel] = channel if channel
 
-    response = HTTParty.post(webhook_url, options)
+    response = HTTParty.post(webhook_url, { body: body.to_json })
 
     raise CouldNotPostError.new(response.inspect) unless response.code == 200
   end

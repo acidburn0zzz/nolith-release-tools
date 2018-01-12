@@ -26,7 +26,7 @@ describe SlackWebhook do
         .to receive(:post)
           .with(
             CI_SLACK_WEBHOOK_URL,
-            { body: { text: "A new merge request has been created: <#{merge_request.url}>" } })
+            { body: { text: "A new merge request has been created: <#{merge_request.url}>" }.to_json })
           .and_return(response)
 
       described_class.new_merge_request(merge_request)
@@ -39,7 +39,7 @@ describe SlackWebhook do
         .to receive(:post)
           .with(
             CI_SLACK_WEBHOOK_URL,
-            { body: { text: "Tried to create a new merge request but <#{merge_request.url}|this one> from 2 hours ago is still pending!" } })
+            { body: { text: "Tried to create a new merge request but <#{merge_request.url}|this one> from 2 hours ago is still pending!" }.to_json })
           .and_return(response)
 
       described_class.existing_merge_request(merge_request)
@@ -52,10 +52,10 @@ describe SlackWebhook do
         .to receive(:post)
           .with(
             CI_SLACK_WEBHOOK_URL,
-            { body: { text: "The latest upstream merge MR could not be created! Please have a look at https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}." } })
+            { body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}>." }.to_json })
           .and_return(response)
 
-      described_class.missing_merge_request(merge_request)
+      described_class.missing_merge_request
     end
   end
 
@@ -66,7 +66,7 @@ describe SlackWebhook do
           .to receive(:post)
             .with(
               CI_SLACK_WEBHOOK_URL,
-              { body: { text: text } })
+              { body: { text: text }.to_json })
             .and_return(response)
       end
 
@@ -91,7 +91,7 @@ describe SlackWebhook do
           .to receive(:post)
             .with(
               CI_SLACK_WEBHOOK_URL,
-              { body: { channel: channel, text: text } })
+              { body: { text: text, channel: channel }.to_json })
             .and_return(response)
       end
 
