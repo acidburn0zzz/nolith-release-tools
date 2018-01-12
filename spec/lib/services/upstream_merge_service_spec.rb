@@ -50,19 +50,17 @@ describe Services::UpstreamMergeService do
   end
 
   describe '#perform' do
-    context 'when open upstream MR exists' do
+    context 'when open upstream MR exists', vcr: { cassette_name: 'merge_requests/existing_upstream_mr' } do
       context 'when not forced' do
-        let(:in_progress_mr) { double(web_url: 'http://foo.bar') }
-
-        before do
-          expect(UpstreamMergeRequest).to receive(:open_mrs).and_return([in_progress_mr])
-        end
-
         it 'returns a non-successful result object' do
           result = subject.perform
 
           expect(result).not_to be_success
-          expect(result.payload).to eq({ in_progress_mr: in_progress_mr })
+
+          in_progress_mr = result.payload[:in_progress_mr]
+          expect(in_progress_mr).to be_an_instance_of(UpstreamMergeRequest)
+          expect(in_progress_mr.created_at).to be_an_instance_of(Time)
+          expect(in_progress_mr.url).to eq('https://gitlab.com/gitlab-org/gitlab-ee/merge_requests/4023')
         end
       end
 

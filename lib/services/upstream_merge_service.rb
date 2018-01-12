@@ -44,7 +44,9 @@ module Services
     end
 
     def open_merge_requests
-      @open_merge_requests ||= UpstreamMergeRequest.open_mrs
+      @open_merge_requests ||= UpstreamMergeRequest.open_mrs.map do |upstream_mr|
+        UpstreamMergeRequest.new(upstream_mr.to_h)
+      end
     end
   end
 end

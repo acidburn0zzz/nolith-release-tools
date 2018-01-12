@@ -10,7 +10,7 @@ describe SlackWebhook do
   let(:text) { 'Hello!' }
   let(:response_class) { Struct.new(:code) }
   let(:response) { response_class.new(200) }
-  let(:merge_request) { double(url: 'http://gitlab.com/mr', created_at: Time.new(2018, 1, 4, 6).to_s) }
+  let(:merge_request) { double(url: 'http://gitlab.com/mr', created_at: Time.new(2018, 1, 4, 6)) }
 
   around do |ex|
     ClimateControl.modify CI_SLACK_WEBHOOK_URL: CI_SLACK_WEBHOOK_URL, CI_JOB_ID: CI_JOB_ID do
