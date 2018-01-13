@@ -116,7 +116,7 @@ task :upstream_merge do
 
   if result.success?
     upstream_mr = result.payload[:upstream_mr]
-    if !result.payload[:has_changes?]
+    if !result.payload[:changes?]
       $stdout.puts <<~SUCCESS_MESSAGE.colorize(:green)
         --> No changes since last upstream merge.  Merge request "#{upstream_mr.title}" not created.
       SUCCESS_MESSAGE

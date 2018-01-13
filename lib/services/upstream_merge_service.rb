@@ -26,9 +26,9 @@ module Services
         merge_branch: upstream_merge_request.source_branch)
       upstream_merge_request.conflicts = merge.execute
 
-      upstream_merge_request.create unless dry_run || !merge.has_changes?
+      upstream_merge_request.create unless dry_run || !merge.changes?
 
-      Result.new(true, { upstream_mr: upstream_merge_request, has_changes?: merge.has_changes? })
+      Result.new(true, { upstream_mr: upstream_merge_request, changes?: merge.changes? })
     rescue UpstreamMergeInProgressError
       return Result.new(false, { in_progress_mr: open_merge_requests.first })
     end

@@ -19,7 +19,7 @@ class UpstreamMerge
     conflicts
   end
 
-  def has_changes?
+  def changes?
     short_status != ''
   end
 
@@ -50,7 +50,7 @@ class UpstreamMerge
       add_ci_skip_to_merge_commit
     end
 
-    repository.push(origin, merge_branch) if has_changes?
+    repository.push(origin, merge_branch) if changes?
 
     conflicts
   end
