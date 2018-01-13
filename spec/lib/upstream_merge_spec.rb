@@ -102,7 +102,7 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
     end
 
     it 'does not push the merge branch if there is no change' do
-      expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
+      expect(subject.__send__(:repository)).not_to receive(:push).with(ee_repo_url, default_options[:merge_branch])
 
       subject.execute
     end
