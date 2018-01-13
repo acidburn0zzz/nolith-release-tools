@@ -116,7 +116,12 @@ task :upstream_merge do
 
   if result.success?
     upstream_mr = result.payload[:upstream_mr]
-    if upstream_mr.exists?
+    if !result.payload[:has_changes?]
+      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:green)
+        --> No changes since last upstream merge.  Merge request "#{upstream_mr.title}" not created.
+      SUCCESS_MESSAGE
+      SlackWebhook.no_changes unless dry_run?
+    elsif upstream_mr.exists?
       $stdout.puts <<~SUCCESS_MESSAGE.colorize(:green)
         --> Merge request "#{upstream_mr.title}" created.
             #{upstream_mr.url}

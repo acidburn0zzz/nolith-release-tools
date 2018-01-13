@@ -30,6 +30,14 @@ class SlackWebhook
     new.fire_hook(text: text)
   end
 
+  def self.no_changes
+    text = <<~SLACK_MESSAGE.strip
+      The latest upstream merge MR was not be created because there were no changes since the last upstream merge. :tada:
+    SLACK_MESSAGE
+
+    new.fire_hook(text: text)
+  end
+
   def initialize
     @webhook_url = ENV['CI_SLACK_WEBHOOK_URL']
 
