@@ -20,13 +20,17 @@ class UpstreamMerge
   end
 
   def has_changes?
-    repository.status(short: true) != ''
+    short_status != ''
   end
 
   private
 
   def repository
     @repository ||= RemoteRepository.get({ origin: origin, upstream: upstream }, global_depth: 200)
+  end
+
+  def short_status
+    @short_status ||= repository.status(short: true)
   end
 
   def prepare_upstream_merge
@@ -56,7 +60,7 @@ class UpstreamMerge
   end
 
   def compute_conflicts
-    repository.status(short: true).lines.each_with_object([]) do |line, files|
+    short_status.lines.each_with_object([]) do |line, files|
       path = line.sub(CONFLICT_MARKER_REGEX, '').chomp
       # Store the file as key and conflict type as value, e.g.: { path: 'foo.rb', conflict_type: 'UU' }
       if line =~ CONFLICT_MARKER_REGEX
