@@ -9,7 +9,10 @@ describe Services::UpstreamMergeService do
     end
   end
 
-  shared_context 'stub collaborators' do
+  shared_context 'stub collaborators' do |parameters|
+    parameters = {} if parameters.nil?
+    parameters[:changes?] = true if parameters[:changes?].nil?
+
     before do
       expect(UpstreamMergeRequest).to receive(:new)
         .with(mention_people: subject.mention_people).and_call_original
@@ -19,7 +22,7 @@ describe Services::UpstreamMergeService do
           origin: Project::GitlabEe.remotes[:gitlab],
           upstream: Project::GitlabCe.remotes[:gitlab],
           merge_branch: 'ce-to-ee-2017-11-15'
-        ).and_return(double(execute: [], changes?: true))
+        ).and_return(double(execute: [], changes?: parameters[:changes?]))
     end
   end
 
@@ -46,6 +49,19 @@ describe Services::UpstreamMergeService do
 
       expect(result).to be_success
       expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request, changes?: true })
+    end
+  end
+
+  shared_examples 'successful no changes' do
+    include_context 'stub collaborators', changes?: false
+
+    it 'returns a successful result object' do
+      expect(subject.upstream_merge_request).not_to receive(:create)
+
+      result = subject.perform
+
+      expect(result).to be_success
+      expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request, changes?: false })
     end
   end
 
@@ -106,6 +122,10 @@ describe Services::UpstreamMergeService do
         subject { described_class.new(mention_people: true) }
 
         it_behaves_like 'successful MR creation'
+      end
+
+      context 'when there are no changes' do
+        it_behaves_like 'successful no changes'
       end
     end
   end
