@@ -93,7 +93,15 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
       end
     end
 
-    it 'pushed the merge branch' do
+    it 'does push the merge branch if there is a change' do
+      ce_fixture.unique_update_to_file('README.md', author: git_author)
+
+      expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
+
+      subject.execute
+    end
+
+    it 'does not push the merge branch if there is no change' do
       expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
 
       subject.execute

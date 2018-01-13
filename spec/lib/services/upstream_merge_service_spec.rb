@@ -19,7 +19,7 @@ describe Services::UpstreamMergeService do
           origin: Project::GitlabEe.remotes[:gitlab],
           upstream: Project::GitlabCe.remotes[:gitlab],
           merge_branch: 'ce-to-ee-2017-11-15'
-        ).and_return(double(execute: []))
+        ).and_return(double(execute: [], changes?: true))
     end
   end
 
@@ -32,7 +32,7 @@ describe Services::UpstreamMergeService do
       result = subject.perform
 
       expect(result).to be_success
-      expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request })
+      expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request, changes?: true })
     end
   end
 
@@ -45,7 +45,7 @@ describe Services::UpstreamMergeService do
       result = subject.perform
 
       expect(result).to be_success
-      expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request })
+      expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request, changes?: true })
     end
   end
 
