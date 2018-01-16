@@ -30,18 +30,53 @@ describe Team do
 
     context 'when the team member exists' do
       it 'returns a TeamMember' do
-        member = subject.find_by_name('Mickael Mike')
+        member = subject.find_by_name(team_member_1.name)
 
-        expect(member.name).to eq('Mickael Mike')
-        expect(member.username).to eq('mike')
+        expect(member).to eq(team_member_1)
       end
     end
 
     context 'when the team member does not exist' do
-      it 'returns a TeamMember' do
+      it 'returns nil' do
         member = subject.find_by_name('John Doe')
 
         expect(member).to be_nil
+      end
+    end
+
+    context 'when the team member name contains (OOO)' do
+      let(:team_member_1) do
+        TeamMember.new(name: 'Bot (OOO)', username: 'bot')
+      end
+
+      it 'returns the TeamMember' do
+        member = subject.find_by_name('Bot')
+
+        expect(member).to eq(team_member_1)
+      end
+    end
+
+    context 'when finding the member with name contains (OOO)' do
+      it 'returns the TeamMember' do
+        member = subject.find_by_name("#{team_member_1.name} (OOO)")
+
+        expect(member).to eq(team_member_1)
+      end
+    end
+
+    context 'when finding the member with upper cases' do
+      it 'returns the TeamMember' do
+        member = subject.find_by_name(team_member_1.name.upcase)
+
+        expect(member).to eq(team_member_1)
+      end
+    end
+
+    context 'when finding the member with extra spaces in between' do
+      it 'returns the TeamMember' do
+        member = subject.find_by_name('Mickael (MM) Mike  ')
+
+        expect(member).to eq(team_member_1)
       end
     end
   end

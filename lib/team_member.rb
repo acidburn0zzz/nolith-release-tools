@@ -5,4 +5,8 @@ class TeamMember
     @name = name
     @username = username
   end
+
+  def ==(other)
+    name == other.name && username == other.username
+  end
 end
