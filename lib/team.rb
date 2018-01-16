@@ -18,7 +18,11 @@ class Team
   end
 
   def find_by_name(name)
-    members.find { |member| member.name == name }
+    normalized_name = normalize_name(name)
+
+    members.find do |member|
+      normalize_name(member.name) == normalized_name
+    end
   end
 
   private
@@ -43,5 +47,9 @@ class Team
 
       members + CORE_TEAM
     end
+  end
+
+  def normalize_name(name)
+    name.gsub(/\(.*?\)/, '').squeeze(' ').strip.downcase
   end
 end
