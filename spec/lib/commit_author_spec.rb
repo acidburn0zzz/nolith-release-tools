@@ -7,7 +7,7 @@ describe CommitAuthor do
   let(:custom_mapping) { { 'John Doe' => 'Mickael Mike' } }
   let(:custom_team) { Team.new(members: [TeamMember.new(name: 'Mickael Mike', username: 'mike')]) }
 
-  subject { described_class.new(git_author) }
+  subject { described_class.new(git_author, team: Team.new) }
 
   describe '#team' do
     it 'default to a Team object' do
