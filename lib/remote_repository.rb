@@ -85,7 +85,7 @@ class RemoteRepository
   end
 
   def merge(upstream, into, no_ff: false)
-    cmd = %w[merge --quiet --no-edit]
+    cmd = %w[merge --quiet --no-edit --no-log]
     cmd << '--no-ff' if no_ff
     cmd += [upstream, into]
 
