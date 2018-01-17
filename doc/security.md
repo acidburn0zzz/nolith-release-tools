@@ -142,19 +142,18 @@ let's assume `v10.1.2` was the latest security release. Generate the patch
 set against `v10.1.1` by doing:
 
 ```shell
-$ git checkout v10.1.2
-$ git format-patch v10.1.1 --stdout > security-release.patch
+$ git format-patch v10.1.1..v10.1.2 --stdout > security-release.patch
 ```
 
 Inspect `security-release.patch` and confirm that it contains the expected
 changes. To apply this patch:
 
 ```shell
-$ git checkout master
-$ git am security-release.patch
+$ git checkout -b security-backport-10-1-to-master master
+$ git am --3way security-release.patch
 ```
 
-It's possible this patch does not apply cleanly to `master`, but `git am`
+It's possible this patch does not apply cleanly to `master`, but `git am --3way`
 gives you a chance to abort or resolve conflicts.
 
 ### About the blog post
