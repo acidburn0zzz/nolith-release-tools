@@ -33,8 +33,6 @@ describe SecurityPatchIssue do
         expect(content).to include '**Push `ee/8-3-stable-ee` to `dev` only: `git push dev 8-3-stable-ee`**'
         expect(content).to include '**Push `omnibus-gitlab/8-3-stable` to `dev` only: `git push dev 8-3-stable`**'
         expect(content).to include '**Push `omnibus-gitlab/8-3-stable-ee` to `dev` only: `git push dev 8-3-stable-ee`**'
-        expect(content).to include "I'm going to deploy `8.3.1-rc2` to staging"
-        expect(content).to include "I'm going to deploy `8.3.1-rc2` to production"
       end
     end
 
