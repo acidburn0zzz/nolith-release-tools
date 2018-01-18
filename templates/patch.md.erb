@@ -22,8 +22,7 @@
       ```
 - [ ] While waiting for packages to build, now is a good time to [create the blog post MR]. Look at previous MRs for examples. => BLOG_POST_MR
 - [ ] Check progress of [EE packages build] and [CE packages build]
-- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to staging
-- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+- [ ] Get confirmation from a production team member to deploy staging. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
       # In the takeoff project:
@@ -31,15 +30,13 @@
       ```
 - [ ] Share the output of the migrations from the takeoff script in this issue via a snippet. Flag any migrations that take more than 5 minutes to run.
 - [ ] Make sure that the database migrations complete in a timely manner. If you see a migration taking too long in staging, stop right there and ping `@db-team` in Slack. What you're witnessing has the potential to take down production for a long time. The statement "Don't worry: it'll be faster in production" is a false myth that has been disproven every single time that this has happened in the past.
-- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to canary
-- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+- [ ] Get confirmation from a production team member to deploy canary. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, [deploy] release [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
       ```sh
       # In the takeoff project:
       bin/takeoff-deploy -e canary -v <%= version.to_patch %>-ee.0
       ```
-- [ ] In `#production`: I'm going to deploy `<%= version.to_patch %>` to production
-- [ ] Get confirmation from a production team member. Use `!oncall prod` if needed to find who's on call.
+- [ ] Get confirmation from a production team member to deploy production. Use `!oncall prod` if needed to find who's on call.
 - [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
       ```
       !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_patch %>.
