@@ -96,9 +96,13 @@ release to the EE version of the same release.
 1. Update the version number in **Things went south?** and the name of the
    `stable` branch in **Revert the code to the previous version**.
 
-#### Step 3: Update the gitignore and license templates
+#### Step 3: Update the `.gitignore`, `.gitlab-ci.yml`, and `Dockerfile` templates
 
 Run `bin/rake gitlab:update_templates` and open a merge request to `master`.
+
+This will update the [`.gitignore`](https://github.com/github/gitignore),
+[`.gitlab-ci.yml`](https://gitlab.com/gitlab-org/gitlab-ci-yml),
+and [`Dockerfile`](https://gitlab.com/gitlab-org/Dockerfile) templates.
 
 #### Step 4: Update the dependencies license list
 
