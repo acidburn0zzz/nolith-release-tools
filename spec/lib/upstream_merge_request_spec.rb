@@ -79,6 +79,8 @@ describe UpstreamMergeRequest do
 
     context 'conflicts is empty' do
       it 'returns a nice description' do
+        subject.conflicts = []
+
         expect(subject.description).to eq('**Congrats, no conflicts!** :tada:')
       end
     end

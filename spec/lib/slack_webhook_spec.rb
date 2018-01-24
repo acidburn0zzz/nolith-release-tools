@@ -10,7 +10,13 @@ describe SlackWebhook do
   let(:text) { 'Hello!' }
   let(:response_class) { Struct.new(:code) }
   let(:response) { response_class.new(200) }
-  let(:merge_request) { double(url: 'http://gitlab.com/mr', created_at: Time.new(2018, 1, 4, 6)) }
+
+  let(:merge_request) do
+    double(url: 'http://gitlab.com/mr',
+           to_reference: '!123',
+           conflicts: nil,
+           created_at: Time.new(2018, 1, 4, 6))
+  end
 
   around do |ex|
     ClimateControl.modify CI_SLACK_WEBHOOK_URL: CI_SLACK_WEBHOOK_URL, CI_JOB_ID: CI_JOB_ID do
@@ -26,7 +32,22 @@ describe SlackWebhook do
         .to receive(:post)
           .with(
             CI_SLACK_WEBHOOK_URL,
-            { body: { text: "A new merge request has been created: <#{merge_request.url}>" }.to_json })
+            { body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}>" }.to_json })
+          .and_return(response)
+
+      described_class.new_merge_request(merge_request)
+    end
+
+    it 'posts the number of conflicts in the message' do
+      merge_request = double(url: 'http://gitlab.com/mr',
+                             to_reference: '!123',
+                             created_at: Time.new(2018, 1, 4, 6),
+                             conflicts: %i[a b c])
+      expect(HTTParty)
+        .to receive(:post)
+          .with(
+            CI_SLACK_WEBHOOK_URL,
+            { body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> with #{merge_request.conflicts.count} conflicts! :warning:" }.to_json })
           .and_return(response)
 
       described_class.new_merge_request(merge_request)
@@ -39,7 +60,7 @@ describe SlackWebhook do
         .to receive(:post)
           .with(
             CI_SLACK_WEBHOOK_URL,
-            { body: { text: "Tried to create a new merge request but <#{merge_request.url}|this one> from 2 hours ago is still pending!" }.to_json })
+            { body: { text: "Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from 2 hours ago is still pending! :hourglass:" }.to_json })
           .and_return(response)
 
       described_class.existing_merge_request(merge_request)
