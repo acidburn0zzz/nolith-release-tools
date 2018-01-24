@@ -4,7 +4,7 @@ require 'upstream_merge_request'
 
 describe UpstreamMergeRequest do
   around do |example|
-    Timecop.freeze(2017, 11, 15) do
+    Timecop.freeze('2017-11-15 18:12 UTC') do
       example.run
     end
   end
@@ -55,7 +55,7 @@ describe UpstreamMergeRequest do
 
   describe '#title' do
     it 'generates a relevant title' do
-      expect(subject.title).to eq 'CE upstream - Wednesday'
+      expect(subject.title).to eq 'CE upstream - 2017-11-15 18:12 UTC'
     end
   end
 

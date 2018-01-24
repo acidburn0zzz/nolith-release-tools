@@ -36,7 +36,7 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   def title
-    self[:title] ||= "CE upstream - #{Date.today.strftime('%A')}"
+    self[:title] ||= "CE upstream - #{Time.now.utc.strftime('%F %H:%M UTC')}"
   end
 
   def description
