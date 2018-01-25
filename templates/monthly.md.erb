@@ -179,18 +179,13 @@ cherry-picked into `<%= version.stable_branch %>`.
 - [ ] Announce on the `#releases` Slack channels: `<%= version.to_rc(2) %>` has been deployed to canary. Blog post draft: MERGE_REQUEST_URL
 - [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on canary and the release can proceed
 - [ ] Get confirmation from a production team member to deploy production. Use `!oncall prod` if needed to find who's on call.
-- [ ] Publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel
+- [ ] If downtime is expected, publicly [announce the deployment] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel, 1 hour in advance
     ```
-    !broadcast --start X:Y --end A:B "We are currently deploying GitLab EE <%= version.to_rc(2) %>.
+    !broadcast --start X:Y --end A:B "We will deploying GitLab EE <%= version.to_rc(2) %> starting at X:Y. GitLab will be unavailable for Z minutes.
     For status updates, please follow https://twitter.com/GitLabStatus"
     ```
-    * With downtime: 1 hour before
     ```
     !tweet "We will be deploying GitLab EE <%= version.to_rc(2) %> starting at X:Y UTC, 15 mins of downtime expected"
-    ```
-    * Without downtime: 15 minutes before
-    ```
-    !tweet "We are about to deploy GitLab EE <%= version.to_rc(2) %> starting at X:Y UTC"
     ```
 - [ ] On video call, [deploy] release [`<%= version.to_rc(2) %>`](https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version.to_rc(2) %>.ee.0_amd64.deb) to GitLab.com
     ```sh
