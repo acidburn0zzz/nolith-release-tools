@@ -18,6 +18,14 @@ class MergeRequest < Issuable
     GitlabClient.create_merge_request(self, project)
   end
 
+  def to_reference
+    "#{project.path}!#{iid}"
+  end
+
+  def conflicts
+    self[:conflicts] || nil
+  end
+
   def remote_issuable
     @remote_issuable ||= GitlabClient.find_merge_request(self, project)
   end

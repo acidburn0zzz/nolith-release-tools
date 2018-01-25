@@ -40,6 +40,8 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   def description
+    return if conflicts.nil?
+
     if conflicts.empty?
       '**Congrats, no conflicts!** :tada:'
     else
@@ -75,10 +77,6 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   private
-
-  def conflicts
-    self[:conflicts] || []
-  end
 
   def authors
     @authors ||= begin

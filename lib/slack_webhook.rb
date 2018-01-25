@@ -7,16 +7,30 @@ class SlackWebhook
   attr_reader :webhook_url
 
   def self.new_merge_request(merge_request)
+    conflict_message = merge_request_conflict_message(merge_request)
+
     text = <<~SLACK_MESSAGE.strip
-      A new merge request has been created: <#{merge_request.url}>
+      Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> #{conflict_message}
     SLACK_MESSAGE
 
     new.fire_hook(text: text)
   end
 
+  def self.merge_request_conflict_message(merge_request)
+    return if merge_request.conflicts.nil?
+
+    conflict_count = merge_request.conflicts.count
+
+    if conflict_count.zero?
+      'with no conflicts! :tada:'
+    else
+      "with #{conflict_count} conflict".pluralize(conflict_count) + '! :warning:'
+    end
+  end
+
   def self.existing_merge_request(merge_request)
     text = <<~SLACK_MESSAGE.strip
-      Tried to create a new merge request but <#{merge_request.url}|this one> from #{TimeUtil.time_ago(merge_request.created_at)} is still pending!
+      Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from #{TimeUtil.time_ago(merge_request.created_at)} is still pending! :hourglass:
     SLACK_MESSAGE
 
     new.fire_hook(text: text)

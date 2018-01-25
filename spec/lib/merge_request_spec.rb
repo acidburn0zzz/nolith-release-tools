@@ -27,4 +27,23 @@ describe MergeRequest do
       expect(described_class.new(target_branch: 'foo').target_branch).to eq('foo')
     end
   end
+
+  describe '#to_reference' do
+    it 'returns the valid reference string' do
+      merge_request = described_class.new
+      allow(merge_request).to receive(:iid).and_return(1234)
+
+      expect(merge_request.to_reference).to eq('gitlab-org/gitlab-ce!1234')
+    end
+  end
+
+  describe '#conflicts' do
+    it 'returns nil if no conflicts are given' do
+      expect(described_class.new.conflicts).to be_nil
+    end
+
+    it 'returns array of conflicts if given' do
+      expect(described_class.new(conflicts: %i[a b c]).conflicts).to eq(%i[a b c])
+    end
+  end
 end
