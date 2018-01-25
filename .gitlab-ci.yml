@@ -11,7 +11,7 @@ cache:
     - vendor/ruby
 
 before_script:
-  - bundle install --jobs $(nproc) --retry 3 --path vendor
+  - bundle install --jobs=$(nproc) --retry=3 --path=vendor
 
 rubocop:
   stage: test
@@ -48,8 +48,7 @@ pages:
 
 upstream-merge:
   stage: automation
-  before_script:
-    - bundle install --jobs $(nproc) --retry 3
+  script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - echo "$AUTO_UPSTREAM_MERGE_BOT_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
@@ -59,7 +58,6 @@ upstream-merge:
     - chmod 700 ~/.ssh
     - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-  script:
     - bundle exec rake upstream_merge
   only:
     - schedules
