@@ -41,62 +41,76 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
   describe '#execute' do
     let(:ee_rugged_repo) { Rugged::Repository.new(ee_repo_path) }
 
-    before do
-      ce_fixture.unique_update_to_file('CONTRIBUTING.md', author: git_author)
-      ee_fixture.unique_update_to_file('README.md', author: git_author)
-    end
-
-    context 'when no conflict is detected' do
-      it 'creates a branch and merges upstream/master into it' do
-        subject.execute
-
-        expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
-        expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to match(/\AContent of CONTRIBUTING\.md in #{ce_fixture.fixture_path} is \h+\z/)
-        expect(File.read(File.join(ee_repo_path, 'README.md'))).to match(/\AContent of README\.md in #{ee_fixture.fixture_path} is \h+\z/)
-
-        expect(ee_rugged_repo).to have_commit_message <<~COMMIT_MESSAGE
-          Merge remote-tracking branch 'upstream/master' into #{default_options[:merge_branch]}
-        COMMIT_MESSAGE
-      end
-    end
-
-    context 'when a conflict is detected' do
+    context 'when downstream does not have the latest upstream changes' do
       before do
-        ce_fixture.unique_update_to_file('README.md', author: git_author)
+        ce_fixture.update_file('CONTRIBUTING.md', 'New CONTRIBUTING.md from CE', author: git_author)
+        ee_fixture.update_file('README.md', 'New README.md from EE', author: git_author)
       end
 
-      it 'returns the conflicts data' do
-        expect(subject.execute).to eq(
-          [{ user: git_author_name, path: 'README.md', conflict_type: 'UU' }])
+      context 'when no conflict is detected' do
+        it 'creates a branch and merges upstream/master into it' do
+          subject.execute
+
+          expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
+          expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to eq('New CONTRIBUTING.md from CE')
+          expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq('New README.md from EE')
+
+          expect(ee_rugged_repo).to have_commit_message <<~COMMIT_MESSAGE
+            Merge remote-tracking branch 'upstream/master' into #{default_options[:merge_branch]}
+          COMMIT_MESSAGE
+        end
       end
 
-      it 'commits the conflicts and includes `[ci skip]` in the commit message' do
+      context 'when a conflict is detected' do
+        before do
+          ce_fixture.update_file('README.md', 'New README.md from CE', author: git_author)
+        end
+
+        it 'returns the conflicts data' do
+          expect(subject.execute).to eq(
+            [{ user: git_author_name, path: 'README.md', conflict_type: 'UU' }])
+        end
+
+        it 'commits the conflicts and includes `[ci skip]` in the commit message' do
+          subject.execute
+
+          expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
+          expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq <<~CONTENT
+            <<<<<<< HEAD
+            New README.md from EE
+            =======
+            New README.md from CE
+            >>>>>>> upstream/master
+          CONTENT
+
+          expect(ee_rugged_repo).to have_commit_message <<~COMMIT_MESSAGE
+            Merge remote-tracking branch 'upstream/master' into #{default_options[:merge_branch]}
+
+            # Conflicts:
+            #\tREADME.md
+
+            [ci skip]
+          COMMIT_MESSAGE
+        end
+      end
+
+      it 'pushed the merge branch' do
+        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
+
         subject.execute
-
-        expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
-        expect(File.read(File.join(ee_repo_path, 'README.md'))).to match <<~CONTENT
-          <<<<<<< HEAD
-          Content of README.md in #{ee_fixture.fixture_path} is \\h+
-          =======
-          Content of README.md in #{ce_fixture.fixture_path} is \\h+
-          >>>>>>> upstream/master
-        CONTENT
-
-        expect(ee_rugged_repo).to have_commit_message <<~COMMIT_MESSAGE
-          Merge remote-tracking branch 'upstream/master' into #{default_options[:merge_branch]}
-
-          # Conflicts:
-          #\tREADME.md
-
-          [ci skip]
-        COMMIT_MESSAGE
       end
     end
 
-    it 'pushed the merge branch' do
-      expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
+    context 'when all upstream commits are already in downstream' do
+      it 'raises a DownstreamAlreadyUpToDate error' do
+        expect { subject.execute }.to raise_error(described_class::DownstreamAlreadyUpToDate)
 
-      subject.execute
+        expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
+        expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to eq('Sample CONTRIBUTING.md')
+        expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq('Sample README.md')
+
+        expect(ee_rugged_repo).to have_commit_message('Add a sample README.md')
+      end
     end
   end
 end
