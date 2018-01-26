@@ -1,6 +1,7 @@
 require_relative 'commit_author'
 require_relative 'gitlab_client'
 require_relative 'merge_request'
+require_relative 'ci'
 
 require 'active_support/core_ext/hash/transform_values'
 
@@ -63,7 +64,7 @@ class UpstreamMergeRequest < MergeRequest
         please assign to the next person. If you're the last one to resolve
         the conflicts, please push this to be merged.
 
-        Note: This merge request was created by an automated script.
+        Note: This merge request was [created by an automated script](#{CI.current_job_url}).
         Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
 
         /assign #{responsible_gitlab_username}

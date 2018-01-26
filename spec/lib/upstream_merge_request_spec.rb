@@ -75,6 +75,7 @@ describe UpstreamMergeRequest do
     before do
       allow(CommitAuthor).to receive(:new).with('John Doe', team: an_instance_of(Team)).and_return(double(to_gitlab: 'John Doe'))
       allow(CommitAuthor).to receive(:new).with('Rémy Coutable', team: an_instance_of(Team)).and_return(double(to_gitlab: '@rymai'))
+      allow(CI).to receive(:current_job_url).and_return('http://job.url')
     end
 
     context 'conflicts is empty' do
@@ -108,7 +109,7 @@ describe UpstreamMergeRequest do
           please assign to the next person. If you're the last one to resolve
           the conflicts, please push this to be merged.
 
-          Note: This merge request was created by an automated script.
+          Note: This merge request was [created by an automated script](http://job.url).
           Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
 
           /assign @rymai

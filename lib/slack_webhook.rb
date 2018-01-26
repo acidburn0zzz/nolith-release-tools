@@ -1,4 +1,5 @@
 require_relative 'time_util'
+require_relative 'ci'
 
 class SlackWebhook
   NoWebhookURLError = Class.new(StandardError)
@@ -38,7 +39,7 @@ class SlackWebhook
 
   def self.missing_merge_request
     text = <<~SLACK_MESSAGE.strip
-      The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{ENV['CI_JOB_ID']}>.
+      The latest upstream merge MR could not be created! Please have a look at <#{CI.current_job_url}>.
     SLACK_MESSAGE
 
     new.fire_hook(text: text)
