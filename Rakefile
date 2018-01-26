@@ -135,5 +135,10 @@ task :upstream_merge do
         #{in_progress_mr.url}
     ERROR_MESSAGE
     SlackWebhook.existing_merge_request(in_progress_mr) unless dry_run?
+  elsif result.payload[:already_up_to_date]
+    $stdout.puts <<~ERROR_MESSAGE.colorize(:green)
+    --> EE is already up-to-date with CE. No merge request was created.
+    ERROR_MESSAGE
+    SlackWebhook.downstream_is_up_to_date unless dry_run?
   end
 end
