@@ -18,6 +18,10 @@ class MergeRequest < Issuable
     GitlabClient.create_merge_request(self, project)
   end
 
+  def accept
+    GitlabClient.accept_merge_request(self, project)
+  end
+
   def to_reference
     "#{project.path}!#{iid}"
   end

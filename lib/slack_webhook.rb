@@ -22,7 +22,7 @@ class SlackWebhook
     conflict_count = merge_request.conflicts.count
 
     if conflict_count.zero?
-      'with no conflicts! :tada:'
+      'with no conflicts! :tada:. MWPS set on the MR.'
     else
       "with #{conflict_count} conflict".pluralize(conflict_count) + '! :warning:'
     end

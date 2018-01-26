@@ -26,7 +26,10 @@ module Services
         merge_branch: upstream_merge_request.source_branch)
       upstream_merge_request.conflicts = merge.execute
 
-      upstream_merge_request.create unless dry_run
+      unless dry_run
+        upstream_merge_request.create
+        upstream_merge_request.accept if upstream_merge_request.conflicts.count.zero?
+      end
 
       Result.new(true, { upstream_mr: upstream_merge_request })
     rescue UpstreamMergeInProgressError
