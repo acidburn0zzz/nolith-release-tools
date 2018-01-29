@@ -13,7 +13,7 @@ class UpstreamMerge
     @merge_branch = merge_branch
   end
 
-  def execute
+  def execute!
     prepare_upstream_merge
     conflicts = execute_upstream_merge
     after_upstream_merge
