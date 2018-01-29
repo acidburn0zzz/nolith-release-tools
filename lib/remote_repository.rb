@@ -9,6 +9,7 @@ class RemoteRepository
   class CannotPullError < StandardError; end
 
   CanonicalRemote = Struct.new(:name, :url)
+  GitCommandResult = Struct.new(:output, :status)
 
   def self.get(remotes, repository_name = nil, global_depth: 1)
     repository_name ||= remotes
@@ -85,13 +86,11 @@ class RemoteRepository
   end
 
   def merge(upstream, into, no_ff: false)
-    cmd = %w[merge --quiet --no-edit --no-log]
+    cmd = %w[merge --no-edit --no-log]
     cmd << '--no-ff' if no_ff
     cmd += [upstream, into]
 
-    _, status = run_git(cmd)
-
-    status.success?
+    GitCommandResult.new(*run_git(cmd))
   end
 
   def status(short: false)

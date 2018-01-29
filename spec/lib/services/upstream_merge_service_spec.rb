@@ -3,6 +3,8 @@ require 'spec_helper'
 require 'services/upstream_merge_service'
 
 describe Services::UpstreamMergeService do
+  let(:upstream_merge) { double(execute!: []) }
+
   around do |example|
     Timecop.freeze(2017, 11, 15) do
       example.run
@@ -19,7 +21,7 @@ describe Services::UpstreamMergeService do
           origin: Project::GitlabEe.remotes[:gitlab],
           upstream: Project::GitlabCe.remotes[:gitlab],
           merge_branch: 'ce-to-ee-2017-11-15'
-        ).and_return(double(execute: []))
+        ).and_return(upstream_merge)
     end
   end
 
@@ -106,6 +108,21 @@ describe Services::UpstreamMergeService do
         subject { described_class.new(mention_people: true) }
 
         it_behaves_like 'successful MR creation'
+      end
+
+      context 'when downstream is already up-to-date with upstream' do
+        include_context 'stub collaborators'
+
+        before do
+          expect(upstream_merge).to receive(:execute!).and_raise(UpstreamMerge::DownstreamAlreadyUpToDate)
+        end
+
+        it 'returns a non-successful result object' do
+          result = subject.perform
+
+          expect(result).not_to be_success
+          expect(result.payload[:already_up_to_date]).to be(true)
+        end
       end
     end
   end

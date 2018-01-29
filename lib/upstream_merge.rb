@@ -5,6 +5,8 @@ class UpstreamMerge
 
   CONFLICT_MARKER_REGEX = /\A(?<conflict_type>[ADU]{2}) /
 
+  DownstreamAlreadyUpToDate = Class.new(StandardError)
+
   def initialize(origin:, upstream:, merge_branch:)
     @origin = origin
     @upstream = upstream
@@ -32,7 +34,10 @@ class UpstreamMerge
 
   def execute_upstream_merge
     repository.fetch('master', remote: :upstream)
-    repository.merge('upstream/master', merge_branch, no_ff: true)
+    result = repository.merge('upstream/master', merge_branch, no_ff: true)
+
+    # Depending on Git version, it's "up-to-date" or "up to date"...
+    raise DownstreamAlreadyUpToDate if result.output =~ /\AAlready up[\s\-]to[\s\-]date/
 
     conflicts = compute_conflicts
     conflicting_files = conflicts.map { |conflict_data| conflict_data[:path] }

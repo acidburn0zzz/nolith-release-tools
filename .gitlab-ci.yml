@@ -20,6 +20,7 @@ rubocop:
 
 specs:
   stage: test
+  retry: 1
   script:
     - cp .env.example .env
     - git config --global user.email "you@example.com"

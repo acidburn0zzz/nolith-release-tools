@@ -39,7 +39,15 @@ class SlackWebhook
 
   def self.missing_merge_request
     text = <<~SLACK_MESSAGE.strip
-      The latest upstream merge MR could not be created! Please have a look at <#{CI.current_job_url}>.
+      The latest upstream merge MR could not be created! Please have a look at <#{CI.current_job_url}>. :boom:
+    SLACK_MESSAGE
+
+    new.fire_hook(text: text)
+  end
+
+  def self.downstream_is_up_to_date
+    text = <<~SLACK_MESSAGE.strip
+      EE is already up-to-date with CE. No merge request was created. :tada:
     SLACK_MESSAGE
 
     new.fire_hook(text: text)

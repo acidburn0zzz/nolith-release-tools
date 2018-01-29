@@ -73,10 +73,23 @@ describe SlackWebhook do
         .to receive(:post)
           .with(
             CI_SLACK_WEBHOOK_URL,
-            { body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}>." }.to_json })
+            { body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}>. :boom:" }.to_json })
           .and_return(response)
 
       described_class.missing_merge_request
+    end
+  end
+
+  describe '.downstream_is_up_to_date' do
+    it 'posts a message' do
+      expect(HTTParty)
+        .to receive(:post)
+          .with(
+            CI_SLACK_WEBHOOK_URL,
+            { body: { text: "EE is already up-to-date with CE. No merge request was created. :tada:" }.to_json })
+          .and_return(response)
+
+      described_class.downstream_is_up_to_date
     end
   end
 

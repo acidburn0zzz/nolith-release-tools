@@ -283,7 +283,7 @@ describe RemoteRepository do
     end
 
     it 'commits the given files with the given message in the current branch' do
-      expect(subject.merge('branch-2', 'branch-1', no_ff: true)).to be(true)
+      expect(subject.merge('branch-2', 'branch-1', no_ff: true).status).to be_success
       log = subject.log(format: :message)
 
       expect(log).to start_with("Merge branch 'branch-2' into branch-1\n")
