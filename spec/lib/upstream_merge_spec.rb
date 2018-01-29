@@ -38,7 +38,7 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
     FileUtils.rm_r(ce_repo_path, secure: true) if File.exist?(ce_repo_path)
   end
 
-  describe '#execute' do
+  describe '#execute!' do
     let(:ee_rugged_repo) { Rugged::Repository.new(ee_repo_path) }
 
     context 'when downstream does not have the latest upstream changes' do
@@ -49,7 +49,7 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
 
       context 'when no conflict is detected' do
         it 'creates a branch and merges upstream/master into it' do
-          subject.execute
+          subject.execute!
 
           expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
           expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to eq('New CONTRIBUTING.md from CE')
@@ -67,12 +67,12 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
         end
 
         it 'returns the conflicts data' do
-          expect(subject.execute).to eq(
+          expect(subject.execute!).to eq(
             [{ user: git_author_name, path: 'README.md', conflict_type: 'UU' }])
         end
 
         it 'commits the conflicts and includes `[ci skip]` in the commit message' do
-          subject.execute
+          subject.execute!
 
           expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
           expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq <<~CONTENT
@@ -97,13 +97,13 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
       it 'pushed the merge branch' do
         expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
 
-        subject.execute
+        subject.execute!
       end
     end
 
     context 'when all upstream commits are already in downstream' do
       it 'raises a DownstreamAlreadyUpToDate error' do
-        expect { subject.execute }.to raise_error(described_class::DownstreamAlreadyUpToDate)
+        expect { subject.execute! }.to raise_error(described_class::DownstreamAlreadyUpToDate)
 
         expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
         expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to eq('Sample CONTRIBUTING.md')
