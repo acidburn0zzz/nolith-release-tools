@@ -118,7 +118,7 @@ class GitlabClient
   # project - An object that responds to :path
   #
   # Returns a Gitlab::ObjectifiedHash object
-  def self.accept_merge_request(merge_request, project = Project::Gitlabce)
+  def self.accept_merge_request(merge_request, project = Project::GitlabCe)
     params = {
       merge_when_pipeline_succeeds: true
     }
