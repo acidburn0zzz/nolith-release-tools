@@ -23,7 +23,23 @@ describe Services::UpstreamMergeService do
     end
   end
 
-  shared_examples 'successful MR creation' do
+  shared_examples 'successful MR creation without automatic acceptance' do
+    include_context 'stub collaborators'
+
+    it 'returns a successful result object' do
+      allow(subject.upstream_merge_request).to receive(:conflicts?).and_return(true)
+
+      expect(subject.upstream_merge_request).to receive(:create)
+      expect(subject.upstream_merge_request).not_to receive(:accept)
+
+      result = subject.perform
+
+      expect(result).to be_success
+      expect(result.payload).to eq({ upstream_mr: subject.upstream_merge_request })
+    end
+  end
+
+  shared_examples 'successful MR creation and automatic acceptance' do
     include_context 'stub collaborators'
 
     it 'returns a successful result object' do
@@ -42,6 +58,7 @@ describe Services::UpstreamMergeService do
 
     it 'returns a successful result object' do
       expect(subject.upstream_merge_request).not_to receive(:create)
+      expect(subject.upstream_merge_request).not_to receive(:accept)
 
       result = subject.perform
 
@@ -73,7 +90,13 @@ describe Services::UpstreamMergeService do
         end
 
         context 'when real run (default)' do
-          it_behaves_like 'successful MR creation'
+          context 'when no conflicts exist' do
+            it_behaves_like 'successful MR creation and automatic acceptance'
+          end
+
+          context 'when conflicts exist' do
+            it_behaves_like 'successful MR creation without automatic acceptance'
+          end
         end
 
         context 'when dry run' do
@@ -94,7 +117,7 @@ describe Services::UpstreamMergeService do
       end
 
       context 'when real run (default)' do
-        it_behaves_like 'successful MR creation'
+        it_behaves_like 'successful MR creation and automatic acceptance'
       end
 
       context 'when dry run' do
@@ -106,7 +129,7 @@ describe Services::UpstreamMergeService do
       context 'when mentioning people' do
         subject { described_class.new(mention_people: true) }
 
-        it_behaves_like 'successful MR creation'
+        it_behaves_like 'successful MR creation and automatic acceptance'
       end
     end
   end
