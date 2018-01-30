@@ -22,6 +22,14 @@ RSpec.shared_examples 'issuable #create' do |create_issuable_method|
   end
 end
 
+RSpec.shared_examples 'issuable #accept' do |accept_issuable_method|
+  it 'calls GitlabClient.create_issue' do
+    expect(GitlabClient).to receive(accept_issuable_method).with(subject, Project::GitlabCe)
+
+    subject.accept
+  end
+end
+
 RSpec.shared_examples 'issuable #remote_issuable' do |find_issuable_method|
   it 'delegates to GitlabClient' do
     expect(GitlabClient).to receive(find_issuable_method).with(subject, Project::GitlabCe)

@@ -5,6 +5,7 @@ require 'merge_request'
 describe MergeRequest do
   it_behaves_like 'issuable #initialize'
   it_behaves_like 'issuable #create', :create_merge_request
+  it_behaves_like 'issuable #accept', :accept_merge_request
   it_behaves_like 'issuable #remote_issuable', :find_merge_request
   it_behaves_like 'issuable #url'
 
@@ -45,5 +46,20 @@ describe MergeRequest do
     it 'returns array of conflicts if given' do
       expect(described_class.new(conflicts: %i[a b c]).conflicts).to eq(%i[a b c])
     end
+  end
+
+  describe '#conflicts?' do
+    it 'returns false if conflicts are nil' do
+      expect(described_class.new.conflicts?).to be_falsey
+    end
+
+    it 'returns false if conflicts are empty' do
+      expect(described_class.new(conflicts: %i[]).conflicts?).to be_falsey
+    end
+
+    it 'returns true of conflicts are given' do
+      expect(described_class.new(conflicts: %i[a b c]).conflicts?).to be_truthy
+    end
+
   end
 end
