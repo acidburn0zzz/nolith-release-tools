@@ -23,11 +23,23 @@ describe Services::UpstreamMergeService do
     end
   end
 
+  shared_context 'without conflicts' do
+    before do
+        allow(subject.upstream_merge_request).to receive(:conflicts?).and_return(false)
+    end
+  end
+
+  shared_context 'with conflicts' do
+    before do
+        allow(subject.upstream_merge_request).to receive(:conflicts?).and_return(true)
+    end
+  end
+
   shared_examples 'successful MR creation without automatic acceptance' do
     include_context 'stub collaborators'
+    include_context 'with conflicts'
 
     it 'returns a successful result object' do
-      allow(subject.upstream_merge_request).to receive(:conflicts?).and_return(true)
 
       expect(subject.upstream_merge_request).to receive(:create)
       expect(subject.upstream_merge_request).not_to receive(:accept)
@@ -41,6 +53,7 @@ describe Services::UpstreamMergeService do
 
   shared_examples 'successful MR creation and automatic acceptance' do
     include_context 'stub collaborators'
+    include_context 'without conflicts'
 
     it 'returns a successful result object' do
       expect(subject.upstream_merge_request).to receive(:create)
@@ -90,13 +103,8 @@ describe Services::UpstreamMergeService do
         end
 
         context 'when real run (default)' do
-          context 'when no conflicts exist' do
             it_behaves_like 'successful MR creation and automatic acceptance'
-          end
-
-          context 'when conflicts exist' do
             it_behaves_like 'successful MR creation without automatic acceptance'
-          end
         end
 
         context 'when dry run' do
