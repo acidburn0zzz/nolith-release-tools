@@ -60,6 +60,5 @@ describe MergeRequest do
     it 'returns true of conflicts are given' do
       expect(described_class.new(conflicts: %i[a b c]).conflicts?).to be_truthy
     end
-
   end
 end

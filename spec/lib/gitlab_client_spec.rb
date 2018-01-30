@@ -42,7 +42,6 @@ describe GitlabClient do
     end
   end
 
-
   describe '.accept_merge_request' do
     before do
       allow(described_class).to receive(:current_user).and_return(double(id: 42))
