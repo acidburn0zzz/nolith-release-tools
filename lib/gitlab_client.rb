@@ -111,6 +111,20 @@ class GitlabClient
     client.create_merge_request(project.path, merge_request.title, params)
   end
 
+  # Accept a merge request in the given project specified by the iid
+  #
+  # merge_request - An object that responds to the following message:
+  #   :iid  - Internal id of merge request
+  # project - An object that responds to :path
+  #
+  # Returns a Gitlab::ObjectifiedHash object
+  def self.accept_merge_request(merge_request, project = Project::GitlabCe)
+    params = {
+      merge_when_pipeline_succeeds: true
+    }
+    client.accept_merge_request(project.path, merge_request.iid, params)
+  end
+
   # Find an issue in the given project based on the provided issue
   #
   # issue - An object that responds to the following messages:

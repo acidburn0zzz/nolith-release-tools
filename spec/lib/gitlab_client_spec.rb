@@ -42,6 +42,52 @@ describe GitlabClient do
     end
   end
 
+  describe '.accept_merge_request' do
+    before do
+      allow(described_class).to receive(:current_user).and_return(double(id: 42))
+    end
+
+    let(:merge_request) do
+      double(
+        project: double(path: 'gitlab-org/gitlab-ce'),
+        title: 'Upstream MR',
+        iid: '12345',
+        description: 'Hello world',
+        labels: 'CE upstream',
+        source_branch: 'feature',
+        target_branch: 'master',
+        milestone: nil)
+    end
+
+    let(:default_params) do
+      {
+        merge_when_pipeline_succeeds: true
+      }
+    end
+
+    it 'accepts a merge request against master on the GitLab CE project' do
+      expect(described_class.__send__(:client))
+        .to receive(:accept_merge_request).with(
+          Project::GitlabCe.path,
+          merge_request.iid,
+          default_params)
+
+      described_class.accept_merge_request(merge_request)
+    end
+
+    context 'when passing a project' do
+      it 'accepts a merge request in the given project' do
+        expect(described_class.__send__(:client))
+          .to receive(:accept_merge_request).with(
+            Project::GitlabEe.path,
+            merge_request.iid,
+            default_params)
+
+        described_class.accept_merge_request(merge_request, Project::GitlabEe)
+      end
+    end
+  end
+
   describe '.create_merge_request' do
     before do
       allow(described_class).to receive(:current_user).and_return(double(id: 42))
