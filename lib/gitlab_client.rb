@@ -32,6 +32,11 @@ class GitlabClient
     project_milestones + group_milestones
   end
 
+  def self.current_milestone
+    milestones(Project::GitlabCe, state: 'active')
+      .detect { |m| current_milestone?(m) } || MissingMilestone.new
+  end
+
   def self.milestone(project = Project::GitlabCe, title:)
     return MissingMilestone.new if title.nil?
 
@@ -168,4 +173,12 @@ class GitlabClient
   end
 
   private_class_method :client
+
+  def self.current_milestone?(milestone)
+    return false if milestone.start_date.nil?
+    return false if milestone.due_date.nil?
+
+    Date.parse(milestone.start_date) <= Date.today &&
+      Date.parse(milestone.due_date) >= Date.today
+  end
 end
