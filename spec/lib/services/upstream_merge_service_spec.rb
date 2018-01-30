@@ -28,6 +28,7 @@ describe Services::UpstreamMergeService do
 
     it 'returns a successful result object' do
       expect(subject.upstream_merge_request).to receive(:create)
+      expect(subject.upstream_merge_request).to receive(:accept)
 
       result = subject.perform
 
