@@ -30,6 +30,10 @@ class MergeRequest < Issuable
     self[:conflicts] || nil
   end
 
+  def conflicts?
+    conflicts&.any?
+  end
+
   def remote_issuable
     @remote_issuable ||= GitlabClient.find_merge_request(self, project)
   end

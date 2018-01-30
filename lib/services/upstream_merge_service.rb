@@ -28,7 +28,7 @@ module Services
 
       unless dry_run
         upstream_merge_request.create
-        upstream_merge_request.accept if upstream_merge_request.conflicts.count.zero?
+        upstream_merge_request.accept unless upstream_merge_request.conflicts?
       end
 
       Result.new(true, { upstream_mr: upstream_merge_request })
