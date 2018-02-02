@@ -6,8 +6,6 @@ describe SlackWebhook do
   CI_SLACK_WEBHOOK_URL = 'http://foo.slack.com'.freeze
   CI_JOB_ID = '42'.freeze
 
-  let(:channel) { '#ce-to-ee' }
-  let(:text) { 'Hello!' }
   let(:response_class) { Struct.new(:code) }
   let(:response) { response_class.new(200) }
 
@@ -16,6 +14,10 @@ describe SlackWebhook do
            to_reference: '!123',
            conflicts: nil,
            created_at: Time.new(2018, 1, 4, 6))
+  end
+
+  def expect_post(params)
+    expect(HTTParty).to receive(:post).with(CI_SLACK_WEBHOOK_URL, params)
   end
 
   around do |ex|
@@ -28,12 +30,8 @@ describe SlackWebhook do
 
   describe '.new_merge_request' do
     it 'posts a message' do
-      expect(HTTParty)
-        .to receive(:post)
-          .with(
-            CI_SLACK_WEBHOOK_URL,
-            { body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}>" }.to_json })
-          .and_return(response)
+      expect_post(body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}>" }.to_json)
+        .and_return(response)
 
       described_class.new_merge_request(merge_request)
     end
@@ -43,12 +41,8 @@ describe SlackWebhook do
                              to_reference: '!123',
                              created_at: Time.new(2018, 1, 4, 6),
                              conflicts: %i[a b c])
-      expect(HTTParty)
-        .to receive(:post)
-          .with(
-            CI_SLACK_WEBHOOK_URL,
-            { body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> with #{merge_request.conflicts.count} conflicts! :warning:" }.to_json })
-          .and_return(response)
+      expect_post(body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> with #{merge_request.conflicts.count} conflicts! :warning:" }.to_json)
+        .and_return(response)
 
       described_class.new_merge_request(merge_request)
     end
@@ -56,12 +50,8 @@ describe SlackWebhook do
 
   describe '.existing_merge_request' do
     it 'posts a message' do
-      expect(HTTParty)
-        .to receive(:post)
-          .with(
-            CI_SLACK_WEBHOOK_URL,
-            { body: { text: "Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from 2 hours ago is still pending! :hourglass:" }.to_json })
-          .and_return(response)
+      expect_post(body: { text: "Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from 2 hours ago is still pending! :hourglass:" }.to_json)
+        .and_return(response)
 
       described_class.existing_merge_request(merge_request)
     end
@@ -69,12 +59,8 @@ describe SlackWebhook do
 
   describe '.missing_merge_request' do
     it 'posts a message' do
-      expect(HTTParty)
-        .to receive(:post)
-          .with(
-            CI_SLACK_WEBHOOK_URL,
-            { body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}>. :boom:" }.to_json })
-          .and_return(response)
+      expect_post({ body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}>. :boom:" }.to_json })
+        .and_return(response)
 
       described_class.missing_merge_request
     end
@@ -82,26 +68,20 @@ describe SlackWebhook do
 
   describe '.downstream_is_up_to_date' do
     it 'posts a message' do
-      expect(HTTParty)
-        .to receive(:post)
-          .with(
-            CI_SLACK_WEBHOOK_URL,
-            { body: { text: "EE is already up-to-date with CE. No merge request was created. :tada:" }.to_json })
-          .and_return(response)
+      expect_post(body: { text: "EE is already up-to-date with CE. No merge request was created. :tada:" }.to_json)
+        .and_return(response)
 
       described_class.downstream_is_up_to_date
     end
   end
 
   describe '#fire_hook' do
+    let(:text) { 'Hello!' }
+
     context 'when channel is not given' do
       before do
-        expect(HTTParty)
-          .to receive(:post)
-            .with(
-              CI_SLACK_WEBHOOK_URL,
-              { body: { text: text }.to_json })
-            .and_return(response)
+        expect_post(body: { text: text }.to_json)
+          .and_return(response)
       end
 
       it 'posts to the given url with the given arguments' do
@@ -111,25 +91,20 @@ describe SlackWebhook do
       context 'when response is not successfull' do
         let(:response) { response_class.new(400) }
 
-        it 'prepends the channel with #' do
-          expect do
-            subject.fire_hook(text: text)
-          end.to raise_error(described_class::CouldNotPostError)
+        it 'raises CouldNotPostError' do
+          expect { subject.fire_hook(text: text) }
+            .to raise_error(described_class::CouldNotPostError)
         end
       end
     end
 
     context 'when channel is given' do
-      before do
-        expect(HTTParty)
-          .to receive(:post)
-            .with(
-              CI_SLACK_WEBHOOK_URL,
-              { body: { text: text, channel: channel }.to_json })
-            .and_return(response)
-      end
-
       it 'passes the given channel' do
+        channel = '#ce-to-ee'
+
+        expect_post(body: { text: text, channel: channel }.to_json)
+          .and_return(response)
+
         subject.fire_hook(channel: channel, text: text)
       end
     end
