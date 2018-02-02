@@ -107,7 +107,10 @@ describe GitlabClient do
 
   describe '.create_merge_request' do
     before do
-      allow(described_class).to receive(:current_user).and_return(double(id: 42))
+      allow(described_class).to receive_messages(
+        current_user: double(id: 42),
+        current_milestone: double(id: 1)
+      )
     end
 
     let(:merge_request) do
@@ -128,7 +131,7 @@ describe GitlabClient do
         labels: merge_request.labels,
         source_branch: merge_request.source_branch,
         target_branch: 'master',
-        milestone_id: nil,
+        milestone_id: 1,
         remove_source_branch: true
       }
     end

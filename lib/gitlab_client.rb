@@ -101,7 +101,12 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_merge_request(merge_request, project = Project::GitlabCe)
-    milestone = milestone(project, title: merge_request.milestone)
+    milestone =
+      if merge_request.milestone.nil?
+        current_milestone
+      else
+        milestone(project, title: merge_request.milestone)
+      end
 
     params = {
       description: merge_request.description,
