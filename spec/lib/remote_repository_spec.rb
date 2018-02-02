@@ -11,7 +11,6 @@ describe RemoteRepository do
   let(:repo_remotes) do
     { gitlab: repo_url, github: 'https://example.com/foo/bar/baz.git' }
   end
-  let(:current_git_author) { `git config --get user.name`.strip }
 
   before do
     fixture.rebuild_fixture!
