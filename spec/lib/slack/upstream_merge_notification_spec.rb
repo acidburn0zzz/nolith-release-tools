@@ -1,31 +1,15 @@
 require 'spec_helper'
 
-require 'slack_webhook'
+require 'slack/upstream_merge_notification'
 
-describe SlackWebhook do
-  CI_SLACK_WEBHOOK_URL = 'http://foo.slack.com'.freeze
-  CI_JOB_ID = '42'.freeze
-
-  let(:response_class) { Struct.new(:code) }
-  let(:response) { response_class.new(200) }
+describe Slack::UpstreamMergeNotification do
+  include_context 'Slack webhook'
 
   let(:merge_request) do
     double(url: 'http://gitlab.com/mr',
            to_reference: '!123',
            conflicts: nil,
            created_at: Time.new(2018, 1, 4, 6))
-  end
-
-  def expect_post(params)
-    expect(HTTParty).to receive(:post).with(CI_SLACK_WEBHOOK_URL, params)
-  end
-
-  around do |ex|
-    ClimateControl.modify CI_SLACK_WEBHOOK_URL: CI_SLACK_WEBHOOK_URL, CI_JOB_ID: CI_JOB_ID do
-      Timecop.freeze(Time.new(2018, 1, 4, 8, 30, 42)) do
-        ex.run
-      end
-    end
   end
 
   describe '.new_merge_request' do
@@ -59,7 +43,7 @@ describe SlackWebhook do
 
   describe '.missing_merge_request' do
     it 'posts a message' do
-      expect_post({ body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{CI_JOB_ID}>. :boom:" }.to_json })
+      expect_post({ body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{ci_job_id}>. :boom:" }.to_json })
         .and_return(response)
 
       described_class.missing_merge_request
