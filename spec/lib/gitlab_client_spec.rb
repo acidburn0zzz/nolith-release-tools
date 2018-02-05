@@ -17,6 +17,23 @@ describe GitlabClient do
     end
   end
 
+  describe '.current_milestone', vcr: { cassette_name: 'milestones/all' } do
+    it 'detects the current milestone' do
+      Timecop.travel(Date.new(2018, 1, 30)) do
+        current = described_class.current_milestone
+
+        expect(current.title).to eq('10.5')
+      end
+    end
+
+    it 'falls back to MissingMilestone' do
+      Timecop.travel(Date.new(2032, 8, 3)) do
+        expect(described_class.current_milestone)
+          .to be_kind_of(described_class::MissingMilestone)
+      end
+    end
+  end
+
   describe '.milestone', vcr: { cassette_name: 'merge_requests/with_milestone' } do
     context 'when the milestone title is nil' do
       it 'returns a MissingMilestone' do
@@ -90,7 +107,10 @@ describe GitlabClient do
 
   describe '.create_merge_request' do
     before do
-      allow(described_class).to receive(:current_user).and_return(double(id: 42))
+      allow(described_class).to receive_messages(
+        current_user: double(id: 42),
+        current_milestone: double(id: 1)
+      )
     end
 
     let(:merge_request) do
@@ -111,7 +131,7 @@ describe GitlabClient do
         labels: merge_request.labels,
         source_branch: merge_request.source_branch,
         target_branch: 'master',
-        milestone_id: nil,
+        milestone_id: 1,
         remove_source_branch: true
       }
     end

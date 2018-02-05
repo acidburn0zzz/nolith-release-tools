@@ -32,6 +32,11 @@ class GitlabClient
     project_milestones + group_milestones
   end
 
+  def self.current_milestone
+    milestones(Project::GitlabCe, state: 'active')
+      .detect { |m| current_milestone?(m) } || MissingMilestone.new
+  end
+
   def self.milestone(project = Project::GitlabCe, title:)
     return MissingMilestone.new if title.nil?
 
@@ -96,7 +101,12 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_merge_request(merge_request, project = Project::GitlabCe)
-    milestone = milestone(project, title: merge_request.milestone)
+    milestone =
+      if merge_request.milestone.nil?
+        current_milestone
+      else
+        milestone(project, title: merge_request.milestone)
+      end
 
     params = {
       description: merge_request.description,
@@ -168,4 +178,12 @@ class GitlabClient
   end
 
   private_class_method :client
+
+  def self.current_milestone?(milestone)
+    return false if milestone.start_date.nil?
+    return false if milestone.due_date.nil?
+
+    Date.parse(milestone.start_date) <= Date.today &&
+      Date.parse(milestone.due_date) >= Date.today
+  end
 end
