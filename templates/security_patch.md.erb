@@ -76,7 +76,7 @@
       !tweet "GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES"
       ```
 - [ ] Coordinate with the Marketing team to send out a security newsletter
-- [ ] Cherry-pick the merges from the `security` branch into `master` and push to all remotes.
+- [ ] Cherry-pick the merges from the `security` branch into `master` and push to all remotes. You can also [create and apply a patch set][security-patch-set].
 - [ ] Add [`omnibus-gitlab/<%= omnibus_version.tag %>` CHANGELOG.md][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG.md][omnibus-master-changelog]
 
 ---
@@ -97,6 +97,7 @@ For references:
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable-ee
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/8-10-stable
 
+[security-patch-set]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/security.md#picking-security-patches-into-master
 [omnibus-tag-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= omnibus_version.tag %>/CHANGELOG.md
 [omnibus-master-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/CHANGELOG.md
 
