@@ -10,7 +10,7 @@ def get_version(args)
 end
 
 def dry_run?
-  ENV['TEST'].present?
+  SharedStatus.dry_run?
 end
 
 def force?
