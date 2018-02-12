@@ -25,7 +25,7 @@ class RemoteRepository
   attr_reader :path, :remotes, :canonical_remote, :global_depth
 
   def initialize(path, remotes, global_depth: 1)
-    $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if ENV['TEST']
+    $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if SharedStatus.dry_run?
     @path = path
     @global_depth = global_depth
 
@@ -156,7 +156,7 @@ class RemoteRepository
   def push(remote, ref)
     cmd = %W[push #{remote} #{ref}:#{ref}]
 
-    if ENV['TEST']
+    if SharedStatus.dry_run?
       $stdout.puts
       $stdout.puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
       $stdout.puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
