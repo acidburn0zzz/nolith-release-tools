@@ -10,9 +10,9 @@ class SlackWebhook
   def self.new_merge_request(merge_request)
     conflict_message = merge_request_conflict_message(merge_request)
 
-    text = <<~SLACK_MESSAGE.strip
+    text = <<~MSG.strip
       Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> #{conflict_message}
-    SLACK_MESSAGE
+    MSG
 
     new.fire_hook(text: text)
   end
@@ -30,25 +30,25 @@ class SlackWebhook
   end
 
   def self.existing_merge_request(merge_request)
-    text = <<~SLACK_MESSAGE.strip
+    text = <<~MSG.strip
       Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from #{TimeUtil.time_ago(merge_request.created_at)} is still pending! :hourglass:
-    SLACK_MESSAGE
+    MSG
 
     new.fire_hook(text: text)
   end
 
   def self.missing_merge_request
-    text = <<~SLACK_MESSAGE.strip
+    text = <<~MSG.strip
       The latest upstream merge MR could not be created! Please have a look at <#{CI.current_job_url}>. :boom:
-    SLACK_MESSAGE
+    MSG
 
     new.fire_hook(text: text)
   end
 
   def self.downstream_is_up_to_date
-    text = <<~SLACK_MESSAGE.strip
+    text = <<~MSG.strip
       EE is already up-to-date with CE. No merge request was created. :tada:
-    SLACK_MESSAGE
+    MSG
 
     new.fire_hook(text: text)
   end
