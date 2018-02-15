@@ -34,8 +34,8 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
 
   after do
     # Manually perform the cleanup we disabled in the `before` block
-    FileUtils.rm_r(ee_repo_path, secure: true) if File.exist?(ee_repo_path)
-    FileUtils.rm_r(ce_repo_path, secure: true) if File.exist?(ce_repo_path)
+    FileUtils.rm_rf(ee_repo_path, secure: true) if File.exist?(ee_repo_path)
+    FileUtils.rm_rf(ce_repo_path, secure: true) if File.exist?(ce_repo_path)
   end
 
   describe '#execute!' do
