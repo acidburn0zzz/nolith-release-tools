@@ -67,6 +67,32 @@ bundle exec rake "patch_issue[8.3.1]"
     https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
+## `patch_merge_request[version]`
+
+This task will create preparation merge requests in CE and EE for the specified
+patch version, and will return the URLs to both.
+
+Merge requests created with this Rake task have the following properties:
+
+- Its title is "WIP: Prepare X.Y.Z release" (e.g., "WIP: Prepare 8.3.1 release")
+- Its description is the [patch merge request template]
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "Release"
+
+### Examples
+
+```sh
+bundle exec rake 'patch_merge_request[10.4.20]'
+
+--> Merge Request "WIP: Prepare 10.4.20 release" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/17156
+--> Merge Request "WIP: Prepare 10.4.20-ee release" created.
+    https://gitlab.com/gitlab-org/gitlab-ee/merge_requests/4561
+```
+
+[patch merge request template]: ../../templates/preparation_merge_request.md.erb
+
 ## `security_patch_issue[version]`
 
 This task will either return the URL of a patch issue if one already exists for
