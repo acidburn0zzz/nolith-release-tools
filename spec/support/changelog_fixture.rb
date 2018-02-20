@@ -43,8 +43,12 @@ class ChangelogFixture
       changelog_name: 'fix-cycle-analytics-commits'
     )
     merges['ee'] = merge_branch_with_changelog_entry(
-      changelog_path: config.ee_path,
+      changelog_path: config.ee_paths[0],
       changelog_name: 'protect-branch-missing-param'
+    )
+    merges['ee-legacy'] = merge_branch_with_changelog_entry(
+      changelog_path: config.ee_paths[1],
+      changelog_name: 'refactor-application-controller'
     )
 
     cherry_pick_to_branch(branches['8-3-stable'],     sha: merges['bugfix'])
@@ -53,6 +57,7 @@ class ChangelogFixture
     cherry_pick_to_branch(branches['8-10-stable'],    sha: merges['bugfix'])
     cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['bugfix'])
     cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['ee'])
+    cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['ee-legacy'])
 
     repository.checkout('master')
   end
@@ -92,11 +97,14 @@ class ChangelogFixture
       content: '',
       message: "Add #{File.join(config.ce_path, '.gitkeep')}"
     )
-    commit_blob(
-      path: File.join(config.ee_path, '.gitkeep'),
-      content: '',
-      message: "Add #{File.join(config.ee_path, '.gitkeep')}"
-    )
+
+    config.ee_paths.each do |ee_path|
+      commit_blob(
+        path: File.join(ee_path, '.gitkeep'),
+        content: '',
+        message: "Add #{File.join(ee_path, '.gitkeep')}"
+      )
+    end
   end
 
   # "Release" a version by creating its stable branch off of `master`
