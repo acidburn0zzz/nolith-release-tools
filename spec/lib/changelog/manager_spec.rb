@@ -106,7 +106,8 @@ describe Changelog::Manager do
     end
 
     it 'removes only the changelog files picked into stable' do
-      ee_picked = File.join(config.ee_path, 'protect-branch-missing-param.yml')
+      ee_picked = File.join(config.ee_paths[0], 'protect-branch-missing-param.yml')
+      ee_picked_legacy = File.join(config.ee_paths[1], 'refactor-application-controller.yml')
       ce_picked = File.join(config.ce_path, 'fix-cycle-analytics-commits.yml')
       unpicked  = File.join(config.ce_path, 'group-specific-lfs.yml')
 
@@ -115,9 +116,11 @@ describe Changelog::Manager do
         expect(ce_master_commit).to have_deleted(ce_picked)
 
         expect(ee_master_commit).to have_deleted(ee_picked)
+        expect(ee_master_commit).to have_deleted(ee_picked_legacy)
         expect(repository).to have_blob(unpicked).for(ee_master_commit.oid)
 
         expect(ee_stable_commit).to have_deleted(ee_picked)
+        expect(ee_stable_commit).to have_deleted(ee_picked_legacy)
         expect(ee_stable_commit).not_to have_deleted(unpicked)
         expect(repository).not_to have_blob(unpicked).for(ee_stable_commit.oid)
       end

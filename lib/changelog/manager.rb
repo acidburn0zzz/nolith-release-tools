@@ -64,8 +64,8 @@ module Changelog
       Config.log(ee: version.ee?)
     end
 
-    def unreleased_path
-      Config.path(ee: version.ee?)
+    def unreleased_paths
+      Config.paths(ee: version.ee?)
     end
 
     def perform_release(branch_name)
@@ -139,7 +139,7 @@ module Changelog
       @unreleased_entries = []
 
       tree.walk(:preorder) do |root, entry|
-        next unless root == "#{unreleased_path}/"
+        next unless unreleased_paths.any? { |path| root.start_with?("#{path}/") }
         next unless entry[:name].end_with?(Config.extension)
 
         @unreleased_entries << Entry.new(
