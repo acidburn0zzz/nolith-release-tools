@@ -68,36 +68,4 @@ describe Slack::UpstreamMergeNotification do
       described_class.downstream_is_up_to_date
     end
   end
-
-  describe '#fire_hook' do
-    let(:text) { 'Hello!' }
-
-    context 'when channel is not given' do
-      it 'posts to the given url with the given arguments' do
-        expect_post(body: { text: text }.to_json).and_return(response(200))
-
-        described_class.fire_hook(text: text)
-      end
-
-      context 'when response is not successfull' do
-        it 'raises CouldNotPostError' do
-          expect_post(body: { text: text }.to_json).and_return(response(400))
-
-          expect { described_class.fire_hook(text: text) }
-            .to raise_error(described_class::CouldNotPostError)
-        end
-      end
-    end
-
-    context 'when channel is given' do
-      it 'passes the given channel' do
-        channel = '#ce-to-ee'
-
-        expect_post(body: { text: text, channel: channel }.to_json)
-          .and_return(response(200))
-
-        described_class.fire_hook(channel: channel, text: text)
-      end
-    end
-  end
 end
