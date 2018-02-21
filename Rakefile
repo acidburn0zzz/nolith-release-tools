@@ -28,15 +28,21 @@ task :release, [:version] do |_t, args|
   if skip?('ee')
     $stdout.puts 'Skipping release for EE'.colorize(:red)
   else
+    ee_version = version.to_ee
+
     $stdout.puts 'EE release'.colorize(:blue)
-    Release::GitlabEeRelease.new("#{version}-ee", security: security_release?).execute
+    Release::GitlabEeRelease.new(ee_version, security: security_release?).execute
+    Slack::TagNotification.release(ee_version) unless dry_run?
   end
 
   if skip?('ce')
     $stdout.puts 'Skipping release for CE'.colorize(:red)
   else
+    ce_version = version.to_ce
+
     $stdout.puts 'CE release'.colorize(:blue)
-    Release::GitlabCeRelease.new(version, security: security_release?).execute
+    Release::GitlabCeRelease.new(ce_version, security: security_release?).execute
+    Slack::TagNotification.release(ce_version) unless dry_run?
   end
 end
 
