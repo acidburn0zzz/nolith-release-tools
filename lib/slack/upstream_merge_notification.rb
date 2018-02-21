@@ -3,6 +3,10 @@ require_relative '../ci'
 
 module Slack
   class UpstreamMergeNotification < Webhook
+    def self.webhook_url
+      ENV['CI_SLACK_WEBHOOK_URL'] || super
+    end
+
     def self.new_merge_request(merge_request)
       conflict_message = merge_request_conflict_message(merge_request)
 
@@ -10,7 +14,7 @@ module Slack
         Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> #{conflict_message}
       MSG
 
-      new.fire_hook(text: text)
+      fire_hook(text: text)
     end
 
     def self.merge_request_conflict_message(merge_request)
@@ -30,7 +34,7 @@ module Slack
         Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from #{TimeUtil.time_ago(merge_request.created_at)} is still pending! :hourglass:
       MSG
 
-      new.fire_hook(text: text)
+      fire_hook(text: text)
     end
 
     def self.missing_merge_request
@@ -38,7 +42,7 @@ module Slack
         The latest upstream merge MR could not be created! Please have a look at <#{CI.current_job_url}>. :boom:
       MSG
 
-      new.fire_hook(text: text)
+      fire_hook(text: text)
     end
 
     def self.downstream_is_up_to_date
@@ -46,7 +50,7 @@ module Slack
         EE is already up-to-date with CE. No merge request was created. :tada:
       MSG
 
-      new.fire_hook(text: text)
+      fire_hook(text: text)
     end
   end
 end

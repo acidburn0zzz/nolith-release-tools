@@ -3,15 +3,11 @@ module Slack
     NoWebhookURLError = Class.new(StandardError)
     CouldNotPostError = Class.new(StandardError)
 
-    attr_reader :webhook_url
-
-    def initialize
-      @webhook_url = ENV['CI_SLACK_WEBHOOK_URL']
-
-      raise NoWebhookURLError unless webhook_url
+    def self.webhook_url
+      raise NoWebhookURLError
     end
 
-    def fire_hook(text:, channel: nil)
+    def self.fire_hook(text:, channel: nil)
       body = { text: text }
       body[:channel] = channel if channel
 

@@ -69,14 +69,14 @@ describe Slack::UpstreamMergeNotification do
       end
 
       it 'posts to the given url with the given arguments' do
-        subject.fire_hook(text: text)
+        described_class.fire_hook(text: text)
       end
 
       context 'when response is not successfull' do
         let(:response) { response_class.new(400) }
 
         it 'raises CouldNotPostError' do
-          expect { subject.fire_hook(text: text) }
+          expect { described_class.fire_hook(text: text) }
             .to raise_error(described_class::CouldNotPostError)
         end
       end
@@ -89,7 +89,7 @@ describe Slack::UpstreamMergeNotification do
         expect_post(body: { text: text, channel: channel }.to_json)
           .and_return(response)
 
-        subject.fire_hook(channel: channel, text: text)
+        described_class.fire_hook(channel: channel, text: text)
       end
     end
   end
