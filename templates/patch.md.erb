@@ -13,7 +13,6 @@
 - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
 - [ ] Make sure [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog] has an entry for each introduced change on [Omnibus CE stable branch]
 - [ ] Make sure [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog] has an entry for each introduced change on [Omnibus EE stable branch]
-- [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
       ```sh
