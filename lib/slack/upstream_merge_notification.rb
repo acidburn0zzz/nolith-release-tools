@@ -4,7 +4,7 @@ require_relative '../ci'
 module Slack
   class UpstreamMergeNotification < Webhook
     def self.webhook_url
-      ENV['CI_SLACK_WEBHOOK_URL'] || super
+      ENV['SLACK_UPSTREAM_MERGE_URL'] || super
     end
 
     def self.new_merge_request(merge_request)

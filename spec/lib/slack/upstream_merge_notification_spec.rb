@@ -15,7 +15,7 @@ describe Slack::UpstreamMergeNotification do
   end
 
   around do |ex|
-    ClimateControl.modify(CI_SLACK_WEBHOOK_URL: webhook_url, CI_JOB_ID: ci_job_id) do
+    ClimateControl.modify(SLACK_UPSTREAM_MERGE_URL: webhook_url, CI_JOB_ID: ci_job_id) do
       Timecop.freeze(Time.new(2018, 1, 4, 8, 30, 42)) do
         ex.run
       end
