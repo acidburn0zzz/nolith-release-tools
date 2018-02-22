@@ -41,8 +41,8 @@ describe Release::GitlabCeRelease, :silence_stdout do
 
   after do
     # Manually perform the cleanup we disabled in the `before` block
-    FileUtils.rm_r(repo_path,    secure: true) if File.exist?(repo_path)
-    FileUtils.rm_r(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
+    FileUtils.rm_rf(repo_path,    secure: true) if File.exist?(repo_path)
+    FileUtils.rm_rf(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
   end
 
   def execute(version, branch)

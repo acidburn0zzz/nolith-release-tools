@@ -4,7 +4,7 @@ ENV['TEST'] = 'true'
 # SimpleCov needs to be loaded before everything else
 require_relative 'support/simplecov'
 
-require_relative('../init.rb')
+require_relative '../init'
 require 'active_support/core_ext/string/strip'
 require 'active_support/core_ext/object/inclusion'
 require 'rspec-parameterized'

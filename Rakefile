@@ -28,15 +28,21 @@ task :release, [:version] do |_t, args|
   if skip?('ee')
     $stdout.puts 'Skipping release for EE'.colorize(:red)
   else
+    ee_version = version.to_ee
+
     $stdout.puts 'EE release'.colorize(:blue)
-    Release::GitlabEeRelease.new("#{version}-ee", security: security_release?).execute
+    Release::GitlabEeRelease.new(ee_version, security: security_release?).execute
+    Slack::TagNotification.release(ee_version) unless dry_run?
   end
 
   if skip?('ce')
     $stdout.puts 'Skipping release for CE'.colorize(:red)
   else
+    ce_version = version.to_ce
+
     $stdout.puts 'CE release'.colorize(:blue)
-    Release::GitlabCeRelease.new(version, security: security_release?).execute
+    Release::GitlabCeRelease.new(ce_version, security: security_release?).execute
+    Slack::TagNotification.release(ce_version) unless dry_run?
   end
 end
 
@@ -127,12 +133,12 @@ task :upstream_merge do
         --> Merge request "#{upstream_mr.title}" created.
             #{upstream_mr.url}
       SUCCESS_MESSAGE
-      SlackWebhook.new_merge_request(upstream_mr) unless dry_run?
+      Slack::UpstreamMergeNotification.new_merge_request(upstream_mr) unless dry_run?
     else
       $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
         --> Merge request "#{upstream_mr.title}" not created.
       SUCCESS_MESSAGE
-      SlackWebhook.missing_merge_request unless dry_run?
+      Slack::UpstreamMergeNotification.missing_merge_request unless dry_run?
     end
   elsif result.payload[:in_progress_mr]
     in_progress_mr = result.payload[:in_progress_mr]
@@ -140,11 +146,11 @@ task :upstream_merge do
     --> An upstream merge request already exists.
         #{in_progress_mr.url}
     ERROR_MESSAGE
-    SlackWebhook.existing_merge_request(in_progress_mr) unless dry_run?
+    Slack::UpstreamMergeNotification.existing_merge_request(in_progress_mr) unless dry_run?
   elsif result.payload[:already_up_to_date]
     $stdout.puts <<~ERROR_MESSAGE.colorize(:green)
     --> EE is already up-to-date with CE. No merge request was created.
     ERROR_MESSAGE
-    SlackWebhook.downstream_is_up_to_date unless dry_run?
+    Slack::UpstreamMergeNotification.downstream_is_up_to_date unless dry_run?
   end
 end

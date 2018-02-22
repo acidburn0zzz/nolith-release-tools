@@ -54,7 +54,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff LATEST_PATCH_TAG-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
-  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc %>`
   - [ ] Tag the `<%= version.to_rc %>` version using the [`release` task]:
 
         ```sh
@@ -153,7 +152,6 @@ cherry-picked into `<%= version.stable_branch %>`.
   - [ ] Sync master branches to `dev` and `github`, as the CHANGELOG will be automatically updated on master during tagging
   - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` and `github` (when applicable. Builds should fail if this is needed.)
   - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff v<%= version.to_rc %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
-  - [ ] In `#releases`: I'm going to tag `<%= version.to_rc(2) %>`
   - [ ] Tag the `<%= version.to_rc(2) %>` version using the [`release` task]:
 
         ```sh
@@ -222,7 +220,6 @@ cherry-picked into `<%= version.stable_branch %>`.
     - [ ] Ensure tests are green on [EE stable branch]
     - [ ] Ensure tests are green on [Omnibus CE stable branch]
     - [ ] Ensure tests are green on [Omnibus EE stable branch]
-    - [ ] In `#releases`: I'm going to tag final RC release
     - [ ] Replace XX in the tasks below with the RC version number:
     - [ ] Tag the final RC version using the [`release` task],
         ```sh
@@ -303,7 +300,6 @@ This way we ensure the release does not introduce new regressions.
   - [ ] If at this time final release is not ready for tagging, notify the [CTO][Getting help]
 
 - Before 10:00 UTC:
-  - [ ] In `#releases`: I'm going to tag `<%= version.to_patch %>`
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
 
         ```sh
