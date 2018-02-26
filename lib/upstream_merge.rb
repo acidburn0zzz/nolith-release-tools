@@ -45,6 +45,7 @@ class UpstreamMerge
     if conflicts.present?
       repository.commit(conflicting_files, no_edit: true)
       add_ci_skip_to_merge_commit
+      add_last_modifier_to_conflicts(conflicts)
     end
 
     repository.push(origin, merge_branch)
@@ -61,7 +62,7 @@ class UpstreamMerge
       path = line.sub(CONFLICT_MARKER_REGEX, '').chomp
       # Store the file as key and conflict type as value, e.g.: { path: 'foo.rb', conflict_type: 'UU' }
       if line =~ CONFLICT_MARKER_REGEX
-        files << { user: last_modifier(path), path: path, conflict_type: $LAST_MATCH_INFO[:conflict_type] }
+        files << { path: path, conflict_type: $LAST_MATCH_INFO[:conflict_type] }
       end
     end
   end
@@ -72,6 +73,12 @@ class UpstreamMerge
 
   def latest_commit_message
     repository.log(latest: true, format: :message).chomp
+  end
+
+  def add_last_modifier_to_conflicts(conflicts)
+    conflicts.each do |conflict|
+      conflict[:user] = last_modifier(conflict[:path])
+    end
   end
 
   def last_modifier(file)
