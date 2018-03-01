@@ -20,8 +20,8 @@ process.
     ```
 
 1. Edit `.env` to add the API endpoint (you probably want
-   `https://gitlab.com/api/v4`) and your personal API access token (**Profile
-   Settings** > **Account**).
+   `https://gitlab.com/api/v4`) and your personal API access token [(**Profile
+   Settings** > **Access Tokens**)](https://gitlab.com/profile/personal_access_tokens).
 
 ## `monthly_issue[version]`
 
