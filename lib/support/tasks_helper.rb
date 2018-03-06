@@ -30,7 +30,12 @@ def no_mention?
 end
 
 def create_or_show_issuable(issuable, type)
-  if issuable.exists?
+  if dry_run?
+    $stdout.puts
+    $stdout.puts "# #{issuable.title}"
+    $stdout.puts
+    $stdout.puts issuable.description
+  elsif issuable.exists?
     $stdout.puts "--> #{type} \"#{issuable.title}\" already exists.".red
     $stdout.puts "    #{issuable.url}"
     exit 1
