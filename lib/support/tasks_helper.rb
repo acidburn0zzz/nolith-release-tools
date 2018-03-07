@@ -25,10 +25,6 @@ def security_release?
   ENV['SECURITY'] == 'true'
 end
 
-def no_mention?
-  ENV['NO_MENTION'].present?
-end
-
 def create_or_show_issuable(issuable, type)
   if dry_run?
     $stdout.puts
@@ -52,4 +48,9 @@ end
 
 def create_or_show_merge_request(merge_request)
   create_or_show_issuable(merge_request, "Merge Request")
+end
+
+def moved_to_bin_message(task_name)
+  $stdout.puts "This task has moved to " << "bin/#{task_name}".colorize(:red)
+  $stdout.puts "Run it with #{"--help".colorize(:red)} for details and usage."
 end

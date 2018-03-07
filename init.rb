@@ -8,6 +8,7 @@ require 'version'
 require 'project/gitlab_ce'
 require 'project/gitlab_ee'
 require 'project/omnibus_gitlab'
+require 'local_repository'
 require 'monthly_issue'
 require 'patch_issue'
 require 'branch'
@@ -22,3 +23,7 @@ require 'slack'
 require 'sync'
 require 'upstream_merge'
 require 'upstream_merge_request'
+
+unless ENV['CI'] || LocalRepository.ready?
+  abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
+end
