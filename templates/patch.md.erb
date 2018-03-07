@@ -1,7 +1,7 @@
 - [ ] Schedule the patch release by setting a **Due date**
 - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Cherry-pick changes into preparation MRs following their instructions
-- [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
+- [ ] Cherry-pick remaining merge requests labeled <%= PickIntoLabel.for(version) %> using this [Merged MRs list]
 - [ ] Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Where appropriate, ensure each has made it into both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Make sure the **Due date** is up-to-date
