@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/user"
+    uri: "https://gitlab.com/api/v4/user"
     body:
       encoding: US-ASCII
       string: ''

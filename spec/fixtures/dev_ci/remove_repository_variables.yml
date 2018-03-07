@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: "[GITLAB_DEV_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables"
+    uri: "https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/variables"
     body:
       encoding: UTF-8
       string: key=PACKAGECLOUD_REPO&value=super_secret_repo
@@ -43,7 +43,7 @@ http_interactions:
   recorded_at: Tue, 31 Jan 2017 01:56:38 GMT
 - request:
     method: delete
-    uri: "[GITLAB_DEV_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
+    uri: "https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
     body:
       encoding: US-ASCII
       string: ''
@@ -84,7 +84,7 @@ http_interactions:
   recorded_at: Tue, 31 Jan 2017 01:56:38 GMT
 - request:
     method: get
-    uri: "[GITLAB_DEV_API_ENDPOINT]/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
+    uri: "https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/variables/PACKAGECLOUD_REPO"
     body:
       encoding: US-ASCII
       string: ''
