@@ -23,6 +23,24 @@ process.
    `https://gitlab.com/api/v4`) and your personal API access token [(**Profile
    Settings** > **Access Tokens**)](https://gitlab.com/profile/personal_access_tokens).
 
+   1. If you don't have one, we recommend you to create a new access token for the Release Manager process, both in gitlab.com and in dev.gitlab.com
+        ```
+        Name: Release Manager Token
+        Expires at: after the release on which you are RM
+        Scopes: [x] api
+        ```
+
+   1. Update `.env` file with both gitlab.com and dev.gitlab.com tokens:
+       ```
+        # GitLab.com
+        GITLAB_API_ENDPOINT="https://gitlab.example.com/api/v4"
+        GITLAB_API_PRIVATE_TOKEN=YOUR_TOKEN
+
+        # dev.gitlab.org
+        GITLAB_DEV_API_ENDPOINT="https://dev.gitlab.example.com/api/v4"
+        GITLAB_DEV_API_PRIVATE_TOKEN=YOUR_TOKEN
+       ```
+
 ## `monthly_issue[version]`
 
 This task will either return the URL of a monthly release issue if one already
