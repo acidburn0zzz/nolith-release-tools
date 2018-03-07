@@ -172,7 +172,7 @@ class GitlabClient
 
   def self.client
     @client ||= Gitlab.client(
-      endpoint: ENV.fetch('GITLAB_API_ENDPOINT', DEFAULT_GITLAB_API_ENDPOINT),
+      endpoint: DEFAULT_GITLAB_API_ENDPOINT,
       private_token: ENV['GITLAB_API_PRIVATE_TOKEN']
     )
   end

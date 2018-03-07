@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -31,9 +31,9 @@ http_interactions:
       Etag:
       - W/"e53d5dc58dffcc4de01f99a4f35117d0"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
-        rel="next", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -263,7 +263,7 @@ http_interactions:
   recorded_at: Tue, 30 Jan 2018 21:06:01 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones"
+    uri: "https://gitlab.com/api/v4/groups/gitlab-org/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -292,8 +292,8 @@ http_interactions:
       Etag:
       - W/"bc8e22d1b62c024030fb6d841599c455"
       Link:
-      - <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
-        rel="first", <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -343,7 +343,7 @@ http_interactions:
   recorded_at: Tue, 30 Jan 2018 21:06:01 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -372,9 +372,9 @@ http_interactions:
       Etag:
       - W/"e53d5dc58dffcc4de01f99a4f35117d0"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
-        rel="next", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -604,7 +604,7 @@ http_interactions:
   recorded_at: Tue, 30 Jan 2018 21:14:07 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones"
+    uri: "https://gitlab.com/api/v4/groups/gitlab-org/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -633,8 +633,8 @@ http_interactions:
       Etag:
       - W/"bc8e22d1b62c024030fb6d841599c455"
       Link:
-      - <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
-        rel="first", <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -684,7 +684,7 @@ http_interactions:
   recorded_at: Tue, 30 Jan 2018 21:14:07 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?state=active"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?state=active"
     body:
       encoding: US-ASCII
       string: ''
@@ -713,8 +713,8 @@ http_interactions:
       Etag:
       - W/"c37527e4616d485fb97aad783e143162"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
         rel="last"
       Vary:
       - Origin
@@ -759,7 +759,7 @@ http_interactions:
   recorded_at: Mon, 30 Jan 2017 06:00:00 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?state=active"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?state=active"
     body:
       encoding: US-ASCII
       string: ''
@@ -788,8 +788,8 @@ http_interactions:
       Etag:
       - W/"c37527e4616d485fb97aad783e143162"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=active>;
         rel="last"
       Vary:
       - Origin

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/repository/branches"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/branches"
     body:
       encoding: UTF-8
       string: branch=9-4-stable-patch-1&ref=9-4-stable
