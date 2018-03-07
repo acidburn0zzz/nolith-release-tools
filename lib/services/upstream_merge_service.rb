@@ -11,10 +11,10 @@ module Services
 
     attr_reader :dry_run, :mention_people, :force
 
-    def initialize(dry_run: false, mention_people: false, force: false)
-      @dry_run = dry_run
-      @mention_people = mention_people
-      @force = force
+    def initialize(options = {})
+      @dry_run = options[:dry_run]
+      @mention_people = options[:mention_people]
+      @force = options[:force]
     end
 
     def perform
