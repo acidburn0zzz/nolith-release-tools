@@ -23,7 +23,7 @@ process.
    `https://gitlab.com/api/v4`) and your personal API access token [(**Profile
    Settings** > **Access Tokens**)](https://gitlab.com/profile/personal_access_tokens).
 
-   1. If you don't have one, we recommend you to create a new access token for the Release Manager process, both in gitlab.com and in dev.gitlab.com
+   1. If you don't have one, we recommend you to create a new access token for the Release Manager process, both in gitlab.com and in dev.gitlab.org
         ```
         Name: Release Manager Token
         Expires at: after the release on which you are RM
@@ -41,6 +41,12 @@ process.
         GITLAB_DEV_API_PRIVATE_TOKEN=YOUR_TOKEN
        ```
 
+1. Edit `.env` to add the Slack URL. The value should be in the Team vault in 'release-tools'
+    ```
+    # - Search 'release-tools' in the Team vault and copy the value
+    # - Update SLACK_TAG_URL with the value:
+    SLACK_TAG_URL="https://hooks.slack.com/services/foo/bar/baz"
+    ```
 ## `monthly_issue[version]`
 
 This task will either return the URL of a monthly release issue if one already
