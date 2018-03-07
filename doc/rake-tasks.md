@@ -139,7 +139,7 @@ This task **will NOT**:
 | ------          | -------                                                    |
 | `CE=false`      | Skip CE release                                            |
 | `EE=false`      | Skip EE release                                            |
-| `TEST=true`     | Don't push anything to remotes                             |
+| `TEST=true`     | Don't push anything to remotes; don't create issues        |
 | `SECURITY=true` | Treat this as a security release, using only `dev` remotes |
 
 ### Examples
@@ -159,6 +159,9 @@ TEST=true bundle exec rake "release[8.2.1]"
 
 # Pull & push to `dev` only:
 SECURITY=true bundle exec rake "release[8.2.1]"
+
+# Output an issue body rather than creating one:
+TEST=true bundle exec rake "patch_issue[8.2.1]"
 ```
 
 ## `security_release[version]`
