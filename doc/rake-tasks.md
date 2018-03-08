@@ -19,25 +19,22 @@ process.
     cp .env.example .env
     ```
 
-1. Edit `.env` to add the API endpoint (you probably want
-   `https://gitlab.com/api/v4`) and your personal API access token [(**Profile
+1. Edit `.env` to add your personal API access token [(**Profile
    Settings** > **Access Tokens**)](https://gitlab.com/profile/personal_access_tokens).
 
-   1. If you don't have one, we recommend you to create a new access token for the Release Manager process, both in gitlab.com and in dev.gitlab.org
+   1. We recommend you to create a new access token for the Release Manager process, both in gitlab.com and in dev.gitlab.org
         ```
         Name: Release Manager Token
-        Expires at: after the release on which you are RM
+        Expires at: one month after the release on which you are RM
         Scopes: [x] api
         ```
 
-   1. Update `.env` file with both gitlab.com and dev.gitlab.com tokens:
+   1. Add both access tokens to `.env`:
        ```
         # GitLab.com
-        GITLAB_API_ENDPOINT="https://gitlab.example.com/api/v4"
         GITLAB_API_PRIVATE_TOKEN=YOUR_TOKEN
 
         # dev.gitlab.org
-        GITLAB_DEV_API_ENDPOINT="https://dev.gitlab.example.com/api/v4"
         GITLAB_DEV_API_PRIVATE_TOKEN=YOUR_TOKEN
        ```
 
@@ -47,6 +44,7 @@ process.
     # - Update SLACK_TAG_URL with the value:
     SLACK_TAG_URL="https://hooks.slack.com/services/foo/bar/baz"
     ```
+
 ## `monthly_issue[version]`
 
 This task will either return the URL of a monthly release issue if one already
