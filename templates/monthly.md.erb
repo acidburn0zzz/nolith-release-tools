@@ -2,7 +2,7 @@
 
 Stable branch should be created after the 7th. The 7th is the last date to reliably get things in.
 
-- [ ] Create the <%= version.picking_label %> group label if it doesn't exist: https://gitlab.com/groups/gitlab-org/labels/new
+- [ ] Create the <%= PickIntoLabel.for(version) %> group label if it doesn't exist: https://gitlab.com/groups/gitlab-org/labels/new
   - Title: `Pick into <%= version.to_minor %>`
   - Description:
 
@@ -41,11 +41,11 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Create MR on EE master creating the "CE to EE" guides
   - [ ] Create MR on CE master updating the `.gitignore`, `.gitlab-ci.yml`, and `Dockerfile` templates
   - [ ] Create MR on CE master updating the dependencies license list
-  - [ ] Ensure above MRs are merged and marked <%= version.picking_label %>
+  - [ ] Ensure above MRs are merged and marked <%= PickIntoLabel.for(version) %>
 - Follow steps to create a release candidate
   - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
   - [ ] Cherry-pick changes into preparation MRs following their instructions
-  - [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
+  - [ ] Cherry-pick remaining merge requests labeled <%= PickIntoLabel.for(version) %> using this [Merged MRs list]
   - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
       - [ ] REFERENCE_TO_MR_TO_PICK
   - [ ] If you didn't merge CE into EE in the preparation branches, or if the CE stable branch had additional commits, merge CE `<%= version.stable_branch %>` into EE `<%= version.stable_branch(ee: true) %>` following the [Merging a CE stable branch into its EE counterpart] guide. (In general this should be unnecessary.)
@@ -142,7 +142,7 @@ cherry-picked into `<%= version.stable_branch %>`.
 
 - [ ] Create preparation MRs by following the [instructions in release-tools](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md).
 - [ ] Cherry-pick changes into preparation MRs following their instructions
-- [ ] Cherry-pick remaining merge requests labeled <%= version.picking_label %> using this [Merged MRs list]
+- [ ] Cherry-pick remaining merge requests labeled <%= PickIntoLabel.for(version) %> using this [Merged MRs list]
 - Check the following list of critical issues/MRs which are to be included in `<%= version.to_patch %>`. Ensure each has made both CE and EE
   - [ ] REFERENCE_TO_MR_TO_PICK
 - Follow the [Creating subsequent RCs] guide for `<%= version.to_rc(2) %>`:
