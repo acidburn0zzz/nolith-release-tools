@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/278964/users.json?page=0&per_page=100"
+    uri: "https://gitlab.com/api/v4/projects/278964/users.json?page=0&per_page=100"
     body:
       encoding: US-ASCII
       string: ''
@@ -31,9 +31,9 @@ http_interactions:
       Etag:
       - W/"a29d8bc83c18b9f6ee723e06168de592"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=2&per_page=100>;
-        rel="next", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
+      - <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=2&per_page=100>;
+        rel="next", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
+        rel="first", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
         rel="last"
       Vary:
       - Origin
@@ -559,7 +559,7 @@ http_interactions:
   recorded_at: Thu, 11 Jan 2018 14:50:33 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/278964/users.json?page=1&per_page=100"
+    uri: "https://gitlab.com/api/v4/projects/278964/users.json?page=1&per_page=100"
     body:
       encoding: US-ASCII
       string: ''
@@ -588,9 +588,9 @@ http_interactions:
       Etag:
       - W/"a29d8bc83c18b9f6ee723e06168de592"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=2&per_page=100>;
-        rel="next", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
+      - <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=2&per_page=100>;
+        rel="next", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
+        rel="first", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
         rel="last"
       Vary:
       - Origin
@@ -1116,7 +1116,7 @@ http_interactions:
   recorded_at: Thu, 11 Jan 2018 14:50:35 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/278964/users.json?page=2&per_page=100"
+    uri: "https://gitlab.com/api/v4/projects/278964/users.json?page=2&per_page=100"
     body:
       encoding: US-ASCII
       string: ''
@@ -1145,10 +1145,10 @@ http_interactions:
       Etag:
       - W/"faf2f6533a4ccdf72d0c29f6a9a08fd9"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
-        rel="prev", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
-        rel="next", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
+      - <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
+        rel="prev", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
+        rel="next", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
+        rel="first", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
         rel="last"
       Vary:
       - Origin
@@ -1674,7 +1674,7 @@ http_interactions:
   recorded_at: Thu, 11 Jan 2018 14:50:36 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/278964/users.json?page=3&per_page=100"
+    uri: "https://gitlab.com/api/v4/projects/278964/users.json?page=3&per_page=100"
     body:
       encoding: US-ASCII
       string: ''
@@ -1703,9 +1703,9 @@ http_interactions:
       Etag:
       - W/"9d7a58ab9e497a81655b2cb96dcc5ec1"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=2&per_page=100>;
-        rel="prev", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
+      - <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=2&per_page=100>;
+        rel="prev", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
+        rel="first", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
         rel="last"
       Vary:
       - Origin
@@ -1762,7 +1762,7 @@ http_interactions:
   recorded_at: Thu, 11 Jan 2018 14:50:37 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/278964/users.json?page=4&per_page=100"
+    uri: "https://gitlab.com/api/v4/projects/278964/users.json?page=4&per_page=100"
     body:
       encoding: US-ASCII
       string: ''
@@ -1791,8 +1791,8 @@ http_interactions:
       Etag:
       - W/"d751713988987e9331980363e24189ce"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
+      - <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=1&per_page=100>;
+        rel="first", <https://gitlab.com/api/v4/projects/278964/users.json?format=json&id=278964&page=3&per_page=100>;
         rel="last"
       Vary:
       - Origin

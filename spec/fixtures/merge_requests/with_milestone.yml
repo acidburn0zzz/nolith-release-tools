@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/gitlab"
+    uri: "https://gitlab.com/api/v4/gitlab"
     body:
       encoding: US-ASCII
       string: ''
@@ -47,7 +47,7 @@ http_interactions:
   recorded_at: Thu, 03 Aug 2017 21:26:42 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -76,9 +76,9 @@ http_interactions:
       Etag:
       - W/"a7ac59028d3f8a387665e28aff26d569"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
-        rel="next", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=3&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=3&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -311,7 +311,7 @@ http_interactions:
   recorded_at: Thu, 03 Aug 2017 21:26:43 GMT
 - request:
     method: post
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/merge_requests"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests"
     body:
       encoding: UTF-8
       string: title=WIP%3A%20Testing%20release-tools&description=&assignee_id=654619&labels=&source_branch=testing-release-tools&target_branch=master&milestone_id=272462
@@ -359,7 +359,7 @@ http_interactions:
   recorded_at: Thu, 03 Aug 2017 21:27:40 GMT
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones"
+    uri: "https://gitlab.com/api/v4/groups/gitlab-org/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -388,8 +388,8 @@ http_interactions:
       Etag:
       - W/"a3b0b813049e38739f51831f8dbc032a"
       Link:
-      - <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
-        rel="first", <[GITLAB_API_ENDPOINT]/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/groups/gitlab-org/milestones?id=gitlab-org&page=1&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin

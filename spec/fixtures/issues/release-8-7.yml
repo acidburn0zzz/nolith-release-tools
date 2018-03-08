@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/issues?labels=Release&milestone=8.7"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?labels=Release&milestone=8.7"
     body:
       encoding: US-ASCII
       string: ''
@@ -29,8 +29,8 @@ http_interactions:
       Etag:
       - W/"1550ebb318a05ba36a738b089067b7e5"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=8.7&page=1&per_page=20>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=8.7&page=1&per_page=20>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=8.7&page=1&per_page=20>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=8.7&page=1&per_page=20>;
         rel="last"
       Status:
       - 200 OK

@@ -2,6 +2,8 @@ require 'gitlab'
 
 # Public: Gitlab API operations with Dev instance
 class GitlabDevClient
+  DEFAULT_GITLAB_DEV_API_ENDPOINT = 'https://dev.gitlab.org/api/v4'.freeze
+
   # Hard-code IDs following the 'namespace/repo' pattern
   OMNIBUS_GITLAB = 'gitlab/omnibus-gitlab'.freeze
   REPO_VARIABLE = 'PACKAGECLOUD_REPO'.freeze
@@ -41,7 +43,10 @@ class GitlabDevClient
     #
     # Returns a Gitlab::Client instance
     def client
-      @client ||= Gitlab.client(endpoint: ENV['GITLAB_DEV_API_ENDPOINT'], private_token: ENV['GITLAB_DEV_API_PRIVATE_TOKEN'])
+      @client ||= Gitlab.client(
+        endpoint: DEFAULT_GITLAB_DEV_API_ENDPOINT,
+        private_token: ENV['GITLAB_DEV_API_PRIVATE_TOKEN']
+      )
     end
   end
 end

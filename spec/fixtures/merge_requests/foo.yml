@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ee/merge_requests?labels=Release&state=opened"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/merge_requests?labels=Release&state=opened"
     body:
       encoding: US-ASCII
       string: ''
@@ -29,8 +29,8 @@ http_interactions:
       Etag:
       - W/"d751713988987e9331980363e24189ce"
       Link:
-      - <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ee/merge_requests?id=gitlab-org%2Fgitlab-ee&labels=Release&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
-        rel="first", <[GITLAB_API_ENDPOINT]/projects/gitlab-org%2Fgitlab-ee/merge_requests?id=gitlab-org%2Fgitlab-ee&labels=Release&order_by=created_at&page=0&per_page=20&sort=desc&state=opened>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/merge_requests?id=gitlab-org%2Fgitlab-ee&labels=Release&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/merge_requests?id=gitlab-org%2Fgitlab-ee&labels=Release&order_by=created_at&page=0&per_page=20&sort=desc&state=opened>;
         rel="last"
       Vary:
       - Origin
