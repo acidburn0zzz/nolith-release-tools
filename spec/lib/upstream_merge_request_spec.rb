@@ -103,6 +103,8 @@ describe UpstreamMergeRequest do
 
           Try to resolve one file per commit, and then push (no force-push!) to the `ce-to-ee-123` branch.
 
+          [More detailed instructions](https://docs.gitlab.com/ee/development/automatic_ce_ee_merge.html#what-to-do-if-you-are-pinged-in-a-ce-upstream-merge-request-to-resolve-a-conflict)
+
           Thanks in advance! :heart:
 
           @rymai After you resolved the conflicts,
