@@ -5,9 +5,7 @@ Dotenv.load
 $LOAD_PATH.unshift(File.expand_path('./lib', __dir__))
 
 require 'version'
-require 'project/gitlab_ce'
-require 'project/gitlab_ee'
-require 'project/omnibus_gitlab'
+require 'project'
 require 'pick_into_label'
 require 'monthly_issue'
 require 'patch_issue'

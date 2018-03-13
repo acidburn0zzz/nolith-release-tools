@@ -8,6 +8,10 @@ module Project
       end
     end
 
+    def self.path
+      raise NotImplementedError
+    end
+
     def self.group
       'gitlab-org'
     end
