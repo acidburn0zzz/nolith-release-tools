@@ -58,6 +58,8 @@ class UpstreamMergeRequest < MergeRequest
       out.puts <<~DESCRIPTION.freeze
         Try to resolve one file per commit, and then push (no force-push!) to the `#{source_branch}` branch.
 
+        [More detailed instructions](https://docs.gitlab.com/ee/development/automatic_ce_ee_merge.html#what-to-do-if-you-are-pinged-in-a-ce-upstream-merge-request-to-resolve-a-conflict)
+
         Thanks in advance! :heart:
 
         #{responsible_gitlab_username} After you resolved the conflicts,
