@@ -1,0 +1,114 @@
+## Preparation
+
+- [ ] Create [preparation MRs] for this version and add the links below:
+    ```sh
+    # In the release-tools project:
+    bundle exec rake "patch_merge_request[<%= version %>]"
+    ```
+
+  * CE:
+  * EE:
+- [ ] Cherry-pick changes into preparation MRs following their instructions
+- [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
+- [ ] Merge the preparation branches
+- [ ] Cherry-pick [remaining merge requests] labeled <%= PickIntoLabel.for(version) %>
+- Check the following list of critical issues/MRs which are to be included in `<%= version %>`. Ensure each has made both CE and EE:
+  - [ ] REFERENCE_TO_MR_TO_PICK
+- [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
+
+[preparation MRs]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md
+[remaining merge requests]: https://gitlab.com/groups/gitlab-org/merge_requests?label_name%5B%5D=Pick+into+<%= version.to_minor %>&scope=all&sort=id_desc&state=merged
+[Creating subsequent RCs]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#creating-subsequent-rcs
+[Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
+[Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
+[Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+
+## Packaging
+
+  - [ ] Sync stable branches for CE, EE, and Omnibus to `dev`; CE and Omnibus to `github`
+  - [ ] Check for any problematic migrations in EE, and paste the diff in a snippet: `git diff v<%= version %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
+  - [ ] Tag the `<%= version %>` version using the [`release` task]:
+
+      ```sh
+      # In the release-tools project:
+      bundle exec rake "release[<%= version %>]"
+      ```
+- [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
+
+[`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
+
+## Deploy
+
+All deploys require confirmation from a production team member before
+proceeding. Use `!oncall prod` to find who's on call and ping someone.
+
+### staging.gitlab.com
+
+- [ ] Get confirmation from a production team member to deploy **staging**
+- [ ] On video call, [deploy][] [`<%= version %>`][package] to **staging.gitlab.com**
+
+      ```sh
+      # In the takeoff project:
+      bin/takeoff-deploy -e staging -v <%= version %>.ee.0
+      ```
+- [ ] Comment with the output of the migrations from the takeoff script in this issue
+- [ ] _TODO: Automate_ Announce with an `@product-team` mention in the `#product` Slack channel: @product-team `<%= version %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
+- [ ] _TODO: Automate_ Create a "QA Task" issue in the [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) repo
+- [ ] Wait for the QA Task deadline to pass
+
+### canary.gitlab.com
+
+- [ ] Get confirmation from a production team member to deploy **canary**
+- [ ] On video call, [deploy][] [`<%= version %>`][package] to **canary.gitlab.com**
+
+      ```sh
+      # In the takeoff project:
+      bin/takeoff-deploy -e canary -v <%= version %>.ee.0
+      ```
+- [ ] Wait for confirmation from [`@bjgopinath`](https://gitlab.com/bjgopinath) that testing succeeded on canary and the release can proceed
+
+### gitlab.com (production)
+
+- [ ] Get confirmation from a production team member to deploy **production**
+- [ ] If downtime is expected, publicly [announce the deploy] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel, 1 hour in advance
+
+      ```
+      !broadcast --start X:Y --end A:B "We will deploying GitLab EE <%= version %> starting at X:Y. GitLab will be unavailable for Z minutes.
+      For status updates, please follow https://twitter.com/GitLabStatus"
+      ```
+      ```
+      !tweet "We will be deploying GitLab EE <%= version %> starting at X:Y UTC, 15 mins of downtime expected"
+      ```
+- [ ] On video call, [deploy][] [`<%= version %>`][package] to GitLab.com
+
+      ```sh
+      # In the takeoff project:
+      bin/takeoff-deploy -e production -v <%= version %>.ee.0
+      ```
+- [ ] Tweet in the `#production` channel that the deploy has finished:
+  * `!tweet "GitLab EE <%= version %> has been deployed."`
+- [ ] Take notes of the time it took for the migrations to complete on the deploy to production:
+    ```sh
+    # In the takeoff project
+    bundle exec rake "follow_migrations[production]"
+    ```
+
+[deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
+[package]: https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_<%= version %>.ee.0_amd64.deb
+[announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
+
+## Release
+
+- [ ] From the [build pipeline], [manually publish public packages]
+- [ ] Verify that packages appear on `packages.gitlab.com`: [EE & CE](https://packages.gitlab.com/app/gitlab/unstable/search?q=<%= version %>)
+- [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
+- [ ] Post a [tweet about] the `<%= version %>` release in the `#releases` channel:
+
+    ```
+    !tweet "GitLab <%= version %> is available: https://packages.gitlab.com/gitlab/unstable
+    This is a release candidate, we'll release <%= version.to_minor %> on the 22nd of this month."
+    ```
+
+[build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
+[manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
+[tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
