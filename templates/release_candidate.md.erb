@@ -34,6 +34,12 @@
       bundle exec rake "release[<%= version %>]"
       ```
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
+- [ ] Warm up the packages on takeoff by running:
+
+      ```sh
+      # In the takeoff project:
+      bin/takeoff-deploy -v <%= version %>.ee.0 -w
+      ```
 
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 
