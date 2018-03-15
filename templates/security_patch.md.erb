@@ -21,6 +21,11 @@
       SECURITY=true bundle exec rake "release[<%= version.to_patch %>]"
       ```
 - [ ] Check that [EE packages are built], [CE packages are built] and appears on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
+- [ ] Warm up the packages on takeoff by running:
+      ```sh
+      # In the takeoff project:
+      bin/takeoff-deploy -v <%= version.to_patch %>.ee.0 -w
+      ```
 - [ ] Get confirmation from a production team member to deploy staging. Use `!oncall prod` if needed to find who's on call.
 - [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
       ```sh
