@@ -58,8 +58,11 @@ proceeding. Use `!oncall prod` to find who's on call and ping someone.
       bin/takeoff-deploy -e staging -v <%= version %>.ee.0
       ```
 - [ ] Comment with the output of the migrations from the takeoff script in this issue
-- [ ] _TODO: Automate_ Announce with an `@product-team` mention in the `#product` Slack channel: @product-team `<%= version %>` has been deployed to staging. Blog post draft: MERGE_REQUEST_URL
-- [ ] _TODO: Automate_ Create a "QA Task" issue in the [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) repo
+
+#### QA
+
+- [ ] Announce with an `@product-team` mention in the `#product` Slack channel: ``@product-team `<%= version %>` has been deployed to staging.``
+- [ ] Create a "QA Task" issue in the [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) repo
 - [ ] Wait for the QA Task deadline to pass
 
 ### canary.gitlab.com
