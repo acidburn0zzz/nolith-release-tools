@@ -20,7 +20,7 @@ describe MonthlyIssue do
 
       content = issue.description
 
-      expect(content).to include('GitLab 8.3.0-rc2 is available:')
+      expect(content).to include('GitLab 8.3.0-rc1 is available:')
     end
 
     it "includes stable branch names" do
