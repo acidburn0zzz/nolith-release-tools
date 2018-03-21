@@ -1,3 +1,12 @@
+require 'date'
+
+require 'active_support'
+require 'active_support/inflector'
+require 'active_support/core_ext/date'
+require 'active_support/core_ext/date_time'
+require 'active_support/core_ext/integer'
+require 'active_support/core_ext/numeric'
+
 module Release
   # Get the Date of the next release
   #

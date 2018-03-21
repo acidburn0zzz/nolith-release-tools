@@ -1,13 +1,3 @@
-require 'date'
-
-require 'active_support'
-require 'active_support/inflector'
-require 'active_support/core_ext/date'
-require 'active_support/core_ext/date_time'
-require 'active_support/core_ext/integer'
-require 'active_support/core_ext/numeric'
-require 'weekdays'
-
 require_relative 'issue'
 require_relative 'release'
 
@@ -22,13 +12,6 @@ class MonthlyIssue < Issue
 
   def labels
     'Release'
-  end
-
-  def ordinal_date(weekdays_before_release)
-    weekdays_before_release
-      .weekdays_ago(release_date)
-      .day
-      .ordinalize
   end
 
   protected
