@@ -63,13 +63,4 @@ describe MonthlyIssue do
       expect(issue.labels).to eq 'Release'
     end
   end
-
-  describe '#ordinal_date' do
-    it "returns an ordinal date string" do
-      time = Time.new(2017, 7, 18)
-      issue = described_class.new(version: double, release_date: time)
-
-      expect(issue.ordinal_date(5)).to eq '11th'
-    end
-  end
 end

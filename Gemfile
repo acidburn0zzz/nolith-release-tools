@@ -1,4 +1,4 @@
-# A sample Gemfile
+# rubocop:disable Layout/ExtraSpacing
 source "https://rubygems.org"
 
 gem 'activesupport', '~> 4.2.0'
@@ -6,10 +6,9 @@ gem 'colorize'
 gem 'dotenv',        '~> 2.2.0'
 gem 'gitlab',        '~> 4.2.0'
 gem 'httparty',      '~> 0.15.6'
+gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.git'
 gem 'rake'
 gem 'rugged',        '~> 0.26.0'
-gem 'weekdays',      '~> 1.0.0'
-gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.git'
 
 group :development, :test do
   gem 'byebug'
