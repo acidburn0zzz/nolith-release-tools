@@ -36,8 +36,6 @@ describe Changelog::MarkdownGenerator do
       version = Version.new('1.2.3')
       generator = described_class.new(version, entries)
 
-      Timecop.freeze(Time.local(2017, 12, 31))
-
       expected = <<-EOF.strip_heredoc
         ## 1.2.3 (2017-12-31)
 
@@ -56,26 +54,28 @@ describe Changelog::MarkdownGenerator do
 
       EOF
 
-      expect(generator.to_s).to eq(expected)
+      Timecop.freeze(Time.local(2017, 12, 31)) do
+        expect(generator.to_s).to eq(expected)
+      end
     end
 
     describe 'includes the date in the version header' do
-      it 'uses `Release.next_date` for monthly releases' do
+      it 'uses the 22nd for monthly releases' do
         version = Version.new('9.2.0')
         generator = described_class.new(version, [])
 
-        Timecop.freeze(Time.local(1983, 7, 18))
-
-        expect(generator.to_s).to match(/\(1983-07-22\)$/)
+        Timecop.freeze(Time.local(1983, 7, 18)) do
+          expect(generator.to_s).to match(/\(1983-07-22\)$/)
+        end
       end
 
       it 'uses the current date for all other releases' do
         version = Version.new('1.2.3-ee')
         generator = described_class.new(version, [])
 
-        Timecop.freeze(Time.local(1983, 7, 2))
-
-        expect(generator.to_s).to match(/\(1983-07-02\)$/)
+        Timecop.freeze(Time.local(1983, 7, 2)) do
+          expect(generator.to_s).to match(/\(1983-07-02\)$/)
+        end
       end
     end
 
