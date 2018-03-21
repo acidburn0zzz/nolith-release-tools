@@ -15,20 +15,13 @@ describe MonthlyIssue do
   end
 
   describe '#description' do
-    it "includes the RC version" do
-      issue = described_class.new(version: Version.new('8.3.0'))
-
-      content = issue.description
-
-      expect(content).to include('GitLab 8.3.0-rc1 is available:')
-    end
-
     it "includes stable branch names" do
       issue = described_class.new(version: Version.new('8.3.0-rc1'))
 
       content = issue.description
 
-      expect(content).to include('merge CE `8-3-stable` into EE `8-3-stable-ee`')
+      expect(content).to include('`8-3-stable`')
+      expect(content).to include('`8-3-stable-ee`')
     end
 
     it "includes the version number" do
@@ -49,10 +42,7 @@ describe MonthlyIssue do
 
       content = issue.description
 
-      aggregate_failures do
-        expect(content).to include('https://packages.gitlab.com/gitlab/unstable/packages/ubuntu/xenial/gitlab-ee_8.3.0-rc1.ee.0_amd64.deb')
-        expect(content).to include('https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_8.3.0-ee.0_amd64.deb')
-      end
+      expect(content).to include('https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_8.3.0-ee.0_amd64.deb')
     end
   end
 
