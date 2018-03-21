@@ -8,7 +8,9 @@ class Issuable < OpenStruct
   end
 
   def description
-    ERB.new(template).result(binding)
+    ERB
+      .new(template, nil, '-') # Omit blank lines when using `<% -%>`
+      .result(binding)
   end
 
   def project
