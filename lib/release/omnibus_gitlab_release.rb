@@ -23,24 +23,6 @@ module Release
       super
     end
 
-    def repo_variable
-      return @repo_variable if defined?(@repo_variable)
-
-      @repo_variable = GitlabDevClient.fetch_repo_variable
-    end
-
-    def release_in_progress?(repo_variable)
-      return false unless repo_variable
-
-      time_limit = repo_variable_time(repo_variable) + SECURITY_REPO_GRACE_PERIOD
-
-      Time.now.utc > time_limit
-    end
-
-    def repo_variable_time(repo_variable)
-      Time.parse(repo_variable.split('-').last)
-    end
-
     def remotes
       Project::OmnibusGitlab.remotes(dev_only: options[:security])
     end
