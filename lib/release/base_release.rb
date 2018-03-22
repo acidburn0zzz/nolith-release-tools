@@ -5,7 +5,6 @@ require_relative '../changelog'
 require_relative '../release'
 require_relative '../remote_repository'
 require_relative '../version'
-require_relative '../gitlab_dev_client'
 
 module Release
   class BaseRelease
