@@ -8,61 +8,11 @@ module Release
     class VersionFileDoesNotExistError < StandardError; end
     class TemplateFileDoesNotExistError < StandardError; end
     class VersionStringNotFoundError < StandardError; end
-    class SecurityReleaseInProgressError < StandardError; end
 
     # Number of minutes we will be able to reuse the same security repository.
     SECURITY_REPO_GRACE_PERIOD = 24 * 60 * 60
 
-    def promote_security_release
-      $stdout.puts 'Promoting security release to public...'.colorize(:green)
-
-      if repo_variable
-        packagecloud.promote_packages(repo_variable)
-        $stdout.puts 'Finished package promotion!'.colorize(:green)
-
-        GitlabDevClient.remove_repo_variable
-        $stdout.puts 'Removed CI Variable for Security Releases'.colorize(:green)
-      else
-        $stdout.puts 'There are no releases pending promotion'.colorize(:red)
-      end
-    end
-
     private
-
-    def prepare_security_release
-      $stdout.puts 'Prepare security release...'.colorize(:green)
-
-      # Prevent different security releases from running at the same time
-      if release_in_progress?(repo_variable)
-        raise SecurityReleaseInProgressError, "Existing security release defined in CI: #{repo_variable} (cannot start new one: #{security_repository})."
-      end
-
-      # Use the existing security repository if we have one set
-      repository = repo_variable || security_repository
-
-      # Create packagecloud repositories or re-use existing ones
-      if packagecloud.create_secret_repository(repository)
-        $stdout.puts "Created repository in packagecloud: #{repository}".colorize(:green)
-      else
-        $stdout.puts "Using existing packagecloud repository: #{repository}".colorize(:green)
-      end
-
-      # Define CI variable with current security_repository name
-      if repo_variable
-        $stdout.puts "Repository name already defined in CI: #{repo_variable}".colorize(:green)
-      else
-        GitlabDevClient.create_repo_variable(security_repository)
-        $stdout.puts "Defined repository name in CI as: #{security_repository}".colorize(:green)
-      end
-    end
-
-    def before_execute_hook
-      if security_release? && (version.major < 9 || version.major == 9 && version.minor < 2)
-        prepare_security_release
-      end
-
-      super
-    end
 
     def after_release
       bump_container_versions(stable_branch)
@@ -79,10 +29,6 @@ module Release
       @repo_variable = GitlabDevClient.fetch_repo_variable
     end
 
-    def security_repository
-      @security_repository ||= "security-#{Time.now.utc.strftime('%Y%m%dT%H%MZ')}"
-    end
-
     def release_in_progress?(repo_variable)
       return false unless repo_variable
 
@@ -93,10 +39,6 @@ module Release
 
     def repo_variable_time(repo_variable)
       Time.parse(repo_variable.split('-').last)
-    end
-
-    def packagecloud
-      @packagecloud ||= PackagecloudClient.new
     end
 
     def remotes
