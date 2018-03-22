@@ -6,7 +6,6 @@ gem 'colorize'
 gem 'dotenv',        '~> 2.2.0'
 gem 'gitlab',        '~> 4.2.0'
 gem 'httparty',      '~> 0.15.6'
-gem 'packagecloud-ruby', git: 'https://gitlab.com/gitlab-org/packagecloud-ruby.git'
 gem 'rake'
 gem 'rugged',        '~> 0.26.0'
 
