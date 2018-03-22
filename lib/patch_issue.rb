@@ -7,7 +7,7 @@ class PatchIssue < Issue
   end
 
   def title
-    "Release #{version}"
+    "Release #{version.to_ce}"
   end
 
   def labels
