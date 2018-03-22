@@ -1,3 +1,5 @@
+require 'gitlab'
+
 require_relative 'project/gitlab_ce'
 require_relative 'project/gitlab_ee'
 

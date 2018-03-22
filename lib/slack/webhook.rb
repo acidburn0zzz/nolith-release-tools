@@ -1,3 +1,5 @@
+require 'httparty'
+
 module Slack
   class Webhook
     NoWebhookURLError = Class.new(StandardError)
