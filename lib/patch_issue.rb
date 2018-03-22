@@ -15,13 +15,7 @@ class PatchIssue < Issue
   end
 
   def project
-    # TODO (rspeicher): Eventually we probably want everything in release/tasks
-    # But for now let's phase this in slowly
-    if version.rc?
-      ::Project::Release::Tasks
-    else
-      super
-    end
+    ::Project::Release::Tasks
   end
 
   protected
