@@ -38,7 +38,6 @@ def create_or_show_issuable(issuable, type)
   elsif issuable.exists?
     $stdout.puts "--> #{type} \"#{issuable.title}\" already exists.".red
     $stdout.puts "    #{issuable.url}"
-    exit 1
   else
     issuable.create
     $stdout.puts "--> #{type} \"#{issuable.title}\" created.".green
