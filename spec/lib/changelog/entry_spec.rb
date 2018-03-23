@@ -46,6 +46,12 @@ describe Changelog::Entry do
       expect { described_class.new('foo/bar', blob) }.not_to raise_error
     end
 
+    it 'handles a non-existent type' do
+      entry = entry('foo' => 'foo')
+
+      expect(entry.type).to eq('other')
+    end
+
     it 'handles an empty type' do
       entry = entry('type' => '')
 

@@ -65,7 +65,7 @@ module Changelog
     # Any type (including invalid ones) which are not included in the `TYPES` constant
     # we define as `other`.
     def parse_type(yaml)
-      type = yaml['type'].downcase
+      type = yaml['type']&.downcase
 
       TYPES.include?(type) ? type : 'other'
     end
