@@ -65,7 +65,7 @@
       !tweet "GitLab EE <%= version.to_patch %> has been deployed."
       ```
 - [ ] Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.
-- [ ] Create the `<%= version %>` version on https://version.gitlab.com
+- [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>)
 - [ ] Mark any applicable previous releases as vulnerable on https://version.gitlab.com.
 - [ ] Check any sensitive information from the confidential security issues, and redact them if needed
 - [ ] Create the blog post merge request

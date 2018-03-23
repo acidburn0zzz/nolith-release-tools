@@ -165,7 +165,7 @@ No new code can added to the release that was not included in the final RC.
   - [ ] From the [build pipeline], [manually publish public packages]
   - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
-  - [ ] Create the `<%= version.to_patch %>` version on https://version.gitlab.com
+  - [ ] Create the `<%= version.to_patch %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version.to_patch %>)
   - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release in the `#releases` channel
 
 [CE stable branch]: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
