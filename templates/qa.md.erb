@@ -1,0 +1,56 @@
+## README (Remove this section after completing it's tasks)
+
+This issue is automatically generated to include all Merge Requests since the previous 
+release for the purpose of a manual QA in the staging environment.
+
+It should be generated before moving on to staging.
+
+After `staging` deployment has been completed:
+
+- [ ] Check the list of QA items includes only those picked
+- [ ] Remove any issues or merge requests from the list that were excluded from this release
+- [ ] Remove the block surrounding the items in the (Chages tested section)[#changes-tested] 
+to ping all of the relevant owners.
+- [ ] Replace the DEADLINE placeholder with the QA deadline time in UTC
+ - 24 hours after staging deployment completed for the first RC
+ - 12 hours after staging deployment completed for subsequent RCs
+- Remove this section
+
+## Deadline
+
+QA testing on staging.gitlab.com should be completed by DEADLINE.
+After this deadline has passed, RMs will proceed with the production deployment.
+
+## Tasks
+
+General Quality info can be found at the [Quality Handbook](https://about.gitlab.com/handbook/quality/).
+
+You can use the [QA Checklist](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/qa-checklist.md)
+to ensure you've tested critical features.
+
+> For each PM, add a separate section. PMs should fill in the details of the
+tests they conducted and any issues they've created relating to testing e.g. bugs or regressions.
+
+### Changes tested
+
+Check off any features you've tested successfully.
+
+```
+
+<% resources.each do |resource| %>
+  <% labels = resource.labels.map { |label| "~\"#{label}\"" } %>
+  <%= " - [ ] [#{resource.title}](#{resource.web_url}) @#{resource.author.username} #{labels.join(' ')}" %>
+<% end %>
+
+```
+
+### Issues raised
+
+Take note of any issues you've created and check them off as they are resolved.
+
+- [ ] Found ISSUE_1
+- [ ] Opened ISSUE_2
+
+### Automated QA
+
+Link to the results of the Automated QA run in a snippet here

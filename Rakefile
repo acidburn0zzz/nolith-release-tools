@@ -112,6 +112,24 @@ task :security_patch_issue, [:version] do |_t, args|
   create_or_show_issue(issue)
 end
 
+desc "Create a QA issue"
+task :qa_issue, [:version] do |_t, args|
+  version = get_version(args)
+
+  issue = RcPatchQaIssue.new(version: version)
+
+  issue.description
+end
+
+desc "Create a QA issue for the first RC"
+task :first_rc_qa_issue, [:version] do |_t, args|
+  version = get_version(args)
+
+  issue = FirstRcQaIssue.new(version: version)
+
+  issue.description
+end
+
 desc "Create a CE upstream merge request on EE"
 task :upstream_merge do
   result = Services::UpstreamMergeService
