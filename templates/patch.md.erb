@@ -39,8 +39,9 @@
 
 ## Deploy
 
-All deploys require confirmation from a production team member before
-proceeding. Use `!oncall prod` to find who's on call and ping someone.
+Deploys to production require confirmation from a production team member before
+proceeding. Use `!oncall prod` to find who's on call and ping someone. Deploys to
+staging or canary can be done at will, just mention it in production channel.
 
 - [ ] Warm up the packages on takeoff by running:
 
@@ -51,7 +52,7 @@ proceeding. Use `!oncall prod` to find who's on call and ping someone.
 
 ### staging.gitlab.com
 
-- [ ] Get confirmation from a production team member to deploy **staging**
+- [ ] Notify #production channel about **staging** deploy
 - [ ] On video call, [deploy][] [`<%= version %>`][package] to **staging.gitlab.com**
 
     ```sh
@@ -68,7 +69,7 @@ proceeding. Use `!oncall prod` to find who's on call and ping someone.
 
 ### canary.gitlab.com
 
-- [ ] Get confirmation from a production team member to deploy **canary**
+- [ ] Notify #production channel about **canary** deploy
 - [ ] On video call, [deploy][] [`<%= version %>`][package] to **canary.gitlab.com**
 
     ```sh
