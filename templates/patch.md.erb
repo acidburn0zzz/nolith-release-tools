@@ -24,7 +24,7 @@
 ## Packaging
 
 - [ ] Sync stable branches for CE, EE, and Omnibus to `dev`; CE and Omnibus to `github`
-- [ ] Check for any problematic migrations in EE, and paste the diff in a snippet: `git diff v<%= version %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate` =>
+- [ ] Check for any problematic migrations in EE, and paste the diff in a snippet: `git diff -M v<%= version %>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate ee/db/migrate ee/db/post_migrate` =>
 - [ ] Tag the `<%= version %>` version using the [`release` task]:
 
     ```sh
