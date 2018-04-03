@@ -22,7 +22,7 @@ def skip?(repo)
 end
 
 def security_release?
-  ENV['SECURITY'] == 'true'
+  SharedStatus.security_release?
 end
 
 def no_mention?
