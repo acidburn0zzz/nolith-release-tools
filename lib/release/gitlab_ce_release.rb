@@ -7,7 +7,7 @@ module Release
     private
 
     def remotes
-      Project::GitlabCe.remotes(dev_only: options[:security])
+      Project::GitlabCe.remotes
     end
 
     def before_execute_hook

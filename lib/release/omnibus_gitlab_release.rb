@@ -24,7 +24,7 @@ module Release
     end
 
     def remotes
-      Project::OmnibusGitlab.remotes(dev_only: options[:security])
+      Project::OmnibusGitlab.remotes
     end
 
     def version_class
