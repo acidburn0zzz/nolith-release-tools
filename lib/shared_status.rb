@@ -6,7 +6,7 @@ module SharedStatus
   end
 
   def security_release?
-    ENV['SECURITY'] == 'true'
+    ENV['SECURITY'].present?
   end
 
   def user
