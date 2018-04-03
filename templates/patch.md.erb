@@ -80,23 +80,12 @@ staging or canary can be done at will, just mention it in production channel.
 ### gitlab.com (production)
 
 - [ ] Get confirmation from a production team member to deploy **production**
-- [ ] If downtime is expected, publicly [announce the deploy] on Twitter and with the GitLab.com deploy alert banner in the `#production` channel, 1 hour in advance
-
-    ```
-    !broadcast --start X:Y --end A:B "We will deploying GitLab EE <%= version %> starting at X:Y. GitLab will be unavailable for Z minutes.
-    For status updates, please follow https://twitter.com/GitLabStatus"
-    ```
-    ```
-    !tweet "We will be deploying GitLab EE <%= version %> starting at X:Y UTC, 15 mins of downtime expected"
-    ```
 - [ ] On video call, [deploy][] [`<%= version %>`][package] to GitLab.com
 
     ```sh
     # In the takeoff project:
     bin/takeoff-deploy -e production -v <%= version %>-ee.0
     ```
-- [ ] Tweet in the `#production` channel that the deploy has finished:
-  * `!tweet "GitLab EE <%= version %> has been deployed."`
 - [ ] Take notes of the time it took for the migrations to complete on the deploy to production:
 
     ```sh
