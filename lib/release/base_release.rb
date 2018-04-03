@@ -28,10 +28,6 @@ module Release
       after_release
     end
 
-    def security_release?
-      options[:security]
-    end
-
     private
 
     # Overridable
