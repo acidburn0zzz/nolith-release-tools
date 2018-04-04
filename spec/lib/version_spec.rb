@@ -282,10 +282,7 @@ describe Version do
         expect(version('1.23.4-rc1').to_omnibus).to eq '1.23.4+rc1.ce.0'
 
         expect(version('1.23.4-rc1').to_omnibus(ee: true)).to eq '1.23.4+rc1.ee.0'
-        expect(version('1.23.4-rc1').to_omnibus(for_rc: 1)).to eq '1.23.4+rc1.ce.0'
-        expect(version('1.23.4-rc1').to_omnibus(for_rc: 2)).to eq '1.23.4+rc2.ce.0'
-        expect(version('1.23.4').to_omnibus(for_rc: 1)).to eq '1.23.4+rc1.ce.0'
-        expect(version('1.23.4').to_omnibus(for_rc: 2)).to eq '1.23.4+rc2.ce.0'
+        expect(version('1.23.4-rc1').to_omnibus).to eq '1.23.4+rc1.ce.0'
       end
     end
 
