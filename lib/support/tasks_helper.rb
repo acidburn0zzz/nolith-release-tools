@@ -21,10 +21,6 @@ def skip?(repo)
   ENV[repo.upcase] == 'false'
 end
 
-def security_release?
-  ENV['SECURITY'] == 'true'
-end
-
 def no_mention?
   ENV['NO_MENTION'].present?
 end

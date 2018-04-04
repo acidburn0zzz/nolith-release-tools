@@ -6,7 +6,7 @@ module Release
     private
 
     def remotes
-      Project::GitlabEe.remotes(dev_only: options[:security])
+      Project::GitlabEe.remotes
     end
   end
 end

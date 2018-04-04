@@ -1,7 +1,7 @@
 module Project
   class BaseProject
-    def self.remotes(dev_only: false)
-      if dev_only
+    def self.remotes
+      if SharedStatus.security_release?
         self::REMOTES.slice(:dev)
       else
         self::REMOTES

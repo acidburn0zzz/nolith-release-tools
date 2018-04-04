@@ -20,7 +20,7 @@ desc "Create release"
 task :release, [:version] do |_t, args|
   version = get_version(args)
 
-  if security_release?
+  if SharedStatus.security_release?
     $stdout.puts "Security Release - using dev.gitlab.org only!".colorize(:red)
     $stdout.puts
   end
@@ -31,7 +31,7 @@ task :release, [:version] do |_t, args|
     ee_version = version.to_ee
 
     $stdout.puts 'EE release'.colorize(:blue)
-    Release::GitlabEeRelease.new(ee_version, security: security_release?).execute
+    Release::GitlabEeRelease.new(ee_version).execute
     Slack::TagNotification.release(ee_version) unless dry_run?
   end
 
@@ -41,7 +41,7 @@ task :release, [:version] do |_t, args|
     ce_version = version.to_ce
 
     $stdout.puts 'CE release'.colorize(:blue)
-    Release::GitlabCeRelease.new(ce_version, security: security_release?).execute
+    Release::GitlabCeRelease.new(ce_version).execute
     Slack::TagNotification.release(ce_version) unless dry_run?
   end
 end

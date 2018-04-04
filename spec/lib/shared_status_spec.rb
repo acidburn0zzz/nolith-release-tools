@@ -16,4 +16,18 @@ describe SharedStatus do
       end
     end
   end
+
+  describe '.security_release?' do
+    it 'returns true when set' do
+      ClimateControl.modify(SECURITY: 'true') do
+        expect(described_class.security_release?).to eq(true)
+      end
+    end
+
+    it 'returns false when unset' do
+      ClimateControl.modify(SECURITY: nil) do
+        expect(described_class.security_release?).to eq(false)
+      end
+    end
+  end
 end
