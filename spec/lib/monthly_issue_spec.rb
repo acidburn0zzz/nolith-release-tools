@@ -31,14 +31,6 @@ describe MonthlyIssue do
 
       expect(content).to include("Tag the `8.3.0` version")
     end
-
-    it "includes links to specific packages" do
-      issue = described_class.new(version: Version.new('8.3.0'))
-
-      content = issue.description
-
-      expect(content).to include('https://packages.gitlab.com/gitlab/pre-release/packages/ubuntu/xenial/gitlab-ee_8.3.0-ee.0_amd64.deb')
-    end
   end
 
   describe '#labels' do

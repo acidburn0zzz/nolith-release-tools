@@ -27,7 +27,7 @@
       bin/takeoff-deploy -v <%= version.to_patch %>-ee.0 -w
       ```
 - [ ] Notify #production channel about staging deploy.
-- [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [staging.gitlab.com]
+- [ ] On video call, deploy `<%= version %>` to [staging.gitlab.com]
       ```sh
       # In the takeoff project:
       bin/takeoff-deploy -e staging -v <%= version.to_patch %>-ee.0
@@ -36,13 +36,13 @@
 - [ ] Create a "QA Task" issue in the [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) repo.
 - [ ] Wait for the QA Task deadline to pass.
 - [ ] Notify #production channel about canary deploy.
-- [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [canary.gitlab.com]
+- [ ] On video call, deploy `<%= version %>` to [canary.gitlab.com]
       ```sh
       # In the takeoff project:
       bin/takeoff-deploy -e canary -v <%= version.to_patch %>-ee.0
       ```
 - [ ] Get confirmation from a production team member to deploy production. Use `!oncall prod` if needed to find who's on call.
-- [ ] On video call, deploy [`<%= version %>`](https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/xenial/gitlab-ee_<%= version %>-ee.0_amd64.deb) to [GitLab.com]
+- [ ] On video call, deploy `<%= version %>` to [GitLab.com]
       ```sh
       # In the takeoff project:
       bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0
