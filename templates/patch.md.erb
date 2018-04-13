@@ -32,7 +32,10 @@
     bundle exec rake "release[<%= version %>]"
     ```
 - [ ] While waiting for packages to build, now is a good time to [prepare the blog post]. Look at previous MRs for examples. => BLOG_POST_MR
-- [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
+- [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>).
+    - This might take a while (around 80 min).
+    - We only need the EE packages to finish to continue with next steps.
+  
 
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 [prepare the blog post]: https://about.gitlab.com/handbook/marketing/blog/release-posts/#release-posts

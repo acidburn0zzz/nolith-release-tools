@@ -34,12 +34,8 @@
     bundle exec rake "release[<%= version %>]"
     ```
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
-- [ ] Warm up the packages on takeoff by running:
-
-    ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -v <%= version %>.ee.0 -w
-    ```
+    - This might take a while (around 80 min).
+    - We only need the EE packages to finish to continue with next steps.
 
 [`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
 
@@ -49,6 +45,13 @@ Deploys to production require confirmation from a production team member before
 proceeding. Use `!oncall prod` in the `#production` channel to find who's on
 call and ping someone. Deploys to staging or canary can be done at will, just
 mention it in the `#production` channel.
+
+- [ ] Warm up the packages on takeoff by running:
+
+    ```sh
+    # In the takeoff project:
+    bin/takeoff-deploy -v <%= version %>.ee.0 -w
+    ```
 
 ### staging.gitlab.com
 
