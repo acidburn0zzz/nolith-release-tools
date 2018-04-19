@@ -89,12 +89,6 @@
     # In the takeoff project:
     bin/takeoff-deploy -e production -v <%= version %>-ee.0
     ```
-- [ ] Take notes of the time it took for the migrations to complete on the deploy to production:
-
-    ```sh
-    # In the takeoff project
-    bundle exec rake "follow_migrations[production]"
-    ```
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
