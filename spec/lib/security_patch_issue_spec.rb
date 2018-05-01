@@ -41,7 +41,7 @@ describe SecurityPatchIssue do
 
       content = issue.description
 
-      expect(content).to include 'While waiting for tests to be green, now is a good time to start on [the blog post], **in a private snippet**'
+      expect(content).to include 'Ping the Security Engineers so they can get started with the blog post. The blog post should also be done on https://dev.gitlab.org/ in a **private snippet'
     end
 
     it 'includes a step to perform a security release' do
