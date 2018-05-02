@@ -148,7 +148,8 @@ class GitlabClient
   def self.find_issue(issue, project = Project::GitlabCe)
     opts = {
       labels: issue.labels,
-      milestone: issue.version.milestone_name
+      milestone: issue.version.milestone_name,
+      search: issue.title
     }
 
     issues(project, opts).detect { |i| i.title == issue.title }
