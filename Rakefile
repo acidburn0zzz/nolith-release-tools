@@ -146,3 +146,10 @@ task :upstream_merge do
     Slack::UpstreamMergeNotification.downstream_is_up_to_date unless dry_run?
   end
 end
+
+namespace :release_managers do
+  desc "Sync Release Manager membership"
+  task :sync do
+    ReleaseManagers::Definitions.new.sync!
+  end
+end
