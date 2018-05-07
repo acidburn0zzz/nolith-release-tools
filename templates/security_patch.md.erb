@@ -85,8 +85,6 @@
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>)
 - [ ] Mark any applicable previous releases as vulnerable on https://version.gitlab.com.
 - [ ] Check any sensitive information from the confidential security issues, and redact them if needed
-- [ ] Create the blog post merge request
-- [ ] Deploy the blog post
 - [ ] Push `ce/<%= version.stable_branch %>` to all remotes
 - [ ] Push `ee/<%= version.stable_branch(ee: true) %>` to all remotes
 - [ ] Push `omnibus/<%= version.stable_branch %>` and `omnibus/<%= version.stable_branch(ee: true) %>` to all remotes
