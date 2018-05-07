@@ -182,6 +182,34 @@ bundle exec rake "security_patch_issue[8.3.1]"
     https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
+## `release_managers:sync`
+
+This task will read configuration data from [`config/release_managers.yml`] and
+sync the membership of the following groups:
+
+- [gitlab-org/release/managers] on production
+- [gitlab/release/managers] on dev
+
+Users in the configuration file but not in the groups will be added; users in
+the groups but not in the configuration file will be removed.
+
+[`config/release_managers.yml`]: ../config/release_managers.yml
+[gitlab-org/release/managers]: https://gitlab.com/gitlab-org/release/managers
+[gitlab/release/managers]: https://dev.gitlab.org/groups/gitlab/release/managers
+
+### Examples
+
+```sh
+bundle exec rake release_managers:sync
+
+--> Syncing dev
+    Adding jane-doe to gitlab/release/managers
+    Removing john-smith from gitlab/release/managers
+--> Syncing production
+    Adding jane-doe to gitlab-org/release/managers
+    Removing john-smith from gitlab-org/release/managers
+```
+
 ## `security_release[version]`
 
 This task does the same as the `release[version]` task but force the

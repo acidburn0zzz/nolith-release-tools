@@ -33,7 +33,7 @@ module ReleaseManagers
     end
 
     def sync_membership(usernames)
-      $stdout.puts "=> Syncing #{target}"
+      $stdout.puts "--> Syncing #{target}"
 
       existing = members.collect(&:username)
 
@@ -64,7 +64,7 @@ module ReleaseManagers
       user = get_user(username)
 
       begin
-        $stdout.puts "  Adding #{username} to #{group}"
+        $stdout.puts "    Adding #{username} to #{group}"
         client.add_group_member(encode(group), user.id, MASTER_ACCESS)
       rescue Gitlab::Error::Conflict => ex
         raise unless ex.message =~ /Member already exists/
@@ -74,7 +74,7 @@ module ReleaseManagers
     def remove_member(username)
       user = get_user(username)
 
-      $stdout.puts "  Removing #{username} from #{group}"
+      $stdout.puts "    Removing #{username} from #{group}"
       client.remove_group_member(encode(group), user.id)
     end
   end
