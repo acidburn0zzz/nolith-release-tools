@@ -70,7 +70,7 @@ This task will either return the URL of a patch issue if one already exists for
 
 An issue created with this Rake task has the following properties:
 
-- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
+- Its title is "Release X.Y.Z" (e.g., "Release 10.6.4")
 - Its description is the patch release issue template
 - It is assigned to the authenticated user
 - It is assigned to the release's milestone
@@ -79,10 +79,10 @@ An issue created with this Rake task has the following properties:
 ### Examples
 
 ```sh
-bundle exec rake "patch_issue[8.3.1]"
+bundle exec rake "patch_issue[10.6.4]"
 
 --> Issue "Release 8.3.1" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
+    https://gitlab.com/gitlab-org/release/tasks/issues/153
 ```
 
 ## `patch_merge_request[version]`
