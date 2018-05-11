@@ -29,14 +29,18 @@ class GitlabClient
 
     # The GitLab API gem doesn't support the group milestones API, so we fake it
     # by performing an HTTParty request to the endpoint
-    group_milestones = client.get("/groups/gitlab-org/milestones", options)
+    group_milestones = client.get("/groups/gitlab-org/milestones", query: options)
 
     project_milestones + group_milestones
   end
 
   def self.current_milestone
-    milestones(Project::GitlabCe, state: 'active')
-      .detect { |m| current_milestone?(m) } || MissingMilestone.new
+    current = milestones(Project::GitlabCe, state: 'active')
+      .select { |m| current_milestone?(m) }
+      .sort { |a, b| b.due_date <=> a.due_date }
+      .first
+
+    current || MissingMilestone.new
   end
 
   def self.milestone(project = Project::GitlabCe, title:)
