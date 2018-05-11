@@ -19,10 +19,10 @@ describe GitlabClient do
 
   describe '.current_milestone', vcr: { cassette_name: 'milestones/all' } do
     it 'detects the current milestone' do
-      Timecop.travel(Date.new(2018, 1, 30)) do
+      Timecop.travel(Date.new(2018, 5, 11)) do
         current = described_class.current_milestone
 
-        expect(current.title).to eq('10.5')
+        expect(current.title).to eq('10.8')
       end
     end
 

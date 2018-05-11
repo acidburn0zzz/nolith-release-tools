@@ -29,7 +29,7 @@ class GitlabClient
 
     # The GitLab API gem doesn't support the group milestones API, so we fake it
     # by performing an HTTParty request to the endpoint
-    group_milestones = client.get("/groups/gitlab-org/milestones", options)
+    group_milestones = client.get("/groups/gitlab-org/milestones", query: options)
 
     project_milestones + group_milestones
   end
