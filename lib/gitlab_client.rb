@@ -35,8 +35,12 @@ class GitlabClient
   end
 
   def self.current_milestone
-    milestones(Project::GitlabCe, state: 'active')
-      .detect { |m| current_milestone?(m) } || MissingMilestone.new
+    current = milestones(Project::GitlabCe, state: 'active')
+      .select { |m| current_milestone?(m) }
+      .sort { |a, b| b.due_date <=> a.due_date }
+      .first
+
+    current || MissingMilestone.new
   end
 
   def self.milestone(project = Project::GitlabCe, title:)

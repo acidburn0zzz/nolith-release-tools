@@ -22,7 +22,7 @@ describe GitlabClient do
       Timecop.travel(Date.new(2018, 5, 11)) do
         current = described_class.current_milestone
 
-        expect(current.title).to eq('10.8')
+        expect(current.title).to eq('11.0')
       end
     end
 
