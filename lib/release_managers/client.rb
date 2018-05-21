@@ -42,6 +42,12 @@ module ReleaseManagers
 
       to_add.each { |username| add_member(username) }
       to_remove.each { |username| remove_member(username) }
+    rescue Gitlab::Error::Unauthorized
+      $stderr.puts "Unauthorized on #{client.endpoint}"
+      exit 1
+    rescue Gitlab::Error::Forbidden
+      $stderr.puts "Insufficient permissions on #{client.endpoint}"
+      exit 1
     end
 
     private
