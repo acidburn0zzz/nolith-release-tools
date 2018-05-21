@@ -11,6 +11,10 @@ module ReleaseManagers
 
     def_delegator :@all, :each
 
+    def self.sync!
+      new.sync!
+    end
+
     def initialize(config_file = nil)
       @config_file = config_file ||
         File.expand_path('../../config/release_managers.yml', __dir__)

@@ -150,6 +150,6 @@ end
 namespace :release_managers do
   desc "Sync Release Manager membership"
   task :sync do
-    ReleaseManagers::Definitions.new.sync!
+    ReleaseManagers::Definitions.sync!
   end
 end
