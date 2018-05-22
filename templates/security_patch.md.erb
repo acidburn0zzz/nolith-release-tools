@@ -6,8 +6,7 @@
 
 ## Preparation
 
-- Picked into respective `stable` branches from the `dev/security` branch. [Merged MRs list]:
-  - [ ] REFERENCE_TO_MR_TO_PICK
+- Picked into respective `stable` branches from the `dev/security` branch. Use the <SECURITY_RELEASE_ISSUE> as a guideline of what MR's should be picked.
 - [ ] **Push `ce/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
 - [ ] **Push `ee/<%= version.stable_branch(ee: true) %>` to `dev` only: `git push dev <%= version.stable_branch(ee: true) %>`**
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>` 
@@ -108,8 +107,6 @@ For references:
 - https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-
-[Merged MRs list]: https://dev.gitlab.com/groups/gitlabhq/merge_requests?label_name%5B%5D=Pick+into+<%= version.to_minor %>&scope=all&sort=id_desc&state=merged
 
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
