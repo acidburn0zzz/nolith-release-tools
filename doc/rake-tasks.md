@@ -111,29 +111,6 @@ bundle exec rake 'patch_merge_request[10.4.20]'
 
 [patch merge request template]: ../../templates/preparation_merge_request.md.erb
 
-## `security_patch_issue[version]`
-
-This task will either return the URL of a patch issue if one already exists for
-`version`, or it will create a new one and return the URL.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
-- Its description is the security patch release issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-- It is confidential
-
-### Examples
-
-```sh
-bundle exec rake "security_patch_issue[8.3.1]"
-
---> Issue "Release 8.3.1" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
-```
-
 ## `release[version]`
 
 This task will:
@@ -182,6 +159,57 @@ SECURITY=true bundle exec rake "release[8.2.1]"
 TEST=true bundle exec rake "patch_issue[8.2.1]"
 ```
 
+## `security_patch_issue[version]`
+
+This task will either return the URL of a patch issue if one already exists for
+`version`, or it will create a new one and return the URL.
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
+- Its description is the security patch release issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "Release"
+- It is confidential
+
+### Examples
+
+```sh
+bundle exec rake "security_patch_issue[8.3.1]"
+
+--> Issue "Release 8.3.1" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
+```
+
+## `release_managers:sync`
+
+This task will read configuration data from [`config/release_managers.yml`] and
+sync the membership of the following groups:
+
+- [gitlab-org/release/managers] on production
+- [gitlab/release/managers] on dev
+
+Users in the configuration file but not in the groups will be added; users in
+the groups but not in the configuration file will be removed.
+
+[`config/release_managers.yml`]: ../config/release_managers.yml
+[gitlab-org/release/managers]: https://gitlab.com/gitlab-org/release/managers
+[gitlab/release/managers]: https://dev.gitlab.org/groups/gitlab/release/managers
+
+### Examples
+
+```sh
+bundle exec rake release_managers:sync
+
+--> Syncing dev
+    Adding jane-doe to gitlab/release/managers
+    Removing john-smith from gitlab/release/managers
+--> Syncing production
+    Adding jane-doe to gitlab-org/release/managers
+    Removing john-smith from gitlab-org/release/managers
+```
+
 ## `security_release[version]`
 
 This task does the same as the `release[version]` task but force the
@@ -201,6 +229,29 @@ EE=false bundle exec rake "security_release[8.2.4]"
 
 # Don't push branches or tags to remotes:
 TEST=true bundle exec rake "security_release[8.2.1]"
+```
+
+## `sync`
+
+This task ensures that the `master` branches for both CE and EE are in sync
+between all the remotes.
+
+If you manually [push to multiple remotes](push-to-multiple-remotes.md) during
+the release process, you can safely skip this task.
+
+### Configuration
+
+| Option      | Purpose                        |
+| ------      | -------                        |
+| `CE=false`  | Skip CE repository             |
+| `EE=false`  | Skip EE repository             |
+| `OG=false`  | Skip omnibus-gitlab repository |
+| `TEST=true` | Don't push anything to remotes |
+
+### Examples
+
+```bash
+bundle exec rake sync
 ```
 
 ## `upstream_merge`
@@ -232,29 +283,6 @@ TEST=true bundle exec rake upstream_merge
 
 # Create a branch and MR even if one is already in progress:
 FORCE=true bundle exec rake upstream_merge
-```
-
-## `sync`
-
-This task ensures that the `master` branches for both CE and EE are in sync
-between all the remotes.
-
-If you manually [push to multiple remotes](push-to-multiple-remotes.md) during
-the release process, you can safely skip this task.
-
-### Configuration
-
-| Option      | Purpose                        |
-| ------      | -------                        |
-| `CE=false`  | Skip CE repository             |
-| `EE=false`  | Skip EE repository             |
-| `OG=false`  | Skip omnibus-gitlab repository |
-| `TEST=true` | Don't push anything to remotes |
-
-### Examples
-
-```bash
-bundle exec rake sync
 ```
 
 ---
