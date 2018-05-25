@@ -95,9 +95,15 @@ describe UpstreamMerge, :silence_stdout, :aggregate_failures do
       end
 
       it 'pushed the merge branch' do
-        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch])
+        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch]).and_return(true)
 
         subject.execute!
+      end
+
+      it 'raises a PushError upon failure' do
+        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch]).and_return(false)
+
+        expect { subject.execute! }.to raise_error(described_class::PushFailed)
       end
     end
 
