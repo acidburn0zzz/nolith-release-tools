@@ -6,6 +6,7 @@ class UpstreamMerge
   CONFLICT_MARKER_REGEX = /\A(?<conflict_type>[ADU]{2}) /
 
   DownstreamAlreadyUpToDate = Class.new(StandardError)
+  PushFailed = Class.new(StandardError)
 
   def initialize(origin:, upstream:, merge_branch:)
     @origin = origin
@@ -48,7 +49,7 @@ class UpstreamMerge
       add_last_modifier_to_conflicts(conflicts)
     end
 
-    repository.push(origin, merge_branch)
+    raise PushFailed unless repository.push(origin, merge_branch)
 
     conflicts
   end
