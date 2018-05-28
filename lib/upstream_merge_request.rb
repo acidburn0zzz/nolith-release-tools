@@ -14,6 +14,10 @@ class UpstreamMergeRequest < MergeRequest
     winh
   ].freeze
 
+  INCLUDED_CORE_MEMBERS = %w[
+    blackst0ne
+  ].freeze
+
   def self.project
     Project::GitlabEe
   end
@@ -76,14 +80,14 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   def source_branch
-    self[:source_branch] || "ce-to-ee-#{Date.today.iso8601}"
+    self[:source_branch] || "ce-to-ee-#{Time.now.utc.to_date.iso8601}"
   end
 
   private
 
   def authors
     @authors ||= begin
-      team = Team.new
+      team = Team.new(included_core_members: INCLUDED_CORE_MEMBERS)
 
       conflicts.each_with_object({}) do |conflict, result|
         result[conflict[:path]] =

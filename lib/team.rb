@@ -4,12 +4,18 @@ require_relative 'team_member'
 class Team
   USERS_API_URL = 'https://gitlab.com/api/v4/projects/278964/users.json'.freeze
 
-  CORE_TEAM = [
-    TeamMember.new(name: 'blackst0ne', username: 'blackst0ne')
+  CORE_TEAM = %w[
+    razer6
+    haynes
+    newton
+    blackst0ne
+    tnir
+    jacopo-beschi
   ].freeze
 
-  def initialize(members: nil)
+  def initialize(members: nil, included_core_members: [])
     @members = members
+    @core_team = CORE_TEAM - included_core_members
   end
 
   # Return an array of TeamMember
@@ -39,13 +45,15 @@ class Team
         break if users.empty?
 
         users.each do |user|
+          next if @core_team.include?(user['username'])
+
           members << TeamMember.new(name: user['name'], username: user['username'])
         end
 
         break if response.headers['x-next-page'].empty?
       end
 
-      members + CORE_TEAM
+      members
     end
   end
 

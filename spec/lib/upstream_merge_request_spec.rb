@@ -76,6 +76,7 @@ describe UpstreamMergeRequest do
       allow(CommitAuthor).to receive(:new).with('John Doe', team: an_instance_of(Team)).and_return(double(to_gitlab: 'John Doe'))
       allow(CommitAuthor).to receive(:new).with('Rémy Coutable', team: an_instance_of(Team)).and_return(double(to_gitlab: '@rymai'))
       allow(CI).to receive(:current_job_url).and_return('http://job.url')
+      allow(Team).to receive(:new).with(included_core_members: described_class::INCLUDED_CORE_MEMBERS).and_call_original.once
     end
 
     context 'conflicts is empty' do
