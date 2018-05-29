@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/branches"
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/branches?branch=release-tools-create-branch&ref=9-4-stable
     body:
       encoding: UTF-8
-      string: branch=release-tools-create-branch&ref=9-4-stable
+      string: ''
     headers:
       Accept:
       - application/json

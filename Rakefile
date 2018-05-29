@@ -89,6 +89,20 @@ task :patch_issue, [:version] do |_t, args|
   create_or_show_issue(issue)
 end
 
+desc "Create a QA issue"
+task :qa_issue, [:from, :to, :version] do |_t, args|
+  version = get_version(args)
+  issue = Qa::Services::QaIssueService.new(
+    version: version,
+    from: args[:from],
+    to: args[:to],
+    issue_project: Qa::ISSUE_PROJECT,
+    projects: Qa::PROJECTS
+  ).execute
+
+  create_or_show_issue(issue)
+end
+
 desc "Create preparation merge requests in CE and EE for a patch release"
 task :patch_merge_request, [:version] do |_t, args|
   # CE

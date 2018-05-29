@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gem 'activesupport', '~> 4.2.0'
 gem 'colorize'
 gem 'dotenv',        '~> 2.2.0'
-gem 'gitlab',        '~> 4.2.0'
+gem 'gitlab',        '~> 4.4.0'
 gem 'httparty',      '~> 0.15.6'
 gem 'rake'
 gem 'rugged',        '~> 0.26.0'
