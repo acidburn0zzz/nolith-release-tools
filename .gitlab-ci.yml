@@ -73,25 +73,5 @@ release:
   only:
     - triggers
   script:
-    # Guard
-    - if [ -z "${RELEASE_VERSION}" ]; then echo "$RELEASE_VERSION required!" && exit 1; fi
-
-    # - Configure Git
-    - git config --global user.email "robert+release-tools@gitlab.com"
-    - git config --global user.name "GitLab Release Tools Bot"
-
-    # - Set up our private SSH key for pushing to the necessary repositories
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$RELEASE_BOT_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-
-    # - Configure API tokens
-    - export GITLAB_API_PRIVATE_TOKEN="$RELEASE_BOT_PRODUCTION_TOKEN"
-    - export DEV_API_PRIVATE_TOKEN="$RELEASE_BOT_DEV_TOKEN"
-
-    # - Ship it!
+    - source ./scripts/chatops_setup.sh
     - bundle exec rake "release[$RELEASE_VERSION]"
