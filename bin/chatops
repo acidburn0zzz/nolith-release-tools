@@ -39,6 +39,15 @@ setup_env()
 }
 
 require_version
-configure_git
-setup_ssh
+if [ -n "${CI}" ]; then
+  # These should only be necessary in CI
+  configure_git
+  setup_ssh
+fi
 setup_env
+
+case $1 in
+  "release")
+    bundle exec rake "release[$RELEASE_VERSION]"
+    ;;
+esac

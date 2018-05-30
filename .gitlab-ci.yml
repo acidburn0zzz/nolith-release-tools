@@ -4,7 +4,7 @@ stages:
   - test
   - deploy
   - automation
-  - release
+  - chatops
 
 cache:
   key: "ruby-231"
@@ -68,10 +68,9 @@ upstream-merge:
   only:
     - schedules
 
-release:
-  stage: release
+chatops:
+  stage: chatops
   only:
     - triggers
   script:
-    - source ./scripts/chatops_setup.sh
-    - bundle exec rake "release[$RELEASE_VERSION]"
+    - ./bin/chatops release
