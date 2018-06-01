@@ -80,24 +80,20 @@
 ### Release 
 
 - [ ] This section should be done in coordination with the Security team, so **make sure to confirm with them before proceeding**
-- [ ] Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.
-- [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>)
-- [ ] Mark any applicable previous releases as vulnerable on https://version.gitlab.com.
-- [ ] Check any sensitive information from the confidential security issues, and redact them if needed
+- [ ] From the [build pipeline], [manually publish public packages]
+- [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
 - [ ] Push `ce/<%= version.stable_branch %>` to all remotes
 - [ ] Push `ee/<%= version.stable_branch(ee: true) %>` to all remotes
 - [ ] Push `omnibus/<%= version.stable_branch %>` and `omnibus/<%= version.stable_branch(ee: true) %>` to all remotes
 - [ ] Push CE, EE and omnibus tags to all remotes
-- [ ] Make the confidential security issues public
-
 - [ ] Tweet (prepare the Tweet text below or paste the tweet URL instead) in the `#releases` channel:
 
       ```
       !tweet "GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES"
       ```
 
-- [ ] Coordinate with the Marketing team to send out a security newsletter
-- [ ] Cherry-pick the merges from the `security` branch into `master` and push to all remotes. 
+
+- [ ] Merge the MR's targeting `master` and push to all remotes
 - [ ] Add [`omnibus-gitlab/<%= omnibus_version.tag %>` CHANGELOG.md][omnibus-tag-changelog] items to [`omnibus-gitlab/master` CHANGELOG.md][omnibus-master-changelog]
 
 ---
@@ -108,6 +104,8 @@ For references:
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
+[build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
+[manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
 
