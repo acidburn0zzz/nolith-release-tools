@@ -52,28 +52,12 @@ describe SecurityPatchIssue do
       expect(content).to include 'SECURITY=true bundle exec rake "release[8.3.1]"'
     end
 
-    it 'includes a step to redact sensitive information from confidential security issues' do
+    it 'includes a step to publish the packages' do
       issue = described_class.new(version: Version.new('8.3.1'))
 
       content = issue.description
 
-      expect(content).to include 'Check any sensitive information from the confidential security issues, and redact them if needed'
-    end
-
-    it 'includes a step to make the confidential security issues public' do
-      issue = described_class.new(version: Version.new('8.3.1'))
-
-      content = issue.description
-
-      expect(content).to include 'Make the confidential security issues public'
-    end
-
-    it 'includes a step to publish the packages one tag at a time' do
-      issue = described_class.new(version: Version.new('8.3.1'))
-
-      content = issue.description
-
-      expect(content).to include 'Manually [publish the packages], one tag at a time to prevent 504 errors on our packages server.'
+      expect(content).to include 'From the [build pipeline], [manually publish public packages]'
     end
   end
 end
