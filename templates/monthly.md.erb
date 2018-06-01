@@ -6,21 +6,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - Title: `Pick into <%= version.to_minor %>`
   - Description: ``Merge requests to cherry-pick into the `<%= version.stable_branch %>` branch.``
   - Color: `#00c8ca`
-- [ ] In `#development`:
-
-    ```
-    @channel
-
-    I am about to create the `<%= version.stable_branch %>` branch. Everything merged into `master`
-    after this point will go into next month's release. Only regression and security fixes
-    will be cherry-picked into `<%= version.stable_branch %>`.
-
-    Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
-    and the `Pick into <%= version.to_minor %>` label.
-
-    From now on, please follow the "After the 7th" process:
-    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
-    ```
 - [ ] Make sure the latest [CE to EE] on `master` branches is merged (it will reduce conflicts in the future). Ask in `#ce-to-ee` when in doubt.
 - [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
@@ -65,6 +50,23 @@ Keep in mind that:
 1. After the feature freeze only regression and security fixes should be
    cherry-picked into stable branches.
 2. The final RC should point to the same commit as the final release.
+
+## On the 7th
+- [ ] In `#development`:
+
+    ```
+    @channel
+
+    `<%= version.stable_branch %>` branch has been created. Everything merged into `master`
+    after this point will go into next month's release. Only regression and security fixes
+    will be cherry-picked into `<%= version.stable_branch %>`.
+
+    Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
+    and the `Pick into <%= version.to_minor %>` label.
+
+    From now on, please follow the "After the 7th" process:
+    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
+    ```
 
 ## Final RC
 
