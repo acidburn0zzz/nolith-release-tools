@@ -32,6 +32,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       # In the release-tools project:
       bundle exec rake "patch_issue[<%= version.to_rc(1) %>]"
       ```
+  - [ ] Link the RC1 issue as a related issue in this issue
 
 [Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
 
@@ -44,6 +45,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
     # In the release-tools project (update RC number):
     bundle exec rake "patch_issue[<%= version.to_rc(2) %>]"
     ```
+- [ ] Link any subsequent RCs issues as a related issue in this issue
 
 Keep in mind that:
 
