@@ -10,6 +10,10 @@ class MonthlyIssue < Issue
     'Release'
   end
 
+  def project
+    ::Project::Release::Tasks
+  end
+
   protected
 
   def template_path
