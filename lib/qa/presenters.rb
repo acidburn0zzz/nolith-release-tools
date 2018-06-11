@@ -1,0 +1,2 @@
+require_relative 'presenters/qa_issue_presenter'
+require_relative 'presenters/qa_comment_presenter'

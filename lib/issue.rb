@@ -6,6 +6,10 @@ class Issue < Issuable
     GitlabClient.create_issue(self, project)
   end
 
+  def update
+    GitlabClient.update_issue(self, project)
+  end
+
   def remote_issuable
     @remote_issuable ||= GitlabClient.find_issue(self, project)
   end

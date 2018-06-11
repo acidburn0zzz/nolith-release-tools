@@ -24,6 +24,26 @@ class GitlabClient
     client.merge_requests(project.path, options)
   end
 
+  def self.merge_request(project = Project::GitlabCe, iid:)
+    client.merge_request(project.path, iid)
+  end
+
+  def self.commit_merge_requests(project = Project::GitlabCe, sha:)
+    client.commit_merge_requests(project.path, sha)
+  end
+
+  def self.compare(project = Project::GitlabCe, from:, to:)
+    client.compare(project.path, from, to)
+  end
+
+  def self.commit(project = Project::GitlabCe, ref:)
+    client.commit(project.path, ref)
+  end
+
+  def self.create_issue_note(project = Project::GitlabCe, issue:, body:)
+    client.create_issue_note(project.path, issue.iid, body)
+  end
+
   def self.milestones(project = Project::GitlabCe, options = {})
     project_milestones = client.milestones(project.path, options)
 
@@ -68,6 +88,27 @@ class GitlabClient
     client.create_issue(project.path, issue.title,
       description:  issue.description,
       assignee_id:  current_user.id,
+      milestone_id: milestone.id,
+      labels: issue.labels,
+      confidential: issue.confidential?)
+  end
+
+  # Update an issue in the CE project based on the provided issue
+  #
+  # issue - An object that responds to the following messages:
+  #   :title       - Issue title String
+  #   :description - Issue description String
+  #   :labels      - Comma-separated String of label names
+  # project - An object that responds to :path
+  #
+  # The issue is always assigned to the authenticated user.
+  #
+  # Returns a Gitlab::ObjectifiedHash object
+  def self.update_issue(issue, project = Project::GitlabCe)
+    milestone = milestone(project, title: issue.version.milestone_name)
+
+    client.edit_issue(project.path, issue.iid,
+      description:  issue.description,
       milestone_id: milestone.id,
       labels: issue.labels,
       confidential: issue.confidential?)
