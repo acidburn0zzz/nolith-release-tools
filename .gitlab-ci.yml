@@ -39,11 +39,15 @@ dependency_scanning:
         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:$SP_VERSION" /code
   artifacts:
     paths: [gl-dependency-scanning-report.json]
+  except:
+    - schedules
+    - triggers
 
 rubocop:
   <<: *with-bundle
   stage: test
   except:
+    - schedules
     - triggers
   script:
     - bundle exec rubocop
@@ -52,6 +56,7 @@ specs:
   <<: *with-bundle
   stage: test
   except:
+    - schedules
     - triggers
   retry: 1
   script:
