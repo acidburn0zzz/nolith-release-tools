@@ -4,6 +4,7 @@ stages:
   - test
   - deploy
   - automation
+  - chatops
 
 cache:
   key: "ruby-231"
@@ -15,11 +16,15 @@ before_script:
 
 rubocop:
   stage: test
+  except:
+    - triggers
   script:
     - bundle exec rubocop
 
 specs:
   stage: test
+  except:
+    - triggers
   retry: 1
   script:
     - cp .env.example .env
@@ -62,3 +67,10 @@ upstream-merge:
     - bundle exec rake upstream_merge
   only:
     - schedules
+
+chatops:
+  stage: chatops
+  only:
+    - triggers
+  script:
+    - ./bin/chatops $TASK
