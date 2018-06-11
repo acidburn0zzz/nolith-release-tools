@@ -51,6 +51,7 @@ pages:
     - master
   except:
     - schedules
+    - triggers
 
 upstream-merge:
   stage: automation
