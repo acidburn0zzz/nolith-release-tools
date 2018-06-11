@@ -26,11 +26,6 @@ Manager](doc/release-manager.md).
 - [Pro tips](doc/pro-tips.md)
 - [Release template files](https://gitlab.com/gitlab-org/release-tools/tree/master/templates)
 
-## Development
-
-[![build status](https://gitlab.com/gitlab-org/release-tools/badges/master/build.svg)](https://gitlab.com/gitlab-org/release-tools/commits/master)
-[![coverage report](https://gitlab.com/gitlab-org/release-tools/badges/master/coverage.svg)](http://gitlab-org.gitlab.io/release-tools/coverage/)
-
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
