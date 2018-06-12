@@ -7,6 +7,16 @@ describe ReleaseManagers::Definitions do
 
   let(:fixture) { File.expand_path('../../fixtures/release_managers.yml', __dir__) }
 
+  describe 'class delegators' do
+    it 'delegates .allowed?' do
+      expect(described_class).to respond_to(:allowed?)
+    end
+
+    it 'delegates .sync!' do
+      expect(described_class).to respond_to(:sync!)
+    end
+  end
+
   describe '#all' do
     it 'returns an array of User objects' do
       expect(subject.all)
@@ -15,6 +25,16 @@ describe ReleaseManagers::Definitions do
 
     it 'is enumerable' do
       expect(subject).to respond_to(:any?)
+    end
+  end
+
+  describe '#allowed?' do
+    it 'returns true for a defined user' do
+      expect(subject).to be_allowed('rspeicher')
+    end
+
+    it 'returns false for an undefined user' do
+      expect(subject).not_to be_allowed('invalid-member')
     end
   end
 
