@@ -40,6 +40,12 @@ describe Qa::Ref do
 
         expect(ref.for_project(project)).to eq('master')
       end
+
+      it 'outputs the correct sha' do
+        ref = described_class.new('cdb7aec191347cf004447b2d6124e5e394c033f4')
+
+        expect(ref.for_project(project)).to eq('cdb7aec191347cf004447b2d6124e5e394c033f4')
+      end
     end
 
     context 'for ce' do
@@ -73,6 +79,12 @@ describe Qa::Ref do
         ref = described_class.new('master')
 
         expect(ref.for_project(project)).to eq('master')
+      end
+
+      it 'outputs the correct sha' do
+        ref = described_class.new('cdb7aec191347cf004447b2d6124e5e394c033f4')
+
+        expect(ref.for_project(project)).to eq('cdb7aec191347cf004447b2d6124e5e394c033f4')
       end
     end
   end
