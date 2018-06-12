@@ -29,7 +29,7 @@ module ReleaseManagers
     end
 
     def members
-      client.group_members(encode(group))
+      client.group_members(group)
     end
 
     def sync_membership(usernames)
@@ -54,10 +54,6 @@ module ReleaseManagers
 
     attr_reader :client, :group, :target
 
-    def encode(string)
-      string.gsub('/', '%2F')
-    end
-
     def get_user(username)
       user = client
         .user_search(username)
@@ -71,7 +67,7 @@ module ReleaseManagers
 
       begin
         $stdout.puts "    Adding #{username} to #{group}"
-        client.add_group_member(encode(group), user.id, MASTER_ACCESS)
+        client.add_group_member(group, user.id, MASTER_ACCESS)
       rescue Gitlab::Error::Conflict => ex
         raise unless ex.message =~ /Member already exists/
       end
@@ -81,7 +77,7 @@ module ReleaseManagers
       user = get_user(username)
 
       $stdout.puts "    Removing #{username} from #{group}"
-      client.remove_group_member(encode(group), user.id)
+      client.remove_group_member(group, user.id)
     end
   end
 end
