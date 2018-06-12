@@ -16,9 +16,15 @@ Alessio Caiazza:
   gitlab.com: nolith
   gitlab.org: acaiazza
 
+Chris Peressini:
+  gitlab.com: cperessini
+
 Filipa Lacerda:
   github.com: filipalacerda
   gitlab.com: filipa
+
+GitLab Release Tools Bot:
+  gitlab.com: gitlab-release-tools-bot
 
 Ian Baum:
   gitlab.com: ibaum
@@ -44,7 +50,3 @@ Mek Stittri:
 
 Robert Speicher:
   gitlab.com: rspeicher
-
-Sarrah Vesselov:
-  github.com: SarrahV
-  gitlab.com: sarrahvesselov
