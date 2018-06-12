@@ -49,6 +49,6 @@ setup_env
 
 case $1 in
   "release")
-    bundle exec rake "release[$RELEASE_VERSION]"
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "release[$RELEASE_VERSION]"
     ;;
 esac
