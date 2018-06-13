@@ -11,8 +11,11 @@ module ReleaseManagers
 
     def_delegator :@all, :each
 
-    def self.sync!
-      new.sync!
+    class << self
+      extend Forwardable
+
+      def_delegator :new, :allowed?
+      def_delegator :new, :sync!
     end
 
     def initialize(config_file = nil)
@@ -22,12 +25,8 @@ module ReleaseManagers
       reload!
     end
 
-    def dev_client
-      @dev_client ||= ReleaseManagers::Client.new(:dev)
-    end
-
-    def production_client
-      @production_client ||= ReleaseManagers::Client.new(:production)
+    def allowed?(username)
+      any? { |user| user.production == username }
     end
 
     def reload!
@@ -44,6 +43,16 @@ module ReleaseManagers
     def sync!
       dev_client.sync_membership(all.collect(&:dev))
       production_client.sync_membership(all.collect(&:production))
+    end
+
+    private
+
+    def dev_client
+      @dev_client ||= ReleaseManagers::Client.new(:dev)
+    end
+
+    def production_client
+      @production_client ||= ReleaseManagers::Client.new(:production)
     end
 
     # Represents a single entry from the configuration file

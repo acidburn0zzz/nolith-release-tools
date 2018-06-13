@@ -162,6 +162,17 @@ task :upstream_merge do
 end
 
 namespace :release_managers do
+  desc "Verify release manager authorization"
+  task :auth, [:username] do |_t, args|
+    unless args[:username].present?
+      raise "You must provide a username to verify!"
+    end
+
+    unless ReleaseManagers::Definitions.allowed?(args[:username])
+      raise "#{args[:username]} is not an authorized release manager!"
+    end
+  end
+
   desc "Sync Release Manager membership"
   task :sync do
     ReleaseManagers::Definitions.sync!
