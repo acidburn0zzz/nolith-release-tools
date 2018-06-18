@@ -52,6 +52,24 @@ task :security_release, [:version] do |_t, args|
   Rake::Task[:release].invoke(args[:version])
 end
 
+desc "Create a chart release"
+task :release_chart, [:version, :gitlab_version] do |_t, args|
+  unless args[:version] || args[:gitlab_version]
+    $stdout.puts "Must specify a version".colorize(:red)
+    exit 1
+  end
+
+  version = HelmChartVersion.new(args[:version]) if args[:version]
+  gitlab_version = HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version]
+  if (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
+    $stdout.puts "Version number must be in the following format: X.Y.Z".colorize(:red)
+    exit 1
+  end
+
+  $stdout.puts 'Chart release'.colorize(:blue)
+  Release::HelmGitlabRelease.new(version, gitlab_version).execute
+end
+
 desc "Sync master branch in remotes"
 task :sync do
   if skip?('ee')
