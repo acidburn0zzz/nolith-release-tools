@@ -9,7 +9,7 @@
 - Picked into respective `stable` branches from the `dev/security` branch. Use the <SECURITY_RELEASE_ISSUE> as a guideline of what MR's should be picked.
 - [ ] **Push `ce/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
 - [ ] **Push `ee/<%= version.stable_branch(ee: true) %>` to `dev` only: `git push dev <%= version.stable_branch(ee: true) %>`**
-- [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>` 
+- [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
 
 ## Packaging
 
@@ -51,10 +51,9 @@
 
 - [ ] Although normally there aren't any schema changes on a security release, make sure that the database migrations complete in a timely manner. If you see a migration taking too long in staging, stop right there and ping `@db-team` in Slack. What you're witnessing has the potential to take down production for a long time. The statement "Don't worry: it'll be faster in production" is a false myth that has been disproven every single time that this has happened in the past.
 
-#### QA 
+#### QA
 
-- [ ] Create a "QA Task" issue in the [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) repo, using the `QA-task` template. 
-- [ ] Notify #development and #releases about the QA issue with the following message: `<%= version.to_patch %> has been deployed to staging, you can do QA and report any problems to the QA issue <link to the QA issue>`
+- [ ] Create a "QA Task" issue in the [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) repo, using the `QA-task` template.
 - [ ] Wait for the QA Task deadline to pass.
 
 ### canary.gitlab.com
@@ -77,7 +76,7 @@
       bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0
       ```
 
-### Release 
+### Release
 
 - [ ] This section should be done in coordination with the Security team, so **make sure to confirm with them before proceeding**
 - [ ] From the [build pipeline], [manually publish public packages]
