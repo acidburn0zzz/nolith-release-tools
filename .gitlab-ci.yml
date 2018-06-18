@@ -100,7 +100,7 @@ upstream-merge:
     - git config --global user.name "GitLab Bot"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - cp config/known_hosts ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - bundle exec rake upstream_merge
   only:
