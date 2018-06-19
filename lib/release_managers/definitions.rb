@@ -58,7 +58,7 @@ module ReleaseManagers
     # Represents a single entry from the configuration file
     class User
       attr_reader :name
-      attr_reader :dev, :github, :production
+      attr_reader :dev, :production
 
       def initialize(name, hash)
         if hash['gitlab.com'].nil?
@@ -68,8 +68,7 @@ module ReleaseManagers
         @name = name
 
         @production = hash['gitlab.com']
-        @dev        = hash['gitlab.org'] || production
-        @github     = hash['github.com'] || production
+        @dev = hash['gitlab.org'] || production
       end
     end
   end

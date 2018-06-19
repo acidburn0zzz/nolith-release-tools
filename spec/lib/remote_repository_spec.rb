@@ -9,7 +9,7 @@ describe RemoteRepository do
   let(:rugged_repo) { Rugged::Repository.new(repo_path) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
   let(:repo_remotes) do
-    { gitlab: repo_url, github: 'https://example.com/foo/bar/baz.git' }
+    { gitlab: repo_url, foo: 'https://example.com/foo/bar/baz.git' }
   end
 
   before do
@@ -20,7 +20,7 @@ describe RemoteRepository do
     let(:remotes) do
       {
         dev:    'https://example.com/foo/bar/dev.git',
-        origin: 'https://gitlab.com/foo/bar/gitlab.git'
+        origin: 'https://gitlab.com/gitlab-org/foo/gitlab.git'
       }
     end
 
@@ -99,7 +99,7 @@ describe RemoteRepository do
     it 'adds remotes to the repository', :aggregate_failures do
       remotes = {
         origin: repo_url,
-        github: '/foo/bar/baz.git'
+        foo: '/foo/bar/baz.git'
       }
 
       repository = described_class.new(repo_path, remotes)
@@ -107,7 +107,7 @@ describe RemoteRepository do
 
       expect(rugged.remotes.count).to eq(2)
       expect(rugged.remotes['origin'].url).to eq(repo_url)
-      expect(rugged.remotes['github'].url).to eq('/foo/bar/baz.git')
+      expect(rugged.remotes['foo'].url).to eq('/foo/bar/baz.git')
     end
   end
 
