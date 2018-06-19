@@ -18,12 +18,7 @@ module Qa
       end
 
       def execute
-        if issue.remote_issuable
-          issue.update
-          issue.add_comment
-        else
-          issue.create
-        end
+        issue.create
 
         issue
       end

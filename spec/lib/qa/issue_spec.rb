@@ -43,7 +43,7 @@ describe Qa::Issue do
 
   describe '#title' do
     it "returns the correct issue title" do
-      expect(subject.title).to eq '10.8 QA Issue'
+      expect(subject.title).to eq '10.8.0-rc1 QA Issue'
     end
   end
 
@@ -99,7 +99,7 @@ describe Qa::Issue do
 
   describe '#labels' do
     it 'returns a list of labels' do
-      expect(subject.labels).to eq 'QA'
+      expect(subject.labels).to eq 'QA task'
     end
   end
 

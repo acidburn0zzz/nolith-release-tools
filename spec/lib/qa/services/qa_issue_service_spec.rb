@@ -36,15 +36,12 @@ describe Qa::Services::QaIssueService do
       allow(subject).to receive(:issue).and_return(issue_double)
     end
 
-    context 'remote issue already exists' do
-      let(:remote_issuable) { true }
-
+    shared_examples 'creates issue' do
       before do
-        expect(issue_double).to receive(:update).once
-        expect(issue_double).to receive(:add_comment).once
+        expect(issue_double).to receive(:create).once
       end
 
-      it 'calls update and add_comment on the issue' do
+      it 'calls create' do
         subject.execute
       end
 
@@ -53,20 +50,16 @@ describe Qa::Services::QaIssueService do
       end
     end
 
+    context 'remote issue already exists' do
+      let(:remote_issuable) { true }
+
+      it_behaves_like 'creates issue'
+    end
+
     context 'remote issue does not exist' do
       let(:remote_issuable) { false }
 
-      before do
-        expect(issue_double).to receive(:create).once
-      end
-
-      it 'calls create on the issue' do
-        subject.execute
-      end
-
-      it 'returns the issue' do
-        expect(subject.execute).to eq(issue_double)
-      end
+      it_behaves_like 'creates issue'
     end
   end
 
