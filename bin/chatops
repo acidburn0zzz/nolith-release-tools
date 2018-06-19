@@ -28,7 +28,7 @@ setup_ssh()
 
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh
-  cp ../config/known_hosts ~/.ssh/known_hosts
+  cp $(dirname $0)/../config/known_hosts ~/.ssh/known_hosts
   chmod 644 ~/.ssh/known_hosts
 }
 
