@@ -60,18 +60,6 @@ class RemoteRepository
     status.success?
   end
 
-  def branches(remote: false, sort: nil, format: nil, pattern: nil)
-    cmd = %w[branch --list]
-    cmd << "-r" if remote
-    cmd << "--sort='#{sort}'" if format
-    cmd << "--format='#{format}'" if format
-    cmd << pattern if pattern
-
-    output, status = run_git(cmd)
-
-    output.lines.map(&:chomp) if status.success?
-  end
-
   def checkout_new_branch(branch, base: 'master')
     fetch(base)
 

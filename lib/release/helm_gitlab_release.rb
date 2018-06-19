@@ -1,14 +1,16 @@
 require_relative 'base_release'
 require_relative '../project/helm_gitlab'
 require_relative '../helm/chart_file'
+require_relative '../helm_gitlab_version'
+require_relative '../helm_chart_version'
 
 module Release
   class HelmGitlabRelease < BaseRelease
     attr_reader :gitlab_version
 
     def initialize(version, gitlab_version, opts = {})
-      @version = version_class.new(version)
-      @gitlab_version = version_class.new(gitlab_version)
+      @version = version_class.new(version) if version
+      @gitlab_version = HelmGitlabVersion.new(gitlab_version) if gitlab_version
       @options = opts
     end
 
@@ -54,10 +56,14 @@ module Release
       args << "--chart-version #{chart_version}"
       args << "--app-version=#{app_version}" if app_version && app_version.valid?
 
-      $stdout.puts "Update chart version: #{chart_version} gitlab version: #{app_version}...".colorize(:green)
+      message = ["Update Chart Version to #{chart_version}"]
+      message << "Update Gitlab Version to #{app_version}" if app_version && app_version.valid?
+      $stdout.puts "#{message.join(' ')}...".colorize(:green)
       out, status = run_update_version(args)
 
-      status.success? || raise(StandardError.new(out))
+      raise(StandardError.new(out)) unless status.success?
+
+      repository.commit(Dir.glob(File.join(repository.path, '**', 'Chart.yaml')), message: message.join("\n"))
     end
 
     def commit_master_versions
@@ -70,7 +76,7 @@ module Release
     end
 
     def run_update_version(args)
-      repository.in_path do
+      Dir.chdir(repository.path) do
         final_args = ['./scripts/manage_version.rb', *args]
         $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
 
@@ -81,7 +87,7 @@ module Release
     end
 
     def populate_version
-      return if version.valid?
+      return if version && version.valid?
 
       # The 11.0.0 release marks the beta release of the charts.
       # We will bump the chart version from 0.1.x to 0.2.0 for the beta, instead of

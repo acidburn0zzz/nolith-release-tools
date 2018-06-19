@@ -32,12 +32,4 @@ class HelmGitlabVersion < Version
       chart.version
     end
   end
-
-  private
-
-  def custom_release_rule
-    # The 11.0.0 release marks the beta release of the charts.
-    # We will bump the chart version from 0.1.x to 0.2.0 for the beta, instead of
-    # bumping to 1.0.0, which would
-  end
 end
