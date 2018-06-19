@@ -4,11 +4,11 @@ require_relative 'presenters'
 module Qa
   class Issue < ::Issue
     def title
-      "#{version.to_minor} QA Issue"
+      "#{version} QA Issue"
     end
 
     def labels
-      "QA"
+      'QA task'
     end
 
     def add_comment
