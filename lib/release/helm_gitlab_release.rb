@@ -35,10 +35,14 @@ module Release
     def execute_release
       repository.ensure_branch_exists(stable_branch)
       bump_versions
-      # push_ref('branch', stable_branch)
-      # push_ref('branch', 'master')
-      # create_tag(tag)
-      # push_ref('tag', tag)
+      push_ref('branch', stable_branch)
+      push_ref('branch', 'master')
+
+      # Do not tag when passed a RC gitlab version
+      unless gitlab_version && gitlab_version.rc?
+        create_tag(tag)
+        push_ref('tag', tag)
+      end
     end
 
     def after_release
@@ -72,7 +76,7 @@ module Release
       repository.ensure_branch_exists('master')
       repository.pull_from_all_remotes('master')
       bump_version(version)
-      # push_ref('branch', 'master')
+      push_ref('branch', 'master')
     end
 
     def run_update_version(args)
@@ -96,21 +100,26 @@ module Release
         return @version = HelmChartVersion.new('0.2.0')
       end
 
-      previous_tag = gitlab_version.previous_tag
-
-      # Use the previous patch to determine the old chart version for a patch release
-      if gitlab_version.patch? && repository.fetch(previous_tag) && repository.checkout_branch(previous_tag)
-        base_branch = previous_tag
+      # Use the previous tag to determine the old chart version for a patch release
+      if gitlab_version.patch?
+        tags = repository.tags(sort: '-v:refname')
+        base_branch = tags.first if tags
       else
         base_branch = 'master'
       end
 
-      unless repository.checkout_branch(base_branch)
-        raise StandardError.new("Failed to checkout #{base_branch} while trying to find previous chart version.")
+      unless base_branch
+        raise StandardError.new("Failed to find a previous tag to determine chart version")
       end
 
+      unless repository.fetch(base_branch)
+        raise StandardError.new("Failed to fetch #{base_branch} while trying to find previous chart version.")
+      end
+
+      repository.ensure_branch_exists(base_branch)
+
       # Diff the old chart data with the new release to find the new chart version
-      chart = ChartFile.new(File.join(repository.path, 'Chart.yaml'))
+      chart = Helm::ChartFile.new(File.join(repository.path, 'Chart.yaml'))
       @version = gitlab_version.get_new_chart_version(chart.version, chart.app_version)
     end
   end

@@ -101,6 +101,16 @@ class RemoteRepository
     GitCommandResult.new(*run_git(cmd))
   end
 
+  def tags(sort: nil, pattern: nil)
+    cmd = %w[tag --list]
+    cmd << "--sort='#{sort}'" if sort
+    cmd << pattern if pattern
+
+    output, status = run_git(cmd)
+
+    output.lines.map(&:chomp) if status.success?
+  end
+
   def status(short: false)
     cmd = %w[status]
     cmd << '--short' if short
