@@ -70,6 +70,8 @@ class UpstreamMergeRequest < MergeRequest
         please assign to the next person. If you're the last one to resolve
         the conflicts, please push this to be merged.
 
+        - [ ] **Before merging, make sure the `package-and-qa` job passes.**
+
         Note: This merge request was [created by an automated script](#{CI.current_job_url}).
         Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
 
