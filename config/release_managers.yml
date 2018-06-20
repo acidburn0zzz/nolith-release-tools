@@ -3,12 +3,11 @@
 # The format should be as follows:
 #
 #   Your Name:
-#     github.com: your-github-username
 #     gitlab.com: your-gitlab-com-username
 #     gitlab.org: your-dev-gitlab-org-username
 #
-# The only required key is `gitlab.com`; the other two values will fall back to
-# that if omitted.
+# The only required key is `gitlab.com`; the other value will fall back to that
+# if omitted.
 #
 # Try to maintain alphabetical order.
 
@@ -17,11 +16,9 @@ Alessio Caiazza:
   gitlab.org: acaiazza
 
 Felipe Artur:
-  github.com: felipefac
   gitlab.com: felipe_artur
 
 Filipa Lacerda:
-  github.com: filipalacerda
   gitlab.com: filipa
 
 GitLab Release Tools Bot:
@@ -31,12 +28,10 @@ Ian Baum:
   gitlab.com: ibaum
 
 James Lopez:
-  github.com: bluegod
   gitlab.com: jameslopez
   gitlab.org: james
 
 Marin Jankovski:
-  github.com: maxlazio
   gitlab.com: marin
 
 Mark Fletcher:

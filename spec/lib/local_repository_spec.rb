@@ -5,10 +5,7 @@ describe LocalRepository, :silence_stdout do
   let(:fixture) { LocalRepositoryFixture.new }
   let(:repo_path) { File.join('/tmp', fixture.class.repository_name) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
-  let(:repo_remotes) do
-    { origin: repo_url, github: 'https://example.com/foo/bar/baz.git' }
-  end
-  let(:repo) { RemoteRepository.get(repo_remotes) }
+  let(:repo) { RemoteRepository.get(origin: repo_url) }
 
   before do
     fixture.rebuild_fixture!

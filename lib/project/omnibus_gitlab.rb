@@ -4,8 +4,7 @@ module Project
   class OmnibusGitlab < BaseProject
     REMOTES = {
       dev: 'git@dev.gitlab.org:gitlab/omnibus-gitlab.git',
-      gitlab: 'git@gitlab.com:gitlab-org/omnibus-gitlab.git',
-      github: 'git@github.com:gitlabhq/omnibus-gitlab.git'
+      gitlab: 'git@gitlab.com:gitlab-org/omnibus-gitlab.git'
     }.freeze
 
     def self.path
