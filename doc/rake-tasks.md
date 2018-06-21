@@ -285,6 +285,32 @@ TEST=true bundle exec rake upstream_merge
 FORCE=true bundle exec rake upstream_merge
 ```
 
+## `qa_issue[from,to,version]`
+
+This task will:
+
+Create an issue that lists the Merge Requests introduced between two references and return the URL of the new issue
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "X.Y.Z-rcN QA Issue" (e.g., "v11.0.0-rc1 QA Issue")
+- Its description is the QA issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "QA task"
+
+### Arguments
+
+- 1st Argument: from ref (sha, branch or tag)
+- 2nd Argument: to ref (sha, branch or tag)
+- 3rd Argument: release version to be used for the issue title
+
+### Examples
+
+```sh
+bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
+```
+
 ---
 
 [Return to Guides](../README.md#guides)
