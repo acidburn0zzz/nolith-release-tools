@@ -55,11 +55,11 @@ describe Qa::Issue do
       end
 
       it "includes the header item" do
-        expect(@content).to include("## README")
+        expect(@content).to include("# Release Candidate QA Task")
       end
 
       it "includes the current release version" do
-        expect(@content).to include("## 10.8.0-rc1 Changes")
+        expect(@content).to include("## Merge Requests tested in RC 10.8.0-rc1")
       end
 
       it "includes the Team label title" do
@@ -76,7 +76,7 @@ describe Qa::Issue do
       end
 
       it "includes the qa task for version" do
-        expect(@content).to include("### 10.8.0-rc1 Automated QA")
+        expect(@content).to include("## Automated QA for 10.8.0-rc1")
       end
     end
 
