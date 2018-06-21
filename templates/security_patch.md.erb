@@ -6,17 +6,29 @@
 
 ## Preparation
 
-- Picked into respective `stable` branches from the `dev/security` branch. Use the <SECURITY_RELEASE_ISSUE> as a guideline of what MR's should be picked.
+- [ ] Pick into respective `stable` branches from the `dev/security` branch. Use the SECURITY_RELEASE_ISSUE as a guideline of what MR's should be picked.
+- [ ] run `./scripts/security-harness` in the CE and EE projects in order to prevent accidental pushes to any remote other than dev.gitlab.org
 - [ ] **Push `ce/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
 - [ ] **Push `ee/<%= version.stable_branch(ee: true) %>` to `dev` only: `git push dev <%= version.stable_branch(ee: true) %>`**
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
+
+      ```sh
+      # In the gitlab-ee project:
+      git fetch git@dev.gitlab.org:gitlab/gitlabhq.git <%= version.stable_branch %>
+      git merge --no-ff FETCH_HEAD
+      # resolve conflicts as usual in CE-to-EE merges
+      git push dev <%= version.stable_branch(ee: true) %>
+      ```
+- [ ] run `./scripts/security-harness` in the CE and EE projects in order to restore normal pushes behaviour
 
 ## Packaging
 
 - [ ] Make sure [`omnibus-gitlab/<%= version.stable_branch %>` CHANGELOG.md][omnibus-stable-changelog] has an entry for each introduced change on [Omnibus CE stable branch]
 - [ ] Make sure [`omnibus-gitlab/<%= version.stable_branch(ee: true) %>` CHANGELOG.md][omnibus-stable-ee-changelog] has an entry for each introduced change on [Omnibus EE stable branch]
+- [ ] run `./scripts/security-harness` in order to prevent accidental pushes to any remote other than dev.gitlab.org
 - [ ] **Push `omnibus-gitlab/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
 - [ ] **Push `omnibus-gitlab/<%= version.stable_branch(ee: true) %>` to `dev` only: `git push dev <%= version.stable_branch(ee: true) %>`**
+- [ ] run `./scripts/security-harness` to restore normal pushes behaviour
 - [ ] Ping the Security Engineers so they can get started with the blog post. The blog post should also be done on https://dev.gitlab.org/ in a **private snippet**: BLOG_POST_SNIPPET
 
 - [ ] Ensure [tests are green on CE]
