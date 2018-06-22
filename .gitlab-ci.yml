@@ -1,4 +1,4 @@
-image: "dev.gitlab.org:5005/gitlab/gitlab-build-images:ruby-2.3-git-2.7-phantomjs-2.1"
+image: "dev.gitlab.org:5005/gitlab/gitlab-build-images:release-tools"
 
 stages:
   - test
@@ -7,7 +7,7 @@ stages:
   - chatops
 
 cache:
-  key: "ruby-231"
+  key: "ruby-24"
   paths:
     - vendor/ruby
 
