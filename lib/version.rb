@@ -166,7 +166,7 @@ class Version < String
   end
 
   def valid?
-    self =~ self.class::VERSION_REGEX
+    self.class::VERSION_REGEX.match?(self)
   end
 
   private
