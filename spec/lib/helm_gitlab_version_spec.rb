@@ -13,12 +13,12 @@ describe HelmGitlabVersion do
 
   describe "#new_chart_version" do
     context 'old app version is "master"' do
-      it { expect(gitlab_version('10.8.1').new_chart_version(*%w[0.0.1 master])).to eq chart_version('0.0.2') }
-      it { expect(gitlab_version('10.8.0').new_chart_version(*%w[0.0.1 master])).to eq chart_version('0.1.0') }
-      it { expect(gitlab_version('11.0.0').new_chart_version(*%w[0.0.1 master])).to eq chart_version('1.0.0') }
+      it { expect(gitlab_version('10.8.1').new_chart_version('0.0.1', 'master')).to eq chart_version('0.0.2') }
+      it { expect(gitlab_version('10.8.0').new_chart_version('0.0.1', 'master')).to eq chart_version('0.1.0') }
+      it { expect(gitlab_version('11.0.0').new_chart_version('0.0.1', 'master')).to eq chart_version('1.0.0') }
 
       it 'increases chart version for a gitlab rc update from a non-rc' do
-        expect(gitlab_version('11.0.0-rc1').new_chart_version(*%w[0.0.1 master])).to eq chart_version('1.0.0')
+        expect(gitlab_version('11.0.0-rc1').new_chart_version('0.0.1', 'master')).to eq chart_version('1.0.0')
       end
     end
 
