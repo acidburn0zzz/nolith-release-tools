@@ -120,7 +120,7 @@ module Release
 
       # Diff the old chart data with the new release to find the new chart version
       chart = Helm::ChartFile.new(File.join(repository.path, 'Chart.yaml'))
-      @version = gitlab_version.get_new_chart_version(chart.version, chart.app_version)
+      @version = gitlab_version.new_chart_version(chart.version, chart.app_version)
     end
   end
 end

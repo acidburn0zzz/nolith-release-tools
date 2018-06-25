@@ -2,7 +2,7 @@ require_relative 'version'
 require_relative 'helm_chart_version'
 
 class HelmGitlabVersion < Version
-  def get_new_chart_version(old_chart_version, old_gitlab_version)
+  def new_chart_version(old_chart_version, old_gitlab_version)
     old_chart_version = HelmChartVersion.new(old_chart_version)
     old_gitlab_version = HelmGitlabVersion.new(old_gitlab_version)
 
@@ -29,7 +29,7 @@ class HelmGitlabVersion < Version
     when Version::PATCH
       HelmChartVersion.new(old_chart_version.next_patch)
     else
-      chart.version
+      old_chart_version.dup
     end
   end
 end
