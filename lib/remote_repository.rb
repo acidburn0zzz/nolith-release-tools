@@ -2,11 +2,19 @@ require 'colorize'
 require 'fileutils'
 
 class RemoteRepository
-  class CannotCloneError < StandardError; end
-  class CannotCheckoutBranchError < StandardError; end
-  class CannotCommitError < StandardError; end
-  class CannotCreateTagError < StandardError; end
-  class CannotPullError < StandardError; end
+  class GitCommandError < StandardError
+    def initialize(message, output = nil)
+      message << "\n\n  #{output.gsub("\n", "\n  ")}" unless output.nil?
+
+      super(message)
+    end
+  end
+
+  CannotCheckoutBranchError = Class.new(GitCommandError)
+  CannotCloneError = Class.new(GitCommandError)
+  CannotCommitError = Class.new(GitCommandError)
+  CannotCreateTagError = Class.new(GitCommandError)
+  CannotPullError = Class.new(GitCommandError)
 
   CanonicalRemote = Struct.new(:name, :url)
   GitCommandResult = Struct.new(:output, :status)
@@ -55,16 +63,16 @@ class RemoteRepository
   def checkout_new_branch(branch, base: 'master')
     fetch(base)
 
-    _, status = run_git %W[checkout --quiet -b #{branch} #{base}]
+    output, status = run_git %W[checkout --quiet -b #{branch} #{base}]
 
-    status.success? || raise(CannotCheckoutBranchError.new(branch))
+    status.success? || raise(CannotCheckoutBranchError.new(branch, output))
   end
 
   def create_tag(tag)
     message = "Version #{tag}"
-    _, status = run_git %W[tag -a #{tag} -m "#{message}"]
+    output, status = run_git %W[tag -a #{tag} -m "#{message}"]
 
-    status.success? || raise(CannotCreateTagError.new(tag))
+    status.success? || raise(CannotCreateTagError.new(tag, output))
   end
 
   def write_file(file, content)
@@ -80,9 +88,9 @@ class RemoteRepository
     cmd << %[--author="#{author}"] if author
     cmd += ['--message', %["#{message}"]] if message
 
-    out, status = run_git(cmd)
+    output, status = run_git(cmd)
 
-    status.success? || raise(CannotCommitError.new(out))
+    status.success? || raise(CannotCommitError.new(output))
   end
 
   def merge(upstream, into, no_ff: false)
@@ -138,10 +146,10 @@ class RemoteRepository
     cmd << remote.to_s
     cmd << ref
 
-    _, status = run_git(cmd)
+    output, status = run_git(cmd)
 
     if conflicts?
-      raise CannotPullError.new("Conflicts were found when pulling #{ref} from #{remote}")
+      raise CannotPullError.new("Conflicts were found when pulling #{ref} from #{remote}", output)
     end
 
     status.success?
@@ -242,9 +250,9 @@ class RemoteRepository
     cmd << "--depth=#{global_depth}" if global_depth
     cmd << '--origin' << canonical_remote.name.to_s << canonical_remote.url << path
 
-    _, status = self.class.run_git(cmd)
+    output, status = self.class.run_git(cmd)
     unless status.success?
-      raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}")
+      raise CannotCloneError.new("Failed to clone #{canonical_remote.url} to #{path}", output)
     end
   end
 end

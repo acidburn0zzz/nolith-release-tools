@@ -446,4 +446,12 @@ describe RemoteRepository do
       repository.cleanup
     end
   end
+
+  describe described_class::GitCommandError do
+    it 'adds indented output to the error message' do
+      error = described_class.new("Foo", "bar\nbaz")
+
+      expect(error.message).to eq "Foo\n\n  bar\n  baz"
+    end
+  end
 end
