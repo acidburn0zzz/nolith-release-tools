@@ -39,7 +39,7 @@ module Release
       push_ref('branch', 'master')
 
       # Do not tag when passed a RC gitlab version
-      unless gitlab_version && gitlab_version.rc?
+      unless chart_file.app_version.rc?
         create_tag(tag)
         push_ref('tag', tag)
       end
@@ -71,12 +71,15 @@ module Release
     end
 
     def commit_master_versions
-      return unless version.release? && version.patch.zero?
+      return unless version.release?
 
       repository.ensure_branch_exists('master')
       repository.pull_from_all_remotes('master')
-      bump_version(version)
-      push_ref('branch', 'master')
+
+      if chart_file.version < version
+        bump_version(version)
+        push_ref('branch', 'master')
+      end
     end
 
     def run_update_version(args)
@@ -88,6 +91,10 @@ module Release
 
         [cmd_output, $CHILD_STATUS]
       end
+    end
+
+    def chart_file
+      Helm::ChartFile.new(File.join(repository.path, 'Chart.yaml'))
     end
 
     def populate_version
@@ -119,7 +126,7 @@ module Release
       repository.ensure_branch_exists(base_branch)
 
       # Diff the old chart data with the new release to find the new chart version
-      chart = Helm::ChartFile.new(File.join(repository.path, 'Chart.yaml'))
+      chart = chart_file
       @version = gitlab_version.new_chart_version(chart.version, chart.app_version)
     end
   end

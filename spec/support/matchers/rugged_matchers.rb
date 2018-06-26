@@ -290,4 +290,70 @@ module RuggedMatchers
       "expected #{repository.workdir} not to contain #{@actual}"
     end
   end
+
+  # Verify that `repository` has a template file with container at a specific version
+  #
+  # Examples:
+  #
+  #   expect(repository).to_have_container_template('docer/openshift-template.json').match('gitlab/gitlab-ce:1.2.3-ce.0')
+  #   expect(repository).not_to have_container_template('docer/openshift-template.json')
+  matcher :have_chart_file do |file_path|
+    def normalize_path(file_path)
+      file_path || 'Chart.yaml'
+    end
+
+    chain :at_version do |chart_version|
+      @chart_version = chart_version
+    end
+
+    chain :at_gitlab do |gitlab_version|
+      @gitlab_version = gitlab_version
+    end
+
+    match do |repository|
+      @repository = repository
+      @actual = normalize_path(file_path)
+
+      begin
+        content = read_head_blob(repository, @actual)
+      rescue NoMethodError
+        return false
+      end
+
+      return true unless @chart_version || @gitlab_version
+
+      @chart = YAML.safe_load(content)
+      return @chart['version'] == @chart_version if @chart_version
+      return @chart['appVersion'] == @gitlab_version if @gitlab_version
+    end
+
+    match_when_negated do |repository|
+      @repository = repository
+      @actual = normalize_path(file_path)
+
+      begin
+        read_head_blob(repository, @actual)
+      rescue NoMethodError
+        true
+      else
+        false
+      end
+    end
+
+    failure_message do
+      chart = @chart || {}
+
+      if @chart_version
+        "expected #{File.join(@repository.workdir, @actual)} have chart version #{@chart_version} but got #{chart['version']}"
+      elsif @gitlab_version
+        "expected #{File.join(@repository.workdir, @actual)} have chart version #{@gitlab_version} but got #{chart['appVersion']}"
+      else
+        "expected #{File.join(@repository.workdir, @actual)} to exist but does not"
+      end
+    end
+
+    failure_message_when_negated do
+      "expected #{@repository.workdir} not to contain #{@actual}"
+    end
+  end
 end
