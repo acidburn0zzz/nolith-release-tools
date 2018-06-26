@@ -29,6 +29,7 @@ describe Version do
     it { expect(version('1.2.3')).to be > version('1.2.3-rc') }
     it { expect(version('1.2.3')).to be > version('1.2.3-rc2') }
     it { expect(version('1.2.3-rc3')).to be > version('1.2.3-rc1') }
+    it { expect(version('1.2.3-rc1')).to be > version('1.2.2') }
 
     it { expect(version('1.2.3-rc1')).to be < version('1.2.3-rc3') }
     it { expect(version('1.2.3')).to be < version('1.2.4-rc') }
