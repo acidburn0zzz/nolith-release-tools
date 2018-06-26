@@ -23,4 +23,7 @@ case $1 in
   "release")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "release[$RELEASE_VERSION]"
     ;;
+  "security_release")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "security_release[$RELEASE_VERSION]"
+    ;;
 esac
