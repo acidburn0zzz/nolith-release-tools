@@ -1,6 +1,5 @@
 require_relative '../ref'
 require_relative '../project_changeset'
-require_relative '../issuable_deduplicator'
 require_relative '../issuable_omitter_by_labels'
 require_relative '../issue'
 
@@ -36,9 +35,13 @@ module Qa
       end
 
       def merge_requests
-        all_mrs = changesets.map(&:merge_requests).flatten
-        uniq_mrs = IssuableDeduplicator.new(all_mrs).execute
-        IssuableOmitterByLabels.new(uniq_mrs, Qa::UNPERMITTED_LABELS).execute
+        merge_requests = changesets
+          .map(&:merge_requests)
+          .flatten
+          .uniq(&:id)
+
+        IssuableOmitterByLabels.new(merge_requests, Qa::UNPERMITTED_LABELS)
+          .execute
       end
 
       private
