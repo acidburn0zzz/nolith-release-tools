@@ -113,9 +113,8 @@ bundle exec rake 'patch_merge_request[10.4.20]'
 
 ## `qa_issue[from,to,version]`
 
-This task will:
-
-Create an issue that lists the Merge Requests introduced between two references and return the URL of the new issue
+This task will create an issue that lists the Merge Requests introduced between
+two references and return the URL of the new issue.
 
 An issue created with this Rake task has the following properties:
 
@@ -127,9 +126,11 @@ An issue created with this Rake task has the following properties:
 
 ### Arguments
 
-- 1st Argument: from ref (sha, branch or tag)
-- 2nd Argument: to ref (sha, branch or tag)
-- 3rd Argument: release version to be used for the issue title
+|           |                                                |
+| ------    | -----                                          |
+| `from`    | SHA, branch, or tag                            |
+| `to`      | SHA, branch, or tag                            |
+| `version` | Release version to be used for the issue title |
 
 ### Examples
 
