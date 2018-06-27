@@ -328,6 +328,6 @@ FORCE=true bundle exec rake upstream_merge
 
 ---
 
-[Return to Guides](../README.md#guides)
+[Return to Documentation](../README.md#documentation)
 
 [`config/release_managers.yml`]: ../config/release_managers.yml
