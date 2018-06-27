@@ -111,6 +111,32 @@ bundle exec rake 'patch_merge_request[10.4.20]'
 
 [patch merge request template]: ../../templates/preparation_merge_request.md.erb
 
+## `qa_issue[from,to,version]`
+
+This task will:
+
+Create an issue that lists the Merge Requests introduced between two references and return the URL of the new issue
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "X.Y.Z-rcN QA Issue" (e.g., "v11.0.0-rc1 QA Issue")
+- Its description is the QA issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "QA task"
+
+### Arguments
+
+- 1st Argument: from ref (sha, branch or tag)
+- 2nd Argument: to ref (sha, branch or tag)
+- 3rd Argument: release version to be used for the issue title
+
+### Examples
+
+```sh
+bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
+```
+
 ## `release[version]`
 
 This task will:
@@ -159,29 +185,6 @@ SECURITY=true bundle exec rake "release[8.2.1]"
 TEST=true bundle exec rake "patch_issue[8.2.1]"
 ```
 
-## `security_patch_issue[version]`
-
-This task will either return the URL of a patch issue if one already exists for
-`version`, or it will create a new one and return the URL.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
-- Its description is the security patch release issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-- It is confidential
-
-### Examples
-
-```sh
-bundle exec rake "security_patch_issue[8.3.1]"
-
---> Issue "Release 8.3.1" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
-```
-
 ## `release_managers:sync`
 
 This task will read configuration data from [`config/release_managers.yml`] and
@@ -208,6 +211,30 @@ bundle exec rake release_managers:sync
 --> Syncing production
     Adding jane-doe to gitlab-org/release/managers
     Removing john-smith from gitlab-org/release/managers
+```
+
+
+## `security_patch_issue[version]`
+
+This task will either return the URL of a patch issue if one already exists for
+`version`, or it will create a new one and return the URL.
+
+An issue created with this Rake task has the following properties:
+
+- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
+- Its description is the security patch release issue template
+- It is assigned to the authenticated user
+- It is assigned to the release's milestone
+- It is labeled "Release"
+- It is confidential
+
+### Examples
+
+```sh
+bundle exec rake "security_patch_issue[8.3.1]"
+
+--> Issue "Release 8.3.1" created.
+    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
 ## `security_release[version]`
@@ -283,32 +310,6 @@ TEST=true bundle exec rake upstream_merge
 
 # Create a branch and MR even if one is already in progress:
 FORCE=true bundle exec rake upstream_merge
-```
-
-## `qa_issue[from,to,version]`
-
-This task will:
-
-Create an issue that lists the Merge Requests introduced between two references and return the URL of the new issue
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "X.Y.Z-rcN QA Issue" (e.g., "v11.0.0-rc1 QA Issue")
-- Its description is the QA issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "QA task"
-
-### Arguments
-
-- 1st Argument: from ref (sha, branch or tag)
-- 2nd Argument: to ref (sha, branch or tag)
-- 3rd Argument: release version to be used for the issue title
-
-### Examples
-
-```sh
-bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
 ```
 
 ---
