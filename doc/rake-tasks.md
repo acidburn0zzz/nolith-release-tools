@@ -186,6 +186,20 @@ SECURITY=true bundle exec rake "release[8.2.1]"
 TEST=true bundle exec rake "patch_issue[8.2.1]"
 ```
 
+## `release_managers:auth[username]`
+
+This task will check if the provided `gitlab.com` username is present in the
+[`config/release_managers.yml`] definitions.
+
+### Examples
+
+```sh
+$ bundle exec rake "release_managers:auth[valid-username]"
+
+$ bundle exec rake "release_managers:auth[invalid-username]"
+invalid-username is not an authorized release manager!
+```
+
 ## `release_managers:sync`
 
 This task will read configuration data from [`config/release_managers.yml`] and
@@ -197,7 +211,6 @@ sync the membership of the following groups:
 Users in the configuration file but not in the groups will be added; users in
 the groups but not in the configuration file will be removed.
 
-[`config/release_managers.yml`]: ../config/release_managers.yml
 [gitlab-org/release/managers]: https://gitlab.com/gitlab-org/release/managers
 [gitlab/release/managers]: https://dev.gitlab.org/groups/gitlab/release/managers
 
@@ -316,3 +329,5 @@ FORCE=true bundle exec rake upstream_merge
 ---
 
 [Return to Guides](../README.md#guides)
+
+[`config/release_managers.yml`]: ../config/release_managers.yml
