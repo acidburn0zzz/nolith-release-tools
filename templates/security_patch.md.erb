@@ -23,10 +23,11 @@
 - [ ] Ensure [tests are green on EE]
 
 - [ ] Check for any problematic migrations in EE (EE migrations include CE ones), and paste the diff in a snippet: `git diff -M <%= version.previous_tag(ee: true) %>..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate ee/db/migrate ee/db/post_migrate` =>
-- [ ] Tag the `<%= version.to_patch %>` version using the [`release` task]:
+- [ ] Tag the `<%= version.to_patch %>` version using the [`release` command]:
 
       ```sh
-      SECURITY=true bundle exec rake "release[<%= version.to_patch %>]"
+      # In Slack
+      /chatops run release --security <%= version.to_patch %>
       ```
 - [ ] Check that [EE packages are built] and [CE packages are built]
 
@@ -125,7 +126,7 @@ For references:
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
 
-[`release` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
+[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#release
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 
 [staging.gitlab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
