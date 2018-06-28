@@ -136,6 +136,9 @@ An issue created with this Rake task has the following properties:
 
 ```sh
 bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
+
+# Do not create the issue, but output the final description
+TEST=true bundle exec rake "qa_issue[v11.0.0-rc12,v11.0.0-rc13,11.0.0-rc13]"
 ```
 
 ## `release[version]`

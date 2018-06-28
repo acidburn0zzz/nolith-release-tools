@@ -5,7 +5,7 @@ require_relative '../issue'
 
 module Qa
   module Services
-    class QaIssueService
+    class BuildQaIssueService
       attr_reader :version, :from, :to, :issue_project, :projects
 
       def initialize(version:, from:, to:, issue_project:, projects:)
@@ -17,8 +17,6 @@ module Qa
       end
 
       def execute
-        issue.create
-
         issue
       end
 
@@ -42,12 +40,6 @@ module Qa
 
         IssuableOmitterByLabels.new(merge_requests, Qa::UNPERMITTED_LABELS)
           .execute
-      end
-
-      private
-
-      def sort_merge_requests
-        raise NotImplementedError
       end
     end
   end
