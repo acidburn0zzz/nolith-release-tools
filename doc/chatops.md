@@ -31,6 +31,10 @@ All `run` commands take a `--help` flag that details their available options.
 
 Tags the specified version.
 
+> NOTE: If for some reason the ChatOps command isn't working as expected, you
+> can run the equivalent [`rake release`](./rake-tasks.md#releaseversion)
+> command locally.
+
 #### Options
 
 | flag         | description                                                           |
