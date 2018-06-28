@@ -92,7 +92,7 @@ end
 desc "Create a QA issue"
 task :qa_issue, [:from, :to, :version] do |_t, args|
   version = get_version(args)
-  issue = Qa::Services::QaIssueService.new(
+  issue = Qa::Services::BuildQaIssueService.new(
     version: version,
     from: args[:from],
     to: args[:to],
