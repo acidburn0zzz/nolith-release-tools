@@ -6,7 +6,7 @@ describe Services::UpstreamMergeService do
   let(:upstream_merge) { double(execute!: []) }
 
   around do |example|
-    Timecop.freeze(2017, 11, 15) do
+    Timecop.freeze('2017-11-15 18:12 UTC') do
       example.run
     end
   end
