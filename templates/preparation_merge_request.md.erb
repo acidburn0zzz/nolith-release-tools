@@ -25,9 +25,9 @@ Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requ
 1. Leave a note in the MR so others can easily see that it is on track to be included in a release.
   - Remove the <%= PickIntoLabel.for(version) %> label.
 1. If there are any conflicts while picking MRs then attempt to resolve them; otherwise, create a new MR against the `<%= preparation_branch_name %>` branch and assign it to the author of the conflicting files.
-1. Merge CE-to-EE using one of the workflows described in the [Merge CE stable changes to EE docs](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
+1. Merge CE-to-EE using one of the workflows described in the [Merge CE stable changes to EE docs](https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
   - *Note: Often, after a release has been tagged, the `VERSION` file in `ee` will have a conflict. Accept the `-ee` one*
-1. Once this MR is green merge it to stable, preferably with a manual fast-forward merge to minimize waiting time, as described in [Merging preparation MRs into stable](https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
+1. Once this MR is green merge it to stable, preferably with a manual fast-forward merge to minimize waiting time, as described in [Merging preparation MRs into stable](https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#merging-preparation-mrs-into-stable)
 
 ### Checklist
 
