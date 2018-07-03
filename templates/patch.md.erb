@@ -30,7 +30,7 @@
 
   ```sh
   # In Slack
-  /chatops run release <%= version %>
+  /chatops run tag <%= version %>
   ```
 - [ ] While waiting for packages to build, now is a good time to [prepare the blog post]. Look at previous MRs for examples. => BLOG_POST_MR
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>).
@@ -38,7 +38,7 @@
     - We only need the EE packages to finish to continue with next steps.
 
 
-[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#release
+[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 [prepare the blog post]: https://about.gitlab.com/handbook/marketing/blog/release-posts/#release-posts
 
 ## Deploy

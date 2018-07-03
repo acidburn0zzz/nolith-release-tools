@@ -27,7 +27,7 @@ All `run` commands take a `--help` flag that details their available options.
 
 ## Commands
 
-### `release`
+### `tag`
 
 Tags the specified version.
 
@@ -39,16 +39,16 @@ Tags the specified version.
 
 | flag         | description                                                       |
 | ----         | -----------                                                       |
-| `--security` | Perform a [security release](./rake-tasks.md#tag_securityversion) |
+| `--security` | Perform a [security tagging](./rake-tasks.md#tag_securityversion) |
 
 #### Examples
 
 ```
-/chatops run release 11.0.0-rc10
+/chatops run tag 11.0.0-rc10
 
-/chatops run release 11.0.1
+/chatops run tag 11.0.1
 
-/chatops run release --security 11.0.2
+/chatops run tag --security 11.0.2
 ```
 
 ## Technical details

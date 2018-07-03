@@ -27,7 +27,7 @@
 
       ```sh
       # In Slack
-      /chatops run release --security <%= version.to_patch %>
+      /chatops run tag --security <%= version.to_patch %>
       ```
 - [ ] Check that [EE packages are built] and [CE packages are built]
 
@@ -126,7 +126,7 @@ For references:
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
 
-[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#release
+[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 [`patch_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
 
 [staging.gitlab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab

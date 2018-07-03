@@ -30,13 +30,13 @@
 
   ```sh
   # In Slack
-  /chatops run release <%= version %>
+  /chatops run tag <%= version %>
   ```
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
     - This might take a while (around 80 min).
     - We only need the EE packages to finish to continue with next steps.
 
-[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#release
+[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 
 ## Deploy
 

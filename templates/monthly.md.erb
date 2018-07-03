@@ -112,7 +112,7 @@ No new code can added to the release that was not included in the final RC.
 
         ```sh
         # In Slack
-        /chatops run release <%= version.to_patch %>
+        /chatops run tag <%= version.to_patch %>
         ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
   - [ ] Warm up the packages on takeoff by running:
@@ -156,7 +156,7 @@ No new code can added to the release that was not included in the final RC.
 [Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [announce the deployment]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
-[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#release
+[`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [canary.gitlab.com]: https://canary.gitlab.com/
