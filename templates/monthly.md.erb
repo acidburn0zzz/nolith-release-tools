@@ -2,6 +2,25 @@
 
 Stable branch should be created after the 7th. The 7th is the last date to reliably get things in.
 
+- [ ] Assign this issue to all the [release managers and trainees](https://about.gitlab.com/release-managers/)
+- [ ] Create a new slack channel `<%= Slack::Channel.for(version) %>`
+- [ ] Set the channel topic to `RMs: https://about.gitlab.com/release-managers`
+- [ ] Invite all current release managers
+- [ ] Inside the channel invite trainees to start their onboarding
+
+     ```
+     Welcome @TRAINEE_1 and @TRAINEE_2 :wave:
+     If you haven't done it already, please start your onboarding issue
+     https://gitlab.com/gitlab-org/release/docs/blob/master/quickstart/release-manager.md
+     Let us know if you have any questions!
+     ```
+- [ ] Inside the old release slack channel, notify about `<%= Slack::Channel.for(version) %>`
+
+     ```
+     Hello :wave:
+     We are starting <%= version.to_minor %> into <%= Slack::Channel.for(version) %>
+     Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
+     ```
 - [ ] Create the <%= PickIntoLabel.for(version) %> group label if it doesn't exist: https://gitlab.com/groups/gitlab-org/labels/new
   - Title: `Pick into <%= version.to_minor %>`
   - Description: ``Merge requests to cherry-pick into the `<%= version.stable_branch %>` branch.``
@@ -23,8 +42,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - Follow the [Creating RC1] guide:
   - [ ] Create an MR on **CE** master updating the "Installation from Source" guide, creating the "Update" guides
   - [ ] Create an MR on **EE** master creating the "CE to EE" guides
-  - [ ] Create an MR on **CE** master updating the `.gitignore`, `.gitlab-ci.yml`, and `Dockerfile` templates
-  - [ ] Create an MR on **CE** master updating the dependencies license list
   - [ ] Ensure the above MRs are merged and marked <%= PickIntoLabel.for(version) %>
   - [ ] Create a task list for RC1:
 
@@ -34,7 +51,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
       ```
   - [ ] Link the RC1 issue as a related issue in this issue
 
-[Creating RC1]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/release-candidates.md#creating-rc1
+[Creating RC1]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#creating-rc1
 
 ## Subsequent RCs
 
@@ -53,7 +70,13 @@ Keep in mind that:
    cherry-picked into stable branches.
 2. The final RC should point to the same commit as the final release.
 
-## On the 7th
+## On the first working day after the 7th
+- Follow the [Feature freeze RC] guide:
+  - [ ] Create an MR on **CE** master updating the `.gitignore`, `.gitlab-ci.yml`, and `Dockerfile` templates
+  - [ ] Create an MR on **CE** master updating the dependencies license list
+  - [ ] Ensure the above MRs are merged and marked <%= PickIntoLabel.for(version) %>
+  - [ ] Merge **CE** master into **EE** master
+  - [ ] Integrate changes from master into `<%= version.stable_branch %>`
 - [ ] In `#development`:
 
     ```
@@ -69,6 +92,8 @@ Keep in mind that:
     From now on, please follow the "After the 7th" process:
     https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
     ```
+
+[Feature freeze RC]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#feature-freeze-rc
 
 ## Final RC
 
@@ -162,6 +187,6 @@ No new code can added to the release that was not included in the final RC.
 [canary.gitlab.com]: https://canary.gitlab.com/
 [manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
-[getting help]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/monthly.md#getting-help
+[getting help]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/monthly.md#getting-help
 
 /milestone %"<%= version.to_minor %>"

@@ -31,6 +31,14 @@ describe MonthlyIssue do
 
       expect(content).to include("Tag the `8.3.0` version")
     end
+
+    it "includes the slack channel" do
+      issue = described_class.new(version: Version.new('8.3.0'))
+
+      content = issue.description
+
+      expect(content).to include('`#f_release_8_3`')
+    end
   end
 
   describe '#labels' do
