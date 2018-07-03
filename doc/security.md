@@ -1,6 +1,6 @@
 # Security Releases
 
-This documentation has been moved to <https://gitlab.com/gitlab-org/release/docs/blob/master/general/security.md>.
+This documentation has been moved to <https://gitlab.com/gitlab-org/release/docs/tree/master/general/security>.
 
 ---
 
