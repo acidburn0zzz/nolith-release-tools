@@ -91,7 +91,9 @@ end
 
 desc "Create a QA issue"
 task :qa_issue, [:from, :to, :version] do |_t, args|
-  version = get_version(args)
+  # Attempt to infer the version from the `to` ref
+  version = get_version(args.with_defaults(version: args[:to].sub(/\Av/, '')))
+
   issue = Qa::Services::BuildQaIssueService.new(
     version: version,
     from: args[:from],
