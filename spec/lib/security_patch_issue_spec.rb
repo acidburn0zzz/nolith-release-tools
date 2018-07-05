@@ -49,7 +49,7 @@ describe SecurityPatchIssue do
 
       content = issue.description
 
-      expect(content).to include '/chatops run release --security 8.3.1'
+      expect(content).to include '/chatops run tag --security 8.3.1'
     end
 
     it 'includes a step to publish the packages' do

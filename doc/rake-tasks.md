@@ -144,54 +144,6 @@ bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
 TEST=true bundle exec rake "qa_issue[v11.0.0-rc12,v11.0.0-rc13,11.0.0-rc13]"
 ```
 
-## `release[version]`
-
-This task will:
-
-1. Create the `X-Y-stable` and `X-Y-stable-ee` branches off the current
-   `master`s for CE and EE, respectively, if they don't yet exist.
-1. Update the `VERSION` file in both `stable` branches created above.
-1. Update changelogs for CE and EE
-1. Create the `v[version]` and `v[version]-ee` tags, pointing to the respective
-   branches created above.
-1. Push all newly-created branches and tags to all remotes.
-
-This task **will NOT**:
-
-1. Release the packages to the public, see [publishing-packages doc](doc/publishing-packages.md).
-1. Perform a [deploy](doc/release-manager.md#deployment)
-
-### Configuration
-
-| Option          | Purpose                                                    |
-| ------          | -------                                                    |
-| `CE=false`      | Skip CE release                                            |
-| `EE=false`      | Skip EE release                                            |
-| `TEST=true`     | Don't push anything to remotes; don't create issues        |
-| `SECURITY=true` | Treat this as a security release, using only `dev` remotes |
-
-### Examples
-
-```sh
-# Release 8.2 RC1:
-bundle exec rake "release[8.2.0-rc1]"
-
-# Release 8.2.3, but not for CE:
-CE=false bundle exec rake "release[8.2.3]"
-
-# Release 8.2.4, but not for EE:
-EE=false bundle exec rake "release[8.2.4]"
-
-# Don't push branches or tags to remotes:
-TEST=true bundle exec rake "release[8.2.1]"
-
-# Pull & push to `dev` only:
-SECURITY=true bundle exec rake "release[8.2.1]"
-
-# Output an issue body rather than creating one:
-TEST=true bundle exec rake "patch_issue[8.2.1]"
-```
-
 ## `release_managers:auth[username]`
 
 This task will check if the provided `gitlab.com` username is present in the
@@ -257,27 +209,6 @@ bundle exec rake "security_patch_issue[8.3.1]"
     https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
 ```
 
-## `security_release[version]`
-
-This task does the same as the `release[version]` task but force the
-`SECURITY=true` flag.
-
-### Examples
-
-```sh
-# Release 8.2 RC1:
-bundle exec rake "security_release[8.2.0-rc1]"
-
-# Release 8.2.3, but not for CE:
-CE=false bundle exec rake "security_release[8.2.3]"
-
-# Release 8.2.4, but not for EE:
-EE=false bundle exec rake "security_release[8.2.4]"
-
-# Don't push branches or tags to remotes:
-TEST=true bundle exec rake "security_release[8.2.1]"
-```
-
 ## `sync`
 
 This task ensures that the `master` branches for both CE and EE are in sync
@@ -299,6 +230,72 @@ the release process, you can safely skip this task.
 
 ```bash
 bundle exec rake sync
+```
+
+## `tag[version]`
+
+This task will:
+
+1. Create the `X-Y-stable` and `X-Y-stable-ee` branches off the current
+   `master`s for CE and EE, respectively, if they don't yet exist.
+1. Update the `VERSION` file in both `stable` branches created above.
+1. Update changelogs for CE and EE
+1. Create the `v[version]` and `v[version]-ee` tags, pointing to the respective
+   branches created above.
+1. Push all newly-created branches and tags to all remotes.
+
+This task **will NOT**:
+
+1. Release the packages to the public, see [publishing-packages doc](doc/publishing-packages.md).
+1. Perform a [deploy](doc/release-manager.md#deployment)
+
+### Configuration
+
+| Option          | Purpose                                                    |
+| ------          | -------                                                    |
+| `CE=false`      | Skip CE release                                            |
+| `EE=false`      | Skip EE release                                            |
+| `TEST=true`     | Don't push anything to remotes; don't create issues        |
+| `SECURITY=true` | Treat this as a security release, using only `dev` remotes |
+
+### Examples
+
+```sh
+# Tag 8.2 RC1:
+bundle exec rake "tag[8.2.0-rc1]"
+
+# Tag 8.2.3, but not for CE:
+CE=false bundle exec rake "tag[8.2.3]"
+
+# Tag 8.2.4, but not for EE:
+EE=false bundle exec rake "tag[8.2.4]"
+
+# Don't push branches or tags to remotes:
+TEST=true bundle exec rake "tag[8.2.1]"
+
+# Pull & push to `dev` only:
+SECURITY=true bundle exec rake "tag[8.2.1]"
+```
+
+## `tag_security[version]`
+
+This task does the same as the [`tag[version]`](#tagversion) task but forces the
+`SECURITY=true` flag.
+
+### Examples
+
+```sh
+# Tag 8.2 RC1:
+bundle exec rake "tag_security[8.2.0-rc1]"
+
+# Tag 8.2.3, but not for CE:
+CE=false bundle exec rake "tag_security[8.2.3]"
+
+# Tag 8.2.4, but not for EE:
+EE=false bundle exec rake "tag_security[8.2.4]"
+
+# Don't push branches or tags to remotes:
+TEST=true bundle exec rake "tag_security[8.2.1]"
 ```
 
 ## `upstream_merge`
