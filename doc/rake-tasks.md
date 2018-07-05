@@ -126,11 +126,14 @@ An issue created with this Rake task has the following properties:
 
 ### Arguments
 
-|           |                                                |
-| ------    | -----                                          |
-| `from`    | SHA, branch, or tag                            |
-| `to`      | SHA, branch, or tag                            |
-| `version` | Release version to be used for the issue title |
+| argument  | required | description                                      |
+| ------    | -----    | -----------                                      |
+| `from`    | yes      | SHA, branch, or tag                              |
+| `to`      | yes      | SHA, branch, or tag                              |
+| `version` | no       | Version used for the issue title and description |
+
+If no `version` argument is provided, it will be inferred from the `to`
+argument, for example `v11.1.0-rc5` will become `11.1.0-rc5`.
 
 ### Examples
 
