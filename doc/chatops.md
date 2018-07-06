@@ -27,6 +27,20 @@ All `run` commands take a `--help` flag that details their available options.
 
 ## Commands
 
+### `qa_issue`
+
+Create a QA issue with differences between two specified tags.
+
+> NOTE: If for some reason the ChatOps command isn't working as expected, you
+> can run the equivalent [`rake qa_issue`](./rake-tasks.md#qa_issuefromtoversion)
+> command locally.
+
+#### Examples
+
+```
+/chatops run qa_issue v11.1.0-rc1..v11.1.0-rc2
+```
+
 ### `tag`
 
 Tags the specified version.
