@@ -23,10 +23,10 @@ case $1 in
   "qa_issue")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "qa_issue[$RELEASE_VERSION]"
     ;;
-  "release")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "release[$RELEASE_VERSION]"
+  "tag")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "tag[$RELEASE_VERSION]"
     ;;
-  "security_release")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "security_release[$RELEASE_VERSION]"
+  "tag_security")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "tag_security[$RELEASE_VERSION]"
     ;;
 esac
