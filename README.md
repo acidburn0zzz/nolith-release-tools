@@ -13,6 +13,7 @@ Manager](doc/release-manager.md).
   documents the entire release process for developers, release managers, and the
   security and quality teams
 - [Rake tasks](doc/rake-tasks.md) contained in this project
+- [ChatOps triggers](doc/chatops.md) available from this project
 - [Issue templates](./templates) used for creating the release task lists
 
 ## Contributing

@@ -20,6 +20,9 @@ require_version
 setup_env
 
 case $1 in
+  "qa_issue")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "qa_issue[$RELEASE_VERSION]"
+    ;;
   "release")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "release[$RELEASE_VERSION]"
     ;;
