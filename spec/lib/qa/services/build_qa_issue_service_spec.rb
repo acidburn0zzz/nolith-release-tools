@@ -6,7 +6,7 @@ describe Qa::Services::BuildQaIssueService do
   let(:version) { Version.new('10.8.0-rc1') }
   let(:from) { 'v10.8.0-rc1' }
   let(:to) { '10-8-stable' }
-  let(:issue_project) { Project::ReleaseTasks }
+  let(:issue_project) { Project::Release::Tasks }
   let(:projects) do
     [
       Project::GitlabCe,
