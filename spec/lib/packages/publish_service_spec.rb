@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Packages::PublishService do
   describe '#execute' do
-    context 'when no pipeline exists', vcr: { cassette_name: 'packages/no_pipeline' }  do
+    context 'when no pipeline exists', vcr: { cassette_name: 'packages/no_pipeline' } do
       let(:version) { Version.new('83.7.2') }
 
       it 'raises PipelineNotFoundError' do

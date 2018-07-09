@@ -14,7 +14,7 @@ module Packages
       package-release
       image-release
       raspbian_release
-    ]
+    ].freeze
 
     def initialize(version)
       @ce_version = version.to_ce
