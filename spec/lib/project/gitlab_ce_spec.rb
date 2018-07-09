@@ -7,4 +7,8 @@ describe Project::GitlabCe do
   describe '.path' do
     it { expect(described_class.path).to eq 'gitlab-org/gitlab-ce' }
   end
+
+  describe '.group' do
+    it { expect(described_class.group).to eq 'gitlab-org' }
+  end
 end

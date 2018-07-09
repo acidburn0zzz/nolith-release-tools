@@ -9,11 +9,25 @@ module Project
     end
 
     def self.path
-      raise NotImplementedError
+      extract_path_from_remote(:gitlab).captures.join('/')
     end
 
     def self.group
-      'gitlab-org'
+      extract_path_from_remote(:gitlab)[:group]
     end
+
+    def self.extract_path_from_remote(remote_key)
+      raise "Invalid remote: #{remote_key}" unless self::REMOTES.key?(remote_key)
+
+      remote = self::REMOTES[remote_key]
+
+      if remote =~ /^.*:(?<group>.*)\/(?<project>[^\/]+)\.git$/
+        $LAST_MATCH_INFO
+      else
+        raise "Unable to extract path from #{remote}"
+      end
+    end
+
+    private_class_method :extract_path_from_remote
   end
 end
