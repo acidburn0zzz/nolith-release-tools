@@ -1,0 +1,271 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines?ref=11.1.0%2Brc4.ce.0&scope=tags
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:22 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '106'
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"fc8ba0b73f018401eb4bdb9fb8178dbc"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc4.ce.0&scope=tags&sort=desc>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc4.ce.0&scope=tags&sort=desc>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 8b89362b-7155-418f-81cd-04ea85ef6fe3
+      X-Runtime:
+      - '0.637397'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '[{"id":86193,"sha":"64a2fbb91119cb752a18d0bb24543b07adbe10c0","ref":"11.1.0+rc4.ce.0","status":"success"}]'
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:22 GMT
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines/86193/jobs?scope=manual
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:22 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"d751713988987e9331980363e24189ce"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86193/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86193&scope%5B%5D=manual>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86193/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86193&scope%5B%5D=manual>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 341ca603-1465-4870-aa7d-1c7acc4969d0
+      X-Runtime:
+      - '0.031107'
+      X-Total:
+      - '0'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:22 GMT
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines?ref=11.1.0%2Brc4.ce.0&scope=tags
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:23 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '106'
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"fc8ba0b73f018401eb4bdb9fb8178dbc"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc4.ce.0&scope=tags&sort=desc>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc4.ce.0&scope=tags&sort=desc>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - f122cb39-3427-437e-a9e4-52e2063ef974
+      X-Runtime:
+      - '0.622183'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '[{"id":86193,"sha":"64a2fbb91119cb752a18d0bb24543b07adbe10c0","ref":"11.1.0+rc4.ce.0","status":"success"}]'
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:23 GMT
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines/86193/jobs?scope=manual
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:23 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"d751713988987e9331980363e24189ce"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86193/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86193&scope%5B%5D=manual>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86193/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86193&scope%5B%5D=manual>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - d5d29e88-4c2f-413a-975b-3cc677256bc0
+      X-Runtime:
+      - '0.016983'
+      X-Total:
+      - '0'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:23 GMT
+recorded_with: VCR 2.9.3

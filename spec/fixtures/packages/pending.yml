@@ -1,0 +1,409 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines?ref=11.1.0%2Brc5.ce.0&scope=tags
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:19 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '106'
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"4b6f4041eff358d808ed23161f24b12c"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc5.ce.0&scope=tags&sort=desc>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc5.ce.0&scope=tags&sort=desc>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 6a2608f6-8f25-4d3f-8cd9-77672928701d
+      X-Runtime:
+      - '0.704439'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '[{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"}]'
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:19 GMT
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines/86362/jobs?scope=manual
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:20 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '22440'
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      - Origin
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"e46c6e0325c3e83eef38025c70a6111a"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86362/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86362&scope%5B%5D=manual>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86362/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86362&scope%5B%5D=manual>;
+        rel="last"
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 4a26f3cd-b39c-4f26-902b-0929175cc3a2
+      X-Runtime:
+      - '0.281596'
+      X-Total:
+      - '17'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '[{"id":2600292,"status":"manual","stage":"trigger-packages","name":"release:packages","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.933Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600293,"status":"manual","stage":"package-release","name":"Ubuntu-14.04-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.951Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600294,"status":"manual","stage":"package-release","name":"Ubuntu-16.04-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.970Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600295,"status":"manual","stage":"package-release","name":"Ubuntu-18.04-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.989Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600296,"status":"manual","stage":"package-release","name":"Debian-7-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.007Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600297,"status":"manual","stage":"package-release","name":"Debian-8-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.025Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600298,"status":"manual","stage":"package-release","name":"Debian-9.1-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.047Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600299,"status":"manual","stage":"package-release","name":"CentOS-6-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.068Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600300,"status":"manual","stage":"package-release","name":"CentOS-7-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.089Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600301,"status":"manual","stage":"package-release","name":"OpenSUSE-42.3-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.106Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600302,"status":"manual","stage":"package-release","name":"SLES-12-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.126Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600303,"status":"manual","stage":"trigger-images","name":"release:images","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.148Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600304,"status":"manual","stage":"image-release","name":"Docker-Release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.166Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600305,"status":"manual","stage":"image-release","name":"AWS","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.181Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600306,"status":"manual","stage":"image-release","name":"QA-Tag","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.199Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600308,"status":"manual","stage":"metrics","name":"upgrade","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.238Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600310,"status":"manual","stage":"raspbian_release","name":"Raspberry-Pi-2-Jessie-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.285Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null}]'
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:20 GMT
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines?ref=11.1.0%2Brc5.ce.0&scope=tags
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:21 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '106'
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"4b6f4041eff358d808ed23161f24b12c"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc5.ce.0&scope=tags&sort=desc>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines?id=gitlab%2Fomnibus-gitlab&order_by=id&page=1&per_page=20&ref=11.1.0%2Brc5.ce.0&scope=tags&sort=desc>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 50d8ceb6-dfd9-4dd6-8f98-af40612a6362
+      X-Runtime:
+      - '0.679090'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '[{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"}]'
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:21 GMT
+- request:
+    method: get
+    uri: https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/pipelines/86362/jobs?scope=manual
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.4.0
+      Private-Token:
+      - "[DEV_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 09 Jul 2018 22:00:21 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '22440'
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      - Origin
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"e46c6e0325c3e83eef38025c70a6111a"
+      Link:
+      - <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86362/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86362&scope%5B%5D=manual>;
+        rel="first", <https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus%2Dgitlab/pipelines/86362/jobs?id=gitlab%2Fomnibus-gitlab&page=1&per_page=20&pipeline_id=86362&scope%5B%5D=manual>;
+        rel="last"
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - aa6fc3bb-6b82-40af-9ff8-5444a298125b
+      X-Runtime:
+      - '0.235832'
+      X-Total:
+      - '17'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '[{"id":2600292,"status":"manual","stage":"trigger-packages","name":"release:packages","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.933Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600293,"status":"manual","stage":"package-release","name":"Ubuntu-14.04-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.951Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600294,"status":"manual","stage":"package-release","name":"Ubuntu-16.04-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.970Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600295,"status":"manual","stage":"package-release","name":"Ubuntu-18.04-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:48.989Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600296,"status":"manual","stage":"package-release","name":"Debian-7-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.007Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600297,"status":"manual","stage":"package-release","name":"Debian-8-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.025Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600298,"status":"manual","stage":"package-release","name":"Debian-9.1-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.047Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600299,"status":"manual","stage":"package-release","name":"CentOS-6-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.068Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600300,"status":"manual","stage":"package-release","name":"CentOS-7-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.089Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600301,"status":"manual","stage":"package-release","name":"OpenSUSE-42.3-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.106Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600302,"status":"manual","stage":"package-release","name":"SLES-12-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.126Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600303,"status":"manual","stage":"trigger-images","name":"release:images","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.148Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600304,"status":"manual","stage":"image-release","name":"Docker-Release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.166Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600305,"status":"manual","stage":"image-release","name":"AWS","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.181Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600306,"status":"manual","stage":"image-release","name":"QA-Tag","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.199Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600308,"status":"manual","stage":"metrics","name":"upgrade","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.238Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null},{"id":2600310,"status":"manual","stage":"raspbian_release","name":"Raspberry-Pi-2-Jessie-release","ref":"11.1.0+rc5.ce.0","tag":true,"coverage":null,"created_at":"2018-07-06T16:55:49.285Z","started_at":null,"finished_at":null,"duration":null,"user":{"id":443,"name":"GitLab
+        Release Tools Bot","username":"gitlab-release-tools-bot","state":"active","avatar_url":"https://dev.gitlab.org/uploads/-/system/user/avatar/443/ship-it-squirrel.png","web_url":"https://dev.gitlab.org/gitlab-release-tools-bot","created_at":"2018-05-21T19:59:15.157Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null},"commit":{"id":"484c423f425a247465d856c484a99d7561a014ef","short_id":"484c423f","title":"Update
+        VERSION to 11.1.0-rc5","created_at":"2018-07-06T16:55:40.000Z","parent_ids":["fcef4708b4d0dafbb9f3174e8abf72fb05f758f7"],"message":"Update
+        VERSION to 11.1.0-rc5\n","author_name":"GitLab Release Tools Bot","author_email":"robert+release-tools@gitlab.com","authored_date":"2018-07-06T16:55:40.000Z","committer_name":"GitLab
+        Release Tools Bot","committer_email":"robert+release-tools@gitlab.com","committed_date":"2018-07-06T16:55:40.000Z"},"pipeline":{"id":86362,"sha":"484c423f425a247465d856c484a99d7561a014ef","ref":"11.1.0+rc5.ce.0","status":"success"},"runner":null,"artifacts_expire_at":null}]'
+    http_version: 
+  recorded_at: Mon, 09 Jul 2018 22:00:21 GMT
+recorded_with: VCR 2.9.3
