@@ -1,5 +1,13 @@
 module Project
   class BaseProject
+    REMOTE_PATTERN = %r{
+      \A.*:
+      (?<group>.*)
+      \/
+      (?<project>[^\/]+)
+      \.git\z
+    }x
+
     def self.remotes
       if SharedStatus.security_release?
         self::REMOTES.slice(:dev)
@@ -29,7 +37,7 @@ module Project
 
       remote = self::REMOTES[remote_key]
 
-      if remote =~ /^.*:(?<group>.*)\/(?<project>[^\/]+)\.git$/
+      if remote =~ REMOTE_PATTERN
         $LAST_MATCH_INFO
       else
         raise "Unable to extract path from #{remote}"
