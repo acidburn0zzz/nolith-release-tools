@@ -12,8 +12,16 @@ module Project
       extract_path_from_remote(:gitlab).captures.join('/')
     end
 
+    def self.dev_path
+      extract_path_from_remote(:dev).captures.join('/')
+    end
+
     def self.group
       extract_path_from_remote(:gitlab)[:group]
+    end
+
+    def self.dev_group
+      extract_path_from_remote(:dev)[:group]
     end
 
     def self.extract_path_from_remote(remote_key)
