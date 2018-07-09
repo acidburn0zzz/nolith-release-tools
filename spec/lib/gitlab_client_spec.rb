@@ -3,6 +3,32 @@ require 'spec_helper'
 require 'gitlab_client'
 
 describe GitlabClient do
+  describe 'internal client delegates' do
+    let(:internal_client) { instance_double(Gitlab::Client) }
+
+    before do
+      allow(described_class).to receive(:client).and_return(internal_client)
+    end
+
+    it 'delegates .pipelines' do
+      expect(internal_client).to receive(:pipelines)
+
+      described_class.pipelines('foo', 'bar')
+    end
+
+    it 'delegates .pipeline_jobs' do
+      expect(internal_client).to receive(:pipeline_jobs)
+
+      described_class.pipeline_jobs('foo', 'bar')
+    end
+
+    it 'delegates .job_play' do
+      expect(internal_client).to receive(:job_play)
+
+      described_class.job_play('foo', 'bar')
+    end
+  end
+
   describe '.current_user' do
     it 'returns the current user', vcr: { cassette_name: 'current_user' } do
       expect(described_class.current_user).not_to be_nil

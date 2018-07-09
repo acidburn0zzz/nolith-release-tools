@@ -6,6 +6,15 @@ require_relative 'project/gitlab_ee'
 class GitlabClient
   DEFAULT_GITLAB_API_ENDPOINT = 'https://gitlab.com/api/v4'.freeze
 
+  # Some methods get delegated directly to the internal client
+  class << self
+    extend Forwardable
+
+    def_delegator :client, :pipelines
+    def_delegator :client, :pipeline_jobs
+    def_delegator :client, :job_play
+  end
+
   class MissingMilestone
     def id
       nil
