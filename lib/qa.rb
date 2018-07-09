@@ -1,5 +1,3 @@
-require_relative 'project/release_tasks'
-
 module Qa
   TEAM_LABELS = [
     'Discussion',
@@ -37,5 +35,5 @@ module Qa
     Project::GitlabEe
   ].freeze
 
-  ISSUE_PROJECT = Project::ReleaseTasks
+  ISSUE_PROJECT = Project::Release::Tasks
 end
