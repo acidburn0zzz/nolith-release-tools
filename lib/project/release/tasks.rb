@@ -1,13 +1,9 @@
 module Project
   module Release
     class Tasks < ::Project::BaseProject
-      def self.group
-        "#{super}/release"
-      end
-
-      def self.path
-        "#{group}/tasks"
-      end
+      REMOTES = {
+        gitlab: 'git@gitlab.com:gitlab-org/release/tasks.git'
+      }.freeze
     end
   end
 end

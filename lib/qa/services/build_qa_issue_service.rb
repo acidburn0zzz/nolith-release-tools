@@ -1,12 +1,11 @@
 require_relative '../ref'
 require_relative '../project_changeset'
-require_relative '../issuable_deduplicator'
 require_relative '../issuable_omitter_by_labels'
 require_relative '../issue'
 
 module Qa
   module Services
-    class QaIssueService
+    class BuildQaIssueService
       attr_reader :version, :from, :to, :issue_project, :projects
 
       def initialize(version:, from:, to:, issue_project:, projects:)
@@ -18,8 +17,6 @@ module Qa
       end
 
       def execute
-        issue.create
-
         issue
       end
 
@@ -36,15 +33,13 @@ module Qa
       end
 
       def merge_requests
-        all_mrs = changesets.map(&:merge_requests).flatten
-        uniq_mrs = IssuableDeduplicator.new(all_mrs).execute
-        IssuableOmitterByLabels.new(uniq_mrs, Qa::UNPERMITTED_LABELS).execute
-      end
+        merge_requests = changesets
+          .map(&:merge_requests)
+          .flatten
+          .uniq(&:id)
 
-      private
-
-      def sort_merge_requests
-        raise NotImplementedError
+        IssuableOmitterByLabels.new(merge_requests, Qa::UNPERMITTED_LABELS)
+          .execute
       end
     end
   end

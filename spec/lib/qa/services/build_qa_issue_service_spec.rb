@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-require 'qa/services/qa_issue_service'
+require 'qa/services/build_qa_issue_service'
 
-describe Qa::Services::QaIssueService do
+describe Qa::Services::BuildQaIssueService do
   let(:version) { Version.new('10.8.0-rc1') }
   let(:from) { 'v10.8.0-rc1' }
   let(:to) { '10-8-stable' }
-  let(:issue_project) { Project::ReleaseTasks }
+  let(:issue_project) { Project::Release::Tasks }
   let(:projects) do
     [
       Project::GitlabCe,
@@ -36,30 +36,20 @@ describe Qa::Services::QaIssueService do
       allow(subject).to receive(:issue).and_return(issue_double)
     end
 
-    shared_examples 'creates issue' do
-      before do
-        expect(issue_double).to receive(:create).once
-      end
-
-      it 'calls create' do
-        subject.execute
-      end
+    context 'remote issue already exists' do
+      let(:remote_issuable) { true }
 
       it 'returns the issue' do
         expect(subject.execute).to eq(issue_double)
       end
     end
 
-    context 'remote issue already exists' do
-      let(:remote_issuable) { true }
-
-      it_behaves_like 'creates issue'
-    end
-
     context 'remote issue does not exist' do
       let(:remote_issuable) { false }
 
-      it_behaves_like 'creates issue'
+      it 'returns the issue' do
+        expect(subject.execute).to eq(issue_double)
+      end
     end
   end
 

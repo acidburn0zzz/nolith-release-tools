@@ -16,8 +16,8 @@ unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || Loca
   abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
-desc "Create release"
-task :release, [:version] do |_t, args|
+desc "Tag a new GitLab release"
+task :tag, [:version] do |_t, args|
   version = get_version(args)
 
   if SharedStatus.security_release?
@@ -46,11 +46,15 @@ task :release, [:version] do |_t, args|
   end
 end
 
-desc "Create a security release"
-task :security_release, [:version] do |_t, args|
+desc "Tag a new GitLab security release"
+task :tag_security, [:version] do |_t, args|
   ENV['SECURITY'] = 'true'
-  Rake::Task[:release].invoke(args[:version])
+  Rake::Task[:tag].invoke(args[:version])
 end
+
+# For legacy reasons, alias `[security_]release` to `tag[_security]`
+task :release, [:version] => :tag
+task :security_release, [:version] => :tag_security
 
 desc "Sync master branch in remotes"
 task :sync do
@@ -91,8 +95,10 @@ end
 
 desc "Create a QA issue"
 task :qa_issue, [:from, :to, :version] do |_t, args|
-  version = get_version(args)
-  issue = Qa::Services::QaIssueService.new(
+  # Attempt to infer the version from the `to` ref
+  version = get_version(args.with_defaults(version: args[:to].sub(/\Av/, '')))
+
+  issue = Qa::Services::BuildQaIssueService.new(
     version: version,
     from: args[:from],
     to: args[:to],
@@ -165,11 +171,11 @@ namespace :release_managers do
   desc "Verify release manager authorization"
   task :auth, [:username] do |_t, args|
     unless args[:username].present?
-      raise "You must provide a username to verify!"
+      abort "You must provide a username to verify!"
     end
 
     unless ReleaseManagers::Definitions.allowed?(args[:username])
-      raise "#{args[:username]} is not an authorized release manager!"
+      abort "#{args[:username]} is not an authorized release manager!"
     end
   end
 

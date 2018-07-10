@@ -6,9 +6,5 @@ module Project
       dev: 'git@dev.gitlab.org:gitlab/omnibus-gitlab.git',
       gitlab: 'git@gitlab.com:gitlab-org/omnibus-gitlab.git'
     }.freeze
-
-    def self.path
-      "#{group}/omnibus-gitlab"
-    end
   end
 end

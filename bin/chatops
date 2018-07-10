@@ -20,7 +20,13 @@ require_version
 setup_env
 
 case $1 in
-  "release")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "release[$RELEASE_VERSION]"
+  "qa_issue")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "qa_issue[$RELEASE_VERSION]"
+    ;;
+  "tag")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "tag[$RELEASE_VERSION]"
+    ;;
+  "tag_security")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "tag_security[$RELEASE_VERSION]"
     ;;
 esac

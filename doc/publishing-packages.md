@@ -4,4 +4,4 @@ This documentation has been moved to <https://gitlab.com/gitlab-org/release/docs
 
 ---
 
-[Return to Guides](../README.md#guides)
+[Return to Documentation](../README.md#documentation)

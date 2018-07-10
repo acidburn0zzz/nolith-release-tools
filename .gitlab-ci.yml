@@ -6,7 +6,7 @@ stages:
   - automation
   - chatops
 
-cache:
+cache: &global-cache
   key: "ruby-24"
   paths:
     - vendor/ruby
@@ -100,6 +100,9 @@ release-managers:
     - bundle exec rake release_managers:sync
   only:
     - schedules
+  cache:
+    <<: *global-cache
+    policy: pull
 
 upstream-merge:
   <<: *with-bundle
@@ -112,6 +115,9 @@ upstream-merge:
     - bundle exec rake upstream_merge
   only:
     - schedules
+  cache:
+    <<: *global-cache
+    policy: pull
 
 # chatops ---------------------------------------------------------------------
 
@@ -126,3 +132,6 @@ chatops:
     - ./bin/chatops $TASK
   only:
     - triggers
+  cache:
+    <<: *global-cache
+    policy: pull
