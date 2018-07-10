@@ -3,37 +3,22 @@ require 'spec_helper'
 require 'version'
 
 describe HelmGitlabVersion do
-  def gitlab_version(version_string)
+  def version(version_string)
     described_class.new(version_string)
   end
 
-  def chart_version(version_string)
-    HelmChartVersion.new(version_string)
-  end
+  describe 'diff' do
+    it { expect(version('1.2.3').diff(version('1.2.2'))).to eq :patch }
+    it { expect(version('1.2.3').diff(version('1.1.12'))).to eq :minor }
+    it { expect(version('1.2.3').diff(version('0.12.12'))).to eq :major }
+    it { expect(version('1.2.3').diff(version('1.2.3-rc'))).to eq :rc }
+    it { expect(version('1.2.3').diff(version('1.2.3-rc2'))).to eq :rc }
+    it { expect(version('1.2.3-rc3').diff(version('1.2.3-rc1'))).to eq :rc }
 
-  describe "#new_chart_version" do
-    context 'old app version is "master"' do
-      it { expect(gitlab_version('10.8.1').new_chart_version('0.0.1', 'master')).to eq chart_version('0.0.2') }
-      it { expect(gitlab_version('10.8.0').new_chart_version('0.0.1', 'master')).to eq chart_version('0.1.0') }
-      it { expect(gitlab_version('11.0.0').new_chart_version('0.0.1', 'master')).to eq chart_version('1.0.0') }
-
-      it 'increases chart version for a gitlab rc update from a non-rc' do
-        expect(gitlab_version('11.0.0-rc1').new_chart_version('0.0.1', 'master')).to eq chart_version('1.0.0')
-      end
-    end
-
-    context 'old app version is a valid gitlab version' do
-      it { expect(gitlab_version('10.8.1').new_chart_version('0.0.1', '10.8.0')).to eq chart_version('0.0.2') }
-      it { expect(gitlab_version('10.8.1').new_chart_version('0.0.1', '10.7.5')).to eq chart_version('0.1.0') }
-      it { expect(gitlab_version('11.1.5').new_chart_version('0.0.1', '10.8.5')).to eq chart_version('1.0.0') }
-
-      it 'ignores chart version changes when gitlab RC version has been bumped' do
-        expect(gitlab_version('11.0.0-rc2').new_chart_version('0.0.1', '11.0.0-rc1')).to eq chart_version('0.0.1')
-      end
-
-      it 'ignores chart version changes when gitlab have been update off of an RC' do
-        expect(gitlab_version('11.0.0').new_chart_version('0.0.1', '11.0.0-rc1')).to eq chart_version('0.0.1')
-      end
-    end
+    it { expect(version('1.2.3-rc1').diff(version('1.2.3-rc3'))).to eq :rc }
+    it { expect(version('1.2.3').diff(version('1.2.4-rc'))).to eq :patch }
+    it { expect(version('1.2.3').diff(version('1.2.4'))).to eq :patch }
+    it { expect(version('1.2.3').diff(version('1.3.8'))).to eq :minor }
+    it { expect(version('1.2.3').diff(version('2.0.8'))).to eq :major }
   end
 end

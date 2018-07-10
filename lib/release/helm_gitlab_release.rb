@@ -1,6 +1,7 @@
 require_relative 'base_release'
 require_relative '../project/helm_gitlab'
 require_relative '../helm/chart_file'
+require_relative '../helm/version_manager'
 require_relative '../helm_gitlab_version'
 require_relative '../helm_chart_version'
 
@@ -8,7 +9,7 @@ module Release
   class HelmGitlabRelease < BaseRelease
     attr_reader :gitlab_version
 
-    def initialize(version, gitlab_version, opts = {})
+    def initialize(version, gitlab_version = nil, opts = {})
       @version = version_class.new(version) if version
       @gitlab_version = HelmGitlabVersion.new(gitlab_version) if gitlab_version
       @options = opts
@@ -22,12 +23,16 @@ module Release
       Project::HelmGitlab.remotes
     end
 
+    def version_manager
+      @version_manager ||= Helm::VersionManager.new(repository)
+    end
+
     private
 
     def prepare_release
       $stdout.puts "Prepare repository...".colorize(:green)
       repository.pull_from_all_remotes('master')
-      populate_version
+      @version = version_manager.next_version(gitlab_version) unless @version
       repository.ensure_branch_exists(stable_branch)
       repository.pull_from_all_remotes(stable_branch)
     end
@@ -39,7 +44,7 @@ module Release
       push_ref('branch', 'master')
 
       # Do not tag when passed a RC gitlab version
-      unless chart_file.app_version.rc?
+      unless version_manager.parse_chart_file.app_version.rc?
         create_tag(tag)
         push_ref('tag', tag)
       end
@@ -76,7 +81,8 @@ module Release
       repository.ensure_branch_exists('master')
       repository.pull_from_all_remotes('master')
 
-      if chart_file.version < version
+      # Only update master to newer versions
+      if version_manager.parse_chart_file.version < version
         bump_version(version)
         push_ref('branch', 'master')
       end
@@ -91,43 +97,6 @@ module Release
 
         [cmd_output, $CHILD_STATUS]
       end
-    end
-
-    def chart_file
-      Helm::ChartFile.new(File.join(repository.path, 'Chart.yaml'))
-    end
-
-    def populate_version
-      return if version && version.valid?
-
-      # The 11.0.0 release marks the beta release of the charts.
-      # We will bump the chart version from 0.1.x to 0.2.0 for the beta, instead of
-      # bumping to 1.0.0
-      if gitlab_version <= HelmGitlabVersion.new('11.0.0')
-        return @version = HelmChartVersion.new('0.2.0')
-      end
-
-      # Use the previous tag to determine the old chart version for a patch release
-      if gitlab_version.patch?
-        tags = repository.tags(sort: '-v:refname')
-        base_branch = tags.first if tags
-      else
-        base_branch = 'master'
-      end
-
-      unless base_branch
-        raise StandardError.new("Failed to find a previous tag to determine chart version")
-      end
-
-      unless repository.fetch(base_branch)
-        raise StandardError.new("Failed to fetch #{base_branch} while trying to find previous chart version.")
-      end
-
-      repository.ensure_branch_exists(base_branch)
-
-      # Diff the old chart data with the new release to find the new chart version
-      chart = chart_file
-      @version = gitlab_version.new_chart_version(chart.version, chart.app_version)
     end
   end
 end

@@ -180,26 +180,21 @@ namespace :release_managers do
 end
 
 namespace :helm do
+  # Passing the gitlab_version is optional, if passed it updates the version of gitlab used in the chart
+  # If you pass the nil as the chart version to tag, but still pass the gitlab_version, the script will tag using
+  # an increment of the previous tagged release.
   desc "Create a chart release by passing in chart_version,gitlab_version"
-  task :release_chart_version, [:version, :gitlab_version] do |_t, args|
-    unless args[:version] || args[:gitlab_version]
-      $stdout.puts "Must specify a version".colorize(:red)
-      exit 1
-    end
-
+  task :tag_chart, [:version, :gitlab_version] do |_t, args|
     version = HelmChartVersion.new(args[:version]) if args[:version]
     gitlab_version = HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version]
-    if (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
+
+    # At least one of the versions must be provided in order to tag
+    if (!version && !gitlab_version) || (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
       $stdout.puts "Version number must be in the following format: X.Y.Z".colorize(:red)
       exit 1
     end
 
     $stdout.puts 'Chart release'.colorize(:blue)
     Release::HelmGitlabRelease.new(version, gitlab_version).execute
-  end
-
-  desc "Create a chart release by passing the gitlab_version"
-  task :release_chart, [:gitlab_version] do |_t, args|
-    Rake::Task["helm:release_chart_version"].invoke(nil, args[:gitlab_version])
   end
 end

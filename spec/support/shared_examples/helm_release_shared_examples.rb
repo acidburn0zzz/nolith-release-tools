@@ -1,6 +1,4 @@
-RSpec.shared_examples 'helm-release #execute' do |tag|
-  tag = true if tag.nil?
-
+RSpec.shared_examples 'helm-release #execute' do |expect_tag: true|
   def execute(branch)
     release.execute
     repository.checkout(branch)
@@ -8,8 +6,8 @@ RSpec.shared_examples 'helm-release #execute' do |tag|
 
   it 'creates a new branch and updates the version and appVersion in Chart.yaml, and a new tag' do
     expect(release).to receive(:bump_version).with(expected_chart_version, gitlab_version).once do
-      original_chartfile = release.method(:chart_file)
-      allow(release).to receive(:chart_file) do
+      original_chartfile = release.version_manager.method(:parse_chart_file)
+      allow(release.version_manager).to receive(:parse_chart_file) do
         next original_chartfile.call unless repository.head.name == "refs/heads/#{branch}"
         instance_double(
           "ChartFile",
@@ -24,7 +22,7 @@ RSpec.shared_examples 'helm-release #execute' do |tag|
 
     aggregate_failures do
       expect(repository.head.name).to eq "refs/heads/#{branch}"
-      if tag
+      if expect_tag
         expect(repository.tags["v#{expected_chart_version}"]).not_to be_nil
       else
         expect(repository.tags["v#{expected_chart_version}"]).to be_nil
