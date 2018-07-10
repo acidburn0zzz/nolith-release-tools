@@ -16,25 +16,29 @@ describe Packages::PublishService do
     context 'when one pipeline exists' do
       # EE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86357
       # CE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86362
-      context 'and there are manual jobs', vcr: { cassette_name: 'packages/pending' } do
+      context 'and there are manual jobs', :silence_stdout, vcr: { cassette_name: 'packages/pending' } do
         let(:version) { Version.new('11.1.0-rc5') }
 
         it 'plays all jobs in a release stage' do
           service = described_class.new(version)
 
-          allow(GitlabDevClient).to receive(:pipelines).and_call_original
-          allow(GitlabDevClient).to receive(:pipeline_jobs).and_call_original
+          client = service.send(:client)
+          allow(client).to receive(:pipelines).and_call_original
+          allow(client).to receive(:pipeline_jobs).and_call_original
 
           # CE and EE for this version each have 14 release jobs
-          expect(GitlabDevClient).to receive(:job_play).exactly(14 * 2).times
+          expect(client).to receive(:job_play).exactly(14 * 2).times
 
-          service.execute
+          # Unset the `TEST` environment so we call the stubbed `job_play`
+          ClimateControl.modify(TEST: nil) do
+            service.execute
+          end
         end
       end
 
       # EE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86189
       # CE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86193
-      context 'and there are no manual jobs', vcr: { cassette_name: 'packages/released' } do
+      context 'and there are no manual jobs', :silence_stderr, vcr: { cassette_name: 'packages/released' } do
         let(:version) { Version.new('11.1.0-rc4') }
 
         it 'does not play any job' do

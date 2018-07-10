@@ -37,9 +37,21 @@ module Packages
           .pipeline_jobs(project_path, pipeline.id, scope: :manual)
           .select { |job| PLAY_STAGES.include?(job.stage) }
 
-        # TODO (rspeicher): How should we handle a case where `triggers` is empty?
-        triggers.each do |job|
-          client.job_play(project_path, job.id)
+        if triggers.any?
+          $stdout.puts "--> #{version}"
+
+          triggers.each do |job|
+            if SharedStatus.dry_run?
+              $stdout.puts "    #{job.name}: #{job_url(job).colorize(:yellow)}"
+            else
+              $stdout.puts "    #{job.name}: #{job_url(job).colorize(:green)}"
+              client.job_play(project_path, job.id)
+            end
+          end
+
+          $stdout.puts
+        else
+          warn "Nothing to be done for #{version}: #{pipeline_url(pipeline)}"
         end
       end
     end
@@ -52,6 +64,14 @@ module Packages
 
     def client
       @client ||= GitlabDevClient
+    end
+
+    def job_url(job)
+      "https://dev.gitlab.org/#{project_path}/-/jobs/#{job.id}"
+    end
+
+    def pipeline_url(pipeline)
+      "https://dev.gitlab.org/#{project_path}/pipelines/#{pipeline.id}"
     end
   end
 end
