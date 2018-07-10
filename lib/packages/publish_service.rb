@@ -2,7 +2,7 @@ module Packages
   class PublishService
     class PipelineNotFoundError < StandardError
       def initialize(version)
-        super("Pipeline not found for #{version.to_omnibus}")
+        super("Pipeline not found for #{version}")
       end
     end
 
@@ -17,8 +17,8 @@ module Packages
     ].freeze
 
     def initialize(version)
-      @ce_version = version.to_ce
-      @ee_version = version.to_ee
+      @ce_version = version.to_omnibus(ee: false)
+      @ee_version = version.to_omnibus(ee: true)
 
       @project = Project::OmnibusGitlab
     end
@@ -27,7 +27,7 @@ module Packages
       [ee_version, ce_version].each do |version|
         # TODO (rspeicher): Should we warn if there's more than one result for this?
         pipeline = client
-          .pipelines(project_path, scope: :tags, ref: version.to_omnibus)
+          .pipelines(project_path, scope: :tags, ref: version)
           .first
 
         raise PipelineNotFoundError.new(version) unless pipeline
