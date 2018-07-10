@@ -13,6 +13,7 @@ module Packages
     PLAY_STAGES = %w[
       package-release
       image-release
+      raspbian-release
       raspbian_release
     ].freeze
 
