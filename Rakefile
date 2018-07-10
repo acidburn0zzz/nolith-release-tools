@@ -191,8 +191,8 @@ namespace :helm do
   # an increment of the previous tagged release.
   desc "Create a chart release by passing in chart_version,gitlab_version"
   task :tag_chart, [:version, :gitlab_version] do |_t, args|
-    version = HelmChartVersion.new(args[:version]) if args[:version]
-    gitlab_version = HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version]
+    version = HelmChartVersion.new(args[:version]) if args[:version] && !args[:version].empty?
+    gitlab_version = HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version] && !args[:gitlab_version].empty?
 
     # At least one of the versions must be provided in order to tag
     if (!version && !gitlab_version) || (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
