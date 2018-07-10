@@ -201,3 +201,12 @@ namespace :helm do
     Release::HelmGitlabRelease.new(version, gitlab_version).execute
   end
 end
+
+desc "Publish packages for a specified version"
+task :publish, [:version] do |_t, args|
+  version = get_version(args)
+
+  Packages::PublishService
+    .new(version)
+    .execute
+end
