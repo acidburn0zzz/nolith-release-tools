@@ -68,7 +68,7 @@ describe Qa::Issue do
 
       it "includes the MR information" do
         expect(@content).to include('Import/Export (import) is broken due to the addition of a CI table')
-        expect(@content).to include('https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/18745')
+        expect(@content).to include('gitlab-org/gitlab-ce!18745')
       end
 
       it "includes the MR author" do

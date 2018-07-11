@@ -5,6 +5,15 @@ module Qa
     class MergeRequestsFormatter
       STARTING_TITLE_DEPTH = 3
       SUBHEADING_SEPARATOR = "\n\n----\n\n".freeze
+      URL_PATTERN = %r{
+        \A
+        https?://
+        [^/]+/
+        (?<full_path>.+)
+        /merge_requests/
+        (?<iid>\d+)
+        \/?$
+      }x
 
       def initialize(sorted_merge_requests)
         @merge_requests = sorted_merge_requests
@@ -39,11 +48,19 @@ module Qa
       end
 
       def mr_line(mr)
-        "- [ ] #{username_to_mention(mr)} | [#{mr.title}](#{mr.web_url}) #{format_labels(mr.labels)}"
+        reference = web_url_to_reference(mr.web_url)
+
+        "- [ ] #{username_to_mention(mr)} | [#{mr.title}](#{reference}) #{format_labels(mr.labels)}"
       end
 
       def username_to_mention(mr)
         UsernameExtractor.new(mr).extract_username
+      end
+
+      def web_url_to_reference(web_url)
+        return web_url unless URL_PATTERN.match(web_url)
+
+        "#{$LAST_MATCH_INFO[:full_path]}!#{$LAST_MATCH_INFO[:iid]}"
       end
 
       def format_labels(labels)
