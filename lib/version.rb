@@ -32,7 +32,7 @@ class Version < String
         (major >= other.major && minor >= other.minor && patch > other.patch) ||
         (major >= other.major && minor >= other.minor && patch >= other.patch && other.rc?)
 
-      rc? ? (rc - other.rc) : 1
+      rc? && other.rc? ? (rc - other.rc) : 1
     else
       -1
     end
