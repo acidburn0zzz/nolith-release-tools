@@ -186,9 +186,6 @@ namespace :release_managers do
 end
 
 namespace :helm do
-  # Passing the gitlab_version is optional, if passed it updates the version of gitlab used in the chart
-  # If you pass the nil as the chart version to tag, but still pass the gitlab_version, the script will tag using
-  # an increment of the previous tagged release.
   desc "Create a chart release by passing in chart_version,gitlab_version"
   task :tag_chart, [:version, :gitlab_version] do |_t, args|
     version = HelmChartVersion.new(args[:version]) if args[:version] && !args[:version].empty?
