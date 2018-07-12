@@ -128,7 +128,9 @@ $ bundle exec rake 'publish[11.1.0-rc4]'
 
 Nothing to be done for 11.1.0+rc4.ee.0: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86189
 Nothing to be done for 11.1.0+rc4.ce.0: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86193
+```
 
+```sh
 $ bundle exec rake "publish[11.1.0-rc5]"
 
 --> 11.1.0+rc5.ee.0
