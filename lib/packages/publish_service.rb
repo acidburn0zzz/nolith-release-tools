@@ -26,7 +26,6 @@ module Packages
 
     def execute
       [ee_version, ce_version].each do |version|
-        # TODO (rspeicher): Should we warn if there's more than one result for this?
         pipeline = client
           .pipelines(project_path, scope: :tags, ref: version)
           .first
