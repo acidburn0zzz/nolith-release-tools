@@ -51,7 +51,7 @@ end
 
 def mr_string(merge_request)
   labels = merge_request.labels.map { |l| "~\"#{l}\"" }.join(' ')
-  "- [ ] @#{merge_request.author.username} | [#{merge_request.title}](#{merge_request.web_url}) #{labels}"
+  "- [ ] @#{merge_request.author.username} | [#{merge_request.title}](gitlab-org/gitlab-ce!1234) #{labels}"
 end
 
 def mr_double(identifier, labels)
@@ -63,7 +63,7 @@ def mr_double(identifier, labels)
     "assignee" => double("username" => "mr1_assignee"),
     "sha" => "mr1_sha",
     "merge_commit_sha" => "mr1_merge_commit_sha",
-    "web_url" => "mr1_web_url",
+    "web_url" => "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/1234",
     "merged_by" => double("username": "mr1_merged_by")
   )
 end
