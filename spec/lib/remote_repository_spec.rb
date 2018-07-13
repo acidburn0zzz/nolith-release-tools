@@ -290,6 +290,26 @@ describe RemoteRepository do
     end
   end
 
+  describe '#tags', :silence_stdout do
+    subject { described_class.get(repo_remotes) }
+
+    it 'calls "git tag --list"' do
+      allow(subject).to receive(:fetch).and_return true
+      expect(subject).to receive(:run_git).with(%w[tag --list]).and_call_original
+
+      subject.tags
+    end
+
+    context 'when :sort is set' do
+      it 'sorts tags by the given format' do
+        allow(subject).to receive(:fetch).and_return true
+        expect(subject).to receive(:run_git).with(%w[tag --list --sort='-v:refname']).and_call_original
+
+        subject.tags(sort: '-v:refname')
+      end
+    end
+  end
+
   describe '#status', :silence_stdout do
     subject { described_class.get(repo_remotes) }
 

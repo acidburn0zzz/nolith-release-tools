@@ -101,6 +101,17 @@ class RemoteRepository
     GitCommandResult.new(*run_git(cmd))
   end
 
+  def tags(sort: nil, remote: canonical_remote.name)
+    fetch('refs/tags/*', remote: remote)
+
+    cmd = %w[tag --list]
+    cmd << "--sort='#{sort}'" if sort
+
+    output, status = run_git(cmd)
+
+    output.lines.map(&:chomp) if status.success?
+  end
+
   def status(short: false)
     cmd = %w[status]
     cmd << '--short' if short

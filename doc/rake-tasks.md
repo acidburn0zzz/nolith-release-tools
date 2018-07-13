@@ -298,6 +298,65 @@ EE=false bundle exec rake "tag_security[8.2.4]"
 TEST=true bundle exec rake "tag_security[8.2.1]"
 ```
 
+## `helm:tag_chart[version,gitlab_version]`
+
+This task will:
+
+1. Create the `X-Y-stable` branch off the current `master` using the
+   `version` argument, if the branch doesn't yet exist.
+1. Runs the `bump_version` script in the `charts/gitlab` repo; passing the
+   `version`, and `gitlab_version` (if provided) for the branches above.
+1. Create the `v[version]` tag, pointing to the respective branch created above.
+   But only if the `gitlab_version` is not an RC. (we currently don't tag RC charts)  
+1. Push all newly-created branches and tags to all remotes.
+1. Runs the `bump_version` script in the master branch, only passing the
+   `version`. And only running if `version` is
+   newer than what is already in master.
+1. Pushes the master branch to all remotes.
+
+Details on the chart version scheme can be found
+in the `charts/gitlab` repo's [release documentation](https://gitlab.com/charts/gitlab/blob/master/doc/development/release.md)
+
+### Arguments
+
+| argument         | required | description                                      |
+| ------           | -----    | -----------                                      |
+| `version`        | yes      | Chart version to tag                             |
+| `gitlab_version` | no       | GitLab image version to use in the branch        |
+
+If `gitlab_version` is provided, the version of GitLab used in the chart will be
+updated before tagging.
+
+If `version` is empty, but a valid `gitlab_version` has been provided, then the
+script will tag using an increment of the previous tagged release. This scenario
+is only intended to be used by CI release automation, where it is being run in a
+project that is only aware of the desired GitLab Version.
+
+### Configuration
+
+| Option          | Purpose                                |
+| ------          | -------                                |
+| `TEST=true`     | Don't push anything to remotes         |
+
+### Examples
+
+```sh
+# Create 0-3-stable branch, but don't tag, for testing using 11.1 RC1:
+bundle exec rake "helm:tag_chart[0.3.0,11.1.0-rc1]"
+
+# Tag 0.3.1, and include GitLab Version 11.1.1
+bundle exec rake "helm:tag_chart[0.3.1,11.1.1]"
+
+# Tag 0.3.2, but don't change the GitLab version:
+bundle exec rake "helm:tag_chart[0.3.2]"
+
+# Don't push branches or tags to remotes:
+TEST=true bundle exec rake "helm:tag_chart[0.3.3]"
+
+# Tag using an increment of the last tag, and update the GitLab version
+bundle exec rake "helm:tag_chart[,11.1.2]"
+```
+
 ## `upstream_merge`
 
 This task will:

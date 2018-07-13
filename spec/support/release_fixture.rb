@@ -97,6 +97,52 @@ class OmnibusReleaseFixture
   end
 end
 
+class HelmReleaseFixture
+  include RepositoryFixture
+
+  def self.repository_name
+    'helm-release'
+  end
+
+  def build_fixture(options = {})
+    commit_blob(path: 'README.md', content: '', message: 'Add empty README.md')
+
+    chart_data = <<~EOS
+      apiVersion: v1
+      name: gitlab
+      version: 0.1.7
+      appVersion: 11.0.5
+    EOS
+
+    commit_blob(path: 'Chart.yaml', content: chart_data, message: 'Add chart yaml')
+
+    repository.branches.create('0-1-stable', 'HEAD')
+    repository.tags.create('v0.1.7', 'HEAD')
+
+    chart_data = <<~EOS
+      apiVersion: v1
+      name: gitlab
+      version: 0.2.0
+      appVersion: 11.1.0
+    EOS
+
+    commit_blob(path: 'Chart.yaml', content: chart_data, message: 'Update chart yaml')
+
+    repository.branches.create('0-2-stable', 'HEAD')
+    repository.tags.create('v0.2.0', 'HEAD')
+
+    # Bump the versions in master
+    chart_data = <<~EOS
+      apiVersion: v1
+      name: gitlab
+      version: 0.2.0
+      appVersion: master
+    EOS
+
+    commit_blob(path: 'Chart.yaml', content: chart_data, message: 'Update chart yaml to master')
+  end
+end
+
 if $PROGRAM_NAME == __FILE__
   puts "Building release fixture..."
   ReleaseFixture.new.rebuild_fixture!
