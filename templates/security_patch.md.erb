@@ -80,7 +80,11 @@
 ### Release
 
 - [ ] This section should be done in coordination with the Security team, so **make sure to confirm with them before proceeding**
-- [ ] From the [build pipeline], [manually publish public packages]
+- [ ] Publish the packages via ChatOps:
+  ```
+  # In Slack
+  /chatops run publish <%= version %>
+  ```
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
 - [ ] Push `ce/<%= version.stable_branch %>` to all remotes
 - [ ] Push `ee/<%= version.stable_branch(ee: true) %>` to all remotes
@@ -104,8 +108,6 @@ For references:
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
-[build pipeline]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines?scope=tags
-[manually publish public packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md
 [omnibus-stable-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch %>/CHANGELOG.md
 [omnibus-stable-ee-changelog]: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/<%= version.stable_branch(ee: true) %>/CHANGELOG.md
 
@@ -134,5 +136,3 @@ For references:
 [GitLab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 
 [publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
-
-[publish the packages]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/publishing-packages.md

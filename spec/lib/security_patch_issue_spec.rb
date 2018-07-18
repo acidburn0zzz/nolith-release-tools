@@ -57,7 +57,7 @@ describe SecurityPatchIssue do
 
       content = issue.description
 
-      expect(content).to include 'From the [build pipeline], [manually publish public packages]'
+      expect(content).to include '/chatops run publish 8.3.1'
     end
   end
 end
