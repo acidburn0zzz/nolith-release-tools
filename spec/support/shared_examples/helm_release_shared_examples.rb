@@ -1,4 +1,4 @@
-RSpec.shared_examples 'helm-release #execute' do |expect_tag: true|
+RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_master: true|
   def execute(branch)
     release.execute
     repository.checkout(branch)
@@ -16,7 +16,12 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true|
         )
       end
     end
-    expect(release).to receive(:bump_version).with(expected_chart_version).once
+
+    if expect_master
+      expect(release).to receive(:bump_version).with(expected_chart_version).once
+    else
+      expect(release).not_to receive(:bump_version).with(expected_chart_version)
+    end
 
     execute(branch)
 
