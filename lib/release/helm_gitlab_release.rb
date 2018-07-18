@@ -76,7 +76,7 @@ module Release
     end
 
     def commit_master_versions
-      return unless version.release?
+      return unless version_manager.parse_chart_file.app_version.release?
 
       repository.ensure_branch_exists('master')
       repository.pull_from_all_remotes('master')

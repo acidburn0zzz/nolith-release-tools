@@ -56,11 +56,11 @@ describe Release::HelmGitlabRelease, :silence_stdout do
       describe "update GitLab Chart" do
         let(:chart_version) { "0.3.0" }
 
-        it_behaves_like 'helm-release #execute', expect_tag: false
+        it_behaves_like 'helm-release #execute', expect_tag: false, expect_master: false
       end
 
       describe "update GitLab Chart by passing only gitlab version" do
-        it_behaves_like 'helm-release #execute', expect_tag: false
+        it_behaves_like 'helm-release #execute', expect_tag: false, expect_master: false
       end
     end
 
