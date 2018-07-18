@@ -111,6 +111,61 @@ bundle exec rake 'patch_merge_request[10.4.20]'
 
 [patch merge request template]: ../../templates/preparation_merge_request.md.erb
 
+## `publish[version]`
+
+This task will publish all available CE and EE packages for a specified version.
+
+### Configuration
+
+| Option      | Purpose                                |
+| ------      | -------                                |
+| `TEST=true` | Don't actually play the manual actions |
+
+### Examples
+
+``` sh
+$ bundle exec rake 'publish[11.1.0-rc4]'
+
+Nothing to be done for 11.1.0+rc4.ee.0: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86189
+Nothing to be done for 11.1.0+rc4.ce.0: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86193
+```
+
+```sh
+$ bundle exec rake "publish[11.1.0-rc5]"
+
+--> 11.1.0+rc5.ee.0
+    Ubuntu-14.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599976
+    Ubuntu-16.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599977
+    Ubuntu-18.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599978
+    Debian-7-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599979
+    Debian-8-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599980
+    Debian-9.1-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599981
+    CentOS-6-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599982
+    CentOS-7-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599983
+    OpenSUSE-42.3-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599984
+    SLES-12-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599985
+    Docker-Release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599987
+    AWS: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599988
+    QA-Tag: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599989
+    Raspberry-Pi-2-Jessie-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599993
+
+--> 11.1.0+rc5.ce.0
+    Ubuntu-14.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600293
+    Ubuntu-16.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600294
+    Ubuntu-18.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600295
+    Debian-7-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600296
+    Debian-8-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600297
+    Debian-9.1-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600298
+    CentOS-6-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600299
+    CentOS-7-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600300
+    OpenSUSE-42.3-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600301
+    SLES-12-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600302
+    Docker-Release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600304
+    AWS: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600305
+    QA-Tag: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600306
+    Raspberry-Pi-2-Jessie-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600310
+```
+
 ## `qa_issue[from,to,version]`
 
 This task will create an issue that lists the Merge Requests introduced between

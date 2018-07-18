@@ -27,6 +27,24 @@ All `run` commands take a `--help` flag that details their available options.
 
 ## Commands
 
+### `publish`
+
+Publishes packages for the specified version.
+
+> NOTE: If for some reason the ChatOps command isn't working as expected, you
+> can run the equivalent [`rake publish`](./rake-tasks.md#publishversion)
+> command locally.
+
+#### Examples
+
+```
+/chatops run publish 11.1.0-rc1
+
+/chatops run publish 11.1.0
+
+/chatops run publish 11.0.7
+```
+
 ### `qa_issue`
 
 Create a QA issue with differences between two specified tags.
