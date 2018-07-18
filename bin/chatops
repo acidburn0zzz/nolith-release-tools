@@ -20,13 +20,20 @@ require_version
 setup_env
 
 case $1 in
+  "publish")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
   "qa_issue")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "qa_issue[$RELEASE_VERSION]"
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
   "tag")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "tag[$RELEASE_VERSION]"
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
   "tag_security")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "tag_security[$RELEASE_VERSION]"
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
+  *)
+    echo "Don't know what to do with $1!"
+    exit 1
     ;;
 esac
