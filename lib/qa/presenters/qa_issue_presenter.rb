@@ -76,43 +76,22 @@ module Qa
         <<~HEREDOC
           ## Automated QA for #{@version}
 
-          > **Note:** For Quality Engineers, run Gitlab QA on staging and post the results.
+          If the last [`Daily staging QA` pipeline] was run for #{@version},
+          you can just report the result in this issue.
 
-          Please post the results of the [gitlab-qa](https://gitlab.com/gitlab-org/gitlab-qa) automated QA tests below.
-
-          The credentials are in 1Password, look for `GitLab QA`.
-          You'll also need to generate a personal access token for the `GitLab QA` user and
-          save it in the `GITLAB_QA_ACCESS_TOKEN` environment variable below.
-
-          Export the following environment variables
-
-          ```sh
-          export GITLAB_USERNAME=gitlab-qa GITLAB_PASSWORD=xxx GITLAB_QA_ACCESS_TOKEN=xxx
-          ```
-
-          and run
-
-          ```sh
-          gitlab-qa Test::Instance::Staging
-          ```
-
-          **Note:** Until https://gitlab.com/gitlab-org/gitlab-qa/issues/272 is resolved, you'll need to use the workaround described at https://gitlab.com/gitlab-org/gitlab-qa/issues/272#workaround. The workaround doesn't need a `GITLAB_QA_ACCESS_TOKEN` variable
-
-          ```
-          # Make sure to replace `v11.0.0-rc8-ee` with the version exposed at http://staging.gitlab.com/help
-          # In gitlab-ee
-          › git checkout v11.0.0-rc8-ee
-          › cd qa
-          › docker build -t gitlab/gitlab-ee-qa:11.0.0-rc8-ee .
-          › gitlab-qa Test::Instance::Any gitlab/gitlab-ee:11.0.0-rc8-ee 11.0.0-rc8-ee https://staging.gitlab.com
-          ```
+          Otherwise, start a new [`Daily staging QA` pipeline] by clicking the
+          "Play" button and wait for the pipeline to finish.
 
           ```sh
           Post the result of the test run here.
           ```
 
-          If there are errors, create an "Automation Triage" issue, name it `Automation Triage RELEASE_MAJOR_VERSION RC#` and link it to this issue.
-          In the triage issue include all the detailed test logs and screenshots.
+          If there are errors, create a new issue for each failing job (you can
+          use the "New issue" button from the job page itself), in the
+          https://gitlab.com/gitlab-org/quality/staging project and mention
+          the `@gl-quality` group.
+
+          [`Daily staging QA` pipeline]: https://gitlab.com/gitlab-org/quality/staging/pipeline_schedules
         HEREDOC
       end
 
