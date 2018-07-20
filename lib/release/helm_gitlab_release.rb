@@ -37,6 +37,12 @@ module Release
       repository.pull_from_all_remotes(stable_branch)
     end
 
+    def before_execute_hook
+      compile_changelog
+
+      super
+    end
+
     def execute_release
       repository.ensure_branch_exists(stable_branch)
       bump_versions
@@ -54,6 +60,16 @@ module Release
       commit_master_versions
 
       super
+    end
+
+    def compile_changelog
+      app_version = gitlab_version || version_manager.parse_chart_file.app_version
+      return if app_version.rc?
+
+      Changelog::Manager.new(repository.path).release(version)
+    rescue Changelog::NoChangelogError => ex
+      $stderr.puts "Cannot perform changelog update for #{version} on " \
+        "#{ex.changelog_path}".colorize(:red)
     end
 
     def bump_versions

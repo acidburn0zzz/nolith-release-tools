@@ -28,6 +28,12 @@ describe Release::HelmGitlabRelease, :silence_stdout do
   end
 
   describe '#execute' do
+    let(:changelog_manager) { double(release: true) }
+
+    before do
+      allow(Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
+    end
+
     context "with an existing 0-2-stable stable branch, releasing a patch" do
       let(:chart_version)          { nil }
       let(:expected_chart_version) { '0.2.1' }
