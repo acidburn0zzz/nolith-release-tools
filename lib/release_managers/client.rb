@@ -50,17 +50,17 @@ module ReleaseManagers
       exit 1
     end
 
-    private
-
-    attr_reader :client, :group, :target
-
     def get_user(username)
       user = client
         .user_search(username)
-        .detect { |result| result.username == username }
+        .detect { |result| result.username.casecmp?(username) }
 
       user || raise("#{username} not found on #{client.endpoint}")
     end
+
+    private
+
+    attr_reader :client, :group, :target
 
     def add_member(username)
       user = get_user(username)

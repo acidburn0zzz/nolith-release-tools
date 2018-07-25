@@ -62,4 +62,25 @@ describe ReleaseManagers::Client do
       subject.sync_membership(%w[james])
     end
   end
+
+  describe '#get_user' do
+    subject { described_class.new(:dev) }
+
+    let(:internal_client) do
+      spy(
+        user_search: [
+          double(username: 'Bob'),
+          double(username: 'bobby_joe')
+        ]
+      )
+    end
+
+    before do
+      allow(subject).to receive(:client).and_return(internal_client)
+    end
+
+    it 'finds a user case-insensitively' do
+      expect(subject.get_user('bob').username).to eq 'Bob'
+    end
+  end
 end
