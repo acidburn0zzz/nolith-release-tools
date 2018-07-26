@@ -20,10 +20,19 @@ require_version
 setup_env
 
 case $1 in
+  "monthly_issue")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
+  "patch_issue")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
   "publish")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
   "qa_issue")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
+  "security_patch_issue")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
   "tag")
