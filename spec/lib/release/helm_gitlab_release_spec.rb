@@ -34,6 +34,26 @@ describe Release::HelmGitlabRelease, :silence_stdout do
       allow(Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
     end
 
+    context "with an existing 0-1-stable stable branch, releasing a security patch" do
+      let(:chart_version)          { nil }
+      let(:expected_chart_version) { '0.1.8' }
+      let(:gitlab_version)         { "11.0.6" }
+      let(:branch)                 { "0-1-stable" }
+      let(:release)                { described_class.new(chart_version, gitlab_version) }
+
+      describe "release GitLab Chart" do
+        let(:chart_version) { '0.1.8' }
+
+        it_behaves_like 'helm-release #execute', expect_master: false
+      end
+
+      describe "release GitLab Chart by passing only gitlab version" do
+        it 'cannot derive chart version' do
+          expect { release.execute }.to raise_error(RuntimeError, /Unable to derive chart version for an older GitLab/)
+        end
+      end
+    end
+
     context "with an existing 0-2-stable stable branch, releasing a patch" do
       let(:chart_version)          { nil }
       let(:expected_chart_version) { '0.2.1' }

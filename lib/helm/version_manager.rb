@@ -37,6 +37,11 @@ module Helm
       # of release we are doing
       app_change =
         if old_gitlab_version.valid?
+          if old_gitlab_version > new_gitlab_version
+            raise "Unable to derive chart version for an older GitLab #{new_gitlab_version}, " \
+                  "GitLab is already version #{old_gitlab_version}"
+          end
+
           new_gitlab_version.diff(old_gitlab_version)
         elsif new_gitlab_version.minor.zero? && new_gitlab_version.patch.zero?
           :major
