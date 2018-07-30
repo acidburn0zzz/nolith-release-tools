@@ -109,6 +109,12 @@ task :qa_issue, [:from, :to, :version] do |_t, args|
   create_or_show_issue(issue)
 end
 
+desc "Create a QA issue for a security release"
+task :security_qa_issue, [:from, :to, :version] do |_t, args|
+  ENV['SECURITY'] = 'true'
+  Rake::Task[:qa_issue].invoke(args[:from], args[:to], args[:version])
+end
+
 desc "Create preparation merge requests in CE and EE for a patch release"
 task :patch_merge_request, [:version] do |_t, args|
   # CE

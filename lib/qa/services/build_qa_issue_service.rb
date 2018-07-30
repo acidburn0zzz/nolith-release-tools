@@ -1,7 +1,9 @@
+require_relative '../../shared_status'
 require_relative '../ref'
 require_relative '../project_changeset'
 require_relative '../issuable_omitter_by_labels'
 require_relative '../issue'
+require_relative '../security_issue'
 
 module Qa
   module Services
@@ -21,14 +23,19 @@ module Qa
       end
 
       def issue
-        @issue ||= Qa::Issue.new(version: version,
-                                 project: issue_project,
-                                 merge_requests: merge_requests)
+        @issue ||= issue_class.new(
+          version: version,
+          project: issue_project,
+          merge_requests: merge_requests)
       end
 
       def changesets
         @changesets ||= projects.map do |project|
-          ProjectChangeset.new(project, from.for_project(project), to.for_project(project))
+          ProjectChangeset.new(
+            project: project,
+            from: from.for_project(project),
+            to: to.for_project(project),
+            default_client: default_client)
         end
       end
 
@@ -40,6 +47,16 @@ module Qa
 
         IssuableOmitterByLabels.new(merge_requests, Qa::UNPERMITTED_LABELS)
           .execute
+      end
+
+      private
+
+      def issue_class
+        SharedStatus.security_release? ? Qa::SecurityIssue : Qa::Issue
+      end
+
+      def default_client
+        SharedStatus.security_release? ? GitlabDevClient : GitlabClient
       end
     end
   end

@@ -199,6 +199,20 @@ bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
 TEST=true bundle exec rake "qa_issue[v11.0.0-rc12,v11.0.0-rc13,11.0.0-rc13]"
 ```
 
+## `security_qa_issue[from,to,version]`
+
+This task does the same as the [`qa_issue[from,to,version]`](#qa_issuefromtoversion)
+task but forces the `SECURITY=true` flag.
+
+### Examples
+
+```sh
+bundle exec rake "security_qa_issue[v11.1.1,v11.1.2,11.1.2]"
+
+# Do not create the issue, but output the final description
+TEST=true bundle exec rake "security_qa_issue[v11.1.1,v11.1.2,11.1.2]"
+```
+
 ## `release_managers:auth[username]`
 
 This task will check if the provided `gitlab.com` username is present in the

@@ -15,12 +15,15 @@ module Qa
         \/?$
       }x
 
-      def initialize(sorted_merge_requests)
-        @merge_requests = sorted_merge_requests
+      attr_reader :merge_requests, :project_path
+
+      def initialize(merge_requests:, project_path:)
+        @merge_requests = merge_requests
+        @project_path = project_path
       end
 
       def lines
-        @lines ||= mr_lines(@merge_requests)
+        @lines ||= mr_lines(merge_requests)
       end
 
       private
@@ -58,9 +61,9 @@ module Qa
       end
 
       def web_url_to_reference(web_url)
-        return web_url unless URL_PATTERN.match(web_url)
+        return web_url unless URL_PATTERN.match(web_url) && $LAST_MATCH_INFO[:full_path] == project_path
 
-        "#{$LAST_MATCH_INFO[:full_path]}!#{$LAST_MATCH_INFO[:iid]}"
+        "#{project_path}!#{$LAST_MATCH_INFO[:iid]}"
       end
 
       def format_labels(labels)

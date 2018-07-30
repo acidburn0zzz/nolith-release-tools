@@ -3,17 +3,19 @@ require_relative '../formatters/merge_requests_formatter'
 
 module Qa
   module Presenters
-    class QaIssuePresenter
-      def initialize(merge_requests, remote_issue, version)
+    class IssuePresenter
+      attr_reader :merge_requests, :issue, :version
+
+      def initialize(merge_requests, issue, version)
         @merge_requests = merge_requests
-        @remote_issue = remote_issue
+        @issue = issue
         @version = version
       end
 
       def present
         "".tap do |text|
-          if @remote_issue
-            text << @remote_issue.description
+          if issue.exists?
+            text << issue.remote_issuable.description
           else
             text << header_text
           end
@@ -25,10 +27,13 @@ module Qa
 
       private
 
+      # Overriden in Qa::Presenters::SecurityIssuePresenter
+      def project_path
+        issue.project.path
+      end
+
       def header_text
         <<~HEREDOC
-          # Release Candidate QA Task
-
           ## Process
 
           A Release manager with the help of a Quality engineer will populate the [Merge Requests tested](#merge-requests-tested) section. The information is taken from our Automated QA task generation script. The documentation can be found at: https://gitlab.com/gitlab-org/release/docs/blob/master/general/qa-issue-generation.md
@@ -60,7 +65,7 @@ module Qa
 
       def changes_header
         <<~HEREDOC
-          ## Merge Requests tested in #{@version}
+          ## Merge Requests tested in #{version}
 
           > Example:
           >
@@ -74,9 +79,9 @@ module Qa
 
       def automated_qa_text
         <<~HEREDOC
-          ## Automated QA for #{@version}
+          ## Automated QA for #{version}
 
-          If the last [`Daily staging QA` pipeline] was run for #{@version},
+          If the last [`Daily staging QA` pipeline] was run for #{version},
           you can just report the result in this issue.
 
           Otherwise, start a new [`Daily staging QA` pipeline] by clicking the
@@ -96,11 +101,13 @@ module Qa
       end
 
       def sort_merge_requests
-        IssuableSortByLabels.new(@merge_requests).sort_by_labels(*labels)
+        IssuableSortByLabels.new(merge_requests).sort_by_labels(*labels)
       end
 
       def formatter
-        Formatters::MergeRequestsFormatter.new(sort_merge_requests)
+        Formatters::MergeRequestsFormatter.new(
+          merge_requests: sort_merge_requests,
+          project_path: project_path)
       end
 
       def labels

@@ -61,18 +61,52 @@ describe Qa::Services::BuildQaIssueService do
     end
 
     it 'creates the correct issue' do
+      expect(subject.issue).to be_a(Qa::Issue)
       expect(subject.issue.version).to eq(version)
       expect(subject.issue.project).to eq(issue_project)
       expect(subject.issue.merge_requests).to eq(mrs)
+    end
+
+    context 'when SharedStatus.security_release? == true' do
+      before do
+        allow(SharedStatus).to receive(:security_release?).and_return(true)
+      end
+
+      it 'creates the correct security issue' do
+        expect(subject.issue).to be_a(Qa::SecurityIssue)
+        expect(subject.issue.version).to eq(version)
+        expect(subject.issue.project).to eq(issue_project)
+        expect(subject.issue.merge_requests).to eq(mrs)
+        expect(subject.issue).to be_confidential
+      end
     end
   end
 
   describe '#changesets' do
     it 'creates a new changeset for each project' do
-      expect(Qa::ProjectChangeset).to receive(:new).exactly(1).times.with(Project::GitlabCe, 'v10.8.0-rc1', '10-8-stable')
-      expect(Qa::ProjectChangeset).to receive(:new).exactly(1).times.with(Project::GitlabEe, 'v10.8.0-rc1-ee', '10-8-stable-ee')
+      expect(Qa::ProjectChangeset).to receive(:new)
+        .with(project: Project::GitlabCe, from: 'v10.8.0-rc1', to: '10-8-stable', default_client: GitlabClient)
+      expect(Qa::ProjectChangeset).to receive(:new)
+        .with(project: Project::GitlabEe, from: 'v10.8.0-rc1-ee', to: '10-8-stable-ee', default_client: GitlabClient)
 
       expect(subject.changesets.size).to eq(2)
+    end
+
+    context 'when SharedStatus.security_release? == true' do
+      before do
+        allow(SharedStatus).to receive(:security_release?).and_return(true)
+      end
+
+      it 'creates a new changeset for each project using GitlabDevClient' do
+        expect(Qa::ProjectChangeset).to receive(:new)
+          .once
+          .with(project: Project::GitlabCe, from: 'v10.8.0-rc1', to: '10-8-stable', default_client: GitlabDevClient)
+        expect(Qa::ProjectChangeset).to receive(:new)
+          .once
+          .with(project: Project::GitlabEe, from: 'v10.8.0-rc1-ee', to: '10-8-stable-ee', default_client: GitlabDevClient)
+
+        expect(subject.changesets.size).to eq(2)
+      end
     end
   end
 

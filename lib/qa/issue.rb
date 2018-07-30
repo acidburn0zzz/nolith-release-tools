@@ -26,11 +26,11 @@ module Qa
     end
 
     def issue_presenter
-      Qa::Presenters::QaIssuePresenter.new(merge_requests, remote_issuable, version)
+      Qa::Presenters::IssuePresenter.new(merge_requests, self, version)
     end
 
     def comment_presenter
-      Qa::Presenters::QaCommentPresenter.new(merge_requests)
+      Qa::Presenters::CommentPresenter.new(merge_requests)
     end
   end
 end
