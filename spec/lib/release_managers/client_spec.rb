@@ -38,7 +38,7 @@ describe ReleaseManagers::Client do
       spy(
         group_members: [
           double(username: 'james'),
-          double(username: 'rspeicher')
+          double(username: 'RSPEICHER') # Test case-sensitivity
         ]
       )
     end
@@ -48,7 +48,7 @@ describe ReleaseManagers::Client do
     end
 
     it 'adds missing members, skipping existing members' do
-      expect(subject).to receive(:add_member).with('DouweM')
+      expect(subject).to receive(:add_member).with('douwem')
       expect(subject).not_to receive(:add_member).with('james')
       expect(subject).not_to receive(:add_member).with('rspeicher')
 

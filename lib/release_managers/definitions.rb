@@ -26,7 +26,7 @@ module ReleaseManagers
     end
 
     def allowed?(username)
-      any? { |user| user.production == username }
+      any? { |user| user.production.casecmp?(username) }
     end
 
     def reload!
