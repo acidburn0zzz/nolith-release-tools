@@ -59,7 +59,7 @@ describe Qa::Issue do
       end
 
       it "includes the current release version" do
-        expect(@content).to include("## Merge Requests tested in RC 10.8.0-rc1")
+        expect(@content).to include("## Merge Requests tested in 10.8.0-rc1")
       end
 
       it "includes the Team label title" do

@@ -60,7 +60,7 @@ module Qa
 
       def changes_header
         <<~HEREDOC
-          ## Merge Requests tested in RC #{@version}
+          ## Merge Requests tested in #{@version}
 
           > Example:
           >
