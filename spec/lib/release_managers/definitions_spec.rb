@@ -29,11 +29,11 @@ describe ReleaseManagers::Definitions do
   end
 
   describe '#allowed?' do
-    it 'returns true for a defined user' do
-      expect(subject).to be_allowed('rspeicher')
+    it 'allows a defined member, case-insensitively' do
+      expect(subject).to be_allowed('RSpeicher')
     end
 
-    it 'returns false for an undefined user' do
+    it 'disallows an undefined member' do
       expect(subject).not_to be_allowed('invalid-member')
     end
   end
