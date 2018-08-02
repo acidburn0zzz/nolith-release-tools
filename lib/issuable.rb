@@ -7,6 +7,10 @@ class Issuable < OpenStruct
     yield self if block_given?
   end
 
+  def type
+    self.class.to_s.titlecase
+  end
+
   def description
     ERB
       .new(template, nil, '-') # Omit blank lines when using `<% -%>`
