@@ -28,7 +28,8 @@ module Qa
     'CE upstream',
     'development guidelines',
     'static analysis',
-    'QA'
+    'QA',
+    'rails5'
   ].freeze
 
   PROJECTS = [
