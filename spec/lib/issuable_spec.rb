@@ -14,6 +14,10 @@ end
 describe Issuable do
   subject { TestIssuable.new }
 
+  describe '#type' do
+    it { expect(subject.type).to eq 'Test Issuable' }
+  end
+
   describe '#description' do
     it { expect(subject.description).to eq RUBY_VERSION }
   end

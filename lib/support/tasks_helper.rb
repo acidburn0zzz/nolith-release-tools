@@ -25,26 +25,26 @@ def no_mention?
   ENV['NO_MENTION'].present?
 end
 
-def create_or_show_issuable(issuable, type)
+def create_or_show_issuable(issuable)
   if dry_run?
     $stdout.puts
     $stdout.puts "# #{issuable.title}"
     $stdout.puts
     $stdout.puts issuable.description
   elsif issuable.exists?
-    $stdout.puts "--> #{type} \"#{issuable.title}\" already exists.".red
+    $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" already exists.".red
     $stdout.puts "    #{issuable.url}"
   else
     issuable.create
-    $stdout.puts "--> #{type} \"#{issuable.title}\" created.".green
+    $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" created.".green
     $stdout.puts "    #{issuable.url}"
   end
 end
 
 def create_or_show_issue(issue)
-  create_or_show_issuable(issue, "Issue")
+  create_or_show_issuable(issue)
 end
 
 def create_or_show_merge_request(merge_request)
-  create_or_show_issuable(merge_request, "Merge Request")
+  create_or_show_issuable(merge_request)
 end
