@@ -58,6 +58,17 @@ describe Slack::Webhook do
           described_class.fire_hook(channel: channel, text: text)
         end
       end
+
+      context 'when attachments are given' do
+        it 'passes the attachments' do
+          attachments = [{ title: 'foo' }]
+
+          expect_post(body: { attachments: attachments }.to_json)
+            .and_return(response(200))
+
+          described_class.fire_hook(attachments: attachments)
+        end
+      end
     end
   end
 end
