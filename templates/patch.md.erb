@@ -68,7 +68,12 @@ mention it in the `#production` channel.
 
 #### QA
 
-- [ ] Create a "QA Task" issue in [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) using the `QA-task` template.
+- [ ] Create a "QA Task" issue in [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) using the chatops command
+
+    ```
+    /chatops run qaissue v[PREVIOUS_VERSION]..<%= version %>
+    ```
+
 - [ ] Wait for the QA Task deadline to pass
 
 ### canary.gitlab.com
