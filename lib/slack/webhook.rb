@@ -9,13 +9,16 @@ module Slack
       raise NoWebhookURLError
     end
 
-    def self.fire_hook(text:, channel: nil)
+    def self.fire_hook(text: nil, channel: nil, attachments: [])
       # It's valid for a child class to return an empty String in order to
       # silently skip the notification, rather than aborting entirely
       return unless webhook_url.present?
 
-      body = { text: text }
-      body[:channel] = channel if channel
+      body = {}
+
+      body[:text] = text if text.present?
+      body[:channel] = channel if channel.present?
+      body[:attachments] = attachments if attachments.any?
 
       response = HTTParty.post(webhook_url, { body: body.to_json })
 

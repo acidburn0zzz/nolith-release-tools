@@ -34,10 +34,16 @@ def create_or_show_issuable(issuable)
   elsif issuable.exists?
     $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" already exists.".red
     $stdout.puts "    #{issuable.url}"
+
+    Slack::ChatopsNotification.release_issue(issuable)
   else
     issuable.create
+    issuable.status = :created
+
     $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" created.".green
     $stdout.puts "    #{issuable.url}"
+
+    Slack::ChatopsNotification.release_issue(issuable)
   end
 end
 
