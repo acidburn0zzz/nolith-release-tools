@@ -45,7 +45,6 @@ describe Slack::ChatopsNotification do
 
         expect_post(body: {
           text: 'The `release_issue` command at ci.example.com completed!',
-          channel: described_class::DEFAULT_CHANNEL,
           attachments: [{
             fallback: '',
             color: 'success',
@@ -64,7 +63,6 @@ describe Slack::ChatopsNotification do
 
         expect_post(body: {
           text: 'The `release_issue` command at ci.example.com completed!',
-          channel: described_class::DEFAULT_CHANNEL,
           attachments: [{
             fallback: '',
             color: 'warning',

@@ -2,10 +2,8 @@
 
 module Slack
   class ChatopsNotification < Webhook
-    DEFAULT_CHANNEL = 'C8PKBH3M5' # announcements
-
     def self.channel
-      ENV.fetch('CHAT_CHANNEL', DEFAULT_CHANNEL)
+      ENV.fetch('CHAT_CHANNEL', nil)
     end
 
     def self.job_url
