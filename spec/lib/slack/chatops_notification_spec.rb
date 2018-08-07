@@ -40,11 +40,16 @@ describe Slack::ChatopsNotification do
     end
 
     context 'with a new issue' do
+      around do |ex|
+        ClimateControl.modify(CHAT_CHANNEL: 'foo') { ex.run }
+      end
+
       it 'posts a success message' do
         issue = double(status: :created, title: 'Title', url: 'example.com')
 
         expect_post(body: {
           text: 'The `release_issue` command at ci.example.com completed!',
+          channel: 'foo',
           attachments: [{
             fallback: '',
             color: 'success',
