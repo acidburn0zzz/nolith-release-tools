@@ -3,12 +3,13 @@ require_relative '../gitlab_dev_client'
 
 module Qa
   class ProjectChangeset
-    attr_reader :project, :from, :to
+    attr_reader :project, :from, :to, :default_client
 
-    def initialize(project, from, to)
+    def initialize(project:, from:, to:, default_client: GitlabClient)
       @project = project
       @from = from
       @to = to
+      @default_client = default_client
 
       verify_refs!(from, to)
     end
@@ -18,7 +19,7 @@ module Qa
     end
 
     def commits
-      @commits ||= GitlabClient.compare(project, from: from, to: to).commits
+      @commits ||= default_client.compare(project, from: from, to: to).commits
     end
 
     def shas
@@ -26,6 +27,10 @@ module Qa
     end
 
     private
+
+    def alternate_client
+      default_client == GitlabDevClient ? GitlabClient : GitlabDevClient
+    end
 
     def gather_merge_requests
       commits.each_with_object([]) do |commit, mrs|
@@ -36,9 +41,9 @@ module Qa
     end
 
     def retrieve_merge_request(path, iid)
-      GitlabClient.merge_request(OpenStruct.new(path: path), iid: iid)
+      default_client.merge_request(OpenStruct.new(path: path, dev_path: path), iid: iid)
     rescue Gitlab::Error::NotFound
-      GitlabDevClient.merge_request(OpenStruct.new(path: path), iid: iid)
+      alternate_client.merge_request(OpenStruct.new(path: path, dev_path: path), iid: iid)
     end
 
     def extract_mr_data(commit)
@@ -54,7 +59,7 @@ module Qa
     def verify_refs!(*refs)
       refs.each do |ref|
         begin
-          GitlabClient.commit(project, ref: ref)
+          default_client.commit(project, ref: ref)
         rescue Gitlab::Error::NotFound
           raise ArgumentError.new("Invalid ref for this repository: #{ref}")
         end

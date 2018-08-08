@@ -7,7 +7,7 @@ describe Qa::ProjectChangeset, vcr: { cassette_name: 'commits-api' } do
   let(:from_ref) { 'v10.8.0-rc1' }
   let(:to_ref) { 'v10.8.0-rc2' }
 
-  subject { described_class.new(project, from_ref, to_ref) }
+  subject { described_class.new(project: project, from: from_ref, to: to_ref) }
 
   describe 'validations' do
     let(:from_ref) { 'invalid' }
@@ -37,6 +37,20 @@ describe Qa::ProjectChangeset, vcr: { cassette_name: 'commits-api' } do
       expect(commits).to be_a(Array)
       expect(commits.size).to eq(3)
       expect(shas).to include('7f7153301ad59d864791cb85d8abd1135962e954')
+    end
+
+    context 'when default_client is specified' do
+      let(:default_client) { GitlabDevClient }
+
+      subject { described_class.new(project: project, from: from_ref, to: to_ref, default_client: default_client) }
+
+      it 'uses the default_client instead of GitlabClient' do
+        expect(default_client).to receive(:commit).with(project, ref: from_ref)
+        expect(default_client).to receive(:commit).with(project, ref: to_ref)
+        expect(default_client).to receive(:compare).with(project, from: from_ref, to: to_ref).and_return(double(commits: []))
+
+        expect(subject.commits).to eq([])
+      end
     end
   end
 

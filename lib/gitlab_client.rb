@@ -26,35 +26,35 @@ class GitlabClient
   end
 
   def self.issues(project = Project::GitlabCe, options = {})
-    client.issues(project.path, options)
+    client.issues(project_path(project), options)
   end
 
   def self.merge_requests(project = Project::GitlabCe, options = {})
-    client.merge_requests(project.path, options)
+    client.merge_requests(project_path(project), options)
   end
 
   def self.merge_request(project = Project::GitlabCe, iid:)
-    client.merge_request(project.path, iid)
+    client.merge_request(project_path(project), iid)
   end
 
   def self.commit_merge_requests(project = Project::GitlabCe, sha:)
-    client.commit_merge_requests(project.path, sha)
+    client.commit_merge_requests(project_path(project), sha)
   end
 
   def self.compare(project = Project::GitlabCe, from:, to:)
-    client.compare(project.path, from, to)
+    client.compare(project_path(project), from, to)
   end
 
   def self.commit(project = Project::GitlabCe, ref:)
-    client.commit(project.path, ref)
+    client.commit(project_path(project), ref)
   end
 
   def self.create_issue_note(project = Project::GitlabCe, issue:, body:)
-    client.create_issue_note(project.path, issue.iid, body)
+    client.create_issue_note(project_path(project), issue.iid, body)
   end
 
   def self.milestones(project = Project::GitlabCe, options = {})
-    project_milestones = client.milestones(project.path, options)
+    project_milestones = client.milestones(project_path(project), options)
     group_milestones = client.group_milestones('gitlab-org', options)
 
     project_milestones + group_milestones
@@ -73,7 +73,7 @@ class GitlabClient
     return MissingMilestone.new if title.nil?
 
     milestones(project)
-      .detect { |m| m.title == title } || raise("Milestone #{title} not found for project #{project.path}!")
+      .detect { |m| m.title == title } || raise("Milestone #{title} not found for project #{project_path(project)}!")
   end
 
   # Create an issue in the CE project based on the provided issue
@@ -91,7 +91,7 @@ class GitlabClient
   def self.create_issue(issue, project = Project::GitlabCe)
     milestone = milestone(project, title: issue.version.milestone_name)
 
-    client.create_issue(project.path, issue.title,
+    client.create_issue(project_path(project), issue.title,
       description:  issue.description,
       assignee_id:  current_user.id,
       milestone_id: milestone.id,
@@ -113,7 +113,7 @@ class GitlabClient
   def self.update_issue(issue, project = Project::GitlabCe)
     milestone = milestone(project, title: issue.version.milestone_name)
 
-    client.edit_issue(project.path, issue.iid,
+    client.edit_issue(project_path(project), issue.iid,
       description:  issue.description,
       milestone_id: milestone.id,
       labels: issue.labels,
@@ -128,14 +128,14 @@ class GitlabClient
   #
   # Returns a Gitlab::ObjectifiedHash object
   def self.create_branch(branch_name, ref, project = Project::GitlabCe)
-    client.create_branch(project.path, branch_name, ref)
+    client.create_branch(project_path(project), branch_name, ref)
   end
 
   # Find a branch in a given project
   #
   # Returns a Gitlab::ObjectifiedHash object, or nil
   def self.find_branch(branch_name, project = Project::GitlabCe)
-    client.branch(project.path, branch_name)
+    client.branch(project_path(project), branch_name)
   rescue Gitlab::Error::NotFound
     nil
   end
@@ -171,7 +171,7 @@ class GitlabClient
       remove_source_branch: true
     }
 
-    client.create_merge_request(project.path, merge_request.title, params)
+    client.create_merge_request(project_path(project), merge_request.title, params)
   end
 
   # Accept a merge request in the given project specified by the iid
@@ -185,7 +185,7 @@ class GitlabClient
     params = {
       merge_when_pipeline_succeeds: true
     }
-    client.accept_merge_request(project.path, merge_request.iid, params)
+    client.accept_merge_request(project_path(project), merge_request.iid, params)
   end
 
   # Find an issue in the given project based on the provided issue
@@ -229,6 +229,11 @@ class GitlabClient
       endpoint: DEFAULT_GITLAB_API_ENDPOINT,
       private_token: ENV['GITLAB_API_PRIVATE_TOKEN']
     )
+  end
+
+  # Overriden by GitLabDevClient
+  def self.project_path(project)
+    project.path
   end
 
   private_class_method :client

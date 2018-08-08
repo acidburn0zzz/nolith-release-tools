@@ -50,12 +50,8 @@ describe Qa::Issue do
   describe '#description' do
     context 'for a new issue' do
       before do
-        expect(subject).to receive(:remote_issuable).and_return(nil)
+        expect(subject).to receive(:exists?).and_return(false)
         @content = subject.description
-      end
-
-      it "includes the header item" do
-        expect(@content).to include("# Release Candidate QA Task")
       end
 
       it "includes the current release version" do
@@ -87,7 +83,8 @@ describe Qa::Issue do
       end
 
       before do
-        expect(subject).to receive(:remote_issuable).exactly(1).times.and_return(remote_issuable)
+        expect(subject).to receive(:exists?).and_return(true)
+        expect(subject).to receive(:remote_issuable).and_return(remote_issuable)
         @content = subject.description
       end
 

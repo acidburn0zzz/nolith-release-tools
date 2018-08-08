@@ -285,4 +285,12 @@ describe GitlabClient do
       expect(response.name).to eq branch_name
     end
   end
+
+  describe '.project_path' do
+    it 'returns the correct project path' do
+      project = double(path: 'foo/bar')
+
+      expect(described_class.project_path(project)).to eq 'foo/bar'
+    end
+  end
 end

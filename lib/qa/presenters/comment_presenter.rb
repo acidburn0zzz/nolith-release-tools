@@ -2,7 +2,7 @@ require_relative '../username_extractor'
 
 module Qa
   module Presenters
-    class QaCommentPresenter
+    class CommentPresenter
       def initialize(merge_requests)
         @merge_requests = merge_requests
       end
