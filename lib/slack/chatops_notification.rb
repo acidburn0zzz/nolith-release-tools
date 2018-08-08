@@ -24,7 +24,7 @@ module Slack
       text = "The `#{task}` command at #{job_url} completed!"
       attachment = {
         fallback: '',
-        color: issue.status == :created ? 'success' : 'warning',
+        color: issue.status == :created ? 'good' : 'warning',
         title: issue.title,
         title_link: issue.url
       }
