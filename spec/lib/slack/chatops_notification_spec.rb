@@ -52,7 +52,7 @@ describe Slack::ChatopsNotification do
           channel: 'foo',
           attachments: [{
             fallback: '',
-            color: 'success',
+            color: 'good',
             title: 'Title',
             title_link: 'example.com'
           }]
