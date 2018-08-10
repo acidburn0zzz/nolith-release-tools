@@ -54,8 +54,11 @@
 
 #### QA
 
-- [ ] Create a "Security QA Issue" using the [`security_qa_issue` task].
-- [ ] Assign this issue to a [Quality engineer](https://about.gitlab.com/team/).
+- [ ] Create a "QA Task" issue using the ChatOps command:
+  ```sh
+  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value
+  /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
+  ```
 - [ ] Wait for the QA tasks deadline to pass.
 
 ### canary.gitlab.com

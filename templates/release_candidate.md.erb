@@ -65,7 +65,11 @@ mention it in the `#production` channel.
 
 #### QA
 
-- [ ] Create a "QA Task" issue in [gitlab-org/release/tasks](https://gitlab.com/gitlab-org/release/tasks) using the `RC1-QA-task` template.
+- [ ] Create a "QA Task" issue using the ChatOps command:
+  ```sh
+  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value
+  /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
+  ```
 - [ ] Wait for the QA Task deadline to pass
 
 ### canary.gitlab.com
