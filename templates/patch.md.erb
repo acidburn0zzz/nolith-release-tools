@@ -48,12 +48,23 @@ proceeding. Use `!oncall prod` in the `#production` channel to find who's on
 call and ping someone. Deploys to staging or canary can be done at will, just
 mention it in the `#production` channel.
 
-- [ ] Warm up the packages on takeoff by running:
+- [ ] Warm up the packages in staging (Azure) on takeoff by running:
 
     ```sh
     # In the takeoff project:
     bin/takeoff-deploy -v <%= version %>-ee.0 -w
     ```
+
+    `gstg` and `gprd` will report as failed.
+
+- [ ] Warm up the packages in production (GCP) on takeoff by running:
+
+    ```sh
+    # In the takeoff project:
+    bin/takeoff-deploy -v <%= version %>-ee.0 -w --use-fqdn
+    ```
+
+    `staging` will report as failed.
 
 ### staging.gitlab.com
 
@@ -78,6 +89,8 @@ mention it in the `#production` channel.
 
 ### canary.gitlab.com
 
+**This can be skipped while there is no canary in GCP**
+
 - [ ] Inform the oncall in the #production channel about **canary** deploy
 - [ ] On video call, [deploy] `<%= version %>` to **canary.gitlab.com**
 
@@ -95,7 +108,7 @@ mention it in the `#production` channel.
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy -e production -v <%= version %>-ee.0
+    bin/takeoff-deploy --use-fqdn -e production -v <%= version %>-ee.0
     ```
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
