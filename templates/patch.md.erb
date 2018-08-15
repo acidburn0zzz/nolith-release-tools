@@ -29,7 +29,7 @@
 - [ ] Tag the `<%= version %>` version using the [`release` command]:
 
   ```sh
-  # In Slack
+  # In Slack:
   /chatops run tag <%= version %>
   ```
 - [ ] While waiting for packages to build, now is a good time to [prepare the blog post]. Look at previous MRs for examples. => BLOG_POST_MR
@@ -48,23 +48,12 @@ proceeding. Use `!oncall prod` in the `#production` channel to find who's on
 call and ping someone. Deploys to staging or canary can be done at will, just
 mention it in the `#production` channel.
 
-- [ ] Warm up the packages in staging (Azure) on takeoff by running:
+- [ ] Warm up the packages in the /takeoff by running:
 
     ```sh
     # In the takeoff project:
     bin/takeoff-deploy -v <%= version %>-ee.0 -w
     ```
-
-    `gstg` and `gprd` will report as failed.
-
-- [ ] Warm up the packages in production (GCP) on takeoff by running:
-
-    ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -v <%= version %>-ee.0 -w --use-fqdn
-    ```
-
-    `staging` will report as failed.
 
 ### staging.gitlab.com
 
@@ -73,7 +62,7 @@ mention it in the `#production` channel.
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy -e staging -v <%= version %>-ee.0
+    bin/takeoff-deploy -e gstg -v <%= version %>-ee.0
     ```
 - [ ] Comment with the output of the migrations from the takeoff script in this issue
 
@@ -81,7 +70,7 @@ mention it in the `#production` channel.
 
 - [ ] Create a "QA Task" issue using the ChatOps command:
   ```sh
-  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value
+  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
   /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
   ```
 - [ ] Wait for the QA Task deadline to pass
@@ -107,7 +96,7 @@ mention it in the `#production` channel.
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy --use-fqdn -e production -v <%= version %>-ee.0
+    bin/takeoff-deploy -e gprd -v <%= version %>-ee.0
     ```
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
@@ -117,7 +106,7 @@ mention it in the `#production` channel.
 
 - [ ] Publish the packages via ChatOps:
   ```
-  # In Slack
+  # In Slack:
   /chatops run publish <%= version %>
   ```
 - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/gitlab/gitlab-ee) / [CE](https://packages.gitlab.com/gitlab/gitlab-ce)
