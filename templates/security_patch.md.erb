@@ -37,7 +37,7 @@
 
       ```sh
       # In the takeoff project:
-      bin/takeoff-deploy -v <%= version.to_patch %>-ee.0 -w
+      bin/takeoff-deploy --use-fqdn -v <%= version.to_patch %>-ee.0 -w
       ```
 
 ### staging.gitlab.com
@@ -47,7 +47,7 @@
 
       ```sh
       # In the takeoff project:
-      bin/takeoff-deploy -e staging -v <%= version.to_patch %>-ee.0
+      bin/takeoff-deploy -e gstg --use-fqdn -v <%= version.to_patch %>-ee.0
       ```
 
 - [ ] Although normally there aren't any schema changes on a security release, make sure that the database migrations complete in a timely manner. If you see a migration taking too long in staging, stop right there and ping `@db-team` in Slack. What you're witnessing has the potential to take down production for a long time. The statement "Don't worry: it'll be faster in production" is a false myth that has been disproven every single time that this has happened in the past.
@@ -62,6 +62,7 @@
 - [ ] Wait for the QA tasks deadline to pass.
 
 ### canary.gitlab.com
+##### Currently there is no Canary on GCP so this canary deployment can be skipped.
 
 - [ ] Notify #production channel about canary deploy.
 - [ ] On video call, deploy `<%= version %>` to [canary.gitlab.com]
@@ -78,7 +79,7 @@
 
       ```sh
       # In the takeoff project:
-      bin/takeoff-deploy -e production -v <%= version.to_patch %>-ee.0
+      bin/takeoff-deploy -e gprd --use-fqdn -v <%= version.to_patch %>-ee.0
       ```
 
 ### Release

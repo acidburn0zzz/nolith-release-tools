@@ -48,23 +48,12 @@ proceeding. Use `!oncall prod` in the `#production` channel to find who's on
 call and ping someone. Deploys to staging or canary can be done at will, just
 mention it in the `#production` channel.
 
-- [ ] Warm up the packages in staging (Azure) on takeoff by running:
+- [ ] Warm up the packages in the /takeoff by running:
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy -v <%= version %>-ee.0 -w
+    bin/takeoff-deploy --use-fqdn -v <%= version.to_patch %>-ee.0 -w
     ```
-
-    `gstg` and `gprd` will report as failed.
-
-- [ ] Warm up the packages in production (GCP) on takeoff by running:
-
-    ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -v <%= version %>-ee.0 -w --use-fqdn
-    ```
-
-    `staging` will report as failed.
 
 ### staging.gitlab.com
 

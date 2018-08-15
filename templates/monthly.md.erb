@@ -153,7 +153,7 @@ No new code can be added to the release that was not included in the final RC.
         # In the takeoff project:
         bin/takeoff-deploy -e gstg --use-fqdn -v <%= version.to_patch %>-ee.0
         ```
-  ##### Currently there is no Canary on GCP so this canary deployment can be skipped.
+  ##### Currently there is no Canary on GCP so canary deployment can be skipped.
   - [ ] Notify #production channel about canary deploy. No need to require confirmation.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to [canary.gitlab.com]
 
