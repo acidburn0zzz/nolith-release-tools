@@ -143,7 +143,7 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Warm up the packages on takeoff by running:
         ```sh
         # In the takeoff project:
-        bin/takeoff-deploy --use-fqdn -v <%= version.to_patch %>-ee.0 -w
+        bin/takeoff-deploy -v <%= version.to_patch %>-ee.0 -w
         ```
 - Before 12:00 UTC:
   - [ ] Notify #production channel about staging deploy. No need to require confirmation.
@@ -151,7 +151,7 @@ No new code can be added to the release that was not included in the final RC.
 
         ```sh
         # In the takeoff project:
-        bin/takeoff-deploy -e gstg --use-fqdn -v <%= version.to_patch %>-ee.0
+        bin/takeoff-deploy -e gstg -v <%= version.to_patch %>-ee.0
         ```
   ##### Currently there is no Canary on GCP so canary deployment can be skipped.
   - [ ] Notify #production channel about canary deploy. No need to require confirmation.
