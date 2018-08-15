@@ -1,12 +1,16 @@
 module Qa
   TEAM_LABELS = [
-    'Discussion',
+    'Plan',
     'Platform',
+    'Create',
+    'Manage',
     'CI/CD',
     'Geo',
     'Gitaly',
+    'Packaging',
+    'Configuration',
     'Monitoring',
-    'Security Products',
+    'Secure',
     'frontend',
     'database'
   ].freeze
