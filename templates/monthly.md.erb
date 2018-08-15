@@ -46,7 +46,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - [ ] Create a task list for RC1:
 
       ```sh
-      # In Slack run:
+      # In Slack:
       /chatops run release_issue <%= version.to_rc(1) %>
       ```
   - [ ] Link the RC1 issue as a related issue in this issue
@@ -59,14 +59,14 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - Create additional release candidates as needed:
 
     ```sh
-    # In Slack run (update RC number):
+    # In Slack (update RC number):
     /chatops run release_issue <%= version.to_rc(2) %>
     ```
 - [ ] Link any subsequent RCs issues as a related issue in this issue
 
 Keep in mind that:
 
-1. After the feature freeze only regression, security and documentation fixes should be
+1. After the feature freeze only regression, security, and documentation fixes should be
    cherry-picked into stable branches.
 2. The final RC should point to the same commit as the final release.
 
@@ -106,7 +106,7 @@ Including changes at this stage requires signoff from the VP of Engineering.
 - [ ] Create a task list for the final RC:
 
     ```sh
-    # In Slack run (update RC number):
+    # In Slack (update RC number):
     /chatops run release_issue <%= version.to_rc(22) %>
     ```
 
@@ -136,7 +136,7 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` command]:
 
         ```sh
-        # In Slack
+        # In Slack:
         /chatops run tag <%= version.to_patch %>
         ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
@@ -166,12 +166,12 @@ No new code can be added to the release that was not included in the final RC.
 
         ```sh
         # In the takeoff project:
-        bin/takeoff-deploy -e gprd --use-fqdn -v <%= version.to_patch %>-ee.0
+        bin/takeoff-deploy -e gprd -v <%= version.to_patch %>-ee.0
         ```
 - At 14:30 UTC:
   - [ ] Publish the packages via ChatOps:
     ```
-    # In Slack
+    # In Slack:
     /chatops run publish <%= version.to_patch %>
     ```
   - Make sure that neither packages nor the blog post get published early without approval by the marketing team

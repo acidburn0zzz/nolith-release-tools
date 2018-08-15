@@ -26,7 +26,7 @@
 - [ ] Tag the `<%= version.to_patch %>` version using the [`release` command]:
 
       ```sh
-      # In Slack
+      # In Slack:
       /chatops run tag --security <%= version.to_patch %>
       ```
 - [ ] Check that [EE packages are built] and [CE packages are built]
@@ -56,7 +56,7 @@
 
 - [ ] Create a "QA Task" issue using the ChatOps command:
   ```sh
-  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value
+  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
   /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
   ```
 - [ ] Wait for the QA tasks deadline to pass.
@@ -87,7 +87,7 @@
 - [ ] This section should be done in coordination with the Security team, so **make sure to confirm with them before proceeding**
 - [ ] Publish the packages via ChatOps:
   ```
-  # In Slack
+  # In Slack:
   /chatops run publish <%= version %>
   ```
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**

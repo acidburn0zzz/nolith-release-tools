@@ -29,7 +29,7 @@
 - [ ] Tag the `<%= version %>` version using the [`release` command]:
 
   ```sh
-  # In Slack
+  # In Slack:
   /chatops run tag <%= version %>
   ```
 - [ ] While waiting for packages to build, now is a good time to [prepare the blog post]. Look at previous MRs for examples. => BLOG_POST_MR
@@ -70,7 +70,7 @@ mention it in the `#production` channel.
 
 - [ ] Create a "QA Task" issue using the ChatOps command:
   ```sh
-  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value
+  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
   /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
   ```
 - [ ] Wait for the QA Task deadline to pass
@@ -106,7 +106,7 @@ mention it in the `#production` channel.
 
 - [ ] Publish the packages via ChatOps:
   ```
-  # In Slack
+  # In Slack:
   /chatops run publish <%= version %>
   ```
 - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/gitlab/gitlab-ee) / [CE](https://packages.gitlab.com/gitlab/gitlab-ce)
