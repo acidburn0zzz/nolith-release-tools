@@ -34,15 +34,15 @@ describe Release::HelmGitlabRelease, :silence_stdout do
       allow(Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
     end
 
-    context "with an existing 0-1-stable stable branch, releasing a security patch" do
+    context "with an existing 0-2-stable stable branch, releasing a security patch" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '0.1.8' }
+      let(:expected_chart_version) { '0.2.8' }
       let(:gitlab_version)         { "11.0.6" }
-      let(:branch)                 { "0-1-stable" }
+      let(:branch)                 { "0-2-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "release GitLab Chart" do
-        let(:chart_version) { '0.1.8' }
+        let(:chart_version) { '0.2.8' }
 
         it_behaves_like 'helm-release #execute', expect_master: false
       end
@@ -54,15 +54,15 @@ describe Release::HelmGitlabRelease, :silence_stdout do
       end
     end
 
-    context "with an existing 0-2-stable stable branch, releasing a patch" do
+    context "with an existing 0-3-stable stable branch, releasing a patch" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '0.2.1' }
+      let(:expected_chart_version) { '0.3.1' }
       let(:gitlab_version)         { "11.1.1" }
-      let(:branch)                 { "0-2-stable" }
+      let(:branch)                 { "0-3-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "release GitLab Chart" do
-        let(:chart_version) { "0.2.1" }
+        let(:chart_version) { "0.3.1" }
 
         it_behaves_like 'helm-release #execute'
       end
@@ -72,15 +72,15 @@ describe Release::HelmGitlabRelease, :silence_stdout do
       end
     end
 
-    context "with a new 0-3-stable stable branch, updating to a GitLab RC" do
+    context "with a new 1-0-stable stable branch, updating to a GitLab RC" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '0.3.0' }
+      let(:expected_chart_version) { '1.0.0' }
       let(:gitlab_version)         { "11.2.0-rc1" }
-      let(:branch)                 { "0-3-stable" }
+      let(:branch)                 { "1-0-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "update GitLab Chart" do
-        let(:chart_version) { "0.3.0" }
+        let(:chart_version) { "1.0.0" }
 
         it_behaves_like 'helm-release #execute', expect_tag: false, expect_master: false
       end
@@ -90,15 +90,15 @@ describe Release::HelmGitlabRelease, :silence_stdout do
       end
     end
 
-    context "with a new 0-3-stable stable branch, releasing a stable .0" do
+    context "with a new 1-0-stable stable branch, releasing a stable .0" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '0.3.0' }
+      let(:expected_chart_version) { '1.0.0' }
       let(:gitlab_version)         { "11.2.0" }
-      let(:branch)                 { "0-3-stable" }
+      let(:branch)                 { "1-0-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "update GitLab Chart" do
-        let(:chart_version) { "0.3.0" }
+        let(:chart_version) { "1.0.0" }
 
         it_behaves_like 'helm-release #execute'
       end
