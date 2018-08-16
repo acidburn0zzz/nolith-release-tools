@@ -49,7 +49,7 @@ mention it in the `#production` channel.
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy -v <%= version %>-ee.0 -w
+    bin/takeoff-deploy -v <%= version %>.ee.0 -w
     ```
 
 ### staging.gitlab.com
@@ -59,7 +59,7 @@ mention it in the `#production` channel.
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy -e gstg -v <%= version %>-ee.0
+    bin/takeoff-deploy -e gstg -v <%= version %>.ee.0
     ```
 - [ ] Comment with the output of the migrations from the takeoff script in this issue
 
@@ -90,7 +90,7 @@ mention it in the `#production` channel.
 
     ```sh
     # In the takeoff project:
-    bin/takeoff-deploy -e gprd -v <%= version %>-ee.0
+    bin/takeoff-deploy -e gprd -v <%= version %>.ee.0
     ```
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
