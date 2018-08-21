@@ -14,11 +14,11 @@ module Helm
     # Determine the next helm chart version by comparing the difference in gitlab
     # version between the last release and the new release
     def next_version(gitlab_version)
-      # The 11.0.0 release marks the beta release of the charts.
-      # We will bump the chart version from 0.1.x to 0.2.0 for the beta, instead of
-      # bumping to 1.0.0
-      if gitlab_version <= HelmGitlabVersion.new('11.0.0')
-        return HelmChartVersion.new('0.2.0')
+      # The 11.2.0 release marks the GA release of the charts.
+      # We will bump the chart version from 0.3.x to 1.0.0 for the GA, instead of
+      # bumping to 0.4.0
+      if gitlab_version >= HelmGitlabVersion.new('11.2.0-rc1') && gitlab_version <= HelmGitlabVersion.new('11.2.0')
+        return HelmChartVersion.new('1.0.0')
       end
 
       # switch to the latest branch, use the latest tag if we are doing a patch release
