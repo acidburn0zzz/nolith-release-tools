@@ -80,12 +80,9 @@ module Release
       message = ["Update Chart Version to #{chart_version}"]
       message << "Update Gitlab Version to #{app_version}" if app_version && app_version.valid?
       $stdout.puts "#{message.join(' ')}...".colorize(:green)
-      out, status = run_update_version(args)
 
-      raise(StandardError.new(out)) unless status.success?
-
-      out, status = run_add_changelog
-      raise(StandardError.new(out)) unless status.success?
+      run_update_version(args)
+      run_add_changelog
 
       files_to_commit = Dir.glob([File.join(repository.path, '**', 'Chart.yaml'),
                                   File.join(repository.path, 'changelogs', 'unreleased', '*.yml')])
@@ -113,7 +110,7 @@ module Release
 
         cmd_output = `#{final_args.join(' ')} 2>&1`
 
-        [cmd_output, $CHILD_STATUS]
+        raise(StandardError.new(cmd_output)) unless $CHILD_STATUS.success?
       end
     end
 
@@ -126,7 +123,7 @@ module Release
 
         cmd_output = `#{final_args.join(' ')} 2>&1`
 
-        [cmd_output, $CHILD_STATUS]
+        raise(StandardError.new(cmd_output)) unless $CHILD_STATUS.success?
       end
     end
   end
