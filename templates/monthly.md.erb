@@ -153,15 +153,19 @@ No new code can be added to the release that was not included in the final RC.
         # In the takeoff project:
         bin/takeoff-deploy -e gstg -v <%= version.to_patch %>-ee.0
         ```
-  ##### Currently there is no Canary on GCP so canary deployment can be skipped.
   - [ ] Notify #production channel about canary deploy. No need to require confirmation.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to [canary.gitlab.com]
 
         ```sh
         # In the takeoff project:
-        bin/takeoff-deploy -e canary -v <%= version.to_patch %>-ee.0
+        bin/takeoff-deploy -e gprd-cny -v <%= version.to_patch %>-ee.0
         ```
+  - [ ] Confirm that there are no errors on canary
+    - [canary errors on sentry.gitlap.com](https://sentry.gitlap.com/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
+    - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
+
   - [ ] Get confirmation from a production team member to deploy production. Use `!oncall prod` if needed to find who's on call. If someone besides the oncall confirms, `@mention` the oncall so they are aware.
+  - [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to GitLab.com
 
         ```sh
@@ -189,7 +193,6 @@ No new code can be added to the release that was not included in the final RC.
 [`release` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
-[canary.gitlab.com]: https://canary.gitlab.com/
 [getting help]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/monthly.md#getting-help
 
 /milestone %"<%= version.to_minor %>"
