@@ -4,11 +4,17 @@ Main release issue: <%= main_release_issue_url %>
 
 This MR prepares `<%= stable_branch %>` for %"<%= milestone %>" (`<%= patch_or_rc_version %>`) by merging `<%= preparation_branch_name %>` into `<%= stable_branch %>`.
 
-### MR Filter for <%= PickIntoLabel.for(version) %> MRs
+### Before the 7th
+
+Merge master into the preparation branch
+
+### After the 7th
+
+#### MR Filter for <%= PickIntoLabel.for(version) %> MRs
 
 https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests?label_name%5B%5D=Pick+into+<%= version.to_minor %>&scope=all&state=merged
 
-### Note to leave in MRs
+#### Note to leave in MRs
 
 ```
 Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests/MERGE_REQUEST_ID, will merge into `<%= stable_branch %>` ready for `<%= full_patch_or_rc_version %>`
@@ -31,7 +37,9 @@ Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requ
 
 ### Checklist
 
-- [ ] Changes marked <%= PickIntoLabel.for(version) %> have been picked
+- [ ] Add changes into the preparation branches:
+  - Before the 7th: Master has been merged into the preparation branch
+  - After the 7th: Changes marked <%= PickIntoLabel.for(version) %> have been picked
 <% if ee? %>- [ ] CE->EE merge has taken place<% end %>
 - [ ] Conflicts resolved
 - [ ] No new commits have introduced directly to the stable branch while this MR was in progress. If there are,<% unless ee? %> ensure these are merged into EE and<% end %> check for a green pipeline after merging this MR.

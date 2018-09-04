@@ -9,10 +9,12 @@
   * CE:
   * EE:
 
-- [ ] Cherry-pick changes into preparation MRs following their instructions
+- [ ] Add changes into preparation MRs following their instructions
 - [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
 - [ ] Merge the preparation branches
-- [ ] For `omnibus-gitlab` cherry-pick [remaining merge requests] directly into CE stable branch. Then, merge the CE Omnibus stable branch into EE.
+- [ ] For `omnibus-gitlab` add the changes to the stable branches:
+  - Before the 7th: merge master into the CE stable branch, then merge the CE stable branch into EE.
+  - After the 7th: cherry-pick [remaining merge requests] directly into CE stable branch. Then, merge the CE Omnibus stable branch into EE.
 - Check the following list of critical issues/MRs which are to be included in `<%= version %>`. Ensure each has made both CE and EE:
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
