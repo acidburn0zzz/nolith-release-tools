@@ -5,10 +5,6 @@ module Qa
     class SecurityIssuePresenter < Qa::Presenters::IssuePresenter
       private
 
-      def project_path
-        issue.project.dev_path
-      end
-
       def automated_qa_text
         <<~HEREDOC
           ## Automated QA for #{version}
