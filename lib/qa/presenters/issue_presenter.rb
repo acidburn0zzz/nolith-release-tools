@@ -27,11 +27,6 @@ module Qa
 
       private
 
-      # Overriden in Qa::Presenters::SecurityIssuePresenter
-      def project_path
-        issue.project.path
-      end
-
       def header_text
         <<~HEREDOC
           ## Process
@@ -107,7 +102,7 @@ module Qa
       def formatter
         Formatters::MergeRequestsFormatter.new(
           merge_requests: sort_merge_requests,
-          project_path: project_path)
+          project_path: issue.project.path)
       end
 
       def labels
