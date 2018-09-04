@@ -79,6 +79,7 @@ describe Release::GitlabCeRelease, :silence_stdout do
               # GitLab expectations
               expect(repository.head.name).to eq "refs/heads/#{branch}"
               expect(repository).to have_version.at(version)
+              expect(repository.tags["v#{version}"]).not_to be_nil
 
               # Omnibus-GitLab expectations
               expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
@@ -97,6 +98,19 @@ describe Release::GitlabCeRelease, :silence_stdout do
                   .match(docker_version)
               end
             end
+          end
+
+          it 'does not fail if the tag already exists' do
+            # Make sure we have the repository to create a conflicting tag
+            described_class.new(version).__send__(:prepare_release)
+            repository.tags.create("v#{version}", 'HEAD')
+
+            expect(repository.tags["v#{version}"]).not_to be_nil
+            expect { execute(version, branch) }.not_to raise_error
+          end
+
+          it 'does not fail when running twice' do
+            expect { execute(version, branch) }.not_to raise_error
           end
         end
       end

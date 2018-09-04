@@ -52,6 +52,11 @@ module Release
     end
 
     def execute_release
+      if repository.tags.include?(tag)
+        $stdout.puts "#{tag} already exists... Skipping...".colorize(:yellow)
+        return
+      end
+
       repository.ensure_branch_exists(stable_branch)
       bump_versions
       push_ref('branch', stable_branch)
