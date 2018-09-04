@@ -6,6 +6,7 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_maste
 
   it 'performs changelog compilation' do
     allow(release).to receive(:bump_version).and_return true
+    allow(release).to receive(:add_changelog).and_return true
 
     if expect_tag
       expect(changelog_manager).to receive(:release).with(HelmChartVersion.new(expected_chart_version))
@@ -17,6 +18,7 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_maste
   end
 
   it 'creates a new branch and updates the version and appVersion in Chart.yaml, and a new tag' do
+    allow(release).to receive(:add_changelog).and_return true
     expect(release).to receive(:bump_version).with(expected_chart_version, gitlab_version).once do
       original_chartfile = release.version_manager.method(:parse_chart_file)
       allow(release.version_manager).to receive(:parse_chart_file) do
