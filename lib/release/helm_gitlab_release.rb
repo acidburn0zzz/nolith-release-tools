@@ -37,15 +37,12 @@ module Release
       repository.pull_from_all_remotes(stable_branch)
     end
 
-    def before_execute_hook
-      compile_changelog
-
-      super
-    end
-
     def execute_release
       repository.ensure_branch_exists(stable_branch)
       bump_versions
+      add_changelog
+      compile_changelog
+
       push_ref('branch', stable_branch)
       push_ref('branch', 'master')
 
@@ -84,9 +81,8 @@ module Release
       message = ["Update Chart Version to #{chart_version}"]
       message << "Update Gitlab Version to #{app_version}" if app_version && app_version.valid?
       $stdout.puts "#{message.join(' ')}...".colorize(:green)
-      out, status = run_update_version(args)
 
-      raise(StandardError.new(out)) unless status.success?
+      run_update_version(args)
 
       repository.commit(Dir.glob(File.join(repository.path, '**', 'Chart.yaml')), message: message.join("\n"))
     end
@@ -111,8 +107,25 @@ module Release
 
         cmd_output = `#{final_args.join(' ')} 2>&1`
 
-        [cmd_output, $CHILD_STATUS]
+        raise(StandardError.new(cmd_output)) unless $CHILD_STATUS.success?
       end
+    end
+
+    def add_changelog
+      return unless gitlab_version && gitlab_version.release?
+
+      message = "Update GitLab Version to #{gitlab_version}"
+
+      Dir.chdir(repository.path) do
+        final_args = ['./bin/changelog', '-t other', message]
+        $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
+
+        cmd_output = `#{final_args.join(' ')} 2>&1`
+
+        raise(StandardError.new(cmd_output)) unless $CHILD_STATUS.success?
+      end
+
+      repository.commit(Dir.glob(File.join(repository.path, 'changelogs', 'unreleased', '*.yml')), message: "Changelog - #{message}")
     end
   end
 end
