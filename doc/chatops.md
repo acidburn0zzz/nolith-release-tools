@@ -53,10 +53,18 @@ Create a QA issue with differences between two specified tags.
 > can run the equivalent [`rake qa_issue`](./rake-tasks.md#qa_issuefromtoversion)
 > command locally.
 
+#### Options
+
+| flag         | description                                                       |
+| ----         | -----------                                                       |
+| `--security` | Create a [security QA issue](./rake-tasks.md#security_qa_issuefromtoversion) |
+
 #### Examples
 
 ```
 /chatops run qa_issue v11.1.0-rc1..v11.1.0-rc2
+
+/chatops run qa_issue --security v11.1.1..v11.1.2
 ```
 
 ### Release Issues
