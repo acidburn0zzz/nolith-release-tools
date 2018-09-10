@@ -5,6 +5,7 @@ require 'version'
 
 describe Qa::Issue do
   let(:version) { Version.new('10.8.0-rc1') }
+  let(:current_date) { DateTime.new(2018, 9, 10, 16, 40, 0, '+2') }
   let(:project) { Project::GitlabCe }
   let(:mr1) do
     double(
@@ -51,7 +52,7 @@ describe Qa::Issue do
     context 'for a new issue' do
       before do
         expect(subject).to receive(:exists?).and_return(false)
-        @content = subject.description
+        @content = Timecop.freeze(current_date) { subject.description }
       end
 
       it "includes the current release version" do
@@ -73,6 +74,18 @@ describe Qa::Issue do
 
       it "includes the qa task for version" do
         expect(@content).to include("## Automated QA for 10.8.0-rc1")
+      end
+
+      it 'includes the due date' do
+        expect(@content).to include('2018-09-11 14:40 UTC')
+      end
+
+      context 'for RC2' do
+        let(:version) { Version.new('10.8.0-rc2') }
+
+        it 'the due date is 12h in the future' do
+          expect(@content).to include('2018-09-11 02:40 UTC')
+        end
       end
     end
 

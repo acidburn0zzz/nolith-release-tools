@@ -53,7 +53,7 @@ module Qa
 
           > **Note:** For Release Managers, for each release candidate, update the time here to reflect the latest release candidate deploy.
 
-          QA testing on [staging.gitlab.com](https://staging.gitlab.com) should be completed by **YYYY-MM-DD HH:MM UTC**.
+          QA testing on [staging.gitlab.com](https://staging.gitlab.com) should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
           After this deadline has passed, Release Managers will proceed with the canary and production deployment.
         HEREDOC
       end
@@ -107,6 +107,16 @@ module Qa
 
       def labels
         [Qa::TEAM_LABELS]
+      end
+
+      def due_date
+        utc_date = DateTime.now.new_offset(0)
+
+        if version.include?('rc1')
+          utc_date + 24.hours
+        else
+          utc_date + 12.hours
+        end
       end
     end
   end
