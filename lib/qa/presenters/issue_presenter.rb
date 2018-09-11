@@ -112,7 +112,7 @@ module Qa
       def due_date
         utc_date = DateTime.now.new_offset(0)
 
-        if version.include?('rc1')
+        if version.rc == 1
           utc_date + 24.hours
         else
           utc_date + 12.hours
