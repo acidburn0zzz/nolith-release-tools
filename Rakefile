@@ -187,7 +187,12 @@ namespace :release_managers do
 
   desc "Sync Release Manager membership"
   task :sync do
-    ReleaseManagers::Definitions.sync!
+    result = ReleaseManagers::Definitions.sync!
+
+    unless result.success?
+      $stdout.puts result.formatted_error_message
+      exit 1
+    end
   end
 end
 

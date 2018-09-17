@@ -43,6 +43,9 @@ module ReleaseManagers
     def sync!
       dev_client.sync_membership(all.collect(&:dev))
       production_client.sync_membership(all.collect(&:production))
+      ops_client.sync_membership(all.collect(&:ops))
+
+      ReleaseManagers::SyncResult.new([dev_client, production_client, ops_client])
     end
 
     private
@@ -55,10 +58,14 @@ module ReleaseManagers
       @production_client ||= ReleaseManagers::Client.new(:production)
     end
 
+    def ops_client
+      @ops_client ||= ReleaseManagers::Client.new(:ops)
+    end
+
     # Represents a single entry from the configuration file
     class User
       attr_reader :name
-      attr_reader :dev, :production
+      attr_reader :dev, :production, :ops
 
       def initialize(name, hash)
         if hash['gitlab.com'].nil?
@@ -69,6 +76,7 @@ module ReleaseManagers
 
         @production = hash['gitlab.com']
         @dev = hash['gitlab.org'] || production
+        @ops = hash['ops.gitlab.net'] || production
       end
     end
   end

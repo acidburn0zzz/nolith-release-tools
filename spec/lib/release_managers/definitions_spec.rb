@@ -60,9 +60,15 @@ describe ReleaseManagers::Definitions do
       when :dev
         allow(subject).to receive(:dev_client).and_return(client_spy)
         allow(subject).to receive(:production_client).and_return(double.as_null_object)
+        allow(subject).to receive(:ops_client).and_return(double.as_null_object)
+      when :ops
+        allow(subject).to receive(:dev_client).and_return(double.as_null_object)
+        allow(subject).to receive(:production_client).and_return(double.as_null_object)
+        allow(subject).to receive(:ops_client).and_return(client_spy)
       else
         allow(subject).to receive(:dev_client).and_return(double.as_null_object)
         allow(subject).to receive(:production_client).and_return(client_spy)
+        allow(subject).to receive(:ops_client).and_return(double.as_null_object)
       end
 
       client_spy
@@ -84,6 +90,21 @@ describe ReleaseManagers::Definitions do
 
       expect(client).to have_received(:sync_membership)
         .with(%w[jameslopez new-team-member rspeicher])
+    end
+
+    it 'syncs ops usernames' do
+      client = client_spy(:ops)
+
+      subject.sync!
+
+      expect(client).to have_received(:sync_membership)
+        .with(%w[jameslopez new-team-member-ops rspeicher])
+    end
+
+    it 'returns a `SyncResult`' do
+      client_spy(:production)
+
+      expect(subject.sync!).to be_a(ReleaseManagers::SyncResult)
     end
   end
 

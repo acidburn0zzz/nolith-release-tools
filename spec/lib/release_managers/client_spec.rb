@@ -29,6 +29,14 @@ describe ReleaseManagers::Client do
 
       expect(request).to have_been_requested
     end
+
+    it 'configures properly for ops' do
+      request = stub_request(:get, %r{\Ahttps://ops\.gitlab\.net/.+})
+
+      described_class.new(:ops).members
+
+      expect(request).to have_been_requested
+    end
   end
 
   describe '#sync_membership', :silence_stdout do
@@ -61,6 +69,14 @@ describe ReleaseManagers::Client do
 
       subject.sync_membership(%w[james])
     end
+
+    it 'keeps track of exceptions when they occur' do
+      sync_error = ReleaseManagers::Client::SyncError.new('BOOM')
+      expect(subject).to receive(:get_user) { raise sync_error }
+
+      expect { subject.sync_membership(%w[james]) }.not_to raise_error
+      expect(subject.sync_errors).to contain_exactly(sync_error)
+    end
   end
 
   describe '#get_user' do
@@ -81,6 +97,10 @@ describe ReleaseManagers::Client do
 
     it 'finds a user case-insensitively' do
       expect(subject.get_user('bob').username).to eq 'Bob'
+    end
+
+    it 'raises an error when a user was not found' do
+      expect { subject.get_user('sophie') }.to raise_error(ReleaseManagers::Client::UserNotFoundError)
     end
   end
 end

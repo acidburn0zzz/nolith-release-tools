@@ -1,14 +1,22 @@
 module ReleaseManagers
   class Client
+    SyncError = Class.new(StandardError)
+    UserNotFoundError = Class.new(SyncError)
+    UnauthorizedError = Class.new(SyncError)
+
     GITLAB_API_ENDPOINT = 'https://gitlab.com/api/v4'.freeze
     DEV_API_ENDPOINT = 'https://dev.gitlab.org/api/v4'.freeze
+    OPS_API_ENDPOINT = 'https://ops.gitlab.net/api/v4'.freeze
 
     MASTER_ACCESS = 40
 
+    attr_reader :sync_errors, :target
+
     # Initialize a GitLab API client specific to Release Manager tasks
     #
-    # target - Target :production or :dev environment (default: :production)
+    # target - Target :production, :dev or :ops environment (default: :production)
     def initialize(target = :production)
+      @sync_errors = []
       @target = target
 
       case target
@@ -17,6 +25,12 @@ module ReleaseManagers
         @client = Gitlab.client(
           endpoint: DEV_API_ENDPOINT,
           private_token: ENV['DEV_API_PRIVATE_TOKEN']
+        )
+      when :ops
+        @group = 'release-managers'
+        @client = Gitlab.client(
+          endpoint: OPS_API_ENDPOINT,
+          private_token: ENV['OPS_API_PRIVATE_TOKEN']
         )
       else
         @target = :production
@@ -41,14 +55,16 @@ module ReleaseManagers
       to_add = usernames - existing
       to_remove = existing - usernames
 
-      to_add.each { |username| add_member(username) }
-      to_remove.each { |username| remove_member(username) }
+      to_add.each do |username|
+        track_sync_errors { add_member(username) }
+      end
+      to_remove.each do |username|
+        track_sync_errors { remove_member(username) }
+      end
     rescue Gitlab::Error::Unauthorized
-      $stderr.puts "Unauthorized on #{client.endpoint}"
-      exit 1
+      sync_errors << UnauthorizedError.new("Unauthorized")
     rescue Gitlab::Error::Forbidden
-      $stderr.puts "Insufficient permissions on #{client.endpoint}"
-      exit 1
+      sync_errors << UnauthorizedError.new("Insufficient permissions}")
     end
 
     def get_user(username)
@@ -56,22 +72,20 @@ module ReleaseManagers
         .user_search(username)
         .detect { |result| result.username.casecmp?(username) }
 
-      user || raise("#{username} not found on #{client.endpoint}")
+      user || raise(UserNotFoundError, "#{username} not found")
     end
 
     private
 
-    attr_reader :client, :group, :target
+    attr_reader :client, :group
 
     def add_member(username)
       user = get_user(username)
 
-      begin
-        $stdout.puts "    Adding #{user.username} to #{group}"
-        client.add_group_member(group, user.id, MASTER_ACCESS)
-      rescue Gitlab::Error::Conflict => ex
-        raise unless ex.message =~ /Member already exists/
-      end
+      $stdout.puts "    Adding #{user.username} to #{group}"
+      client.add_group_member(group, user.id, MASTER_ACCESS)
+    rescue Gitlab::Error::Conflict => ex
+      raise SyncError.new(ex) unless ex.message =~ /Member already exists/
     end
 
     def remove_member(username)
@@ -79,6 +93,12 @@ module ReleaseManagers
 
       $stdout.puts "    Removing #{username} from #{group}"
       client.remove_group_member(group, user.id)
+    end
+
+    def track_sync_errors
+      yield
+    rescue SyncError => e
+      sync_errors << e
     end
   end
 end
