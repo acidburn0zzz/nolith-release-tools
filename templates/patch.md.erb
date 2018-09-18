@@ -104,6 +104,11 @@ mention it in the `#production` channel.
     bin/takeoff-deploy -e gprd -v <%= version %>-ee.0
     ```
 
+- [ ] Check if there are any [post-deployment
+      patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
+      version.to_minor %>) that need to be re-applied. If there are,
+      ping the oncall to re-apply them.
+
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
 
