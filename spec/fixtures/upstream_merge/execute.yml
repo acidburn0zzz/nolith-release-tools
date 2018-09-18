@@ -52,7 +52,7 @@ http_interactions:
         https://www.gstatic.com/recaptcha/; style-src ''self'' ''unsafe-inline'' https://gl-static.global.ssl.fastly.net;
         img-src * data: blob:; frame-src ''self'' https://www.google.com/recaptcha/;
         frame-ancestors ''self''; connect-src ''self'' https://gl-static.global.ssl.fastly.net
-        wss://gitlab.com https://sentry.gitlap.com https://customers.gitlab.com; report-uri
+        wss://gitlab.com https://sentry.gitlab.net https://customers.gitlab.com; report-uri
         https://sentry-infra.gitlap.com/api/3/csp-report/?sentry_key=a664fdde83424b43a991f25fa7c78987'
     body:
       encoding: ASCII-8BIT
