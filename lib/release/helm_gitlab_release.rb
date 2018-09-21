@@ -38,12 +38,12 @@ module Release
     end
 
     def before_execute_hook
-     repository.ensure_branch_exists(stable_branch)
-     add_changelog
-     compile_changelog
+      repository.ensure_branch_exists(stable_branch)
+      add_changelog
+      compile_changelog
 
-     super
-   end
+      super
+    end
 
     def execute_release
       repository.ensure_branch_exists(stable_branch)
