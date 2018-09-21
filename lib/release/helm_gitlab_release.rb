@@ -42,6 +42,7 @@ module Release
       bump_versions
       add_changelog
       compile_changelog
+      repository.ensure_branch_exists(stable_branch)
 
       push_ref('branch', stable_branch)
       push_ref('branch', 'master')
