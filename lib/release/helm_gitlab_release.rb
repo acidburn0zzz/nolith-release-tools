@@ -63,7 +63,7 @@ module Release
       app_version = gitlab_version || version_manager.parse_chart_file.app_version
       return if app_version.rc?
 
-      Changelog::Manager.new(repository.path).release(version)
+      Changelog::Manager.new(repository.path, skip_ci_on_commit: false).release(version)
     rescue Changelog::NoChangelogError => ex
       $stderr.puts "Cannot perform changelog update for #{version} on " \
         "#{ex.changelog_path}".colorize(:red)

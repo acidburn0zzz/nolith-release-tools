@@ -28,6 +28,12 @@ describe Changelog::Manager do
       expect(manager.repository).to eq repository
     end
 
+    it 'accepts additional config options' do
+      manager = described_class.new(fixture, skip_ci_on_commit: false)
+
+      expect(manager.skip_ci_on_commit).to be false
+    end
+
     it 'raises an error for any other object' do
       expect { described_class.new(StringIO.new) }.to raise_error(RuntimeError)
     end
@@ -202,6 +208,28 @@ describe Changelog::Manager do
 
       expect { described_class.new(repository).release(Version.new('8.10.5')) }
         .to raise_error(Changelog::NoChangelogError)
+    end
+  end
+
+  describe '#release', 'without skipping ci on commit' do
+    let(:version) { Version.new('8.10.5') }
+
+    let(:master) { repository.branches['master'] }
+    let(:stable) { repository.branches[version.stable_branch] }
+
+    before do
+      reset_fixture!
+
+      described_class.new(repository, skip_ci_on_commit: false).release(version)
+    end
+
+    it 'adds a sensible commit message' do
+      message = "Update #{config.ce_log} for #{version}\n"
+
+      aggregate_failures do
+        expect(master.target.message).to eq(message)
+        expect(stable.target.message).to eq(message)
+      end
     end
   end
 

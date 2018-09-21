@@ -31,7 +31,7 @@ describe Release::HelmGitlabRelease, :silence_stdout do
     let(:changelog_manager) { double(release: true) }
 
     before do
-      allow(Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
+      allow(Changelog::Manager).to receive(:new).with(repo_path, anything).and_return(changelog_manager)
     end
 
     context "with an existing 0-2-stable stable branch, releasing a security patch" do

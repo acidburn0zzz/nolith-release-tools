@@ -29,9 +29,12 @@ module Changelog
   # already been merged into EE without the consolidated `CHANGELOG.md`.
   class Manager
     attr_reader :repository, :version
+    attr_accessor :skip_ci_on_commit
 
     # repository - Rugged::Repository object or String path to repository
-    def initialize(repository)
+    def initialize(repository, skip_ci_on_commit: true)
+      @skip_ci_on_commit = skip_ci_on_commit
+
       case repository
       when String
         @repository = Rugged::Repository.new(repository)
@@ -113,10 +116,13 @@ module Changelog
     end
 
     def create_commit
+      message = "Update #{changelog_file} for #{version}\n"
+      message << "\n[ci skip]" if skip_ci_on_commit
+
       Rugged::Commit.create(
         repository,
         tree: index.write_tree(repository),
-        message: "Update #{changelog_file} for #{version}\n\n[ci skip]",
+        message: message,
         parents: [commit],
         update_ref: 'HEAD'
       )
