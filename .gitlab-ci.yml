@@ -97,6 +97,7 @@ release-managers:
     - echo "$RELEASE_BOT_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - export GITLAB_API_PRIVATE_TOKEN="$RELEASE_BOT_PRODUCTION_TOKEN"
     - export DEV_API_PRIVATE_TOKEN="$RELEASE_BOT_DEV_TOKEN"
+    - export OPS_API_PRIVATE_TOKEN="$RELEASE_BOT_OPS_TOKEN"
     - bundle exec rake release_managers:sync
   only:
     - schedules
