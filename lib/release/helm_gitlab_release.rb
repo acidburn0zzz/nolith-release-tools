@@ -37,11 +37,17 @@ module Release
       repository.pull_from_all_remotes(stable_branch)
     end
 
+    def before_execute_hook
+      repository.ensure_branch_exists(stable_branch)
+      add_changelog
+      compile_changelog
+
+      super
+    end
+
     def execute_release
       repository.ensure_branch_exists(stable_branch)
       bump_versions
-      add_changelog
-      compile_changelog
 
       push_ref('branch', stable_branch)
       push_ref('branch', 'master')
