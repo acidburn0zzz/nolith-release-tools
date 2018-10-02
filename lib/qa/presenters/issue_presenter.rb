@@ -44,7 +44,7 @@ module Qa
             * Add the severity label and the regression label
             * Raise the regression in the discussion and tag relevant Engineering and Product managers.
 
-          General Quality info can be found in the [Quality Handbook](https://about.gitlab.com/handbook/quality/).
+          General Quality info can be found in the [Quality Handbook](https://about.gitlab.com/handbook/engineering/quality/).
 
           ## Deadline
 
