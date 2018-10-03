@@ -60,6 +60,12 @@ mention it in the `#production` channel.
 ### staging.gitlab.com
 
 - [ ] Inform the oncall in the #production channel about **staging** deploy
+- [ ] Check if there are any [post-deployment
+      patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
+      version.to_minor %>) that need to be re-applied. If there are,
+      the deployment must be halted and assessed as to the impact of undoing the
+      patches because of the release. To proceed, approval must be given by the 
+      manager oncall.
 - [ ] On video call, [deploy] `<%= version %>` to **staging.gitlab.com**
 
     ```sh
@@ -103,11 +109,12 @@ mention it in the `#production` channel.
     # In the takeoff project:
     bin/takeoff-deploy -e gprd -v <%= version %>-ee.0
     ```
-
 - [ ] Check if there are any [post-deployment
       patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
       version.to_minor %>) that need to be re-applied. If there are,
-      ping the oncall to re-apply them.
+      the deployment must be halted and assessed as to the impact of undoing the
+      patches because of the release. To proceed, approval must be given by the 
+      manager oncall.
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
