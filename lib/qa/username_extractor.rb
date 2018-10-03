@@ -1,6 +1,6 @@
 module Qa
   class UsernameExtractor
-    COMMUNITY_CONTRIBUTION_LABEL = "Community Contribution".freeze
+    COMMUNITY_CONTRIBUTION_LABEL = "Community contribution".freeze
 
     attr_reader :merge_request
 

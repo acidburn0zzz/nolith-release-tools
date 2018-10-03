@@ -25,7 +25,7 @@ describe Qa::UsernameExtractor do
       "title" => "Community Contribution",
       "author" => double("username" => "jameslopez"),
       "assignee" => double("username" => "DouweM"),
-      "labels" => ["Community Contribution"],
+      "labels" => [described_class::COMMUNITY_CONTRIBUTION_LABEL],
       "sha" => "4f04aeec80bbfcb025e321693e6ca99b01244bb4",
       "merge_commit_sha" => "0065c449ff95cf6e0643bab17ed236c23207b537",
       "web_url" => "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/18745",
