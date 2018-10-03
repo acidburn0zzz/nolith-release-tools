@@ -44,7 +44,7 @@ describe Qa::Formatters::MergeRequestsFormatter do
     it_behaves_like 'lines returns correct contents'
 
     context 'for community contribution' do
-      let(:mr1) { mr_double('mr1', 111, ['Team1', 'TypeA', 'Community Contribution']) }
+      let(:mr1) { mr_double('mr1', 111, ['Team1', 'TypeA', Qa::UsernameExtractor::COMMUNITY_CONTRIBUTION_LABEL]) }
 
       it 'mentions the merger' do
         expect(subject.lines[2]).to include(mr1.merged_by.username)
