@@ -85,7 +85,7 @@ version was specified.
 #### Examples
 
 ```
-# Create a security release task issue from the #security channel
+# Create a security release task issue from the #security-release channel
 /chatops run release_issue 11.1.2
 ```
 
