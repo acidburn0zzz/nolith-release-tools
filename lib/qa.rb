@@ -8,7 +8,7 @@ module Qa
     'Geo',
     'Gitaly',
     'Packaging',
-    'Configuration',
+    'Configure',
     'Monitoring',
     'Secure',
     'frontend',
