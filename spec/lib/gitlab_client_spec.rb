@@ -30,6 +30,11 @@ describe GitlabClient do
   end
 
   describe '.current_user' do
+    after do
+      # HACK: Prevent cross-test polution with the `.approve_merge_request` spec
+      described_class.instance_variable_set(:@current_user, nil)
+    end
+
     it 'returns the current user', vcr: { cassette_name: 'current_user' } do
       expect(described_class.current_user).not_to be_nil
     end
@@ -127,6 +132,34 @@ describe GitlabClient do
             default_params)
 
         described_class.accept_merge_request(merge_request, Project::GitlabEe)
+      end
+    end
+  end
+
+  describe '.approve_merge_request' do
+    context 'when the author is the current user' do
+      let(:project) { Project::GitlabEe }
+      let(:iid) { 7868 }
+
+      it 'approves the MR as a second bot user' do
+        unapproved_mr = nil
+
+        VCR.use_cassette('merge_requests/upstream_unapproved') do
+          unapproved_mr = described_class.merge_request(project, iid: iid)
+          approvals = described_class.merge_request_approvals(project, iid: iid)
+
+          expect(approvals.approvals_left).to eq 1
+        end
+
+        # Because the MR author is the same as the default bot user, we expect
+        # to use a different client token
+        expect(described_class).to receive(:approval_client).and_call_original
+
+        VCR.use_cassette('merge_requests/upstream_approval') do
+          mr = described_class.approve_merge_request(unapproved_mr, project)
+
+          expect(mr.approvals_left).to eq 0
+        end
       end
     end
   end
