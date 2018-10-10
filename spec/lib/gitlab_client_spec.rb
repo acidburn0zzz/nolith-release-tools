@@ -156,9 +156,9 @@ describe GitlabClient do
         expect(described_class).to receive(:approval_client).and_call_original
 
         VCR.use_cassette('merge_requests/upstream_approval') do
-          mr = described_class.approve_merge_request(unapproved_mr, project)
+          approvals = described_class.approve_merge_request(unapproved_mr, project)
 
-          expect(mr.approvals_left).to eq 0
+          expect(approvals.approvals_left).to eq 0
         end
       end
     end

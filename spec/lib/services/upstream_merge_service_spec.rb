@@ -58,8 +58,8 @@ describe Services::UpstreamMergeService do
 
     it 'returns a successful result object' do
       expect(subject.upstream_merge_request).to receive(:create)
-      # Disabled until https://gitlab.com/gitlab-org/release-tools/issues/177 is done
-      # expect(subject.upstream_merge_request).to receive(:accept)
+      expect(subject.upstream_merge_request).to receive(:approve)
+      expect(subject.upstream_merge_request).to receive(:accept)
 
       result = subject.perform
 

@@ -7,7 +7,7 @@ VCR.configure do |c|
   c.hook_into :webmock
 
   # Filter all `*_TOKEN` environment variables
-  ENV.each_pair do |k,v|
+  ENV.each_pair do |k, v|
     next unless k.to_s.downcase.end_with?('_token')
 
     c.filter_sensitive_data("[#{k}]") { v }
