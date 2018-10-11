@@ -11,10 +11,6 @@
 #
 # Try to maintain alphabetical order.
 
-Alessio Caiazza:
-  gitlab.com: nolith
-  gitlab.org: acaiazza
-
 Bob Van Landuyt:
   gitlab.com: reprazent
   gitlab.org: Bob
@@ -24,12 +20,6 @@ Cindy Pallares:
 
 Diana Stanley:
   gitlab.com: dstanley
-
-Felipe Artur:
-  gitlab.com: felipe_artur
-
-Filipa Lacerda:
-  gitlab.com: filipa
 
 GitLab Release Tools Bot:
   gitlab.com: gitlab-release-tools-bot
@@ -51,12 +41,6 @@ Jose Vargas:
 
 Marin Jankovski:
   gitlab.com: marin
-
-Mayra Cabrera:
-  gitlab.com: mayra-cabrera
-
-Mek Stittri:
-  gitlab.com: meks
 
 Robert Speicher:
   gitlab.com: rspeicher
