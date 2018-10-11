@@ -125,7 +125,7 @@ class RemoteRepository
     format_pattern =
       case format
       when :author
-        '%an'
+        '%aN'
       when :message
         '%B'
       end
