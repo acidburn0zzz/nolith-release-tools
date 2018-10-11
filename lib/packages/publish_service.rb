@@ -41,16 +41,16 @@ module Packages
 
           triggers.each do |job|
             if SharedStatus.dry_run?
-              $stdout.puts "    #{job.name}: #{job_url(job).colorize(:yellow)}"
+              $stdout.puts "    #{job.name}: #{job.web_url.colorize(:yellow)}"
             else
-              $stdout.puts "    #{job.name}: #{job_url(job).colorize(:green)}"
+              $stdout.puts "    #{job.name}: #{job.web_url.colorize(:green)}"
               client.job_play(project_path, job.id)
             end
           end
 
           $stdout.puts
         else
-          warn "Nothing to be done for #{version}: #{pipeline_url(pipeline)}"
+          warn "Nothing to be done for #{version}: #{pipeline.web_url}"
         end
       end
     end
@@ -63,14 +63,6 @@ module Packages
 
     def client
       @client ||= GitlabDevClient
-    end
-
-    def job_url(job)
-      "https://dev.gitlab.org/#{project_path}/-/jobs/#{job.id}"
-    end
-
-    def pipeline_url(pipeline)
-      "https://dev.gitlab.org/#{project_path}/pipelines/#{pipeline.id}"
     end
   end
 end
