@@ -14,10 +14,10 @@ describe Packages::PublishService do
     end
 
     context 'when one pipeline exists' do
-      # EE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86357
-      # CE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86362
+      # EE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/96413
+      # CE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/96417
       context 'and there are manual jobs', :silence_stdout, vcr: { cassette_name: 'packages/pending' } do
-        let(:version) { Version.new('11.1.0-rc9') }
+        let(:version) { Version.new('11.4.0-rc3') }
 
         it 'plays all jobs in a release stage' do
           service = described_class.new(version)
