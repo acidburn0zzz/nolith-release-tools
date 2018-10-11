@@ -201,7 +201,7 @@ class GitlabClient
       client.approve_merge_request(project_path(project), merge_request.iid)
     end
 
-    if merge_request.author.id == current_user.id
+    if merge_request.author&.id == current_user.id
       approval.call(approval_client)
     else
       approval.call(client)
