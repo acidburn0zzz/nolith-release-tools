@@ -64,7 +64,7 @@ module ReleaseManagers
     rescue Gitlab::Error::Unauthorized
       sync_errors << UnauthorizedError.new("Unauthorized")
     rescue Gitlab::Error::Forbidden
-      sync_errors << UnauthorizedError.new("Insufficient permissions}")
+      sync_errors << UnauthorizedError.new('Insufficient permissions')
     end
 
     def get_user(username)
