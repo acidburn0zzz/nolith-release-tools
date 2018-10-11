@@ -1,0 +1,134 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/merge_requests/7868
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.5.0
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 10 Oct 2018 20:48:11 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '3556'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"1a97bb347da59e9464e44842f97d22e3"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 742e9c8f-12f3-4d14-8697-fd4ae3d646a0
+      X-Runtime:
+      - '0.093428'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '4'
+      Ratelimit-Remaining:
+      - '596'
+      Ratelimit-Reset:
+      - '1539204551'
+      Ratelimit-Resettime:
+      - Thu, 10 Oct 2018 20:49:11 GMT
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJpZCI6MTc1ODg4ODQsImlpZCI6Nzg2OCwicHJvamVjdF9pZCI6Mjc4OTY0LCJ0aXRsZSI6IkNFIHVwc3RyZWFtIC0gMjAxOC0xMC0xMCAxODoyMSBVVEMiLCJkZXNjcmlwdGlvbiI6IkZpbGVzIHRvIHJlc29sdmU6XG5cbi0gWyBdIEBtaWtlZ3JlaWxpbmcgUGxlYXNlIHJlc29sdmUgWyhVVSkgYGFwcC9hc3NldHMvamF2YXNjcmlwdHMvYm9hcmRzL2luZGV4LmpzYF0oaHR0cHM6Ly9naXRsYWIuY29tL2dpdGxhYi1vcmcvZ2l0bGFiLWVlL2Jsb2IvY2UtdG8tZWUtMjAxOC0xMC0xMC9hcHAvYXNzZXRzL2phdmFzY3JpcHRzL2JvYXJkcy9pbmRleC5qcylcbi0gWyBdIEBtaWtlZ3JlaWxpbmcgUGxlYXNlIHJlc29sdmUgWyhVVSkgYGFwcC9hc3NldHMvamF2YXNjcmlwdHMvYm9hcmRzL21vZGVscy9saXN0LmpzYF0oaHR0cHM6Ly9naXRsYWIuY29tL2dpdGxhYi1vcmcvZ2l0bGFiLWVlL2Jsb2IvY2UtdG8tZWUtMjAxOC0xMC0xMC9hcHAvYXNzZXRzL2phdmFzY3JpcHRzL2JvYXJkcy9tb2RlbHMvbGlzdC5qcylcbi0gWyBdIEBtaWtlZ3JlaWxpbmcgUGxlYXNlIHJlc29sdmUgWyhVVSkgYGFwcC9hc3NldHMvamF2YXNjcmlwdHMvYm9hcmRzL3N0b3Jlcy9ib2FyZHNfc3RvcmUuanNgXShodHRwczovL2dpdGxhYi5jb20vZ2l0bGFiLW9yZy9naXRsYWItZWUvYmxvYi9jZS10by1lZS0yMDE4LTEwLTEwL2FwcC9hc3NldHMvamF2YXNjcmlwdHMvYm9hcmRzL3N0b3Jlcy9ib2FyZHNfc3RvcmUuanMpXG4tIFsgXSBAbWlrZWdyZWlsaW5nIFBsZWFzZSByZXNvbHZlIFsoVVUpIGBzcGVjL2phdmFzY3JpcHRzL2JvYXJkcy9tb2NrX2RhdGEuanNgXShodHRwczovL2dpdGxhYi5jb20vZ2l0bGFiLW9yZy9naXRsYWItZWUvYmxvYi9jZS10by1lZS0yMDE4LTEwLTEwL3NwZWMvamF2YXNjcmlwdHMvYm9hcmRzL21vY2tfZGF0YS5qcylcblxuVHJ5IHRvIHJlc29sdmUgb25lIGZpbGUgcGVyIGNvbW1pdCwgYW5kIHRoZW4gcHVzaCAobm8gZm9yY2UtcHVzaCEpIHRvIHRoZSBgY2UtdG8tZWUtMjAxOC0xMC0xMGAgYnJhbmNoLlxuXG5bTW9yZSBkZXRhaWxlZCBpbnN0cnVjdGlvbnNdKGh0dHBzOi8vZG9jcy5naXRsYWIuY29tL2VlL2RldmVsb3BtZW50L2F1dG9tYXRpY19jZV9lZV9tZXJnZS5odG1sI3doYXQtdG8tZG8taWYteW91LWFyZS1waW5nZWQtaW4tYS1jZS11cHN0cmVhbS1tZXJnZS1yZXF1ZXN0LXRvLXJlc29sdmUtYS1jb25mbGljdClcblxuVGhhbmtzIGluIGFkdmFuY2UhIDpoZWFydDpcblxuQG1pa2VncmVpbGluZyBBZnRlciB5b3UgcmVzb2x2ZWQgdGhlIGNvbmZsaWN0cyxcbnBsZWFzZSBhc3NpZ24gdG8gdGhlIG5leHQgcGVyc29uLiBJZiB5b3UncmUgdGhlIGxhc3Qgb25lIHRvIHJlc29sdmVcbnRoZSBjb25mbGljdHMsIHBsZWFzZSBwdXNoIHRoaXMgdG8gYmUgbWVyZ2VkLlxuXG5Ob3RlOiBUaGlzIG1lcmdlIHJlcXVlc3Qgd2FzIFtjcmVhdGVkIGJ5IGFuIGF1dG9tYXRlZCBzY3JpcHRdKGh0dHBzOi8vZ2l0bGFiLmNvbS9naXRsYWItb3JnL3JlbGVhc2UtdG9vbHMvLS9qb2JzLzEwNjc5MDExNikuXG5QbGVhc2UgcmVwb3J0IGFueSBpc3N1ZSBhdCBodHRwczovL2dpdGxhYi5jb20vZ2l0bGFiLW9yZy9yZWxlYXNlLXRvb2xzL2lzc3VlcyEiLCJzdGF0ZSI6Im9wZW5lZCIsImNyZWF0ZWRfYXQiOiIyMDE4LTEwLTEwVDE4OjIxOjI2LjgxOVoiLCJ1cGRhdGVkX2F0IjoiMjAxOC0xMC0xMFQyMDowMTo1My4xMTNaIiwidGFyZ2V0X2JyYW5jaCI6Im1hc3RlciIsInNvdXJjZV9icmFuY2giOiJjZS10by1lZS0yMDE4LTEwLTEwIiwidXB2b3RlcyI6MCwiZG93bnZvdGVzIjowLCJhdXRob3IiOnsiaWQiOjE3ODYxNTIsIm5hbWUiOiLwn6SWIEdpdExhYiBCb3Qg8J+kliIsInVzZXJuYW1lIjoiZ2l0bGFiLWJvdCIsInN0YXRlIjoiYWN0aXZlIiwiYXZhdGFyX3VybCI6Imh0dHBzOi8vYXNzZXRzLmdpdGxhYi1zdGF0aWMubmV0L3VwbG9hZHMvLS9zeXN0ZW0vdXNlci9hdmF0YXIvMTc4NjE1Mi9hdmF0YXIucG5nIiwid2ViX3VybCI6Imh0dHBzOi8vZ2l0bGFiLmNvbS9naXRsYWItYm90In0sImFzc2lnbmVlIjp7ImlkIjo2MzY0MjksIm5hbWUiOiJNaWtlIEdyZWlsaW5nIiwidXNlcm5hbWUiOiJtaWtlZ3JlaWxpbmciLCJzdGF0ZSI6ImFjdGl2ZSIsImF2YXRhcl91cmwiOiJodHRwczovL3NlY3VyZS5ncmF2YXRhci5jb20vYXZhdGFyLzMzZjkwNjM3ZDc3ZjhkNGRhNjdmYWFmZDNhZjY1OTdlP3M9ODBcdTAwMjZkPWlkZW50aWNvbiIsIndlYl91cmwiOiJodHRwczovL2dpdGxhYi5jb20vbWlrZWdyZWlsaW5nIn0sInNvdXJjZV9wcm9qZWN0X2lkIjoyNzg5NjQsInRhcmdldF9wcm9qZWN0X2lkIjoyNzg5NjQsImxhYmVscyI6WyJDRSB1cHN0cmVhbSJdLCJ3b3JrX2luX3Byb2dyZXNzIjpmYWxzZSwibWlsZXN0b25lIjp7ImlkIjo1Njc2NzIsImlpZCI6MjAsImdyb3VwX2lkIjo5OTcwLCJ0aXRsZSI6IjExLjUiLCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlIjoiYWN0aXZlIiwiY3JlYXRlZF9hdCI6IjIwMTgtMDYtMTRUMTc6MzI6MjIuNjI3WiIsInVwZGF0ZWRfYXQiOiIyMDE4LTA2LTE0VDE3OjMyOjIyLjYyN1oiLCJkdWVfZGF0ZSI6IjIwMTgtMTEtMjIiLCJzdGFydF9kYXRlIjoiMjAxOC0xMC0wOCIsIndlYl91cmwiOiJodHRwczovL2dpdGxhYi5jb20vZ3JvdXBzL2dpdGxhYi1vcmcvLS9taWxlc3RvbmVzLzIwIn0sIm1lcmdlX3doZW5fcGlwZWxpbmVfc3VjY2VlZHMiOmZhbHNlLCJtZXJnZV9zdGF0dXMiOiJjYW5fYmVfbWVyZ2VkIiwic2hhIjoiN2NjZTJjMjhkZTI0ZGNjMTE0MWU0NWNkYmY1YTc5YTNlNjI5YjQ0YSIsIm1lcmdlX2NvbW1pdF9zaGEiOm51bGwsInVzZXJfbm90ZXNfY291bnQiOjAsImRpc2N1c3Npb25fbG9ja2VkIjpudWxsLCJzaG91bGRfcmVtb3ZlX3NvdXJjZV9icmFuY2giOm51bGwsImZvcmNlX3JlbW92ZV9zb3VyY2VfYnJhbmNoIjp0cnVlLCJ3ZWJfdXJsIjoiaHR0cHM6Ly9naXRsYWIuY29tL2dpdGxhYi1vcmcvZ2l0bGFiLWVlL21lcmdlX3JlcXVlc3RzLzc4NjgiLCJ0aW1lX3N0YXRzIjp7InRpbWVfZXN0aW1hdGUiOjAsInRvdGFsX3RpbWVfc3BlbnQiOjAsImh1bWFuX3RpbWVfZXN0aW1hdGUiOm51bGwsImh1bWFuX3RvdGFsX3RpbWVfc3BlbnQiOm51bGx9LCJzcXVhc2giOmZhbHNlLCJzdWJzY3JpYmVkIjp0cnVlLCJjaGFuZ2VzX2NvdW50IjoiODQiLCJtZXJnZWRfYnkiOm51bGwsIm1lcmdlZF9hdCI6bnVsbCwiY2xvc2VkX2J5IjpudWxsLCJjbG9zZWRfYXQiOm51bGwsImxhdGVzdF9idWlsZF9zdGFydGVkX2F0IjpudWxsLCJsYXRlc3RfYnVpbGRfZmluaXNoZWRfYXQiOm51bGwsImZpcnN0X2RlcGxveWVkX3RvX3Byb2R1Y3Rpb25fYXQiOm51bGwsInBpcGVsaW5lIjpudWxsLCJkaWZmX3JlZnMiOnsiYmFzZV9zaGEiOiJlZmU0OWFlNjlkZDUzZDM5NjFiN2FlOGZhM2Y1MGY2NTY3MTc4ZWM3IiwiaGVhZF9zaGEiOiI3Y2NlMmMyOGRlMjRkY2MxMTQxZTQ1Y2RiZjVhNzlhM2U2MjliNDRhIiwic3RhcnRfc2hhIjoiZWZlNDlhZTY5ZGQ1M2QzOTYxYjdhZThmYTNmNTBmNjU2NzE3OGVjNyJ9LCJhcHByb3ZhbHNfYmVmb3JlX21lcmdlIjpudWxsfQ==
+    http_version: 
+  recorded_at: Wed, 10 Oct 2018 20:48:11 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/merge_requests/7868/approvals
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.5.0
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 10 Oct 2018 20:48:12 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1911'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"6df38c1dd51e269e8d338c2425408d69"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b5d8bcd1-c597-47d0-858c-cc43c76be6f0
+      X-Runtime:
+      - '0.054529'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '1'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1539204552'
+      Ratelimit-Resettime:
+      - Thu, 10 Oct 2018 20:49:12 GMT
+    body:
+      encoding: UTF-8
+      string: '{"id":17588884,"iid":7868,"project_id":278964,"title":"CE upstream
+        - 2018-10-10 18:21 UTC","description":"Files to resolve:\n\n- [ ] @mikegreiling
+        Please resolve [(UU) `app/assets/javascripts/boards/index.js`](https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-2018-10-10/app/assets/javascripts/boards/index.js)\n-
+        [ ] @mikegreiling Please resolve [(UU) `app/assets/javascripts/boards/models/list.js`](https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-2018-10-10/app/assets/javascripts/boards/models/list.js)\n-
+        [ ] @mikegreiling Please resolve [(UU) `app/assets/javascripts/boards/stores/boards_store.js`](https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-2018-10-10/app/assets/javascripts/boards/stores/boards_store.js)\n-
+        [ ] @mikegreiling Please resolve [(UU) `spec/javascripts/boards/mock_data.js`](https://gitlab.com/gitlab-org/gitlab-ee/blob/ce-to-ee-2018-10-10/spec/javascripts/boards/mock_data.js)\n\nTry
+        to resolve one file per commit, and then push (no force-push!) to the `ce-to-ee-2018-10-10`
+        branch.\n\n[More detailed instructions](https://docs.gitlab.com/ee/development/automatic_ce_ee_merge.html#what-to-do-if-you-are-pinged-in-a-ce-upstream-merge-request-to-resolve-a-conflict)\n\nThanks
+        in advance! :heart:\n\n@mikegreiling After you resolved the conflicts,\nplease
+        assign to the next person. If you''re the last one to resolve\nthe conflicts,
+        please push this to be merged.\n\nNote: This merge request was [created by
+        an automated script](https://gitlab.com/gitlab-org/release-tools/-/jobs/106790116).\nPlease
+        report any issue at https://gitlab.com/gitlab-org/release-tools/issues!","state":"opened","created_at":"2018-10-10T18:21:26.819Z","updated_at":"2018-10-10T20:01:53.113Z","merge_status":"can_be_merged","approvals_required":1,"approvals_left":1,"approved_by":[],"suggested_approvers":[],"approvers":[],"approver_groups":[],"user_has_approved":false,"user_can_approve":false}'
+    http_version: 
+  recorded_at: Wed, 10 Oct 2018 20:48:12 GMT
+recorded_with: VCR 2.9.3

@@ -6,6 +6,10 @@ VCR.configure do |c|
   c.default_cassette_options = { record: :new_episodes }
   c.hook_into :webmock
 
-  c.filter_sensitive_data('[GITLAB_API_PRIVATE_TOKEN]') { ENV['GITLAB_API_PRIVATE_TOKEN'] }
-  c.filter_sensitive_data('[DEV_API_PRIVATE_TOKEN]') { ENV['DEV_API_PRIVATE_TOKEN'] }
+  # Filter all `*_TOKEN` environment variables
+  ENV.each_pair do |k, v|
+    next unless k.to_s.downcase.end_with?('_token')
+
+    c.filter_sensitive_data("[#{k}]") { v }
+  end
 end

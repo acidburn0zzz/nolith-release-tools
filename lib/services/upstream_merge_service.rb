@@ -28,9 +28,11 @@ module Services
 
       unless dry_run
         upstream_merge_request.create
-        # The following doesn't currently work until we implements approvals
-        # https://gitlab.com/gitlab-org/release-tools/issues/177
-        # upstream_merge_request.accept unless upstream_merge_request.conflicts?
+
+        unless upstream_merge_request.conflicts?
+          upstream_merge_request.approve
+          upstream_merge_request.accept
+        end
       end
 
       Result.new(true, { upstream_mr: upstream_merge_request })
