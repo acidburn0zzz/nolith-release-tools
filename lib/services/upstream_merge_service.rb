@@ -29,11 +29,16 @@ module Services
       unless dry_run
         upstream_merge_request.create
 
-        # Blocked by https://gitlab.com/gitlab-org/release-tools/issues/246
-        # unless upstream_merge_request.conflicts?
-        #   upstream_merge_request.approve
-        #   upstream_merge_request.accept
-        # end
+        unless upstream_merge_request.conflicts?
+          # HACK: Insert an arbitrary delay to avoid merging before CI has a
+          # chance to pick up the new push
+          #
+          # See https://gitlab.com/gitlab-org/release-tools/issues/246
+          sleep 10 unless ENV['TEST']
+
+          upstream_merge_request.approve
+          upstream_merge_request.accept
+        end
       end
 
       Result.new(true, { upstream_mr: upstream_merge_request })

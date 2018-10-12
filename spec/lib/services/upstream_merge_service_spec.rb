@@ -58,9 +58,8 @@ describe Services::UpstreamMergeService do
 
     it 'returns a successful result object' do
       expect(subject.upstream_merge_request).to receive(:create)
-      # Blocked by https://gitlab.com/gitlab-org/release-tools/issues/246
-      # expect(subject.upstream_merge_request).to receive(:approve)
-      # expect(subject.upstream_merge_request).to receive(:accept)
+      expect(subject.upstream_merge_request).to receive(:approve)
+      expect(subject.upstream_merge_request).to receive(:accept)
 
       result = subject.perform
 
