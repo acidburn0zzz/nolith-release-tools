@@ -369,15 +369,15 @@ describe RemoteRepository do
       end
     end
 
-    context 'when author_name is true' do
+    context 'when format is author' do
       it 'shows authors only' do
-        expect(subject).to receive(:run_git).with(%w[log --author-date-order --format='%an'])
+        expect(subject).to receive(:run_git).with(%w[log --author-date-order --format='%aN'])
 
         subject.log(format: :author)
       end
     end
 
-    context 'when message is true' do
+    context 'when format is message' do
       it 'shows messages only' do
         expect(subject).to receive(:run_git).with(%w[log --author-date-order --format='%B'])
 
