@@ -20,7 +20,7 @@ describe Services::UpstreamMergeService do
         .with(
           origin: Project::GitlabEe.remotes[:gitlab],
           upstream: Project::GitlabCe.remotes[:gitlab],
-          merge_branch: 'ce-to-ee-2017-11-15'
+          merge_branch: 'ce-to-ee-2017-11-15T18-12-00Z'
         ).and_return(upstream_merge)
     end
   end

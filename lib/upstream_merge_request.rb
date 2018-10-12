@@ -80,7 +80,7 @@ class UpstreamMergeRequest < MergeRequest
   end
 
   def source_branch
-    self[:source_branch] || "ce-to-ee-#{Time.now.utc.to_date.iso8601}"
+    self[:source_branch] || "ce-to-ee-#{Time.now.utc.iso8601.tr(':', '-')}"
   end
 
   private
