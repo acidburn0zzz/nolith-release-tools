@@ -65,7 +65,7 @@ describe UpstreamMergeRequest do
 
   describe '#source_branch' do
     it 'generates a relavant source branch name' do
-      expect(subject.source_branch).to eq 'ce-to-ee-2017-11-15T18-12-00Z'
+      expect(subject.source_branch).to eq 'ce-to-ee-2017-11-15'
     end
   end
 
