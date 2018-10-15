@@ -26,8 +26,8 @@ describe Packages::PublishService do
           allow(client).to receive(:pipelines).and_call_original
           allow(client).to receive(:pipeline_jobs).and_call_original
 
-          # EE and CE each have 15 manual jobs
-          expect(client).to receive(:job_play).exactly(15 * 2).times
+          # EE and CE each have 17 manual jobs
+          expect(client).to receive(:job_play).exactly(17 * 2).times
 
           # Unset the `TEST` environment so we call the stubbed `job_play`
           ClimateControl.modify(TEST: nil) do

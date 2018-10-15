@@ -14,7 +14,7 @@ module Packages
       package-release
       image-release
       raspbian-release
-      raspbian_release
+      metrics
     ].freeze
 
     def initialize(version)
