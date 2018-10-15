@@ -10,26 +10,26 @@ Merge master into the preparation branch
 
 ### After the 7th
 
-#### MR Filter for <%= PickIntoLabel.for(version) %> MRs
+#### MR Filter for <%= PickIntoLabel.reference(version) %> MRs
 
-https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests?label_name%5B%5D=Pick+into+<%= version.to_minor %>&scope=all&state=merged
+https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests?label_name%5B%5D=<%= PickIntoLabel.escaped(version) %>&scope=all&state=merged
 
 #### Note to leave in MRs
 
 ```
 Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests/MERGE_REQUEST_ID, will merge into `<%= stable_branch %>` ready for `<%= full_patch_or_rc_version %>`
 
-/unlabel <%= PickIntoLabel.for(version) %>
+/unlabel <%= PickIntoLabel.reference(version) %>
 ```
 
 ### Steps
 
-1. Cherry-pick commits into this MR using the link for <%= PickIntoLabel.for(version) %> above.
+1. Cherry-pick commits into this MR using the link for <%= PickIntoLabel.reference(version) %> above.
     - This can be done by checking out `<%= preparation_branch_name %>` locally and using `git cherry-pick -m1 MERGE_COMMIT_SHA`
     - *Note: The quickest way to check the `MERGE_COMMIT_SHA` is to go the Discussion tab in the Merge Request. The merge commit SHA will be visible right before the comment of it being merged. Sometimes the merge commit SHA will not be available in the Discussion tab, in those cases you have to look for it in the commits tab for `master`*
 1. Push changes every so often and verify that the MR has been included
 1. Leave a note in the MR so others can easily see that it is on track to be included in a release.
-    - Remove the <%= PickIntoLabel.for(version) %> label.
+    - Remove the <%= PickIntoLabel.reference(version) %> label.
 1. If there are any conflicts while picking MRs then attempt to resolve them; otherwise, create a new MR against the `<%= preparation_branch_name %>` branch and assign it to the author of the conflicting files.
 <% if ee? -%>
 1. Merge CE-to-EE using one of the workflows described in the [Merge CE stable changes to EE docs](https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
@@ -41,7 +41,7 @@ Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requ
 
 - [ ] Add changes into the preparation branches:
   - Before the 7th: Master has been merged into the preparation branch
-  - After the 7th: Changes marked <%= PickIntoLabel.for(version) %> have been picked
+  - After the 7th: Changes marked <%= PickIntoLabel.reference(version) %> have been picked
 <% if ee? %>- [ ] CE->EE merge has taken place<% end %>
 - [ ] Conflicts resolved
 - [ ] No new commits have introduced directly to the stable branch while this MR was in progress. If there are,<% unless ee? %> ensure these are merged into EE and<% end %> check for a green pipeline after merging this MR.
