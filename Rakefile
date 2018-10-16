@@ -130,6 +130,17 @@ task :patch_merge_request, [:version] do |_t, args|
   create_or_show_merge_request(merge_request)
 end
 
+desc "Cherry-pick merge requests into preparation branches"
+task :cherry_pick, [:version] do |_t, args|
+  # CE
+  version = get_version(args).to_ce
+  CherryPick::Service.new(Project::GitlabCe, version).execute
+
+  # EE
+  version = version.to_ee
+  CherryPick::Service.new(Project::GitlabEe, version).execute
+end
+
 desc "Create a security patch issue"
 task :security_patch_issue, [:version] do |_t, args|
   version = get_version(args)

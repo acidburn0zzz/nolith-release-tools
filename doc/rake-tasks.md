@@ -41,6 +41,23 @@ process.
     SLACK_TAG_URL="https://hooks.slack.com/services/foo/bar/baz"
     ```
 
+## `cherry_pick[version]`
+
+This task will cherry-pick merge requests into the [preparation
+branches](#patch_merge_requestversion) for the specified version.
+
+### Examples
+
+```sh
+# Cherry-pick merge requests in CE and EE labeled `Pick into 11.4` into the
+# `11-4-stable[-ee]-prepare-rc6` branches.
+bundle exec rake "cherry_pick[11.4.0-rc6]"
+
+# Cherry-pick merge requests in CE and EE labeled `Pick into 11.3` into the
+# `11-3-stable[-ee]-patch-6` branches.
+bundle exec rake "cherry_pick[11.3.6]"
+```
+
 ## `monthly_issue[version]`
 
 This task will either return the URL of a monthly release issue if one already
