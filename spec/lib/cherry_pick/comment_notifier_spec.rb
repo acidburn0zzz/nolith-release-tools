@@ -31,7 +31,7 @@ describe CherryPick::CommentNotifier do
         subject.comment(pick_result)
 
         expect(client).to have_received(:create_merge_request_comment)
-          .with(2, 3, SuccessMessageMatcher.new(version, expected_url))
+          .with(2, 3, SuccessMessageArgument.new(version, expected_url))
       end
     end
 
@@ -43,40 +43,40 @@ describe CherryPick::CommentNotifier do
         subject.comment(pick_result)
 
         expect(client).to have_received(:create_merge_request_comment)
-          .with(2, 3, FailureMessageMatcher.new(version, conflicts))
+          .with(2, 3, FailureMessageArgument.new(version, conflicts))
       end
     end
   end
 
   describe '#summary' do
     it 'posts a summary message to the preparation merge request' do
-      picked = [ double(url: 'a'), double(url: 'b') ]
-      unpicked = [ double(url: 'c') ]
+      picked = [double(url: 'a'), double(url: 'b')]
+      unpicked = [double(url: 'c')]
 
       subject.summary(picked, unpicked)
 
       expect(client).to have_received(:create_merge_request_comment)
-        .with(2, 1, SummaryMessageMatcher.new(version, picked, unpicked))
+        .with(2, 1, SummaryMessageArgument.new(version, picked, unpicked))
     end
 
     it 'excludes an empty picked list' do
       picked = []
-      unpicked = [ double(url: 'a') ]
+      unpicked = [double(url: 'a')]
 
       subject.summary(picked, unpicked)
 
       expect(client).to have_received(:create_merge_request_comment)
-        .with(2, 1, SummaryMessageMatcher.new(version, picked, unpicked))
+        .with(2, 1, SummaryMessageArgument.new(version, picked, unpicked))
     end
 
     it 'excludes an empty unpicked list' do
-      picked = [ double(url: 'a') ]
+      picked = [double(url: 'a')]
       unpicked = []
 
       subject.summary(picked, unpicked)
 
       expect(client).to have_received(:create_merge_request_comment)
-        .with(2, 1, SummaryMessageMatcher.new(version, picked, unpicked))
+        .with(2, 1, SummaryMessageArgument.new(version, picked, unpicked))
     end
 
     it 'does not post an empty message' do
@@ -87,73 +87,73 @@ describe CherryPick::CommentNotifier do
   end
 end
 
-class SuccessMessageMatcher
+class SuccessMessageArgument
   def initialize(version, expected_url)
     @version = version
     @expected_url = expected_url
   end
 
-  def ===(value)
-    value.include?("Picked into #{@expected_url}") &&
-      value.include?("will merge into `#{@version.stable_branch}`") &&
-      value.include?("ready for `#{@version}`.") &&
-      value.include?("/unlabel #{PickIntoLabel.reference(@version)}")
+  def ===(other)
+    other.include?("Picked into #{@expected_url}") &&
+      other.include?("will merge into `#{@version.stable_branch}`") &&
+      other.include?("ready for `#{@version}`.") &&
+      other.include?("/unlabel #{PickIntoLabel.reference(@version)}")
   end
 end
 
-class FailureMessageMatcher
+class FailureMessageArgument
   def initialize(version, conflicts)
     @version = version
     @conflicts = conflicts
   end
 
-  def ===(value)
-    value.include?("could not be picked into `#{@version.stable_branch}`") &&
-      value.include?("for `#{@version}`") &&
-      conflict_match?(value)
+  def ===(other)
+    other.include?("could not be picked into `#{@version.stable_branch}`") &&
+      other.include?("for `#{@version}`") &&
+      conflict_match?(other)
   end
 
   private
 
-  def conflict_match?(value)
+  def conflict_match?(other)
     if @conflicts.size == 1
-      value.match?(/conflict:/) &&
-        value.include?("* #{@conflicts.first}")
+      other.match?(/conflict:/) &&
+        other.include?("* #{@conflicts.first}")
     else
-      value.match?(/conflicts:/) &&
-        @conflicts.all? { |c| value.include?("* #{c}") }
+      other.match?(/conflicts:/) &&
+        @conflicts.all? { |c| other.include?("* #{c}") }
     end
   end
 end
 
-class SummaryMessageMatcher
+class SummaryMessageArgument
   def initialize(version, picked, unpicked)
     @version = version
     @picked = picked
     @unpicked = unpicked
   end
 
-  def ===(value)
-    include_picked?(value) && include_unpicked?(value)
+  def ===(other)
+    include_picked?(other) && include_unpicked?(other)
   end
 
   private
 
-  def include_picked?(value)
+  def include_picked?(other)
     if @picked.empty?
-      !value.include?("Successfully picked")
+      !other.include?("Successfully picked")
     else
-      value.include?("Successfully picked the following merge requests:") &&
-        @picked.all? { |p| value.include?("* #{p.url}") }
+      other.include?("Successfully picked the following merge requests:") &&
+        @picked.all? { |p| other.include?("* #{p.url}") }
     end
   end
 
-  def include_unpicked?(value)
+  def include_unpicked?(other)
     if @unpicked.empty?
-      !value.include?("Failed to pick")
+      !other.include?("Failed to pick")
     else
-      value.include?("Failed to pick the following merge requests:") &&
-        @unpicked.all? { |p| value.include?("* #{p.url}") }
+      other.include?("Failed to pick the following merge requests:") &&
+        @unpicked.all? { |p| other.include?("* #{p.url}") }
     end
   end
 end

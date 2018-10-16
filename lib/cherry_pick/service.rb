@@ -120,7 +120,7 @@ module CherryPick
         repository,
         tree: repository.index.write_tree,
         update_ref: 'HEAD',
-        parents: [ repository.last_commit ],
+        parents: [repository.last_commit],
         author: commit.author,
         committer: commit.committer,
         message: commit.message
