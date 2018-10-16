@@ -13,6 +13,8 @@ class GitlabClient
     def_delegator :client, :pipelines
     def_delegator :client, :pipeline_jobs
     def_delegator :client, :job_play
+
+    def_delegator :client, :create_merge_request_comment
   end
 
   class MissingMilestone
