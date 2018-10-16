@@ -24,5 +24,9 @@ module CherryPick
     def failure?
       !success?
     end
+
+    def url
+      merge_request.url
+    end
   end
 end
