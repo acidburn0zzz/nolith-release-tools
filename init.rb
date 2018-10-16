@@ -18,6 +18,7 @@ end
 require 'version'
 require 'project'
 require 'pick_into_label'
+require 'cherry_pick'
 require 'monthly_issue'
 require 'patch_issue'
 require 'packages'
