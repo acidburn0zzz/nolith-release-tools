@@ -55,8 +55,8 @@ module CherryPick
 
     def successful_comment(pick_result)
       comment = <<~MSG
-        Picked into #{prep_mr.url}, will merge into `#{version.stable_branch}`
-        ready for `#{version}`.
+        Automatically picked into #{prep_mr.url}, will merge into
+        `#{version.stable_branch}` ready for `#{version}`.
 
         /unlabel #{PickIntoLabel.reference(version)}
       MSG
@@ -65,14 +65,10 @@ module CherryPick
     end
 
     def failure_comment(pick_result)
-      conflicts = markdown_list(pick_result.conflicts)
-      conflict_message = "conflict".pluralize(conflicts)
-
       comment = <<~MSG
-        This merge request could not be picked into `#{version.stable_branch}`
-        for `#{version}` due to the following #{conflict_message}:
-
-        #{conflicts}
+        This merge request could not automatically be picked into
+        `#{version.stable_branch}` for `#{version}` and will need manual
+        intervention.
       MSG
 
       create_merge_request_comment(pick_result.merge_request, comment)

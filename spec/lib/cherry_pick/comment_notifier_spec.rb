@@ -37,13 +37,12 @@ describe CherryPick::CommentNotifier do
 
     context 'with a failed pick' do
       it 'posts a failure comment' do
-        conflicts = %w[foo.rb bar.md]
-        pick_result = CherryPick::Result.new(merge_request, :failure, conflicts)
+        pick_result = CherryPick::Result.new(merge_request, :failure)
 
         subject.comment(pick_result)
 
         expect(client).to have_received(:create_merge_request_comment)
-          .with(2, 3, FailureMessageArgument.new(version, conflicts))
+          .with(2, 3, FailureMessageArgument.new(version))
       end
     end
   end
@@ -94,35 +93,21 @@ class SuccessMessageArgument
   end
 
   def ===(other)
-    other.include?("Picked into #{@expected_url}") &&
-      other.include?("will merge into `#{@version.stable_branch}`") &&
+    other.include?("Automatically picked into #{@expected_url}") &&
+      other.include?("will merge into\n`#{@version.stable_branch}`") &&
       other.include?("ready for `#{@version}`.") &&
       other.include?("/unlabel #{PickIntoLabel.reference(@version)}")
   end
 end
 
 class FailureMessageArgument
-  def initialize(version, conflicts)
+  def initialize(version)
     @version = version
-    @conflicts = conflicts
   end
 
   def ===(other)
-    other.include?("could not be picked into `#{@version.stable_branch}`") &&
-      other.include?("for `#{@version}`") &&
-      conflict_match?(other)
-  end
-
-  private
-
-  def conflict_match?(other)
-    if @conflicts.size == 1
-      other.match?(/conflict:/) &&
-        other.include?("* #{@conflicts.first}")
-    else
-      other.match?(/conflicts:/) &&
-        @conflicts.all? { |c| other.include?("* #{c}") }
-    end
+    other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
+      other.include?("for `#{@version}`")
   end
 end
 
