@@ -24,23 +24,19 @@ module CherryPick
       assert_version!
 
       @prep_mr = PreparationMergeRequest.new(version: version)
-      @prep_branch = @prep_mr.preparation_branch_name
-      @results = []
 
       assert_prep_mr!
+
+      @prep_branch = @prep_mr.preparation_branch_name
+      @results = []
     end
 
     def execute
       return unless pickable_mrs.any?
 
-      clone_repository
-      checkout_branch
-
       pickable_mrs.each do |merge_request|
         cherry_pick(merge_request)
       end
-
-      push
 
       notifier.summary(
         @results.select(&:success?),
@@ -66,67 +62,20 @@ module CherryPick
       @notifier ||= ::CherryPick::CommentNotifier.new(version, @prep_mr)
     end
 
-    def clone_repository
-      remote = RemoteRepository.get(
-        # We only need a single remote
-        project.remotes.slice(REMOTE),
-
-        # We need the prep branch and all of the merge commits we're picking, so
-        # do a full clone
-        #
-        # TODO (rspeicher): Can we find a suitable depth to avoid this?
-        global_depth: nil
-      )
-      remote.ensure_branch_exists(@prep_branch)
-
-      @repository = Rugged::Repository.new(remote.path)
-    end
-
-    def checkout_branch
-      repository.checkout("#{REMOTE}/#{@prep_branch}", strategy: :force)
-    end
-
     def cherry_pick(merge_request)
       result = nil
 
-      # Wipe out any possible uncommitted changes from a previous (failed) pick
-      repository.reset('HEAD', :hard)
-
-      commit = repository.lookup(merge_request.merge_commit_sha)
-      repository.cherrypick(commit.oid, mainline: 1)
-      commit_pick(commit)
+      GitlabClient.cherry_pick(
+        project,
+        ref: merge_request.merge_commit_sha,
+        target: @prep_branch
+      )
 
       result = Result.new(merge_request, :success)
-    rescue Rugged::IndexError, Rugged::MergeError, Rugged::OdbError
-      conflicts = repository.index.conflicts
-        .flat_map(&:values)
-        .flat_map { |c| c[:path] }
-        .uniq
-
-      result = Result.new(merge_request, :failure, conflicts)
+    rescue Gitlab::Error::Error
+      result = Result.new(merge_request, :failure)
     ensure
-      repository.reset('HEAD', :hard)
-
       record_result(result)
-    end
-
-    # Given the cherry-picked commit, commit the changes of the pick
-    #
-    # commit - Rugged::Commit instance
-    def commit_pick(commit)
-      Rugged::Commit.create(
-        repository,
-        tree: repository.index.write_tree,
-        update_ref: 'HEAD',
-        parents: [repository.last_commit],
-        author: commit.author,
-        committer: commit.committer,
-        message: commit.message
-      )
-    end
-
-    def push
-      repository.push(REMOTE, @prep_branch)
     end
 
     def record_result(result)
