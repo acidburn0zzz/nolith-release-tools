@@ -50,7 +50,7 @@ module CherryPick
     private
 
     def markdown_list(array)
-      array.map { |v| "* #{v}\n" }.join.strip
+      array.map { |v| "* #{v}" }.join("\n")
     end
 
     def client
