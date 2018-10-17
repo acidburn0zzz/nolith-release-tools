@@ -1,12 +1,8 @@
 module CherryPick
   # Represents the result of a cherry pick
   class Result
-    extend Forwardable
-
     attr_reader :merge_request
     attr_reader :conflicts
-
-    def_delegator :merge_request, :url
 
     # merge_request - The merge request we attempted to pick
     # status        - Status of the pick (`:success` or `:failure`)
