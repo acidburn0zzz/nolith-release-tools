@@ -30,8 +30,11 @@ describe CherryPick::CommentNotifier do
 
         subject.comment(pick_result)
 
-        expect(client).to have_received(:create_merge_request_comment)
-          .with(2, 3, SuccessMessageArgument.new(version, expected_url))
+        expect(client).to have_received(:create_merge_request_comment).with(
+          merge_request.project_id,
+          merge_request.iid,
+          SuccessMessageArgument.new(version, expected_url)
+        )
       end
     end
 
@@ -41,8 +44,11 @@ describe CherryPick::CommentNotifier do
 
         subject.comment(pick_result)
 
-        expect(client).to have_received(:create_merge_request_comment)
-          .with(2, 3, FailureMessageArgument.new(version))
+        expect(client).to have_received(:create_merge_request_comment).with(
+          merge_request.project_id,
+          merge_request.iid,
+          FailureMessageArgument.new(version)
+        )
       end
     end
   end
@@ -54,8 +60,11 @@ describe CherryPick::CommentNotifier do
 
       subject.summary(picked, unpicked)
 
-      expect(client).to have_received(:create_merge_request_comment)
-        .with(2, 1, SummaryMessageArgument.new(version, picked, unpicked))
+      expect(client).to have_received(:create_merge_request_comment).with(
+        prep_mr.project_id,
+        prep_mr.iid,
+        SummaryMessageArgument.new(version, picked, unpicked)
+      )
     end
 
     it 'excludes an empty picked list' do
@@ -64,8 +73,11 @@ describe CherryPick::CommentNotifier do
 
       subject.summary(picked, unpicked)
 
-      expect(client).to have_received(:create_merge_request_comment)
-        .with(2, 1, SummaryMessageArgument.new(version, picked, unpicked))
+      expect(client).to have_received(:create_merge_request_comment).with(
+        prep_mr.project_id,
+        prep_mr.iid,
+        SummaryMessageArgument.new(version, picked, unpicked)
+      )
     end
 
     it 'excludes an empty unpicked list' do
@@ -74,8 +86,11 @@ describe CherryPick::CommentNotifier do
 
       subject.summary(picked, unpicked)
 
-      expect(client).to have_received(:create_merge_request_comment)
-        .with(2, 1, SummaryMessageArgument.new(version, picked, unpicked))
+      expect(client).to have_received(:create_merge_request_comment).with(
+        prep_mr.project_id,
+        prep_mr.iid,
+        SummaryMessageArgument.new(version, picked, unpicked)
+      )
     end
 
     it 'does not post an empty message' do
