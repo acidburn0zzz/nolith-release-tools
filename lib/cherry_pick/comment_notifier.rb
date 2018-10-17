@@ -53,10 +53,6 @@ module CherryPick
       array.map { |v| "* #{v}" }.join("\n")
     end
 
-    def client
-      GitlabClient
-    end
-
     def successful_comment(pick_result)
       comment = <<~MSG
         Picked into #{prep_mr.url}, will merge into `#{version.stable_branch}`
@@ -80,6 +76,10 @@ module CherryPick
       MSG
 
       create_merge_request_comment(pick_result.merge_request, comment)
+    end
+
+    def client
+      GitlabClient
     end
 
     def create_merge_request_comment(merge_request, comment)
