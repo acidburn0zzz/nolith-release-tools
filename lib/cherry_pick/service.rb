@@ -24,7 +24,7 @@ module CherryPick
       assert_version!
 
       @prep_mr = PreparationMergeRequest.new(version: version)
-      @preparation_branch = @prep_mr.preparation_branch_name
+      @prep_branch = @prep_mr.preparation_branch_name
       @results = []
 
       assert_prep_mr!
@@ -50,8 +50,6 @@ module CherryPick
 
     private
 
-    attr_reader :prep_mr
-    attr_reader :preparation_branch
     attr_reader :repository
 
     def assert_version!
@@ -59,13 +57,13 @@ module CherryPick
     end
 
     def assert_prep_mr!
-      unless prep_mr.exists?
+      unless @prep_mr.exists?
         raise "Preparation merge request not found for `#{version}`"
       end
     end
 
     def notifier
-      @notifier ||= ::CherryPick::CommentNotifier.new(version, prep_mr)
+      @notifier ||= ::CherryPick::CommentNotifier.new(version, @prep_mr)
     end
 
     def clone_repository
@@ -79,13 +77,13 @@ module CherryPick
         # TODO (rspeicher): Can we find a suitable depth to avoid this?
         global_depth: nil
       )
-      remote.ensure_branch_exists(preparation_branch)
+      remote.ensure_branch_exists(@prep_branch)
 
       @repository = Rugged::Repository.new(remote.path)
     end
 
     def checkout_branch
-      repository.checkout("#{REMOTE}/#{preparation_branch}", strategy: :force)
+      repository.checkout("#{REMOTE}/#{@prep_branch}", strategy: :force)
     end
 
     def cherry_pick(merge_request)
@@ -128,7 +126,7 @@ module CherryPick
     end
 
     def push
-      repository.push(REMOTE, preparation_branch)
+      repository.push(REMOTE, @prep_branch)
     end
 
     def record_result(result)
