@@ -1,5 +1,6 @@
+require 'cherry_pick/comment_notifier'
+require 'cherry_pick/result'
+require 'cherry_pick/service'
+
 module CherryPick
-  autoload :CommentNotifier, 'cherry_pick/comment_notifier'
-  autoload :Result, 'cherry_pick/result'
-  autoload :Service, 'cherry_pick/service'
 end
