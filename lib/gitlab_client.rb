@@ -246,6 +246,16 @@ class GitlabClient
       .detect { |i| i.title == merge_request.title }
   end
 
+  def self.cherry_pick(project = Project::GitlabCe, ref:, target:)
+    # NOTE: The GitLab gem doesn't currently support this API
+    path = project_path(project).gsub('/', '%2F')
+
+    client.post(
+      "/projects/#{path}/repository/commits/#{ref}/cherry_pick",
+      query: { branch: target }
+    )
+  end
+
   def self.client
     @client ||= Gitlab.client(
       endpoint: DEFAULT_GITLAB_API_ENDPOINT,
