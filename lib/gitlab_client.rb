@@ -1,3 +1,4 @@
+require 'cgi'
 require 'gitlab'
 
 require_relative 'project/gitlab_ce'
@@ -248,7 +249,7 @@ class GitlabClient
 
   def self.cherry_pick(project = Project::GitlabCe, ref:, target:)
     # NOTE: The GitLab gem doesn't currently support this API
-    path = project_path(project).gsub('/', '%2F')
+    path = CGI.escape(project_path(project))
 
     client.post(
       "/projects/#{path}/repository/commits/#{ref}/cherry_pick",
