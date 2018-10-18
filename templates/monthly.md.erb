@@ -143,23 +143,23 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
   - [ ] Warm up the packages on takeoff by running:
         ```sh
-        # In the takeoff project:
-        bin/takeoff-deploy -v <%= version.to_patch %>-ee.0 -w
+        # In Slack:
+        /chatops run deploy <%= version.to_patch %>-ee.0 --warmup
         ```
 - Before 12:00 UTC:
   - [ ] Notify #production channel about staging deploy. No need to require confirmation.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to [staging.gitlab.com]
 
         ```sh
-        # In the takeoff project:
-        bin/takeoff-deploy -e gstg -v <%= version.to_patch %>-ee.0
+        # In Slack:
+        /chatops run deploy <%= version.to_patch %>-ee.0
         ```
   - [ ] Notify #production channel about canary deploy. No need to require confirmation.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to [canary.gitlab.com]
 
         ```sh
-        # In the takeoff project:
-        bin/takeoff-deploy -e gprd-cny -v <%= version.to_patch %>-ee.0
+        # In Slack:
+        /chatops run deploy <%= version.to_patch %>-ee.0 --canary
         ```
   - [ ] Confirm that there are no errors on canary
     - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
@@ -170,8 +170,8 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to GitLab.com
 
         ```sh
-        # In the takeoff project:
-        bin/takeoff-deploy -e gprd -v <%= version.to_patch %>-ee.0
+        # In Slack:
+        /chatops run deploy <%= version.to_patch %>-ee.0 --production
         ```
 - At 14:30 UTC:
   - [ ] Publish the packages via ChatOps:
