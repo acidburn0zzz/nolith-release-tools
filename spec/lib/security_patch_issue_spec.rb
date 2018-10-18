@@ -18,7 +18,7 @@ describe SecurityPatchIssue do
     it 'includes the "security" label' do
       issue = described_class.new(version: Version.new(''))
 
-      expect(issue.labels).to eq 'Release,security'
+      expect(issue.labels).to eq 'Monthly Release,security'
     end
   end
 

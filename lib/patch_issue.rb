@@ -11,7 +11,7 @@ class PatchIssue < Issue
   end
 
   def labels
-    'Release'
+    'Monthly Release'
   end
 
   def project
