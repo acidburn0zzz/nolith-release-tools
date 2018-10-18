@@ -4,6 +4,17 @@ Dotenv.load
 
 $LOAD_PATH.unshift(File.expand_path('./lib', __dir__))
 
+require 'shared_status'
+
+unless ENV['TEST']
+  require 'sentry-raven'
+
+  Raven.user_context(
+    git_user: SharedStatus.user,
+    release_user: ENV['RELEASE_USER']
+  )
+end
+
 require 'version'
 require 'project'
 require 'pick_into_label'
@@ -21,7 +32,6 @@ require 'release/gitlab_ee_release'
 require 'release/helm_gitlab_release'
 require 'release_managers'
 require 'services/upstream_merge_service'
-require 'shared_status'
 require 'slack'
 require 'sync'
 require 'upstream_merge'
