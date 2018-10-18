@@ -53,8 +53,8 @@ mention it in the `#production` channel.
 - [ ] Warm up the packages in the /takeoff by running:
 
     ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -v <%= version %>-ee.0 -w
+    # In Slack:
+    /chatops run deploy <%= version %>-ee.0 --warmup
     ```
 
 ### staging.gitlab.com
@@ -64,13 +64,13 @@ mention it in the `#production` channel.
       patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
       version.to_minor %>) that need to be re-applied. If there are,
       the deployment must be halted and assessed as to the impact of undoing the
-      patches because of the release. To proceed, approval must be given by the 
+      patches because of the release. To proceed, approval must be given by the
       manager oncall.
 - [ ] On video call, [deploy] `<%= version %>` to **staging.gitlab.com**
 
     ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -e gstg -v <%= version %>-ee.0
+    # In Slack:
+    /chatops run deploy <%= version %>-ee.0
     ```
 - [ ] Comment with the output of the migrations from the takeoff script in this issue
 
@@ -90,8 +90,8 @@ mention it in the `#production` channel.
 - [ ] On video call, [deploy] `<%= version %>` to canary vms in production
 
     ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -e gprd-cny -v <%= version %>-ee.0
+    # In Slack:
+    /chatops run deploy <%= version %>-ee.0 --production --canary
     ```
 - [ ] Confirm that there are no errors on canary
   - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
@@ -106,14 +106,14 @@ mention it in the `#production` channel.
 - [ ] On video call, [deploy] `<%= version %>` to GitLab.com
 
     ```sh
-    # In the takeoff project:
-    bin/takeoff-deploy -e gprd -v <%= version %>-ee.0
+    # In Slack:
+    /chatops run deploy <%= version %>-ee.0 --production
     ```
 - [ ] Check if there are any [post-deployment
       patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
       version.to_minor %>) that need to be re-applied. If there are,
       the deployment must be halted and assessed as to the impact of undoing the
-      patches because of the release. To proceed, approval must be given by the 
+      patches because of the release. To proceed, approval must be given by the
       manager oncall.
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
