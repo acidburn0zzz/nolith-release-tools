@@ -173,18 +173,26 @@ No new code can be added to the release that was not included in the final RC.
         # In Slack:
         /chatops run deploy <%= version.to_patch %>-ee.0 --production
         ```
-- At 14:30 UTC:
+- At 13:30 UTC:
   - [ ] Publish the packages via ChatOps:
     ```
     # In Slack:
     /chatops run publish <%= version.to_patch %>
     ```
-  - Make sure that neither packages nor the blog post get published early without approval by the marketing team
-- At 15:00 UTC:
+  - Make sure that neither packages nor the blog post get published earlier than
+  planned without approval by the marketing team. Mind that you don't need their approval if you're on time
+  - If anything goes wrong and the release is delayed, ping the
+  [release post manager](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)
+  on Slack to make them aware of the issue. Cross-post the slack message to the #marketing channel to notify them too
+- At 14:10 UTC:
   - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
   - [ ] Create the `<%= version.to_patch %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version.to_patch %>)
-  - [ ] Ensure someone tweets about the `<%= version.to_patch %>` release in the `#releases` channel
+  - [ ] Once all packages are available publicly and GitLab.com is up and running on the release version,
+  ping the [release post manager](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)
+  on Slack (#release-post channel) to give them a go to merge the release post at ~14:20 UTC, so that it will be live at 15:00 UTC
+  - [ ] Make sure the release post manager will tweet about the `<%= version.to_patch %>` release.
+  If they don't respond, ensure someone else tweets from the `#releases` channel
 
 [CE stable branch]: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
 [EE stable branch]: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
