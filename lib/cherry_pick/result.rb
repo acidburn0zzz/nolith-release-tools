@@ -19,7 +19,7 @@ module CherryPick
     end
 
     def url
-      merge_request.url
+      merge_request.web_url
     end
   end
 end
