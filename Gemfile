@@ -7,7 +7,7 @@ gem 'dotenv',        '~> 2.2.0'
 gem 'gitlab',        '~> 4.5.0'
 gem 'httparty',      '~> 0.16.0'
 gem 'rake'
-gem 'rugged',        '~> 0.26.0'
+gem 'rugged',        '~> 0.27.0'
 gem 'sentry-raven',  '~> 2.7', require: false
 
 group :development, :test do
