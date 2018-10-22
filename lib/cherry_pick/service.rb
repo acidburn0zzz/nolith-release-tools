@@ -69,11 +69,13 @@ module CherryPick
     def cherry_pick(merge_request)
       result = nil
 
-      GitlabClient.cherry_pick(
-        project,
-        ref: merge_request.merge_commit_sha,
-        target: @prep_branch
-      )
+      unless SharedStatus.dry_run?
+        GitlabClient.cherry_pick(
+          project,
+          ref: merge_request.merge_commit_sha,
+          target: @prep_branch
+        )
+      end
 
       result = Result.new(merge_request, :success)
     rescue Gitlab::Error::Error

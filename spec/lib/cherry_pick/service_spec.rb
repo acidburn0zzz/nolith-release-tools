@@ -64,7 +64,10 @@ describe CherryPick::Service do
       it 'attempts to cherry pick each merge request' do
         expect(GitlabClient).to receive(:cherry_pick).exactly(5).times
 
-        subject.execute
+        # Unset the `TEST` environment so we call the stubbed `cherry_pick`
+        ClimateControl.modify(TEST: nil) do
+          subject.execute
+        end
       end
 
       it 'posts a comment to each merge request' do
