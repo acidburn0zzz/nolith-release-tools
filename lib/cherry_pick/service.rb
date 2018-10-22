@@ -59,7 +59,11 @@ module CherryPick
     end
 
     def notifier
-      @notifier ||= ::CherryPick::CommentNotifier.new(version, @prep_mr)
+      if SharedStatus.dry_run?
+        @notifier ||= ::CherryPick::ConsoleNotifier.new(version, @prep_mr)
+      else
+        @notifier ||= ::CherryPick::CommentNotifier.new(version, @prep_mr)
+      end
     end
 
     def cherry_pick(merge_request)
