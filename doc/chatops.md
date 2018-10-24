@@ -27,6 +27,30 @@ All `run` commands take a `--help` flag that details their available options.
 
 ## Commands
 
+### `cherry_pick`
+
+Cherry picks merge requests into preparation branches for the specified version.
+
+> NOTE: If for some reason the ChatOps command isn't working as expected, you
+> can run the equivalent [`rake cherry_pick`](./rake-tasks.md#cherry_pickversion)
+> command locally.
+
+#### Options
+
+| flag         | description                                                |
+| ----         | -----------                                                |
+| `--security` | Operate as a security release, using only `dev.gitlab.org` |
+
+#### Examples
+
+```
+/chatops run cherry_pick 11.4.0-rc6
+
+/chatops run cherry_pick 11.4.1 --security
+
+/chatops run cherry_pick 11.3.6
+```
+
 ### `publish`
 
 Publishes packages for the specified version.

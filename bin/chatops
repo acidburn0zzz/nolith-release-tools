@@ -20,6 +20,9 @@ require_version
 setup_env
 
 case $1 in
+  "cherry_pick")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
   "monthly_issue")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
