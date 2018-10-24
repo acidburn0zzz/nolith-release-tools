@@ -141,6 +141,11 @@ task :cherry_pick, [:version] do |_t, args|
   CherryPick::Service.new(Project::GitlabEe, version).execute
 end
 
+task :security_cherry_pick, [:version] do |_t, args|
+  ENV['SECURITY'] = 'true'
+  Rake::Task[:cherry_pick].invoke(args[:version])
+end
+
 desc "Create a security patch issue"
 task :security_patch_issue, [:version] do |_t, args|
   version = get_version(args)
