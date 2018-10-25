@@ -44,16 +44,15 @@ module Qa
           1. Install the `.deb` package from the job artifact:
             1. SSH into the VM via the GCP console.
             1. Create a `install-gitlab.sh` script in your home folder:
-
-              ```bash
-              TEMP_DEB="$(mktemp)" &&
-              curl -H "PRIVATE-TOKEN: $DEV_TOKEN" "$GITLAB_PACKAGE" -o "$TEMP_DEB" &&
-              sudo dpkg -i "$TEMP_DEB"
-              rm -f "$TEMP_DEB"
-              ```
-              `$DEV_TOKEN` needs to be set with a `dev.gitlab.org` personal access token
-              so that the script can download the package, `$GITLAB_PACKAGE` needs to be
-              set to the link location from the job's artifacts.
+                ```bash
+                TEMP_DEB="$(mktemp)" &&
+                curl -H "PRIVATE-TOKEN: $DEV_TOKEN" "$GITLAB_PACKAGE" -o "$TEMP_DEB" &&
+                sudo dpkg -i "$TEMP_DEB"
+                rm -f "$TEMP_DEB"
+                ```
+                `$DEV_TOKEN` needs to be set with a `dev.gitlab.org` personal access token
+                so that the script can download the package, `$GITLAB_PACKAGE` needs to be
+                set to the link location from the job's artifacts.
             1. Change the script's permission with `chmod +x install-gitlab.sh`.
             1. Run the script with `./install-gitlab.sh`.
             1. Once GitLab installed, set the `external_url` in `/etc/gitlab/gitlab.rb`
