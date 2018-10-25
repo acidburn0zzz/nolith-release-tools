@@ -1,3 +1,4 @@
+require 'cgi'
 require 'gitlab'
 
 require_relative 'project/gitlab_ce'
@@ -13,6 +14,8 @@ class GitlabClient
     def_delegator :client, :pipelines
     def_delegator :client, :pipeline_jobs
     def_delegator :client, :job_play
+
+    def_delegator :client, :create_merge_request_comment
   end
 
   class MissingMilestone
@@ -242,6 +245,16 @@ class GitlabClient
 
     merge_requests(project, opts)
       .detect { |i| i.title == merge_request.title }
+  end
+
+  def self.cherry_pick(project = Project::GitlabCe, ref:, target:)
+    # NOTE: The GitLab gem doesn't currently support this API
+    path = CGI.escape(project_path(project))
+
+    client.post(
+      "/projects/#{path}/repository/commits/#{ref}/cherry_pick",
+      query: { branch: target }
+    )
   end
 
   def self.client

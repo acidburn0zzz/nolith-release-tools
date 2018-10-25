@@ -319,6 +319,29 @@ describe GitlabClient do
     end
   end
 
+  describe '.cherry_pick' do
+    context 'on a successful pick' do
+      it 'returns a reasonable response', vcr: { cassette_name: 'cherry_pick/success' } do
+        ref = '59af98f133ee229479c6159b15391deb4782a294'
+
+        response = described_class.cherry_pick(ref: ref, target: '11-4-stable')
+
+        expect(response.message).to include("cherry picked from commit #{ref}")
+      end
+    end
+
+    context 'on a failed pick' do
+      it 'raises an exception', vcr: { cassette_name: 'cherry_pick/failure' } do
+        expect do
+          described_class.cherry_pick(
+            ref: '396d205e5a503f9f48c223804087a80f7acc6d06',
+            target: '11-4-stable'
+          )
+        end.to raise_error(Gitlab::Error::BadRequest)
+      end
+    end
+  end
+
   describe '.project_path' do
     it 'returns the correct project path' do
       project = double(path: 'foo/bar')
