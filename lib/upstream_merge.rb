@@ -30,11 +30,13 @@ class UpstreamMerge
 
   def prepare_upstream_merge
     $stdout.puts "Prepare repository...".colorize(:green)
-    repository.checkout_new_branch(merge_branch)
+    # We fetch CE first to make sure our EE copy is more up-to-date!
+    repository.fetch('master', remote: :upstream)
+    repository.fetch('master', remote: :origin)
+    repository.checkout_new_branch(merge_branch, base: 'origin/master')
   end
 
   def execute_upstream_merge
-    repository.fetch('master', remote: :upstream)
     result = repository.merge('upstream/master', merge_branch, no_ff: true)
 
     # Depending on Git version, it's "up-to-date" or "up to date"...
