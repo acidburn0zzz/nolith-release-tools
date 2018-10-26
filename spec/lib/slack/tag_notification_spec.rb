@@ -40,5 +40,16 @@ describe Slack::TagNotification do
 
       described_class.release(version)
     end
+
+    it 'posts a message indicating a security release' do
+      expected = "_Liz Lemon_ tagged `10.4.20` as a security release"
+
+      expect_post(body: { text: expected }.to_json)
+        .and_return(response(200))
+
+      ClimateControl.modify(SECURITY: 'true') do
+        described_class.release(version)
+      end
+    end
   end
 end

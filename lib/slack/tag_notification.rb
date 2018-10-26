@@ -8,7 +8,9 @@ module Slack
     end
 
     def self.release(version)
-      text = "_#{SharedStatus.user}_ tagged `#{version}`"
+      text = "_#{SharedStatus.user}_ tagged `#{version}`".tap do |str|
+        str << " as a security release" if SharedStatus.security_release?
+      end
 
       fire_hook(text: text)
     end
