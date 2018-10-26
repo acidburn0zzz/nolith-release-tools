@@ -72,29 +72,7 @@ Keep in mind that:
 2. The final RC should point to the same commit as the final release.
 
 ## On the first working day after the 7th
-- Follow the [Feature freeze RC] guide:
-  - [ ] Create an MR on **CE** master updating the `.gitignore`, `.gitlab-ci.yml`, and `Dockerfile` templates
-  - [ ] Create an MR on **CE** master updating the dependencies license list
-  - [ ] Ensure the above MRs are merged and marked <%= PickIntoLabel.reference(version) %>
-  - [ ] Merge **CE** master into **EE** master
-  - [ ] Integrate changes from master into `<%= version.stable_branch %>`
-- [ ] In `#development`:
-
-    ```
-    @channel
-
-    `<%= version.stable_branch %>` branch has been created. Everything merged into `master`
-    after this point will go into next month's release. Only regression and security fixes
-    will be cherry-picked into `<%= version.stable_branch %>`.
-
-    Please ensure that merge requests have the correct milestone (`<%= version.to_minor %>` for this release)
-    and the `Pick into <%= version.to_minor %>` label.
-
-    From now on, please follow the "After the 7th" process:
-    https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th
-    ```
-
-[Feature freeze RC]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#feature-freeze-rc
+- [ ] Follow the [Feature freeze RC](https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#feature-freeze-rc) guide
 
 ## Final RC
 
