@@ -1,5 +1,6 @@
 module Qa
   TEAM_LABELS = [
+    'Community contribution',
     'Plan',
     'Platform',
     'Create',
