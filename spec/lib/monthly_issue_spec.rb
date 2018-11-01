@@ -45,7 +45,7 @@ describe MonthlyIssue do
     it 'returns a list of labels' do
       issue = described_class.new(version: double)
 
-      expect(issue.labels).to eq 'Release'
+      expect(issue.labels).to eq 'Monthly Release,Delivery'
     end
   end
 end
