@@ -7,7 +7,7 @@ class MonthlyIssue < Issue
   end
 
   def labels
-    'Release'
+    'Monthly Release,Delivery'
   end
 
   def project
