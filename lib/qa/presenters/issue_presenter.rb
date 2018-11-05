@@ -48,8 +48,8 @@ module Qa
 
           ## Deadline
 
-          * The deadline to which the first release candidate (RC1) moves on from staging environment is **24** hours after the deploy to staging completes.
-          * The deadline to which subsequent release candidates moves on from staging environment is **12** hours after the deploy to staging completes.
+          * The deadline to which the first release candidate (RC1) moves on from staging environment is **24** working hours after the deploy to staging completes.
+          * The deadline to which subsequent release candidates moves on from staging environment is **12** working hours after the deploy to staging completes.
 
           > **Note:** For Release Managers, for each release candidate, update the time here to reflect the latest release candidate deploy.
 
