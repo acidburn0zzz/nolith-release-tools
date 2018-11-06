@@ -15,6 +15,7 @@ class UpstreamMerge
   end
 
   def execute!
+    setup_merge_drivers
     prepare_upstream_merge
     conflicts = execute_upstream_merge
     after_upstream_merge
@@ -26,6 +27,14 @@ class UpstreamMerge
 
   def repository
     @repository ||= RemoteRepository.get({ origin: origin, upstream: upstream }, global_depth: 200)
+  end
+
+  def setup_merge_drivers
+    repo = Rugged::Repository.new(repository.path)
+
+    repo.config['merge.merge_db_schema.name'] = 'Merge db/schema.rb'
+    repo.config['merge.merge_db_schema.driver'] = 'merge_db_schema %O %A %B'
+    repo.config['merge.merge_db_schema.recursive'] = 'text'
   end
 
   def prepare_upstream_merge
