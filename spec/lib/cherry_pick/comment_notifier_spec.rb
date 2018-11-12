@@ -6,12 +6,14 @@ describe CherryPick::CommentNotifier do
   let(:client) { spy('GitlabClient') }
   let(:version) { Version.new('11.4.0') }
 
+  let(:project) { double(path: 'gitlab-org/gitlab-ce') }
+
   let(:prep_mr) do
-    double(iid: 1, project_id: 2, url: 'https://example.com')
+    double(iid: 1, project: project, url: 'https://example.com')
   end
 
   let(:merge_request) do
-    double(iid: 3, project_id: 2, url: 'https://example.com')
+    double(iid: 3, project: project, url: 'https://example.com')
   end
 
   subject do
@@ -31,7 +33,7 @@ describe CherryPick::CommentNotifier do
         subject.comment(pick_result)
 
         expect(client).to have_received(:create_merge_request_comment).with(
-          merge_request.project_id,
+          merge_request.project.path,
           merge_request.iid,
           SuccessMessageArgument.new(version, expected_url)
         )
@@ -45,7 +47,7 @@ describe CherryPick::CommentNotifier do
         subject.comment(pick_result)
 
         expect(client).to have_received(:create_merge_request_comment).with(
-          merge_request.project_id,
+          merge_request.project.path,
           merge_request.iid,
           FailureMessageArgument.new(version)
         )
@@ -61,7 +63,7 @@ describe CherryPick::CommentNotifier do
       subject.summary(picked, unpicked)
 
       expect(client).to have_received(:create_merge_request_comment).with(
-        prep_mr.project_id,
+        prep_mr.project.path,
         prep_mr.iid,
         SummaryMessageArgument.new(version, picked, unpicked)
       )
@@ -74,7 +76,7 @@ describe CherryPick::CommentNotifier do
       subject.summary(picked, unpicked)
 
       expect(client).to have_received(:create_merge_request_comment).with(
-        prep_mr.project_id,
+        prep_mr.project.path,
         prep_mr.iid,
         SummaryMessageArgument.new(version, picked, unpicked)
       )
@@ -87,7 +89,7 @@ describe CherryPick::CommentNotifier do
       subject.summary(picked, unpicked)
 
       expect(client).to have_received(:create_merge_request_comment).with(
-        prep_mr.project_id,
+        prep_mr.project.path,
         prep_mr.iid,
         SummaryMessageArgument.new(version, picked, unpicked)
       )
