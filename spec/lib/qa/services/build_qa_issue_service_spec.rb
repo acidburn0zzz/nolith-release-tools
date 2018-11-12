@@ -131,8 +131,8 @@ describe Qa::Services::BuildQaIssueService do
       expect(subject.merge_requests).not_to include(dupe_mr)
     end
 
-    it 'excludes Release MRs' do
-      mr1.labels << 'Release'
+    it 'excludes CE upstream MRs' do
+      mr1.labels << 'CE upstream'
 
       expect(subject.merge_requests).not_to include(mr1)
     end
