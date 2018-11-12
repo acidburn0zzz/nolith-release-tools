@@ -28,7 +28,6 @@ module Qa
     'Quality',
     'meta',
     'Documentation',
-    'Release',
     'test',
     'broken master',
     'CE upstream',
