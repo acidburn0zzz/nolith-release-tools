@@ -64,11 +64,11 @@ module Qa
 
           > Example:
           >
-          > * [x] `@Engineer1` | Apply notification settings level of bacons to all child bacons ~Discussion ~groups ~subgroups
-          > * [x] `@Engineer2` | Resolve "Timeout searching group bacons" ~Discussion ~backend ~bug ~database ~groups ~issues ~performance
-          > * [ ] `@Engineer3` | Nonnegative meatball weights in issuable sidebar short ribs ~Deliverable ~Discussion ~backend ~direction ~frontend ~issues
+          > * [x] `@Engineer1` | Apply notification settings level of bacons to all child bacons ~Plan ~groups ~subgroups
+          > * [x] `@Engineer2` | Resolve "Timeout searching group bacons" ~Plan ~backend ~bug ~database ~groups ~issues ~performance
+          > * [ ] `@Engineer3` | Nonnegative meatball weights in issuable sidebar short ribs ~Deliverable ~Plan ~backend ~direction ~frontend ~issues
           >   * Found problem, does not work because... [LINK_ISSUE_HERE](https://gitlab.com/gitlab-org/gitlab-ce/issues/)
-          > * [ ] `@Engineer4` | Moving rev-list pastrami bacons to Lfs Prosciutto ~Platform ~backend ~lfs
+          > * [ ] `@Engineer4` | Moving rev-list pastrami bacons to Lfs Prosciutto ~Create ~backend ~lfs
         HEREDOC
       end
 
