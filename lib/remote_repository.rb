@@ -130,7 +130,7 @@ class RemoteRepository
         '%B'
       end
 
-    cmd = %w[log --author-date-order]
+    cmd = %w[log --topo-order]
     cmd << '-1' if latest
     cmd << '--no-merges' if no_merges
     cmd << "--format='#{format_pattern}'" if format_pattern

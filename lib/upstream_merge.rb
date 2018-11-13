@@ -57,7 +57,7 @@ class UpstreamMerge
     if conflicts.present?
       repository.commit(conflicting_files, no_edit: true)
       add_ci_skip_to_merge_commit
-      add_last_modifier_to_conflicts(conflicts)
+      add_latest_modifier_to_conflicts(conflicts)
     end
 
     raise PushFailed unless repository.push(origin, merge_branch)
@@ -87,13 +87,13 @@ class UpstreamMerge
     repository.log(latest: true, format: :message).chomp
   end
 
-  def add_last_modifier_to_conflicts(conflicts)
+  def add_latest_modifier_to_conflicts(conflicts)
     conflicts.each do |conflict|
-      conflict[:user] = last_modifier(conflict[:path])
+      conflict[:user] = latest_modifier(conflict[:path])
     end
   end
 
-  def last_modifier(file)
-    repository.log(paths: file, no_merges: true, format: :author).lines.first.chomp
+  def latest_modifier(file)
+    repository.log(latest: true, no_merges: true, format: :author, paths: file).lines.first.chomp
   end
 end
