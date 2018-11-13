@@ -8,7 +8,7 @@ class PreparationMergeRequest < MergeRequest
   end
 
   def labels
-    'Release'
+    'Delivery'
   end
 
   def source_branch

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests?labels=Release&state=opened
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests?labels=Delivery&state=opened
     body:
       encoding: US-ASCII
       string: ''
@@ -33,8 +33,8 @@ http_interactions:
       Etag:
       - W/"3f56d79281214e6f17412d98883a330e"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-ce&labels=Release&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-ce&labels=Release&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-ce&labels=Delivery&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-ce&labels=Delivery&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
         rel="last"
       Vary:
       - Origin
@@ -119,6 +119,6 @@ http_interactions:
         Tsiolis","username":"gtsiolis","state":"active","avatar_url":"https://secure.gravatar.com/avatar/fde4d3b543cdd1b26fe63c1938773d70?s=80\u0026d=identicon","web_url":"https://gitlab.com/gtsiolis"},"assignee":{"id":1474048,"name":"George
         Tsiolis","username":"gtsiolis","state":"active","avatar_url":"https://secure.gravatar.com/avatar/fde4d3b543cdd1b26fe63c1938773d70?s=80\u0026d=identicon","web_url":"https://gitlab.com/gtsiolis"},"source_project_id":4581232,"target_project_id":13083,"labels":["CI/CD","Community
         contribution","Hackathon","Release","UX","bug","devops:release","frontend"],"work_in_progress":false,"milestone":{"id":567670,"iid":19,"group_id":9970,"title":"11.4","description":"","state":"active","created_at":"2018-06-14T17:31:41.249Z","updated_at":"2018-06-14T17:31:41.249Z","due_date":"2018-10-22","start_date":"2018-09-08","web_url":"https://gitlab.com/groups/gitlab-org/-/milestones/19"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"0ab0f0bcf72cbb5a73d111fc0a97e2b239bd4690","merge_commit_sha":null,"user_notes_count":37,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"allow_collaboration":false,"allow_maintainer_to_push":false,"web_url":"https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/21975","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
-    http_version: 
+    http_version:
   recorded_at: Wed, 17 Oct 2018 19:54:17 GMT
 recorded_with: VCR 2.9.3
