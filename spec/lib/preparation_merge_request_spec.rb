@@ -25,7 +25,7 @@ describe PreparationMergeRequest do
 
   describe '#labels' do
     it 'are set correctly on the MR' do
-      expect(merge_request.labels).to eq 'Release'
+      expect(merge_request.labels).to eq 'Delivery'
     end
   end
 
