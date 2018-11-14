@@ -34,7 +34,7 @@ module CherryPick
     def execute
       return unless pickable_mrs.any?
 
-      pickable_mrs.each do |merge_request|
+      pickable_mrs.auto_paginate do |merge_request|
         cherry_pick(merge_request)
       end
 
