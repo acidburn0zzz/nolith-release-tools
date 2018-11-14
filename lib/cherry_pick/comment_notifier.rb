@@ -80,7 +80,7 @@ module CherryPick
 
     def create_merge_request_comment(merge_request, comment)
       client.create_merge_request_comment(
-        merge_request.project.path,
+        merge_request.project_id,
         merge_request.iid,
         comment
       )

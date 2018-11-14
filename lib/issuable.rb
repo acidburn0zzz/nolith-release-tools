@@ -21,6 +21,10 @@ class Issuable < OpenStruct
     self[:project] || default_project
   end
 
+  def project_id
+    remote_issuable&.project_id
+  end
+
   def author
     remote_issuable&.author
   end
