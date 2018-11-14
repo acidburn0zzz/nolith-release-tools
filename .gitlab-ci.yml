@@ -7,7 +7,7 @@ stages:
   - chatops
 
 cache: &global-cache
-  key: "ruby-24"
+  key: "ruby-25"
   paths:
     - vendor/ruby
 
