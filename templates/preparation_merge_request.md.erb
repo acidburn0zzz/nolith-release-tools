@@ -25,10 +25,10 @@ Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requ
 ### Steps
 
 1. Perform automated cherry-picking to reduce the amount of manual picks required:
-  ```
-  # In Slack
-  /chatops run cherry_pick <%= version %>
-  ```
+   ```
+   # In Slack
+   /chatops run cherry_pick <%= version %>
+   ```
 1. Cherry-pick remaining commits into this MR using the link for <%= PickIntoLabel.reference(version) %> above.
     - This can be done by checking out `<%= preparation_branch_name %>` locally and using `git cherry-pick -m1 MERGE_COMMIT_SHA`
     - *Note: Copy the merge commit SHA from the "merged into `master`" section of the merge widget.*
