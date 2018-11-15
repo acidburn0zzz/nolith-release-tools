@@ -31,6 +31,7 @@ module Qa
     'test',
     'broken master',
     'CE upstream',
+    'Delivery',
     'development guidelines',
     'static analysis',
     'QA',
