@@ -134,11 +134,13 @@ desc "Cherry-pick merge requests into preparation branches"
 task :cherry_pick, [:version] do |_t, args|
   # CE
   version = get_version(args).to_ce
-  CherryPick::Service.new(Project::GitlabCe, version).execute
+  $stdout.puts "Picking for #{version}..."
+  result = CherryPick::Service.new(Project::GitlabCe, version).execute
 
   # EE
   version = version.to_ee
-  CherryPick::Service.new(Project::GitlabEe, version).execute
+  $stdout.puts "Picking for #{version}..."
+  result = CherryPick::Service.new(Project::GitlabEe, version).execute
 end
 
 task :security_cherry_pick, [:version] do |_t, args|
