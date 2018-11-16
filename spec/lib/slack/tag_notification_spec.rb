@@ -23,6 +23,7 @@ describe Slack::TagNotification do
 
   describe '.release' do
     let(:version) { Version.new('10.4.20') }
+    let(:message) { "_Liz Lemon_ tagged `#{version}`" }
 
     before do
       allow(SharedStatus).to receive(:user).and_return('Liz Lemon')
@@ -34,21 +35,47 @@ describe Slack::TagNotification do
       end
     end
 
-    it 'posts a message' do
-      expect_post(body: { text: "_Liz Lemon_ tagged `10.4.20`" }.to_json)
-        .and_return(response(200))
+    context 'with a CI job URL' do
+      it 'posts an attachment' do
+        expect_post(body: {
+          attachments: [{
+            fallback: '',
+            color: 'good',
+            text: "<foo|#{message}>",
+            mrkdwn_in: ['text']
+          }]
+        }.to_json).and_return(response(200))
 
-      described_class.release(version)
+        ClimateControl.modify(CI_JOB_URL: 'foo') do
+          described_class.release(version)
+        end
+      end
     end
 
-    it 'posts a message indicating a security release' do
-      expected = "_Liz Lemon_ tagged `10.4.20` as a security release"
+    context 'without a CI job URL' do
+      around do |ex|
+        # Prevent these tests from failing on CI
+        ClimateControl.modify(CI_JOB_URL: nil) do
+          ex.run
+        end
+      end
 
-      expect_post(body: { text: expected }.to_json)
-        .and_return(response(200))
+      it 'posts a message' do
+        expect_post(body: { text: message }.to_json)
+          .and_return(response(200))
 
-      ClimateControl.modify(SECURITY: 'true') do
         described_class.release(version)
+      end
+
+      it 'posts a message indicating a security release' do
+        message << " as a security release"
+
+        expect_post(body: { text: message }.to_json)
+          .and_return(response(200))
+
+        ClimateControl.modify(SECURITY: 'true') do
+          described_class.release(version)
+        end
       end
     end
   end
