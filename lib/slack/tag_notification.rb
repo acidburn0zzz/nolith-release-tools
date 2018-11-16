@@ -12,7 +12,18 @@ module Slack
         str << " as a security release" if SharedStatus.security_release?
       end
 
-      fire_hook(text: text)
+      if ENV['CI_JOB_URL']
+        attachment = {
+          fallback: '',
+          color: 'good',
+          text: "<#{ENV['CI_JOB_URL']}|#{text}>",
+          mrkdwn_in: %w[text]
+        }
+
+        fire_hook(attachments: [attachment])
+      else
+        fire_hook(text: text)
+      end
     end
   end
 end
