@@ -62,6 +62,7 @@ mention it in the `#production` channel.
     /chatops run deploy <%= version %>.ee.0
     ```
 - [ ] Comment with the output of the migrations from the takeoff script in this issue
+- [ ] Link to deployment job (even failed attempts) =>
 
 #### QA
 
@@ -81,6 +82,7 @@ mention it in the `#production` channel.
     # In Slack:
     /chatops run deploy <%= version %>.ee.0 --production --canary
     ```
+- [ ] Link to deployment job (even failed attempts) =>
 - [ ] Confirm that there are no errors on canary
   - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
   - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
@@ -95,6 +97,7 @@ mention it in the `#production` channel.
     # In Slack:
     /chatops run deploy <%= version %>.ee.0 --production
     ```
+- [ ] Link to deployment job (even failed attempts) =>
 
 [deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
