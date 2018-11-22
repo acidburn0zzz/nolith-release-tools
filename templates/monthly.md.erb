@@ -113,32 +113,29 @@ No new code can be added to the release that was not included in the final RC.
 
 - Before 10:00 UTC:
   - [ ] Tag the `<%= version.to_patch %>` version using the [`release` command]:
-
-        ```sh
-        # In Slack:
-        /chatops run tag <%= version.to_patch %>
-        ```
+    ```sh
+    # In Slack:
+    /chatops run tag <%= version.to_patch %>
+    ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
   - [ ] Warm up the packages on takeoff by running:
-        ```sh
-        # In Slack:
-        /chatops run deploy <%= version.to_patch %>-ee.0 --warmup
-        ```
+    ```sh
+    # In Slack:
+    /chatops run deploy <%= version.to_patch %>-ee.0 --warmup
+    ```
 - Before 12:00 UTC:
   - [ ] Notify #production channel about staging deploy. No need to require confirmation.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to [staging.gitlab.com]
-
-        ```sh
-        # In Slack:
-        /chatops run deploy <%= version.to_patch %>-ee.0
-        ```
+    ```sh
+    # In Slack:
+    /chatops run deploy <%= version.to_patch %>-ee.0
+    ```
   - [ ] Notify #production channel about canary deploy. No need to require confirmation.
-  - [ ] On video call, [deploy] `<%= version.to_patch %>` to [canary.gitlab.com]
-
-        ```sh
-        # In Slack:
-        /chatops run deploy <%= version.to_patch %>-ee.0 --canary
-        ```
+  - [ ] On video call, [deploy] `<%= version.to_patch %>` to the canary VMs on gitlab.com
+    ```sh
+    # In Slack:
+    /chatops run deploy <%= version.to_patch %>-ee.0 --production --canary
+    ```
   - [ ] Confirm that there are no errors on canary
     - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
     - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
@@ -146,11 +143,10 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Get confirmation from a production team member to deploy production. Use `!oncall prod` if needed to find who's on call. If someone besides the oncall confirms, `@mention` the oncall so they are aware.
   - [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to GitLab.com
-
-        ```sh
-        # In Slack:
-        /chatops run deploy <%= version.to_patch %>-ee.0 --production
-        ```
+    ```sh
+    # In Slack:
+    /chatops run deploy <%= version.to_patch %>-ee.0 --production
+    ```
 - At 13:30 UTC:
   - [ ] Publish the packages via ChatOps:
     ```
