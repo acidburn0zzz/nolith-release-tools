@@ -110,7 +110,8 @@ describe UpstreamMergeRequest do
 
           @rymai After you resolved the conflicts,
           please assign to the next person. If you're the last one to resolve
-          the conflicts, please push this to be merged.
+          the conflicts, please push this to be merged and **do not** choose to
+          squash the commits.
 
           Note: This merge request was [created by an automated script](http://job.url).
           Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
