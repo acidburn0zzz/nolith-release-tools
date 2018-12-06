@@ -45,10 +45,11 @@
 
 ## Deploy
 
-Deploys to production require confirmation from a production team member before
-proceeding. Use `!oncall prod` in the `#production` channel to find who's on
-call and ping someone. Deploys to staging or canary can be done at will, just
-mention it in the `#production` channel.
+Deploys to production require confirmation from a production team member
+before proceeding. Use `/chatops run oncall production` in the
+`#production` channel to find who's on call and ping someone. Deploys to
+staging or canary can be done at will, just mention it in the
+`#production` channel.
 
 - [ ] Warm up the packages in the /takeoff by running:
 
@@ -103,7 +104,7 @@ mention it in the `#production` channel.
 
 - [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
 - [ ] Get confirmation from a production team member to deploy to **production**
-      In `#production`, use `!oncall prod` to find who's on call, and `@mention` them asking to deploy to production
+      In `#production`, use `/chatops run oncall production` to find who's on call, and `@mention` them asking to deploy to production
 - [ ] If someone besides the oncall confirms, `@mention` the oncall so they are aware.
 - [ ] On video call, [deploy] `<%= version %>` to GitLab.com
 
