@@ -37,22 +37,22 @@ module Qa
               1. First find the pipeline for the `#{version.to_omnibus(ee: true)}`
                 tag in the [pipelines page].
               1. Then on the pipeline page, click the `Ubuntu-16.04-staging` job
-                in the `Staging_upload` stage.
-              1. Browse the job's artifacts, and find the `.deb` package under
-                `pkg/ubuntu-xenial/`.
-              1. Copy the `Download` link location.
+                in the `Upload:gitlab_com` stage (or the `Staging_upload` stage
+                for versions prior to 11.5), you will need the job ID later.
           1. Install the `.deb` package from the job artifact:
               1. SSH into the VM via the GCP console.
               1. Create a `install-gitlab.sh` script in your home folder:
                   ```bash
-                  TEMP_DEB="$(mktemp)" &&
+                  TEMP_DEB="$(mktemp)"
+                  GITLAB_PACKAGE="https://dev.gitlab.org/api/v4/projects/gitlab%2Fomnibus-gitlab/jobs/${JOB_ID}/artifacts/pkg/ubuntu-xenial/gitlab-ee_${GITLAB_VERSION}-ee.0_amd64.deb"
                   curl -H "PRIVATE-TOKEN: $DEV_TOKEN" "$GITLAB_PACKAGE" -o "$TEMP_DEB" &&
                   sudo dpkg -i "$TEMP_DEB"
                   rm -f "$TEMP_DEB"
                   ```
-                  `$DEV_TOKEN` needs to be set with a `dev.gitlab.org` personal access token
-                  so that the script can download the package, `$GITLAB_PACKAGE` needs to be
-                  set to the link location from the job's artifacts.
+                  * `$DEV_TOKEN` needs to be set with a `dev.gitlab.org` personal access token
+                  so that the script can download the package
+                  * `$JOB_ID` needs to be set with the `Ubuntu-16.04-staging` job ID
+                  * `$GITLAB_VERSION` needs to be set with the version (without the `-ee` prefix, e.g. `11.4.10`).
               1. Change the script's permission with `chmod +x install-gitlab.sh`.
               1. Run the script with `./install-gitlab.sh`.
               1. Once GitLab installed, set the `external_url` in `/etc/gitlab/gitlab.rb`
@@ -77,26 +77,30 @@ module Qa
             › docker build -t dev.gitlab.org:5005/gitlab/omnibus-gitlab/gitlab-ee-qa:#{version.to_ee} .
             ```
           - [ ] Make sure to export the following environment variables (you can find the
-            password and tokens under the `GitLab QA` and `GitLab QA - Access tokens` 1Password items)
-            * `<QA_ENV_URL>` with the URL of the environment where the package has been
-              deployed (usually https://staging.gitlab.com for the current version, and
-              `http://IP_OF_THE_GCP_VM` for back-ported versions).
-            * `<ROOT_PASSWORD>` with the password you've set for the `root` user.
-            * `<GITHUB_ACCESS_TOKEN>` with a valid GitHub API token that can access the
-            * `<DEV_USERNAME>` with your `dev` username
-            * `<DEV_TOKEN>` with a valid `dev` personal access token that has
-              the `read_registry` scope
-            ```
-            › export QA_IMAGE="dev.gitlab.org:5005/gitlab/omnibus-gitlab/gitlab-ee-qa:#{version.to_ee}"
-            › export QA_ENV_URL="<QA_ENV_URL>"
-            › export GITLAB_USERNAME=root
-            › export GITLAB_ADMIN_USERNAME="$GITLAB_USERNAME"
-            › export GITLAB_PASSWORD="<ROOT_PASSWORD>"
-            › export GITLAB_ADMIN_PASSWORD="$GITLAB_PASSWORD"
-            › export GITHUB_ACCESS_TOKEN="<GITHUB_ACCESS_TOKEN>"
-            › export DEV_USERNAME="<DEV_USERNAME>"
-            › export DEV_TOKEN="<DEV_TOKEN>"
-            ```
+              token under the `GitLab QA - Access tokens` 1Password items)
+              * `$QA_IMAGE` the URL of the QA image
+              * `$QA_ENV_URL` with the URL of the environment where the package has been
+                deployed (usually https://staging.gitlab.com for the current version, and
+                `http://IP_OF_THE_GCP_VM` for back-ported versions).
+              * `$GITLAB_USERNAME` with `root`.
+              * `$GITLAB_ADMIN_USERNAME` with `$GITLAB_USERNAME`.
+              * `$GITLAB_PASSWORD` with the password you've set for the `root` user.
+              * `$GITLAB_ADMIN_PASSWORD` with `$GITLAB_PASSWORD`.
+              * `$GITHUB_ACCESS_TOKEN` with a valid GitHub API token that can access the https://github.com/gitlab-qa/test-project project
+              * `$DEV_USERNAME` with your `dev` username
+              * `$DEV_TOKEN` with a valid `dev` personal access token that has
+                the `read_registry` scope
+              ```
+              › export QA_IMAGE="dev.gitlab.org:5005/gitlab/omnibus-gitlab/gitlab-ee-qa:#{version.to_ee}"
+              › export QA_ENV_URL="<QA_ENV_URL>"
+              › export GITLAB_USERNAME="root"
+              › export GITLAB_ADMIN_USERNAME="$GITLAB_USERNAME"
+              › export GITLAB_PASSWORD="<GITLAB_PASSWORD>"
+              › export GITLAB_ADMIN_PASSWORD="$GITLAB_PASSWORD"
+              › export GITHUB_ACCESS_TOKEN="<GITHUB_ACCESS_TOKEN>"
+              › export DEV_USERNAME="<DEV_USERNAME>"
+              › export DEV_TOKEN="<DEV_TOKEN>"
+              ```
 
           - [ ] Update `gitlab-qa` if needed
 
