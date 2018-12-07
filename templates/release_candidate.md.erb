@@ -45,13 +45,6 @@ before proceeding. Use `/chatops run oncall prod` in the `#production`
 channel to find who's on call and ping someone. Deploys to staging or canary
 can be done at will, just mention it in the `#production` channel.
 
-- [ ] Warm up the packages on takeoff by running:
-
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version %>.ee.0 --warmup
-    ```
-
 ### staging.gitlab.com
 
 - [ ] Notify #production that you're about to deploy on **staging**
