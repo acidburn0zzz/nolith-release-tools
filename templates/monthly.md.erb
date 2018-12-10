@@ -109,11 +109,6 @@ No new code can be added to the release that was not included in the final RC.
     /chatops run tag <%= version.to_patch %>
     ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
-  - [ ] Warm up the packages on takeoff by running:
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version.to_patch %>-ee.0 --warmup
-    ```
 - Before 12:00 UTC:
   - [ ] Notify #production channel about staging deploy. No need to require confirmation.
   - [ ] On video call, [deploy] `<%= version.to_patch %>` to [staging.gitlab.com]
