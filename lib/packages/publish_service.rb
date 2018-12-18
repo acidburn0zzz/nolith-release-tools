@@ -10,9 +10,14 @@ module Packages
 
     # Jobs in these stages will be "played"
     # Related: https://gitlab.com/gitlab-org/omnibus-gitlab/issues/3663
+    #
+    # TODO: Remove package-release and image-release from the list when we no
+    # longer release versions prior to 11.7. package-and-image-release made
+    # them obsolete.
     PLAY_STAGES = %w[
       package-release
       image-release
+      package-and-image-release
       raspbian-release
       metrics
     ].freeze
