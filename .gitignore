@@ -2,3 +2,4 @@
 /.bundle
 /coverage/
 /spec/fixtures/repositories/
+/tags
