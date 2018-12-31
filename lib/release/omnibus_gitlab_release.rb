@@ -78,7 +78,6 @@ module Release
 
     def bump_container_versions(branch)
       repository.ensure_branch_exists(branch)
-      bump_version_in_openshift_template
     end
 
     def version_from_container_template(file_path)
@@ -88,25 +87,6 @@ module Release
 
       file_version = File.open(file_path) { |f| f.read.match(%r{gitlab/gitlab-ce:(\d+\.\d+\.\d+-ce\.\d+)})[1] }
       version_class.new(file_version.tr('-', '+'))
-    end
-
-    def bump_version_in_openshift_template
-      return if version.ee? || version.rc?
-
-      file_path = File.join(repository.path, 'docker/openshift-template.json')
-      openshift_version = version_from_container_template(file_path)
-      unless openshift_version.valid?
-        raise VersionStringNotFoundError.new("#{openshift_version} in #{file_path}")
-      end
-
-      # Only bump the version if newer than what is already in the template
-      return unless version > openshift_version
-
-      content = File.read(file_path)
-      content.sub!(%r{(?<!'")gitlab/gitlab-ce:\d+\.\d+\.\d+-ce\.\d+(?!'")}, "gitlab/gitlab-ce:#{version.to_docker}")
-      content.gsub!(/(?<!'")gitlab-\d+\.\d+\.\d+(?!'")/, "gitlab-#{version.to_patch}")
-      repository.write_file(file_path, content)
-      repository.commit(file_path, message: "Update #{file_path} to #{version.to_docker}")
     end
   end
 end
