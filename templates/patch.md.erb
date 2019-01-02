@@ -60,8 +60,7 @@ staging or canary can be done at will, just mention it in the
       the deployment must be halted and assessed as to the impact of undoing the
       patches because of the release. To proceed, approval must be given by the
       manager oncall.
-- [ ] On video call, [deploy] `<%= version %>` to **staging.gitlab.com**
-
+- [ ] On video call, [deploy] `<%= version %>` to **staging.gitlab.com**. Note that starting in release **11.6** staging deploys are automatically triggered from the  [EE omnibus pipeline](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) `gitlab_com:upload_deploy` stage.
     ```sh
     # In Slack:
     /chatops run deploy <%= version %>-ee.0
