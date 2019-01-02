@@ -47,15 +47,9 @@ can be done at will, just mention it in the `#production` channel.
 
 ### staging.gitlab.com
 
-- [ ] Notify #production that you're about to deploy on **staging**
-- [ ] On video call, [deploy] `<%= version %>` to **staging.gitlab.com**
-
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version %>.ee.0
-    ```
-- [ ] Comment with the output of the migrations from the takeoff script in this issue
-- [ ] Link to deployment job (even failed attempts) =>
+- Staging deploys via the [takeoff pipeline](https://ops.gitlab.net/gitlab-org/takeoff/pipelines) happen automatically as soon as the
+  [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>)
+  reaches the `gitlab_com:upload_deploy` stage of the pipeline.
 
 #### QA
 
