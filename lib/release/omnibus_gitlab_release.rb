@@ -15,8 +15,8 @@ module Release
     private
 
     def after_release
-      bump_container_versions(stable_branch)
-      bump_container_versions('master')
+      repository.ensure_branch_exists(stable_branch)
+      repository.ensure_branch_exists('master')
       push_ref('branch', stable_branch)
       push_ref('branch', 'master')
 
@@ -74,19 +74,6 @@ module Release
       end
 
       File.read(gitlab_file_path).strip
-    end
-
-    def bump_container_versions(branch)
-      repository.ensure_branch_exists(branch)
-    end
-
-    def version_from_container_template(file_path)
-      unless File.exist?(file_path)
-        raise TemplateFileDoesNotExistError.new(file_path)
-      end
-
-      file_version = File.open(file_path) { |f| f.read.match(%r{gitlab/gitlab-ce:(\d+\.\d+\.\d+-ce\.\d+)})[1] }
-      version_class.new(file_version.tr('-', '+'))
     end
   end
 end
