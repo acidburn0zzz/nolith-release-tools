@@ -260,34 +260,4 @@ module RuggedMatchers
       end
     end
   end
-
-  # Verify that `repository` has a template file with container at a specific version
-  #
-  # Examples:
-  #
-  #   expect(repository).to_have_container_template('docer/openshift-template.json').match('gitlab/gitlab-ce:1.2.3-ce.0')
-  #   expect(repository).not_to have_container_template('docer/openshift-template.json')
-  matcher :have_container_template do |file_path|
-    chain :match do |match|
-      @match_data = match
-    end
-
-    match do |repository|
-      @actual = file_path
-
-      begin
-        !read_head_blob(repository, @actual)[@match_data].nil?
-      rescue NoMethodError
-        false
-      end
-    end
-
-    failure_message do
-      "expected #{File.join(repository.workdir, @actual)} to match #{@match_data}"
-    end
-
-    failure_message_when_negated do
-      "expected #{repository.workdir} not to contain #{@actual}"
-    end
-  end
 end

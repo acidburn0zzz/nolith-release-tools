@@ -89,14 +89,6 @@ describe Release::GitlabCeRelease, :silence_stdout do
               expect(ob_repository).to have_version('workhorse').at('3.3.3')
               expect(ob_repository).to have_version('pages').at('4.4.4')
               expect(ob_repository).to have_version('gitaly').at('5.5.5')
-
-              if edition == :ce
-                expect(ob_repository).to have_container_template('docker/openshift-template.json')
-                  .match(docker_version)
-              else
-                expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
-                  .match(docker_version)
-              end
             end
           end
 
@@ -144,8 +136,6 @@ describe Release::GitlabCeRelease, :silence_stdout do
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
               expect(ob_repository).to have_version('pages').at('4.5.0')
               expect(ob_repository).to have_version('gitaly').at('5.6.0')
-              expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
-                .match(docker_version)
             end
           end
         end
@@ -190,14 +180,6 @@ describe Release::GitlabCeRelease, :silence_stdout do
               expect(ob_repository).to have_version('workhorse').at('3.4.0')
               expect(ob_repository).to have_version('pages').at('4.5.0')
               expect(ob_repository).to have_version('gitaly').at('5.6.0')
-
-              if edition == :ce
-                expect(ob_repository).to have_container_template('docker/openshift-template.json')
-                  .match(docker_version)
-              else
-                expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
-                  .match(docker_version)
-              end
             end
           end
         end
@@ -229,8 +211,6 @@ describe Release::GitlabCeRelease, :silence_stdout do
             expect(ob_repository).to have_version('workhorse').at('3.3.3')
             expect(ob_repository).not_to have_version('pages')
             expect(ob_repository).to have_version('gitaly').at('5.5.5')
-            expect(ob_repository).not_to have_container_template('docker/openshift-template.json')
-              .match(docker_version)
           end
         end
       end
