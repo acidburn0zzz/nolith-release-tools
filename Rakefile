@@ -239,3 +239,21 @@ task :publish, [:version] do |_t, args|
     .new(version)
     .execute
 end
+
+desc 'Announce the feature freeze on Slack'
+task :freeze do
+  require 'httparty'
+  require 'json'
+
+  webhook_url = ENV.fetch('FEATURE_FREEZE_WEBHOOK_URL')
+
+  # We don't wrap this string so the sentences appear on a single line in Slack,
+  # instead of being spread across separate lines.
+  message = <<~MESSAGE.strip
+    The feature freeze is now active. This means that no new features will be merged into the stable branches for this month's release.
+
+    For more information, refer to <https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th|"After the 7th">.
+  MESSAGE
+
+  HTTParty.post(webhook_url, body: { payload: JSON.dump(text: message) })
+end
