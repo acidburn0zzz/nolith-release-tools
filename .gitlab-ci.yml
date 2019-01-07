@@ -100,7 +100,10 @@ release-managers:
     - export OPS_API_PRIVATE_TOKEN="$RELEASE_BOT_OPS_TOKEN"
     - bundle exec rake release_managers:sync
   only:
-    - schedules
+    refs:
+      - schedules
+    variables:
+      - $RELEASE_MANAGERS
   cache:
     <<: *global-cache
     policy: pull
@@ -115,10 +118,24 @@ upstream-merge:
     - git config --global user.name "GitLab Bot"
     - bundle exec rake upstream_merge
   only:
-    - schedules
+    refs:
+      - schedules
+    variables:
+      - $UPSTREAM_MERGE
   cache:
     <<: *global-cache
     policy: pull
+
+feature-freeze:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake freeze
+  only:
+    refs:
+      - schedules
+    variables:
+      - $FEATURE_FREEZE_WEBHOOK_URL
 
 # chatops ---------------------------------------------------------------------
 
