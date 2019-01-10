@@ -299,6 +299,34 @@ describe GitlabClient do
     end
   end
 
+  describe '.link_issues' do
+    let(:internal_client) { instance_double(Gitlab::Client) }
+
+    before do
+      allow(described_class).to receive(:client).and_return(internal_client)
+    end
+
+    it 'links an issue to a target' do
+      issue = instance_double(
+        PatchIssue,
+        project: Project::GitlabCe,
+        iid: 1
+      )
+      target = instance_double(
+        MonthlyIssue,
+        project: Project::GitlabEe,
+        iid: 2
+      )
+
+      expect(internal_client).to receive(:post).with(
+        '/projects/gitlab-org%2Fgitlab-ce/issues/1/links',
+        query: { target_project_id: 'gitlab-org/gitlab-ee', target_issue_iid: 2 }
+      )
+
+      described_class.link_issues(issue, target)
+    end
+  end
+
   describe '.find_branch' do
     it 'finds existing branches', vcr: { cassette_name: 'branches/9-4-stable' } do
       expect(described_class.find_branch('9-4-stable').name).to eq '9-4-stable'

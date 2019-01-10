@@ -127,6 +127,24 @@ class GitlabClient
       confidential: issue.confidential?)
   end
 
+  # Link an issue as related to another
+  #
+  # issue - An Issuable object
+  # target - An Issuable object
+  def self.link_issues(issue, target)
+    # NOTE: The GitLab gem doesn't currently support this API
+    path = CGI.escape(project_path(issue.project))
+
+    # NOTE: `target_project_id` parameter doesn't support encoded values
+    #   See https://gitlab.com/gitlab-org/gitlab-ee/issues/9143
+    client.post(
+      "/projects/#{path}/issues/#{issue.iid}/links", query: {
+        target_project_id: project_path(target.project),
+        target_issue_iid: target.iid
+      }
+    )
+  end
+
   # Create a branch with the given name
   #
   # branch_name - Name of the new branch
