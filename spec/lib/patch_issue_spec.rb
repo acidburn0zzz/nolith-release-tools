@@ -61,4 +61,27 @@ describe PatchIssue do
       end
     end
   end
+
+  describe '#link!' do
+    context 'on a monthly version' do
+      it 'does nothing' do
+        issue = described_class.new(version: Version.new('11.7.0'))
+
+        expect(GitlabClient).not_to receive(:link_issues)
+
+        issue.link!
+      end
+    end
+
+    context 'on a patch version' do
+      it 'links to its monthly issue' do
+        issue = described_class.new(version: Version.new('11.7.0-rc4'))
+
+        allow(issue).to receive(:monthly_issue).and_return('monthly')
+        expect(GitlabClient).to receive(:link_issues).with(issue, 'monthly')
+
+        issue.link!
+      end
+    end
+  end
 end

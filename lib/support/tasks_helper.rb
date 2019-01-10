@@ -39,6 +39,7 @@ def create_or_show_issuable(issuable)
   else
     issuable.create
     issuable.status = :created
+    issuable.link!
 
     $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" created.".green
     $stdout.puts "    #{issuable.url}"
