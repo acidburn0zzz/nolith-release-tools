@@ -18,6 +18,10 @@ class PatchIssue < Issue
     ::Project::Release::Tasks
   end
 
+  def monthly_issue
+    @monthly_issue ||= MonthlyIssue.new(version: version)
+  end
+
   protected
 
   def template_path

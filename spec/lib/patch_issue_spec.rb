@@ -49,4 +49,16 @@ describe PatchIssue do
       expect(issue.labels).to eq 'Monthly Release'
     end
   end
+
+  describe '#monthly_issue' do
+    it 'finds an associated monthly issue' do
+      issue = described_class.new(version: Version.new('11.7.0-rc4'))
+
+      monthly = issue.monthly_issue
+
+      VCR.use_cassette('issues/release-11-7') do
+        expect(monthly.iid).to eq(617)
+      end
+    end
+  end
 end
