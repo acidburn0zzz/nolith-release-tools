@@ -19,6 +19,10 @@ module Qa
       comment_presenter.present
     end
 
+    def link!
+      GitlabClient.link_issues(self, parent_issue)
+    end
+
     protected
 
     def template_path
@@ -31,6 +35,10 @@ module Qa
 
     def comment_presenter
       Qa::Presenters::CommentPresenter.new(merge_requests)
+    end
+
+    def parent_issue
+      ::PatchIssue.new(version: version)
     end
   end
 end

@@ -135,4 +135,15 @@ describe Qa::Issue do
       expect(subject.comment_body).to eq("New QA items for: @author")
     end
   end
+
+  describe '#link!' do
+    it 'links to its parent issue' do
+      issue = described_class.new(version: version)
+
+      allow(issue).to receive(:parent_issue).and_return('parent')
+      expect(GitlabClient).to receive(:link_issues).with(issue, 'parent')
+
+      issue.link!
+    end
+  end
 end
