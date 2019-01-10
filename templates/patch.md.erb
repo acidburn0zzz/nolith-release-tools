@@ -26,7 +26,10 @@
 
 ## Packaging
 
-- [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) for CE, EE, and Omnibus to `dev`
+- [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
+    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/tree/<%= version.stable_branch %>)
+    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/tree/<%= version.stable_branch(ee: true) %>)
+    - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/tree/<%= version.stable_branch %>)
 - [ ] Check for any problematic migrations in EE, and paste the diff in a comment: `git diff -M v<PREVIOUS_TAG>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate ee/db/migrate ee/db/post_migrate`
 - [ ] Tag the `<%= version %>` version using the [`tag` command]:
 
@@ -60,7 +63,7 @@ staging or canary can be done at will, just mention it in the
       the deployment must be halted and assessed as to the impact of undoing the
       patches because of the release. To proceed, approval must be given by the
       manager oncall.
-- [ ] On video call, [deploy] `<%= version %>` to **staging.gitlab.com**. Note that starting in release **11.6** staging deploys are automatically triggered from the  [EE omnibus pipeline](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) `gitlab_com:upload_deploy` stage.
+- [ ] [Deploy] `<%= version %>` to **staging.gitlab.com**. Note that starting in release **11.6** staging deploys are automatically triggered from the  [EE omnibus pipeline](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) `gitlab_com:upload_deploy` stage.
     ```sh
     # In Slack:
     /chatops run deploy <%= version %>-ee.0
@@ -81,7 +84,7 @@ staging or canary can be done at will, just mention it in the
 
 
 - [ ] Inform the oncall in the #production channel about **canary** deploy
-- [ ] On video call, [deploy] `<%= version %>` to canary vms in production
+- [ ] [Deploy] `<%= version %>` to canary vms in production
 
     ```sh
     # In Slack:
@@ -98,7 +101,7 @@ staging or canary can be done at will, just mention it in the
 - [ ] Get confirmation from a production team member to deploy to **production**
       In `#production`, use `/chatops run oncall production` to find who's on call, and `@mention` them asking to deploy to production
 - [ ] If someone besides the oncall confirms, `@mention` the oncall so they are aware.
-- [ ] On video call, [deploy] `<%= version %>` to GitLab.com
+- [ ] [Deploy] `<%= version %>` to GitLab.com
 
     ```sh
     # In Slack:
@@ -112,7 +115,7 @@ staging or canary can be done at will, just mention it in the
       patches because of the release. To proceed, approval must be given by the
       manager oncall.
 
-[deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
+[Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
 
 ## Release
