@@ -18,6 +18,16 @@ class PatchIssue < Issue
     ::Project::Release::Tasks
   end
 
+  def monthly_issue
+    @monthly_issue ||= MonthlyIssue.new(version: version)
+  end
+
+  def link!
+    return if version.monthly?
+
+    GitlabClient.link_issues(self, monthly_issue)
+  end
+
   protected
 
   def template_path
