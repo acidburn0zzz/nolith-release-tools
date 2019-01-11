@@ -318,6 +318,9 @@ describe GitlabClient do
         iid: 2
       )
 
+      allow(internal_client).to receive(:url_encode)
+        .with('gitlab-org/gitlab-ce')
+        .and_return('gitlab-org%2Fgitlab-ce')
       expect(internal_client).to receive(:post).with(
         '/projects/gitlab-org%2Fgitlab-ce/issues/1/links',
         query: { target_project_id: 'gitlab-org/gitlab-ee', target_issue_iid: 2 }

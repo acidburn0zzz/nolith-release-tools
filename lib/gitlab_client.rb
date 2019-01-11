@@ -133,7 +133,7 @@ class GitlabClient
   # target - An Issuable object
   def self.link_issues(issue, target)
     # NOTE: The GitLab gem doesn't currently support this API
-    path = CGI.escape(project_path(issue.project))
+    path = client.url_encode(project_path(issue.project))
 
     # NOTE: `target_project_id` parameter doesn't support encoded values
     #   See https://gitlab.com/gitlab-org/gitlab-ee/issues/9143
