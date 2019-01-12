@@ -30,7 +30,6 @@
     - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/tree/<%= version.stable_branch %>)
     - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/tree/<%= version.stable_branch(ee: true) %>)
     - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/tree/<%= version.stable_branch %>)
-- [ ] Check for any problematic migrations in EE, and paste the diff in a comment: `git diff -M v<PREVIOUS_TAG>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate ee/db/migrate ee/db/post_migrate`
 - [ ] Tag the `<%= version %>` version using the [`tag` command]:
 
   ```sh
@@ -68,7 +67,6 @@ staging or canary can be done at will, just mention it in the
     # In Slack:
     /chatops run deploy <%= version %>-ee.0
     ```
-- [ ] Comment with the output of the migrations from the takeoff script in this issue
 - [ ] Link to deployment job (even failed attempts) =>
 
 #### QA

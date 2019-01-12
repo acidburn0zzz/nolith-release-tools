@@ -28,7 +28,6 @@
     - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/tree/<%= version.stable_branch %>)
     - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/tree/<%= version.stable_branch(ee: true) %>)
     - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/tree/<%= version.stable_branch %>)
-- [ ] Check for any problematic migrations in EE, and paste the diff in a snippet: `git diff -M --diff-filter=RA v<PREVIOUS_TAG>-ee..<%= version.stable_branch(ee: true) %> -- db/migrate db/post_migrate ee/db/migrate ee/db/post_migrate` =>
 - [ ] Tag the `<%= version %>` version using the [`tag` command]:
 
   ```sh
