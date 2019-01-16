@@ -84,10 +84,10 @@ describe ReleaseManagers::Client do
 
     let(:internal_client) do
       spy(
-        user_search: [
+        user_search: Gitlab::PaginatedResponse.new([
           double(username: 'Bob'),
           double(username: 'bobby_joe')
-        ]
+        ])
       )
     end
 

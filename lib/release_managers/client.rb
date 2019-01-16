@@ -70,6 +70,7 @@ module ReleaseManagers
     def get_user(username)
       user = client
         .user_search(username)
+        .auto_paginate
         .detect { |result| result.username.casecmp?(username) }
 
       user || raise(UserNotFoundError, "#{username} not found")
