@@ -4,7 +4,7 @@ require_relative 'branch'
 
 class PreparationMergeRequest < MergeRequest
   def title
-    "WIP: Prepare #{full_patch_or_rc_version} release"
+    "WIP: Prepare #{version} release"
   end
 
   def labels
@@ -39,14 +39,6 @@ class PreparationMergeRequest < MergeRequest
     end
   end
 
-  def full_patch_or_rc_version
-    if version.rc?
-      "#{version.to_minor} RC#{version.rc}#{ee_title_suffix}"
-    else
-      version.to_s
-    end
-  end
-
   def preparation_branch_name
     if version.rc?
       "#{version.stable_branch}-prepare-rc#{version.rc}"
@@ -70,10 +62,6 @@ class PreparationMergeRequest < MergeRequest
   end
 
   protected
-
-  def ee_title_suffix
-    version.ee? ? ' EE' : ''
-  end
 
   def main_release_issue
     if version.patch.zero?

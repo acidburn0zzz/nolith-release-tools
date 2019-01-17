@@ -14,13 +14,11 @@ describe PreparationMergeRequest do
 
   let(:subject) { merge_request }
 
-  it 'has an informative WIP title' do
-    aggregate_failures do
-      expect(merge_request.title).to eq 'WIP: Prepare 9.4.1 release'
-      expect(ee_merge_request.title).to include '9.4.1-ee'
-      expect(rc_merge_request.title).to include '9.4 RC2'
-      expect(ee_rc_merge_request.title).to include '9.4 RC2 EE'
-    end
+  it 'has an informative WIP title', :aggregate_failures do
+    expect(merge_request.title).to eq 'WIP: Prepare 9.4.1 release'
+    expect(ee_merge_request.title).to eq 'WIP: Prepare 9.4.1-ee release'
+    expect(rc_merge_request.title).to eq 'WIP: Prepare 9.4.0-rc2 release'
+    expect(ee_rc_merge_request.title).to eq 'WIP: Prepare 9.4.0-rc2-ee release'
   end
 
   describe '#labels' do
@@ -62,17 +60,6 @@ describe PreparationMergeRequest do
         expect(ee_merge_request.patch_or_rc_version).to eq '9.4.1-ee'
         expect(rc_merge_request.patch_or_rc_version).to eq 'RC2'
         expect(ee_rc_merge_request.patch_or_rc_version).to eq 'RC2'
-      end
-    end
-  end
-
-  describe '#full_patch_or_rc_version' do
-    it 'returns the public version number' do
-      aggregate_failures do
-        expect(merge_request.full_patch_or_rc_version).to eq '9.4.1'
-        expect(ee_merge_request.full_patch_or_rc_version).to eq '9.4.1-ee'
-        expect(rc_merge_request.full_patch_or_rc_version).to eq '9.4 RC2'
-        expect(ee_rc_merge_request.full_patch_or_rc_version).to eq '9.4 RC2 EE'
       end
     end
   end
