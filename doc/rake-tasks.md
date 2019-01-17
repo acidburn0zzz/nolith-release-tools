@@ -150,7 +150,7 @@ Nothing to be done for 11.1.0+rc4.ce.0: https://dev.gitlab.org/gitlab/omnibus-gi
 ```sh
 $ bundle exec rake "publish[11.1.0-rc5]"
 
---> 11.1.0+rc5.ee.0
+--> 11.1.0+rc5.ee.0: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86357
     Ubuntu-14.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599976
     Ubuntu-16.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599977
     Ubuntu-18.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599978
@@ -166,7 +166,7 @@ $ bundle exec rake "publish[11.1.0-rc5]"
     QA-Tag: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599989
     Raspberry-Pi-2-Jessie-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2599993
 
---> 11.1.0+rc5.ce.0
+--> 11.1.0+rc5.ce.0: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86362
     Ubuntu-14.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600293
     Ubuntu-16.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600294
     Ubuntu-18.04-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600295
