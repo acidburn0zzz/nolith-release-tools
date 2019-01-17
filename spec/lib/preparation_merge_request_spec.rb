@@ -85,13 +85,11 @@ describe PreparationMergeRequest do
       expect(ee_merge_request.description).to include "gitlab-ee/merge_requests?label_name%5B%5D=Pick+into+9.4"
     end
 
-    it 'explains that the MR branch will merge into stable' do
-      aggregate_failures do
-        expect(merge_request.description).to include "merging `9-4-stable-patch-1` into `9-4-stable`"
-        expect(ee_merge_request.description).to include "merging `9-4-stable-ee-patch-1` into `9-4-stable-ee`"
-        expect(rc_merge_request.description).to include "merging `9-4-stable-prepare-rc2` into `9-4-stable`"
-        expect(ee_rc_merge_request.description).to include "merging `9-4-stable-ee-prepare-rc2` into `9-4-stable-ee`"
-      end
+    it 'explains that the MR branch will merge into stable', :aggregate_failures do
+      expect(merge_request.description).to include "prepares `9-4-stable` for `9.4.1`."
+      expect(ee_merge_request.description).to include "prepares `9-4-stable-ee` for `9.4.1-ee`."
+      expect(rc_merge_request.description).to include "prepares `9-4-stable` for `9.4.0-rc2`."
+      expect(ee_rc_merge_request.description).to include "prepares `9-4-stable-ee` for `9.4.0-rc2-ee`."
     end
   end
 
