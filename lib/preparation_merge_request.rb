@@ -19,8 +19,8 @@ class PreparationMergeRequest < MergeRequest
     stable_branch
   end
 
-  def main_release_issue_url
-    @main_release_issue_url ||= main_release_issue.url
+  def release_issue_url
+    @release_issue_url ||= release_issue.url
   end
 
   def stable_branch
@@ -59,8 +59,8 @@ class PreparationMergeRequest < MergeRequest
 
   protected
 
-  def main_release_issue
-    if version.patch.zero?
+  def release_issue
+    if version.monthly?
       MonthlyIssue.new(version: version)
     else
       PatchIssue.new(version: version)
