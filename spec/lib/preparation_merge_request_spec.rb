@@ -65,11 +65,6 @@ describe PreparationMergeRequest do
   end
 
   context 'EE' do
-    it 'returns "ee" for #repo_ce_or_ee' do
-      expect(ee_merge_request.repo_ce_or_ee).to eq 'ee'
-      expect(ee_rc_merge_request.repo_ce_or_ee).to eq 'ee'
-    end
-
     it 'sets project to EE' do
       expect(ee_merge_request.project).to eq Project::GitlabEe
     end

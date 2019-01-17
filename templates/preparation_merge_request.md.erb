@@ -12,12 +12,12 @@ Merge master into the preparation branch
 
 #### MR Filter for <%= PickIntoLabel.reference(version) %> MRs
 
-https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests?label_name%5B%5D=<%= PickIntoLabel.escaped(version) %>&scope=all&state=merged
+https://gitlab.com/<%= project.path %>/merge_requests?label_name%5B%5D=<%= PickIntoLabel.escaped(version) %>&scope=all&state=merged
 
 #### Note to leave in MRs
 
 ```
-Picked into https://gitlab.com/gitlab-org/gitlab-<%= repo_ce_or_ee %>/merge_requests/MERGE_REQUEST_ID, will merge into `<%= stable_branch %>` ready for `<%= version %>`.
+Picked into https://gitlab.com/<%= project.path %>/merge_requests/MERGE_REQUEST_ID, will merge into `<%= stable_branch %>` ready for `<%= version %>`.
 
 /unlabel <%= PickIntoLabel.reference(version) %>
 ```

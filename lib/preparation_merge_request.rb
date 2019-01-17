@@ -51,10 +51,6 @@ class PreparationMergeRequest < MergeRequest
     version.ee?
   end
 
-  def repo_ce_or_ee
-    ee? ? 'ee' : 'ce'
-  end
-
   def create_branch!
     Branch.new(name: source_branch, project: default_project).create(ref: stable_branch)
   rescue Gitlab::Error::BadRequest # 400 Branch already exists
