@@ -85,6 +85,10 @@ Layout/EndOfLine:
 Layout/FirstMethodParameterLineBreak:
   Enabled: true
 
+# Checks the indentation of the first element in an array literal.
+Layout/IndentArray:
+  Enabled: false
+
 # Checks the indentation of the first line of the right-hand-side of a
 # multi-line assignment.
 Layout/IndentAssignment:
