@@ -87,6 +87,9 @@ module ReleaseManagers
       client.add_group_member(group, user.id, MASTER_ACCESS)
     rescue Gitlab::Error::Conflict => ex
       raise SyncError.new(ex) unless ex.message =~ /Member already exists/
+    rescue Gitlab::Error::BadRequest => ex
+      # Ignore when a new member has greater permissions via group inheritance
+      raise SyncError.new(ex) unless ex.message =~ /should be higher/
     end
 
     def remove_member(username)
