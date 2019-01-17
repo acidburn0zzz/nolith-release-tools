@@ -42,7 +42,7 @@ module Packages
           .select { |job| PLAY_STAGES.include?(job.stage) }
 
         if triggers.any?
-          $stdout.puts "--> #{version}"
+          $stdout.puts "--> #{version}: #{pipeline.web_url}"
 
           triggers.each do |job|
             if SharedStatus.dry_run?
