@@ -14,13 +14,11 @@ describe PreparationMergeRequest do
 
   let(:subject) { merge_request }
 
-  it 'has an informative WIP title' do
-    aggregate_failures do
-      expect(merge_request.title).to eq 'WIP: Prepare 9.4.1 release'
-      expect(ee_merge_request.title).to include '9.4.1-ee'
-      expect(rc_merge_request.title).to include '9.4 RC2'
-      expect(ee_rc_merge_request.title).to include '9.4 RC2 EE'
-    end
+  it 'has an informative WIP title', :aggregate_failures do
+    expect(merge_request.title).to eq 'WIP: Prepare 9.4.1 release'
+    expect(ee_merge_request.title).to eq 'WIP: Prepare 9.4.1-ee release'
+    expect(rc_merge_request.title).to eq 'WIP: Prepare 9.4.0-rc2 release'
+    expect(ee_rc_merge_request.title).to eq 'WIP: Prepare 9.4.0-rc2-ee release'
   end
 
   describe '#labels' do
@@ -66,23 +64,7 @@ describe PreparationMergeRequest do
     end
   end
 
-  describe '#full_patch_or_rc_version' do
-    it 'returns the public version number' do
-      aggregate_failures do
-        expect(merge_request.full_patch_or_rc_version).to eq '9.4.1'
-        expect(ee_merge_request.full_patch_or_rc_version).to eq '9.4.1-ee'
-        expect(rc_merge_request.full_patch_or_rc_version).to eq '9.4 RC2'
-        expect(ee_rc_merge_request.full_patch_or_rc_version).to eq '9.4 RC2 EE'
-      end
-    end
-  end
-
   context 'EE' do
-    it 'returns "ee" for #repo_ce_or_ee' do
-      expect(ee_merge_request.repo_ce_or_ee).to eq 'ee'
-      expect(ee_rc_merge_request.repo_ce_or_ee).to eq 'ee'
-    end
-
     it 'sets project to EE' do
       expect(ee_merge_request.project).to eq Project::GitlabEe
     end
@@ -103,13 +85,11 @@ describe PreparationMergeRequest do
       expect(ee_merge_request.description).to include "gitlab-ee/merge_requests?label_name%5B%5D=Pick+into+9.4"
     end
 
-    it 'explains that the MR branch will merge into stable' do
-      aggregate_failures do
-        expect(merge_request.description).to include "merging `9-4-stable-patch-1` into `9-4-stable`"
-        expect(ee_merge_request.description).to include "merging `9-4-stable-ee-patch-1` into `9-4-stable-ee`"
-        expect(rc_merge_request.description).to include "merging `9-4-stable-prepare-rc2` into `9-4-stable`"
-        expect(ee_rc_merge_request.description).to include "merging `9-4-stable-ee-prepare-rc2` into `9-4-stable-ee`"
-      end
+    it 'explains that the MR branch will merge into stable', :aggregate_failures do
+      expect(merge_request.description).to include "prepares `9-4-stable` for `9.4.1`."
+      expect(ee_merge_request.description).to include "prepares `9-4-stable-ee` for `9.4.1-ee`."
+      expect(rc_merge_request.description).to include "prepares `9-4-stable` for `9.4.0-rc2`."
+      expect(ee_rc_merge_request.description).to include "prepares `9-4-stable-ee` for `9.4.0-rc2-ee`."
     end
   end
 

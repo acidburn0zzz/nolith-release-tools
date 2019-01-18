@@ -73,7 +73,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"id":17911191,"iid":22431,"project_id":13083,"title":"WIP: Prepare
-        11.4 RC8 release","description":"Main release issue: https://gitlab.com/gitlab-org/release/tasks/issues/460\n\n###
+        11.4.0-rc8 release","description":"Main release issue: https://gitlab.com/gitlab-org/release/tasks/issues/460\n\n###
         Summary\n\nThis MR prepares `11-4-stable` for %\"11.4\" (`RC8`) by merging
         `11-4-stable-prepare-rc8` into `11-4-stable`.\n\n### Before the 7th\n\nMerge
         master into the preparation branch\n\n### After the 7th\n\n#### MR Filter

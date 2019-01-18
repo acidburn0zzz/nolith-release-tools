@@ -4,7 +4,7 @@ require_relative 'branch'
 
 class PreparationMergeRequest < MergeRequest
   def title
-    "WIP: Prepare #{full_patch_or_rc_version} release"
+    "WIP: Prepare #{version} release"
   end
 
   def labels
@@ -19,8 +19,8 @@ class PreparationMergeRequest < MergeRequest
     stable_branch
   end
 
-  def main_release_issue_url
-    @main_release_issue_url ||= main_release_issue.url
+  def release_issue_url
+    @release_issue_url ||= release_issue.url
   end
 
   def stable_branch
@@ -39,14 +39,6 @@ class PreparationMergeRequest < MergeRequest
     end
   end
 
-  def full_patch_or_rc_version
-    if version.rc?
-      "#{version.to_minor} RC#{version.rc}#{ee_title_suffix}"
-    else
-      version.to_s
-    end
-  end
-
   def preparation_branch_name
     if version.rc?
       "#{version.stable_branch}-prepare-rc#{version.rc}"
@@ -59,10 +51,6 @@ class PreparationMergeRequest < MergeRequest
     version.ee?
   end
 
-  def repo_ce_or_ee
-    ee? ? 'ee' : 'ce'
-  end
-
   def create_branch!
     Branch.new(name: source_branch, project: default_project).create(ref: stable_branch)
   rescue Gitlab::Error::BadRequest # 400 Branch already exists
@@ -71,12 +59,8 @@ class PreparationMergeRequest < MergeRequest
 
   protected
 
-  def ee_title_suffix
-    version.ee? ? ' EE' : ''
-  end
-
-  def main_release_issue
-    if version.patch.zero?
+  def release_issue
+    if version.monthly?
       MonthlyIssue.new(version: version)
     else
       PatchIssue.new(version: version)
