@@ -9,9 +9,9 @@ module Qa
     'Release',
     'Geo',
     'Gitaly',
-    'Packaging',
+    'Package',
     'Configure',
-    'Monitoring',
+    'Monitor',
     'Secure',
     'frontend',
     'database'
