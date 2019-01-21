@@ -51,6 +51,22 @@ Cherry picks merge requests into preparation branches for the specified version.
 /chatops run cherry_pick 11.3.6
 ```
 
+### `patch_merge_request`
+
+Creates preparation merge requests for the specified patch version.
+
+> NOTE: If for some reason the ChatOps command isn't working as expected, you
+> can run the equivalent [`rake patch_merge_request`](./rake-tasks.md#patch_merge_requestversion)
+> command locally.
+
+#### Examples
+
+```
+/chatops run patch_merge_request 11.7.0-rc2
+
+/chatops run patch_merge_request 11.7.1
+```
+
 ### `publish`
 
 Publishes packages for the specified version.

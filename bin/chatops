@@ -29,6 +29,9 @@ case $1 in
   "patch_issue")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
+  "patch_merge_request")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
+    ;;
   "publish")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
