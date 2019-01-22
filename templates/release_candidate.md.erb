@@ -2,14 +2,19 @@
 
 - [ ] Create [preparation MRs] for this version and add the links below:
     ```sh
-    # In the release-tools project:
-    bundle exec rake "patch_merge_request[<%= version %>]"
+    # In Slack
+    /chatops run prepare <%= version %>
     ```
 
   * CE:
   * EE:
 
-- [ ] Cherry-pick changes into preparation MRs following their instructions
+- [ ] Perform automated cherry picking into the preparation branches:
+    ```sh
+    # In Slack
+    /chatops run cherry_pick <%= version.to_ce %>
+    ```
+
 - [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
 - [ ] Merge the preparation branches
 - [ ] For `omnibus-gitlab` cherry-pick [remaining merge requests] directly into CE stable branch. Then, merge the CE Omnibus stable branch into EE.
