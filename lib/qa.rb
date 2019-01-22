@@ -17,13 +17,6 @@ module Qa
     'database'
   ].freeze
 
-  TYPE_LABELS = [
-    'bug',
-    'feature proposal',
-    'regression',
-    'Deliverable'
-  ].freeze
-
   UNPERMITTED_LABELS = [
     'Quality',
     'meta',
