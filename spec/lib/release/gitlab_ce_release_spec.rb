@@ -53,9 +53,11 @@ describe Release::GitlabCeRelease, :silence_stdout do
 
   describe '#execute' do
     let(:changelog_manager) { double(release: true) }
+    let(:ob_changelog_manager) { double(release: true) }
 
     before do
       allow(Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
+      allow(Changelog::Manager).to receive(:new).with(ob_repo_path, 'CHANGELOG.md').and_return(ob_changelog_manager)
     end
 
     { ce: '', ee: '-ee' }.each do |edition, suffix|
@@ -68,7 +70,6 @@ describe Release::GitlabCeRelease, :silence_stdout do
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
             expect(changelog_manager).to receive(:release).with(version)
-
             execute(version, branch)
           end
 
