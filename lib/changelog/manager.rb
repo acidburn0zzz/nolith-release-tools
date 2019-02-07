@@ -28,10 +28,10 @@ module Changelog
   # This is necessary because by the time this process is performed, CE has
   # already been merged into EE without the consolidated `CHANGELOG.md`.
   class Manager
-    attr_reader :repository, :version
+    attr_reader :repository, :version, :changelog_file
 
     # repository - Rugged::Repository object or String path to repository
-    def initialize(repository)
+    def initialize(repository, changelog_file = nil)
       case repository
       when String
         @repository = Rugged::Repository.new(repository)
@@ -40,6 +40,7 @@ module Changelog
       else
         raise "Invalid repository: #{repository}"
       end
+      @changelog_file = changelog_file
     end
 
     def release(version, stable_branch: version.stable_branch)
@@ -61,7 +62,7 @@ module Changelog
     attr_reader :ref, :commit, :tree, :index
 
     def changelog_file
-      Config.log(ee: version.ee?)
+      @changelog_file || Config.log(ee: version.ee?)
     end
 
     def unreleased_paths

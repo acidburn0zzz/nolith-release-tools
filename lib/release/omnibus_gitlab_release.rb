@@ -23,6 +23,21 @@ module Release
       super
     end
 
+    def before_execute_hook
+      repository.ensure_branch_exists(stable_branch)
+      compile_changelog
+    end
+
+    def compile_changelog
+      return if version.rc?
+
+      Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version.to_patch)
+    rescue Changelog::NoChangelogError => ex
+      $stderr.puts "Cannot perform changelog update for #{version} on " \
+        "#{ex.changelog_path}".colorize(:red)
+      $stderr.puts "Received error: #{ex.message}".colorize(:red)
+    end
+
     def remotes
       Project::OmnibusGitlab.remotes
     end
