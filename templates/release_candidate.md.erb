@@ -54,7 +54,7 @@ can be done at will, just mention it in the `#production` channel.
 
 ### staging.gitlab.com
 
-- Staging deploys via the [takeoff pipeline](https://ops.gitlab.net/gitlab-org/takeoff/pipelines) happen automatically as soon as the
+- Staging deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
   [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>)
   reaches the `gitlab_com:upload_deploy` stage of the pipeline.
 
