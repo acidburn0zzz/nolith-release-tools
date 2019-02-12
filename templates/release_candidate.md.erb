@@ -30,9 +30,9 @@
 ## Packaging
 
 - [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
-    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/tree/<%= version.stable_branch %>)
-    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/tree/<%= version.stable_branch(ee: true) %>)
-    - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/tree/<%= version.stable_branch %>)
+    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
+    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
+    - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
 - [ ] Tag the `<%= version %>` version using the [`tag` command]:
 
   ```sh
