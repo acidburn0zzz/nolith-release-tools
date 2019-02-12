@@ -33,12 +33,9 @@
 
 ### staging.gitlab.com
 
-- [ ] Notify #production channel about staging deploy.
-- [ ] Deploy `<%= version %>` to [staging.gitlab.com]
-  ```sh
-  # In Slack:
-  /chatops run deploy <%= version.to_patch %>-ee.0
-  ```
+- Staging deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
+  [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>)
+  reaches the `gitlab_com:upload_deploy` stage of the pipeline.
 
 #### QA
 
