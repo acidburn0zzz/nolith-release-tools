@@ -17,7 +17,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
   - Title: `Pick into <%= version.to_minor %>`
   - Description: ``Merge requests to cherry-pick into the `<%= version.stable_branch %>` branch.``
   - Color: `#00c8ca`
-- [ ] Make sure the latest [CE to EE] on `master` branches is merged (it will reduce conflicts in the future). Ask in `#ce-to-ee` when in doubt.
 - [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
 - [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
 - [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
@@ -37,9 +36,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 ## RC1
 
 - Follow the [Creating RC1] guide:
-  - [ ] Create an MR on **CE** master updating the "Installation from Source" guide, creating the "Update" guides
-  - [ ] Create an MR on **EE** master creating the "CE to EE" guides
-  - [ ] Ensure the above MRs are merged and marked <%= PickIntoLabel.reference(version) %>
   - [ ] Create a task list for RC1:
 
       ```sh
