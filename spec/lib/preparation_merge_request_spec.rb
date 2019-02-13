@@ -80,11 +80,6 @@ describe PreparationMergeRequest do
       expect(merge_request.description).to include 'https://dummy-issue.url'
     end
 
-    it 'includes pick-into-stable URL for finding MRs' do
-      expect(merge_request.description).to include "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests?label_name%5B%5D=Pick+into+9.4&scope=all&state=merged"
-      expect(ee_merge_request.description).to include "gitlab-ee/merge_requests?label_name%5B%5D=Pick+into+9.4"
-    end
-
     it 'explains that the MR branch will merge into stable', :aggregate_failures do
       expect(merge_request.description).to include "prepares `9-4-stable` for `9.4.1`."
       expect(ee_merge_request.description).to include "prepares `9-4-stable-ee` for `9.4.1-ee`."

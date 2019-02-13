@@ -4,44 +4,23 @@ Release issue: <%= release_issue_url %>
 
 This MR prepares `<%= stable_branch %>` for `<%= version %>`.
 
-### Before the 7th
+### Automated cherry-picking
 
-Merge master into the preparation branch.
+Merge requests labeled <%= PickIntoLabel.reference(version) %> should be
+automatically picked into both the CE and EE prepration MRs using the following
+ChatOps command:
 
-### After the 7th
-
-#### MR Filter for <%= PickIntoLabel.reference(version) %> MRs
-
-https://gitlab.com/<%= project.path %>/merge_requests?label_name%5B%5D=<%= PickIntoLabel.escaped(version) %>&scope=all&state=merged
-
-#### Note to leave in MRs
-
-```
-Picked into https://gitlab.com/<%= project.path %>/merge_requests/MERGE_REQUEST_ID, will merge into `<%= stable_branch %>` ready for `<%= version %>`.
-
-/unlabel <%= PickIntoLabel.reference(version) %>
+```sh
+# In Slack
+/chatops run cherry_pick <%= version.to_ce %>
 ```
 
-### Steps
-
-1. Cherry-pick remaining commits into this MR using the link for <%= PickIntoLabel.reference(version) %> above.
-    - This can be done by checking out `<%= preparation_branch_name %>` locally and using `git cherry-pick -m1 MERGE_COMMIT_SHA`
-    - *Note: Copy the merge commit SHA from the "merged into `master`" section of the merge widget.*
-1. Push changes every so often and verify that the MR has been included
-1. Leave a note in the MR so others can easily see that it is on track to be included in a release.
-    - Remove the <%= PickIntoLabel.reference(version) %> label.
-1. If there are any conflicts while picking MRs then attempt to resolve them; otherwise, create a new MR against the `<%= preparation_branch_name %>` branch and assign it to the author of the conflicting files.
 <% if ee? -%>
-1. Merge CE-to-EE using one of the workflows described in the [Merge CE stable changes to EE docs](https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)
-    - *Note: Often, after a release has been tagged, the `VERSION` file in `ee` will have a conflict. Accept the `-ee` one*
-<% end %>
-1. Once this MR is green merge it to stable, preferably with a manual fast-forward merge to minimize waiting time, as described in [Merging preparation MRs into stable](https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#merging-preparation-mrs-into-stable)
+Once automated cherry-picking has completed, the CE merge request still needs to
+be merged into this merge request in order to bring in changes that are not
+EE-specific.
 
-### Checklist
+Refer to [the documentation][ce-to-ee] for more information.
 
-- [ ] Add changes into the preparation branches:
-  - Before the 7th: Master has been merged into the preparation branch
-  - After the 7th: Changes marked <%= PickIntoLabel.reference(version) %> have been picked
-<% if ee? %>- [ ] CE->EE merge has taken place<% end %>
-- [ ] Conflicts resolved
-- [ ] No new commits have introduced directly to the stable branch while this MR was in progress. If there are,<% unless ee? %> ensure these are merged into EE and<% end %> check for a green pipeline after merging this MR.
+[ce-to-ee]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#to-merge-ce-into-the-ee-mr
+<% end -%>
