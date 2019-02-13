@@ -250,7 +250,7 @@ task :freeze do
   # We don't wrap this string so the sentences appear on a single line in Slack,
   # instead of being spread across separate lines.
   message = <<~MESSAGE.strip
-    @channel
+    <!channel>
 
     The feature freeze is now active. This means that no new features will be merged into the stable branches for this month's release.
 
