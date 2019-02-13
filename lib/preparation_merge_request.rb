@@ -52,7 +52,9 @@ class PreparationMergeRequest < MergeRequest
   end
 
   def create_branch!
-    Branch.new(name: source_branch, project: default_project).create(ref: stable_branch)
+    Branch.new(name: source_branch, project: default_project).tap do |branch|
+      branch.create(ref: stable_branch) unless SharedStatus.dry_run?
+    end
   rescue Gitlab::Error::BadRequest # 400 Branch already exists
     nil
   end
