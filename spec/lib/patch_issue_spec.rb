@@ -84,4 +84,16 @@ describe PatchIssue do
       end
     end
   end
+
+  describe '#assignees' do
+    it 'returns the assignee IDs' do
+      issue = described_class.new(version: Version.new('11.8.2'))
+
+      allow(issue.monthly_issue)
+        .to receive(:assignees)
+        .and_return([1, 2])
+
+      expect(issue.assignees).to eq([1, 2])
+    end
+  end
 end

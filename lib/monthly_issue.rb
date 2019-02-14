@@ -14,6 +14,10 @@ class MonthlyIssue < Issue
     ::Project::Release::Tasks
   end
 
+  def assignees
+    ReleaseManagers::Schedule.new(version).ids
+  end
+
   protected
 
   def template_path
