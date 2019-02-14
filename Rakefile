@@ -132,15 +132,23 @@ end
 
 desc "Cherry-pick merge requests into preparation branches"
 task :cherry_pick, [:version] do |_t, args|
+  icon = -> (result) { result.success? ? "✓" : "✗" }
+
   # CE
   version = get_version(args).to_ce
-  $stdout.puts "Picking for #{version}..."
-  result = CherryPick::Service.new(Project::GitlabCe, version).execute
+  $stdout.puts "--> Picking for #{version}..."
+  results = CherryPick::Service.new(Project::GitlabCe, version).execute
+  results.each do |result|
+    $stdout.puts "    #{icon.call(result)} #{result.url}"
+  end
 
   # EE
   version = version.to_ee
-  $stdout.puts "Picking for #{version}..."
-  result = CherryPick::Service.new(Project::GitlabEe, version).execute
+  $stdout.puts "--> Picking for #{version}..."
+  results = CherryPick::Service.new(Project::GitlabEe, version).execute
+  results.each do |result|
+    $stdout.puts "    #{icon.call(result)} #{result.url}"
+  end
 end
 
 task :security_cherry_pick, [:version] do |_t, args|

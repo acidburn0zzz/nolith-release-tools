@@ -42,6 +42,8 @@ module CherryPick
         @results.select(&:success?),
         @results.select(&:failure?)
       )
+
+      @results
     end
 
     private
