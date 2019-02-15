@@ -26,7 +26,7 @@ describe CherryPick::Service do
       it 'does nothing' do
         expect(subject).to receive(:pickable_mrs).and_return([])
 
-        expect(subject.execute).to be_nil
+        expect(subject.execute).to eq([])
       end
     end
 
