@@ -90,6 +90,7 @@ class GitlabClient
   #   :description - Issue description String
   #   :labels      - Comma-separated String of label names
   #   :version     - Version object
+  #   :assignees   - An Array of user IDs to use as the assignees.
   # project - An object that responds to :path
   #
   # The issue is always assigned to the authenticated user.
@@ -98,9 +99,16 @@ class GitlabClient
   def self.create_issue(issue, project = Project::GitlabCe)
     milestone = milestone(project, title: issue.version.milestone_name)
 
+    assignees =
+      if issue.respond_to?(:assignees)
+        issue.assignees
+      else
+        [current_user.id]
+      end
+
     client.create_issue(project_path(project), issue.title,
-      description:  issue.description,
-      assignee_id:  current_user.id,
+      description: issue.description,
+      assignee_ids: assignees,
       milestone_id: milestone.id,
       labels: issue.labels,
       confidential: issue.confidential?)

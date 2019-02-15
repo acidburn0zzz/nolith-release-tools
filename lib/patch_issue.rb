@@ -28,6 +28,10 @@ class PatchIssue < Issue
     GitlabClient.link_issues(self, monthly_issue)
   end
 
+  def assignees
+    monthly_issue.assignees
+  end
+
   protected
 
   def template_path

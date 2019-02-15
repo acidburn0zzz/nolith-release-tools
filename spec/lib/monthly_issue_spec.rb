@@ -48,4 +48,22 @@ describe MonthlyIssue do
       expect(issue.labels).to eq 'Monthly Release,Delivery'
     end
   end
+
+  describe '#assignees' do
+    it 'returns the assignee IDs' do
+      issue = described_class.new(version: Version.new('11.8'))
+      schedule = instance_spy(ReleaseManagers::Schedule)
+
+      allow(ReleaseManagers::Schedule)
+        .to receive(:new)
+        .with(issue.version)
+        .and_return(schedule)
+
+      allow(schedule)
+        .to receive(:ids)
+        .and_return([1, 2])
+
+      expect(issue.assignees).to eq([1, 2])
+    end
+  end
 end
