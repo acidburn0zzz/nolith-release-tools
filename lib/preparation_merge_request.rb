@@ -51,6 +51,23 @@ class PreparationMergeRequest < MergeRequest
     version.ee?
   end
 
+  # "Link" this MR to its release issue by updating description placeholders
+  def link!
+    issue = release_issue.remote_issuable
+    template = (ee? ? 'EE' : 'CE') << '_PREPARATION_MR_LINK'
+
+    begin
+      GitlabClient.edit_issue(
+        issue.project_id,
+        issue.iid,
+        description: issue.description.sub("{{#{template}}}", url)
+      )
+    rescue Gitlab::Error => ex
+      # Well we tried!
+      Raven.capture_exception(ex)
+    end
+  end
+
   def create_branch!
     Branch.new(name: source_branch, project: default_project).tap do |branch|
       branch.create(ref: stable_branch) unless SharedStatus.dry_run?

@@ -88,6 +88,32 @@ describe PreparationMergeRequest do
     end
   end
 
+  describe '#link!' do
+    it 'replaces a preparation link template' do
+      remote = double(
+        project_id: 1,
+        iid: 1234,
+        description: <<~DESC
+          Foo
+
+          {{CE_PREPARATION_MR_LINK}}
+        DESC
+      )
+
+      allow(merge_request).to receive(:release_issue)
+        .and_return(double(remote_issuable: remote))
+
+      expect(merge_request).to receive(:url).and_return('gitlab.example.com')
+      expect(GitlabClient).to receive(:edit_issue).with(
+        1,
+        1234,
+        description: "Foo\n\ngitlab.example.com\n"
+      )
+
+      subject.link!
+    end
+  end
+
   describe '#create_branch!', vcr: { cassette_name: 'branches/create_preparation' } do
     it 'creates the preparation branch in the correct project' do
       merge_request = described_class.new(version: Version.new('9.4.99'))
