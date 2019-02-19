@@ -115,6 +115,11 @@ task :security_qa_issue, [:from, :to, :version] do |_t, args|
   Rake::Task[:qa_issue].invoke(args[:from], args[:to], args[:version])
 end
 
+desc 'Closes expired QA issues'
+task :close_expired_qa_issues do
+  Qa::IssueCloser.new.execute
+end
+
 desc "Create preparation merge requests in CE and EE for a patch release"
 task :patch_merge_request, [:version] do |_t, args|
   # CE

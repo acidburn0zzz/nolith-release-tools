@@ -137,6 +137,17 @@ feature-freeze:
     variables:
       - $FEATURE_FREEZE_WEBHOOK_URL
 
+close-expired-qa-issues:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake close_expired_qa_issues
+  only:
+    refs:
+      - schedules
+    variables:
+      - $RELEASE_BOT_PRODUCTION_TOKEN
+
 # chatops ---------------------------------------------------------------------
 
 chatops:

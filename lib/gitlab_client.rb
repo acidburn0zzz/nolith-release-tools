@@ -60,6 +60,10 @@ class GitlabClient
     client.create_issue_note(project_path(project), issue.iid, body)
   end
 
+  def self.close_issue(project = Project::GitlabCe, issue)
+    client.close_issue(project_path(project), issue.iid)
+  end
+
   def self.milestones(project = Project::GitlabCe, options = {})
     project_milestones = client.milestones(project_path(project), options)
     group_milestones = client.group_milestones('gitlab-org', options)
