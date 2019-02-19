@@ -146,7 +146,7 @@ close-expired-qa-issues:
     refs:
       - schedules
     variables:
-      - $RELEASE_BOT_PRODUCTION_TOKEN
+      - $CLOSE_EXPIRED_QA_ISSUES
 
 # chatops ---------------------------------------------------------------------
 
