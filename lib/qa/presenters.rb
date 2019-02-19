@@ -1,3 +1,0 @@
-require_relative 'presenters/comment_presenter'
-require_relative 'presenters/issue_presenter'
-require_relative 'presenters/security_issue_presenter'

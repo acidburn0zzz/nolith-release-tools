@@ -1,9 +1,6 @@
 require 'fileutils'
 require 'rugged'
 
-require 'changelog/config'
-require 'version'
-
 require_relative 'repository_fixture'
 
 # Builds a fixture repository used in testing Changelog auto-generation
@@ -22,16 +19,16 @@ class ChangelogFixture
     merges   = {}
 
     # These branches have no entries
-    branches['8-2-stable']    = build_stable_branch(Version.new('8.2.0'))
-    branches['8-2-stable-ee'] = build_stable_branch(Version.new('8.2.0-ee'))
+    branches['8-2-stable']    = build_stable_branch(ReleaseTools::Version.new('8.2.0'))
+    branches['8-2-stable-ee'] = build_stable_branch(ReleaseTools::Version.new('8.2.0-ee'))
 
     # These branches have CE entries but not EE entries
-    branches['8-3-stable']    = build_stable_branch(Version.new('8.3.0'))
-    branches['8-3-stable-ee'] = build_stable_branch(Version.new('8.3.0-ee'))
+    branches['8-3-stable']    = build_stable_branch(ReleaseTools::Version.new('8.3.0'))
+    branches['8-3-stable-ee'] = build_stable_branch(ReleaseTools::Version.new('8.3.0-ee'))
 
     # These branches have CE entries and EE entries
-    branches['8-10-stable']    = build_stable_branch(Version.new('8.10.0'))
-    branches['8-10-stable-ee'] = build_stable_branch(Version.new('8.10.0-ee'))
+    branches['8-10-stable']    = build_stable_branch(ReleaseTools::Version.new('8.10.0'))
+    branches['8-10-stable-ee'] = build_stable_branch(ReleaseTools::Version.new('8.10.0-ee'))
 
     # Merge some changelog entries into `master` that will be cherry-picked
     merges['feature'] = merge_branch_with_changelog_entry(
@@ -65,7 +62,7 @@ class ChangelogFixture
   private
 
   def config
-    Changelog::Config
+    ReleaseTools::Changelog::Config
   end
 
   # Set up initial `master` state

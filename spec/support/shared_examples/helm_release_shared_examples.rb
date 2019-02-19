@@ -9,7 +9,7 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_maste
     allow(release).to receive(:add_changelog).and_return true
 
     if expect_tag
-      expect(changelog_manager).to receive(:release).with(HelmChartVersion.new(expected_chart_version))
+      expect(changelog_manager).to receive(:release).with(ReleaseTools::HelmChartVersion.new(expected_chart_version))
     else
       expect(changelog_manager).not_to receive(:release)
     end
@@ -25,8 +25,8 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_maste
         next original_chartfile.call unless repository.head.name == "refs/heads/#{branch}"
         instance_double(
           "ChartFile",
-          version: expected_chart_version && HelmChartVersion.new(expected_chart_version),
-          app_version: gitlab_version && HelmGitlabVersion.new(gitlab_version)
+          version: expected_chart_version && ReleaseTools::HelmChartVersion.new(expected_chart_version),
+          app_version: gitlab_version && ReleaseTools::HelmGitlabVersion.new(gitlab_version)
         )
       end
     end

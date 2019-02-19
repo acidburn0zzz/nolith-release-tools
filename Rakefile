@@ -1,6 +1,5 @@
-require_relative 'init'
-require_relative 'lib/support/tasks_helper'
-require_relative 'lib/local_repository'
+require_relative 'lib/release_tools'
+require_relative 'lib/release_tools/support/tasks_helper'
 
 begin
   require 'rspec/core/rake_task'
