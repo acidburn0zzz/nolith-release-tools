@@ -36,13 +36,13 @@ module Qa
           Each engineer then validates and checks off each of their assigned QA task(s).
           1. Check off each Merge Request changes that you've tested successfully and note any issues you've created and check them off as they are resolved.
           1. If a problem is found:
-            * Create an issue for it and add a sub bullet item under the corresponding validation checklist task. Link the issue there.
-            * Add the severity label
-            * Raise the problem in the discussion and tag relevant Engineering and Product managers.
+             * Create an issue for it and add a sub bullet item under the corresponding validation checklist task. Link the issue there.
+             * Add the severity label
+             * Raise the problem in the discussion and tag relevant Engineering and Product managers.
           1. If a regression is found:
-            * Create an issue for it
-            * Add the severity label and the regression label
-            * Raise the regression in the discussion and tag relevant Engineering and Product managers.
+             * Create an issue for it
+             * Add the severity label and the regression label
+             * Raise the regression in the discussion and tag relevant Engineering and Product managers.
 
           General Quality info can be found in the [Quality Handbook](https://about.gitlab.com/handbook/engineering/quality/).
 
