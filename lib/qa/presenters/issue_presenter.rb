@@ -19,7 +19,6 @@ module Qa
           else
             text << header_text
           end
-          text << "\n#{changes_header}\n\n"
           text << formatter.lines.join("\n")
           text << automated_qa_text
         end
@@ -31,9 +30,7 @@ module Qa
         <<~HEREDOC
           ## Process
 
-          A Release manager with the help of a Quality engineer will populate the [Merge Requests tested](#merge-requests-tested) section. The information is taken from our Automated QA task generation script. The documentation can be found at: https://gitlab.com/gitlab-org/release/docs/blob/master/general/qa-issue-generation.md
-
-          Each engineer then validates and checks off each of their assigned QA task(s).
+          Each engineer validates and checks off each of their assigned QA task(s).
           1. Check off each Merge Request changes that you've tested successfully and note any issues you've created and check them off as they are resolved.
           1. If a problem is found:
              * Create an issue for it and add a sub bullet item under the corresponding validation checklist task. Link the issue there.
@@ -48,27 +45,11 @@ module Qa
 
           ## Deadline
 
-          * The deadline to which the first release candidate (RC1) moves on from staging environment is **24** working hours after the deploy to staging completes.
-          * The deadline to which subsequent release candidates moves on from staging environment is **12** working hours after the deploy to staging completes.
-
-          > **Note:** For Release Managers, for each release candidate, update the time here to reflect the latest release candidate deploy.
-
-          QA testing on [staging.gitlab.com](https://staging.gitlab.com) should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
+          QA testing on [staging.gitlab.com](https://staging.gitlab.com) for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
           After this deadline has passed, Release Managers will proceed with the canary and production deployment.
-        HEREDOC
-      end
 
-      def changes_header
-        <<~HEREDOC
           ## Merge Requests tested in #{version}
 
-          > Example:
-          >
-          > * [x] `@Engineer1` | Apply notification settings level of bacons to all child bacons ~Plan ~groups ~subgroups
-          > * [x] `@Engineer2` | Resolve "Timeout searching group bacons" ~Plan ~backend ~bug ~database ~groups ~issues ~performance
-          > * [ ] `@Engineer3` | Nonnegative meatball weights in issuable sidebar short ribs ~Deliverable ~Plan ~backend ~direction ~frontend ~issues
-          >   * Found problem, does not work because... [LINK_ISSUE_HERE](https://gitlab.com/gitlab-org/gitlab-ce/issues/)
-          > * [ ] `@Engineer4` | Moving rev-list pastrami bacons to Lfs Prosciutto ~Create ~backend ~lfs
         HEREDOC
       end
 
