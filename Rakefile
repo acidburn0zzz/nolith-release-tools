@@ -30,8 +30,8 @@ task :tag, [:version] do |_t, args|
     ee_version = version.to_ee
 
     $stdout.puts 'EE release'.colorize(:blue)
-    Release::GitlabEeRelease.new(ee_version).execute
-    Slack::TagNotification.release(ee_version) unless dry_run?
+    ReleaseTools::Release::GitlabEeRelease.new(ee_version).execute
+    ReleaseTools::Slack::TagNotification.release(ee_version) unless dry_run?
   end
 
   if skip?('ce')
@@ -40,8 +40,8 @@ task :tag, [:version] do |_t, args|
     ce_version = version.to_ce
 
     $stdout.puts 'CE release'.colorize(:blue)
-    Release::GitlabCeRelease.new(ce_version).execute
-    Slack::TagNotification.release(ce_version) unless dry_run?
+    ReleaseTools::Release::GitlabCeRelease.new(ce_version).execute
+    ReleaseTools::Slack::TagNotification.release(ce_version) unless dry_run?
   end
 end
 
@@ -60,26 +60,26 @@ task :sync do
   if skip?('ee')
     $stdout.puts 'Skipping sync for EE'.colorize(:yellow)
   else
-    Sync.new(Project::GitlabEe.remotes).execute
+    ReleaseTools::Sync.new(Project::GitlabEe.remotes).execute
   end
 
   if skip?('ce')
     $stdout.puts 'Skipping sync for CE'.colorize(:yellow)
   else
-    Sync.new(Project::GitlabCe.remotes).execute
+    ReleaseTools::Sync.new(Project::GitlabCe.remotes).execute
   end
 
   if skip?('og')
     $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
-    Sync.new(Project::OmnibusGitlab.remotes).execute
+    ReleaseTools::Sync.new(Project::OmnibusGitlab.remotes).execute
   end
 end
 
 desc "Create the monthly release issue"
 task :monthly_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = MonthlyIssue.new(version: version)
+  issue = ReleaseTools::MonthlyIssue.new(version: version)
 
   create_or_show_issue(issue)
 end
@@ -87,7 +87,7 @@ end
 desc "Create a patch issue"
 task :patch_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = PatchIssue.new(version: version)
+  issue = ReleaseTools::PatchIssue.new(version: version)
 
   create_or_show_issue(issue)
 end
@@ -97,12 +97,12 @@ task :qa_issue, [:from, :to, :version] do |_t, args|
   # Attempt to infer the version from the `to` ref
   version = get_version(args.with_defaults(version: args[:to].sub(/\Av/, '')))
 
-  issue = Qa::Services::BuildQaIssueService.new(
+  issue = ReleaseTools::Qa::Services::BuildQaIssueService.new(
     version: version,
     from: args[:from],
     to: args[:to],
-    issue_project: Qa::ISSUE_PROJECT,
-    projects: Qa::PROJECTS
+    issue_project: ReleaseTools::Qa::ISSUE_PROJECT,
+    projects: ReleaseTools::Qa::PROJECTS
   ).execute
 
   create_or_show_issue(issue)
@@ -116,20 +116,20 @@ end
 
 desc 'Closes expired QA issues'
 task :close_expired_qa_issues do
-  Qa::IssueCloser.new.execute
+  ReleaseTools::Qa::IssueCloser.new.execute
 end
 
 desc "Create preparation merge requests in CE and EE for a patch release"
 task :patch_merge_request, [:version] do |_t, args|
   # CE
   version = get_version(args).to_ce
-  merge_request = PreparationMergeRequest.new(version: version)
+  merge_request = ReleaseTools::PreparationMergeRequest.new(version: version)
   merge_request.create_branch!
   create_or_show_merge_request(merge_request)
 
   # EE
   version = version.to_ee
-  merge_request = PreparationMergeRequest.new(version: version)
+  merge_request = ReleaseTools::PreparationMergeRequest.new(version: version)
   merge_request.create_branch!
   create_or_show_merge_request(merge_request)
 end
@@ -141,7 +141,7 @@ task :cherry_pick, [:version] do |_t, args|
   # CE
   version = get_version(args).to_ce
   $stdout.puts "--> Picking for #{version}..."
-  results = CherryPick::Service.new(Project::GitlabCe, version).execute
+  results = ReleaseTools::CherryPick::Service.new(Project::GitlabCe, version).execute
   results.each do |result|
     $stdout.puts "    #{icon.call(result)} #{result.url}"
   end
@@ -149,7 +149,7 @@ task :cherry_pick, [:version] do |_t, args|
   # EE
   version = version.to_ee
   $stdout.puts "--> Picking for #{version}..."
-  results = CherryPick::Service.new(Project::GitlabEe, version).execute
+  results = ReleaseTools::CherryPick::Service.new(Project::GitlabEe, version).execute
   results.each do |result|
     $stdout.puts "    #{icon.call(result)} #{result.url}"
   end
@@ -163,14 +163,14 @@ end
 desc "Create a security patch issue"
 task :security_patch_issue, [:version] do |_t, args|
   version = get_version(args)
-  issue = SecurityPatchIssue.new(version: version)
+  issue = ReleaseTools::SecurityPatchIssue.new(version: version)
 
   create_or_show_issue(issue)
 end
 
 desc "Create a CE upstream merge request on EE"
 task :upstream_merge do
-  result = Services::UpstreamMergeService
+  result = ReleaseTools::Services::UpstreamMergeService
     .new(dry_run: dry_run?, mention_people: !no_mention?, force: force?)
     .perform
 
@@ -181,12 +181,12 @@ task :upstream_merge do
         --> Merge request "#{upstream_mr.title}" created.
             #{upstream_mr.url}
       SUCCESS_MESSAGE
-      Slack::UpstreamMergeNotification.new_merge_request(upstream_mr) unless dry_run?
+      ReleaseTools::Slack::UpstreamMergeNotification.new_merge_request(upstream_mr) unless dry_run?
     else
       $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
         --> Merge request "#{upstream_mr.title}" not created.
       SUCCESS_MESSAGE
-      Slack::UpstreamMergeNotification.missing_merge_request unless dry_run?
+      ReleaseTools::Slack::UpstreamMergeNotification.missing_merge_request unless dry_run?
     end
   elsif result.payload[:in_progress_mr]
     in_progress_mr = result.payload[:in_progress_mr]
@@ -194,12 +194,12 @@ task :upstream_merge do
     --> An upstream merge request already exists.
         #{in_progress_mr.url}
     ERROR_MESSAGE
-    Slack::UpstreamMergeNotification.existing_merge_request(in_progress_mr) unless dry_run?
+    ReleaseTools::Slack::UpstreamMergeNotification.existing_merge_request(in_progress_mr) unless dry_run?
   elsif result.payload[:already_up_to_date]
     $stdout.puts <<~ERROR_MESSAGE.colorize(:green)
     --> EE is already up-to-date with CE. No merge request was created.
     ERROR_MESSAGE
-    Slack::UpstreamMergeNotification.downstream_is_up_to_date unless dry_run?
+    ReleaseTools::Slack::UpstreamMergeNotification.downstream_is_up_to_date unless dry_run?
   end
 end
 
@@ -210,14 +210,14 @@ namespace :release_managers do
       abort "You must provide a username to verify!"
     end
 
-    unless ReleaseManagers::Definitions.allowed?(args[:username])
+    unless ReleaseTools::ReleaseManagers::Definitions.allowed?(args[:username])
       abort "#{args[:username]} is not an authorized release manager!"
     end
   end
 
   desc "Sync Release Manager membership"
   task :sync do
-    result = ReleaseManagers::Definitions.sync!
+    result = ReleaseTools::ReleaseManagers::Definitions.sync!
 
     unless result.success?
       $stdout.puts result.formatted_error_message
@@ -229,8 +229,8 @@ end
 namespace :helm do
   desc "Create a chart release by passing in chart_version,gitlab_version"
   task :tag_chart, [:version, :gitlab_version] do |_t, args|
-    version = HelmChartVersion.new(args[:version]) if args[:version] && !args[:version].empty?
-    gitlab_version = HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version] && !args[:gitlab_version].empty?
+    version = ReleaseTools::HelmChartVersion.new(args[:version]) if args[:version] && !args[:version].empty?
+    gitlab_version = ReleaseTools::HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version] && !args[:gitlab_version].empty?
 
     # At least one of the versions must be provided in order to tag
     if (!version && !gitlab_version) || (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
@@ -239,7 +239,7 @@ namespace :helm do
     end
 
     $stdout.puts 'Chart release'.colorize(:blue)
-    Release::HelmGitlabRelease.new(version, gitlab_version).execute
+    ReleaseTools::Release::HelmGitlabRelease.new(version, gitlab_version).execute
   end
 end
 
@@ -247,7 +247,7 @@ desc "Publish packages for a specified version"
 task :publish, [:version] do |_t, args|
   version = get_version(args)
 
-  Packages::PublishService
+  ReleaseTools::Packages::PublishService
     .new(version)
     .execute
 end
