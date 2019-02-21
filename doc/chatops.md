@@ -112,8 +112,7 @@ Create a QA issue with differences between two specified tags.
 Create a task issue for either a monthly, patch, or security release.
 
 ChatOps will run the [`monthly_issue`], [`patch_issue`], or
-[`security_patch_issue`] task depending on where the command was run, and what
-version was specified.
+[`security_patch_issue`] task depending on the version and options specified.
 
 > NOTE: If for some reason the ChatOps command isn't working as expected, you
 > can run the equivalent [`rake`](./rake-tasks.md) task command locally.
@@ -125,21 +124,27 @@ version was specified.
 #### Examples
 
 ```
-# Create a security release task issue from the #security-release channel
-/chatops run release_issue 11.1.2
+# Create a security release task issue with the `--security` flag
+/chatops run release_issue 11.1.2 --security
 ```
 
 ```
-# Create a monthly release task issue from anywhere else
+# Create a monthly release task issue
 /chatops run release_issue 11.1.0
 ```
 
 ```
-# Create a patch or RC task issue from anywhere else
+# Create a patch or RC task issue
 /chatops run release_issue 11.1.1
 
 /chatops run release_issue 11.1.0-rc5
 ```
+
+#### Options
+
+| flag         | description                                                                 |
+| ----         | -----------                                                                 |
+| `--security` | Create a [security task issue](./rake-tasks.md#security_patch_issueversion) |
 
 ### `tag`
 
