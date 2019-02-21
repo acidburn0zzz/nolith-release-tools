@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 require_relative 'lib/release_tools'
 require_relative 'lib/release_tools/support/tasks_helper'
+
+Dir.glob('lib/tasks/*.rake').each { |task| load(task) }
 
 begin
   require 'rspec/core/rake_task'
