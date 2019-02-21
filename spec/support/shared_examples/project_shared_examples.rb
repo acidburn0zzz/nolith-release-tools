@@ -4,7 +4,9 @@ RSpec.shared_examples 'project #remotes' do
   end
 
   it 'returns only dev remote during a security release' do
-    expect(SharedStatus).to receive(:security_release?).and_return(true)
+    expect(ReleaseTools::SharedStatus)
+      .to receive(:security_release?)
+      .and_return(true)
 
     expect(described_class.remotes).to eq(described_class::REMOTES.slice(:dev))
   end

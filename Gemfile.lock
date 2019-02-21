@@ -18,7 +18,7 @@ GEM
     byebug (9.0.5)
     climate_control (0.2.0)
     coderay (1.1.2)
-    colorize (0.5.8)
+    colorize (0.8.1)
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)

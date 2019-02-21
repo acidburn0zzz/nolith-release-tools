@@ -15,40 +15,48 @@ RSpec.shared_examples 'issuable #initialize' do
 end
 
 RSpec.shared_examples 'issuable #create' do |create_issuable_method|
-  it 'calls GitlabClient.create_issue' do
-    expect(GitlabClient).to receive(create_issuable_method).with(subject, Project::GitlabCe)
+  it 'calls ReleaseTools::GitlabClient.create_issue' do
+    expect(ReleaseTools::GitlabClient)
+      .to receive(create_issuable_method)
+      .with(subject, ReleaseTools::Project::GitlabCe)
 
     subject.create
   end
 end
 
 RSpec.shared_examples 'issuable #update' do |update_issuable_method|
-  it 'calls GitlabClient.update_issue' do
-    expect(GitlabClient).to receive(update_issuable_method).with(subject, Project::GitlabCe)
+  it 'calls ReleaseTools::GitlabClient.update_issue' do
+    expect(ReleaseTools::GitlabClient)
+      .to receive(update_issuable_method)
+      .with(subject, ReleaseTools::Project::GitlabCe)
 
     subject.update
   end
 end
 
 RSpec.shared_examples 'issuable #accept' do |accept_issuable_method|
-  it 'calls GitlabClient.create_issue' do
-    expect(GitlabClient).to receive(accept_issuable_method).with(subject, Project::GitlabCe)
+  it 'calls ReleaseTools::GitlabClient.create_issue' do
+    expect(ReleaseTools::GitlabClient)
+      .to receive(accept_issuable_method)
+      .with(subject, ReleaseTools::Project::GitlabCe)
 
     subject.accept
   end
 end
 
 RSpec.shared_examples 'issuable #remote_issuable' do |find_issuable_method|
-  it 'delegates to GitlabClient' do
-    expect(GitlabClient).to receive(find_issuable_method).with(subject, Project::GitlabCe)
+  it 'delegates to ReleaseTools::GitlabClient' do
+    expect(ReleaseTools::GitlabClient)
+      .to receive(find_issuable_method)
+      .with(subject, ReleaseTools::Project::GitlabCe)
 
     subject.remote_issuable
   end
 
   context 'when remote issuable does not exist' do
     it 'does not memoize the value' do
-      expect(GitlabClient).to receive(find_issuable_method).twice
-        .with(subject, Project::GitlabCe).and_return(nil)
+      expect(ReleaseTools::GitlabClient).to receive(find_issuable_method).twice
+        .with(subject, ReleaseTools::Project::GitlabCe).and_return(nil)
 
       2.times { subject.remote_issuable }
     end
@@ -56,8 +64,8 @@ RSpec.shared_examples 'issuable #remote_issuable' do |find_issuable_method|
 
   context 'when remote issuable exists' do
     it 'memoizes the remote issuable' do
-      expect(GitlabClient).to receive(find_issuable_method).once
-        .with(subject, Project::GitlabCe).and_return(double)
+      expect(ReleaseTools::GitlabClient).to receive(find_issuable_method).once
+        .with(subject, ReleaseTools::Project::GitlabCe).and_return(double)
 
       2.times { subject.remote_issuable }
     end

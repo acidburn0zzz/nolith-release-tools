@@ -10,7 +10,7 @@ ENV['OPS_API_PRIVATE_TOKEN'] = 'test'
 # SimpleCov needs to be loaded before everything else
 require_relative 'support/simplecov'
 
-require_relative '../init'
+require_relative '../lib/release_tools'
 require 'active_support/core_ext/string/strip'
 require 'active_support/core_ext/object/inclusion'
 require 'rspec-parameterized'
