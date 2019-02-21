@@ -3,9 +3,10 @@ ENV['TEST'] = 'true'
 
 # Stub API tokens
 ENV['DEV_API_PRIVATE_TOKEN'] = 'test'
-ENV['GITLAB_API_PRIVATE_TOKEN'] = 'test'
 ENV['GITLAB_API_APPROVAL_TOKEN'] = 'test'
+ENV['GITLAB_API_PRIVATE_TOKEN'] = 'test'
 ENV['OPS_API_PRIVATE_TOKEN'] = 'test'
+ENV['VERSION_API_PRIVATE_TOKEN'] = 'test'
 
 # SimpleCov needs to be loaded before everything else
 require_relative 'support/simplecov'

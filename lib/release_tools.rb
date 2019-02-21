@@ -106,6 +106,7 @@ require 'release_tools/team_member'
 require 'release_tools/time_util'
 require 'release_tools/upstream_merge'
 require 'release_tools/upstream_merge_request'
+require 'release_tools/version_client'
 
 unless ENV['TEST']
   require 'sentry-raven'
