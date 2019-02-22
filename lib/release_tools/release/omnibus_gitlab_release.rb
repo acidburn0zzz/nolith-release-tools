@@ -29,19 +29,19 @@ module ReleaseTools
       def compile_changelog
         return if version.rc?
 
-        Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version.to_patch)
-      rescue Changelog::NoChangelogError => ex
+        ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version.to_patch)
+      rescue ReleaseTools::Changelog::NoChangelogError => ex
         $stderr.puts "Cannot perform changelog update for #{version} on " \
           "#{ex.changelog_path}".colorize(:red)
         $stderr.puts "Received error: #{ex.message}".colorize(:red)
       end
 
       def remotes
-        Project::OmnibusGitlab.remotes
+        ReleaseTools::Project::OmnibusGitlab.remotes
       end
 
       def version_class
-        OmnibusGitlabVersion
+        ReleaseTools::OmnibusGitlabVersion
       end
 
       def bump_versions
