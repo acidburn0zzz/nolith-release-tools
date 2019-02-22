@@ -29,7 +29,7 @@ module ReleaseTools
       def compile_changelog
         return if version.rc?
 
-        ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version.to_patch)
+        ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version)
       rescue ReleaseTools::Changelog::NoChangelogError => ex
         $stderr.puts "Cannot perform changelog update for #{version} on " \
           "#{ex.changelog_path}".colorize(:red)
