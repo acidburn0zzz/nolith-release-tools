@@ -27,6 +27,8 @@ module ReleaseTools
       end
 
       def compile_changelog
+        # FIXME (rspeicher): Causes excessive computation for an unknown reason
+        # See https://gitlab.com/gitlab-org/release/framework/issues/224#note_143900535
         return
 
         ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version)
