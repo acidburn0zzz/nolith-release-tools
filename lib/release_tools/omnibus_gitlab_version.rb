@@ -17,6 +17,18 @@ module ReleaseTools
       edition == 'ee'
     end
 
+    def to_ce
+      return self unless ee?
+
+      self.class.new(to_s.sub('+ee', '+ce'))
+    end
+
+    def to_ee
+      return self if ee?
+
+      self.class.new(to_s.sub('+ce', '+ee'))
+    end
+
     def edition
       @edition ||= extract_from_version(:edition, fallback: 'ce')
     end
