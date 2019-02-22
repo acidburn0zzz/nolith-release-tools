@@ -53,6 +53,12 @@ describe ReleaseTools::OmnibusGitlabVersion do
 
       expect(version.to_ce.to_s).to eq '1.2.3+ce.0'
     end
+
+    it 'works with an RC version' do
+      version = version('1.2.3+rc1.ee.0')
+
+      expect(version.to_ce.to_s).to eq '1.2.3+rc1.ce.0'
+    end
   end
 
   describe '#to_ee' do
@@ -66,6 +72,12 @@ describe ReleaseTools::OmnibusGitlabVersion do
       version = version('1.2.3+ce.0')
 
       expect(version.to_ee.to_s).to eq '1.2.3+ee.0'
+    end
+
+    it 'works with an RC version' do
+      version = version('1.2.3+rc1.ce.0')
+
+      expect(version.to_ee.to_s).to eq '1.2.3+rc1.ee.0'
     end
   end
 end

@@ -20,13 +20,13 @@ module ReleaseTools
     def to_ce
       return self unless ee?
 
-      self.class.new(to_s.sub('+ee', '+ce'))
+      self.class.new(to_s.sub(/(\+|\.)ee/, '\1ce'))
     end
 
     def to_ee
       return self if ee?
 
-      self.class.new(to_s.sub('+ce', '+ee'))
+      self.class.new(to_s.sub(/(\+|\.)ce/, '\1ee'))
     end
 
     def edition
