@@ -19,7 +19,7 @@ desc "Tag a new GitLab release"
 task :tag, [:version] do |_t, args|
   version = get_version(args)
 
-  if SharedStatus.security_release?
+  if ReleaseTools::SharedStatus.security_release?
     $stdout.puts "Security Release - using dev.gitlab.org only!".colorize(:red)
     $stdout.puts
   end
