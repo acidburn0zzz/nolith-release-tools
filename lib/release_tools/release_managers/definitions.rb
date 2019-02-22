@@ -21,7 +21,7 @@ module ReleaseTools
 
       def initialize(config_file = nil)
         @config_file = config_file ||
-          File.expand_path('../../config/release_managers.yml', __dir__)
+          File.expand_path('../../../config/release_managers.yml', __dir__)
 
         reload!
       end
