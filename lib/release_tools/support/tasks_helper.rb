@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def get_version(args)
-  version = Version.new(args[:version])
+  version = ReleaseTools::Version.new(args[:version])
 
   unless version.valid?
     $stdout.puts "Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z".colorize(:red)
@@ -12,7 +12,7 @@ def get_version(args)
 end
 
 def dry_run?
-  SharedStatus.dry_run?
+  ReleaseTools::SharedStatus.dry_run?
 end
 
 def force?
@@ -37,7 +37,7 @@ def create_or_show_issuable(issuable)
     $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" already exists.".red
     $stdout.puts "    #{issuable.url}"
 
-    Slack::ChatopsNotification.release_issue(issuable)
+    ReleaseTools::Slack::ChatopsNotification.release_issue(issuable)
   else
     issuable.create
     issuable.status = :created
@@ -46,7 +46,7 @@ def create_or_show_issuable(issuable)
     $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" created.".green
     $stdout.puts "    #{issuable.url}"
 
-    Slack::ChatopsNotification.release_issue(issuable)
+    ReleaseTools::Slack::ChatopsNotification.release_issue(issuable)
   end
 end
 
