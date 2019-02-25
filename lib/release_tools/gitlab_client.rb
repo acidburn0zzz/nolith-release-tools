@@ -13,6 +13,7 @@ module ReleaseTools
       def_delegator :client, :job_play
 
       def_delegator :client, :create_merge_request_comment
+      def_delegator :client, :create_group_label
     end
 
     class MissingMilestone
