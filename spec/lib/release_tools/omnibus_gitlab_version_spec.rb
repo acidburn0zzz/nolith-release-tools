@@ -40,4 +40,44 @@ describe ReleaseTools::OmnibusGitlabVersion do
       expect(version('8.3.2')).not_to be_ee
     end
   end
+
+  describe '#to_ce' do
+    it 'returns self when already CE' do
+      version = version('1.2.3+ce.0')
+
+      expect(version.to_ce).to eql version
+    end
+
+    it 'returns a CE version when EE' do
+      version = version('1.2.3+ee.0')
+
+      expect(version.to_ce.to_s).to eq '1.2.3+ce.0'
+    end
+
+    it 'works with an RC version' do
+      version = version('1.2.3+rc1.ee.0')
+
+      expect(version.to_ce.to_s).to eq '1.2.3+rc1.ce.0'
+    end
+  end
+
+  describe '#to_ee' do
+    it 'returns self when already EE' do
+      version = version('1.2.3+ee.0')
+
+      expect(version.to_ee).to eql version
+    end
+
+    it 'returns an EE version when CE' do
+      version = version('1.2.3+ce.0')
+
+      expect(version.to_ee.to_s).to eq '1.2.3+ee.0'
+    end
+
+    it 'works with an RC version' do
+      version = version('1.2.3+rc1.ce.0')
+
+      expect(version.to_ee.to_s).to eq '1.2.3+rc1.ee.0'
+    end
+  end
 end

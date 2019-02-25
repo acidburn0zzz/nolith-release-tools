@@ -262,7 +262,7 @@ describe ReleaseTools::Version do
       expect(version.to_ee).to eql version
     end
 
-    it 'returns a EE version when CE' do
+    it 'returns an EE version when CE' do
       version = version('1.2.3')
 
       expect(version.to_ee.to_s).to eq '1.2.3-ee'
