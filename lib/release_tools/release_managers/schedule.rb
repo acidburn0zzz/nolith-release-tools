@@ -4,6 +4,9 @@ module ReleaseTools
   module ReleaseManagers
     # Obtaining of release managers for a given major/minor release.
     class Schedule
+      # Raised when release managers for the specified version can't be found
+      VersionNotFoundError = Class.new(StandardError)
+
       SCHEDULE_YAML = 'https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/release_managers.yml'
 
       # @param [Version] version
@@ -44,14 +47,12 @@ module ReleaseTools
       #
       # @return [Array<String>]
       def release_manager_names_from_yaml
-        names = download_release_manager_names
-          .find { |row| row['version'] == @version }
+        not_found = -> { raise VersionNotFoundError }
 
-        if names
-          names['manager_americas'] | names['manager_apac_emea']
-        else
-          []
-        end
+        names = download_release_manager_names
+          .find(not_found) { |row| row['version'] == @version }
+
+        names['manager_americas'] | names['manager_apac_emea']
       end
 
       # @return [Array<Hash>]

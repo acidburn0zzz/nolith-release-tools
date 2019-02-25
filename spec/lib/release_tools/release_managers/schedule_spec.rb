@@ -57,7 +57,8 @@ describe ReleaseTools::ReleaseManagers::Schedule do
           .to receive(:download_release_manager_names)
           .and_return([])
 
-        expect(schedule.release_manager_names_from_yaml).to be_empty
+        expect { schedule.release_manager_names_from_yaml }
+          .to raise_error(described_class::VersionNotFoundError)
       end
     end
 

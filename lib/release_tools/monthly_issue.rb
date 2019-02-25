@@ -16,6 +16,8 @@ module ReleaseTools
 
     def assignees
       ReleaseManagers::Schedule.new(version).ids
+    rescue ReleaseManagers::Schedule::VersionNotFoundError
+      nil
     end
 
     protected
