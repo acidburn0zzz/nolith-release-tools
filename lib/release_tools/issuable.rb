@@ -58,7 +58,7 @@ module ReleaseTools
     private
 
     def default_project
-      Project::GitlabCe
+      ReleaseTools::Project::GitlabCe
     end
 
     def template

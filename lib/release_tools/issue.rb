@@ -3,15 +3,15 @@
 module ReleaseTools
   class Issue < Issuable
     def create
-      GitlabClient.create_issue(self, project)
+      ReleaseTools::GitlabClient.create_issue(self, project)
     end
 
     def update
-      GitlabClient.update_issue(self, project)
+      ReleaseTools::GitlabClient.update_issue(self, project)
     end
 
     def remote_issuable
-      @remote_issuable ||= GitlabClient.find_issue(self, project)
+      @remote_issuable ||= ReleaseTools::GitlabClient.find_issue(self, project)
     end
 
     def confidential?

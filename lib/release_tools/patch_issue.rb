@@ -3,7 +3,7 @@
 module ReleaseTools
   class PatchIssue < Issue
     def omnibus_version
-      @omnibus_version ||= OmnibusGitlabVersion.new(version.to_omnibus(ee: version.ee?))
+      @omnibus_version ||= ReleaseTools::OmnibusGitlabVersion.new(version.to_omnibus(ee: version.ee?))
     end
 
     def title
@@ -15,17 +15,17 @@ module ReleaseTools
     end
 
     def project
-      ::Project::Release::Tasks
+      ReleaseTools::Project::Release::Tasks
     end
 
     def monthly_issue
-      @monthly_issue ||= MonthlyIssue.new(version: version)
+      @monthly_issue ||= ReleaseTools::MonthlyIssue.new(version: version)
     end
 
     def link!
       return if version.monthly?
 
-      GitlabClient.link_issues(self, monthly_issue)
+      ReleaseTools::GitlabClient.link_issues(self, monthly_issue)
     end
 
     def assignees
