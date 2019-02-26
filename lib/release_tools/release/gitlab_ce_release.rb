@@ -20,6 +20,8 @@ module ReleaseTools
           version.to_omnibus(ee: version.ee?),
           options.merge(gitlab_repo_path: repository.path)
         ).execute
+
+        Release::CNGImageRelease.new(version).execute
       end
 
       def after_release
