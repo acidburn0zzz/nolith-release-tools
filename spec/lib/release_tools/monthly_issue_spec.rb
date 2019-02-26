@@ -12,15 +12,6 @@ describe ReleaseTools::MonthlyIssue do
   end
 
   describe '#description' do
-    it "includes stable branch names" do
-      issue = described_class.new(version: ReleaseTools::Version.new('8.3.0-rc1'))
-
-      content = issue.description
-
-      expect(content).to include('`8-3-stable`')
-      expect(content).to include('`8-3-stable-ee`')
-    end
-
     it "includes the version number" do
       issue = described_class.new(version: ReleaseTools::Version.new('8.3.0'))
 
