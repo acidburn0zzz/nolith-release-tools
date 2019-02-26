@@ -81,10 +81,6 @@ describe ReleaseTools::UpstreamMergeRequest do
         .with('Rémy Coutable', team: an_instance_of(ReleaseTools::Team))
         .and_return(double(to_gitlab: '@rymai'))
 
-      allow(ReleaseTools::CI)
-        .to receive(:current_job_url)
-        .and_return('http://job.url')
-
       allow(ReleaseTools::Team).to receive(:new)
         .with(included_core_members: described_class::INCLUDED_CORE_MEMBERS)
         .and_call_original.once
@@ -104,6 +100,12 @@ describe ReleaseTools::UpstreamMergeRequest do
           { path: 'foo/bar.rb', user: 'John Doe', conflict_type: 'UU' },
           { path: 'bar/baz.rb', user: 'Rémy Coutable', conflict_type: 'AA' }
         ]
+      end
+
+      around do |ex|
+        ClimateControl.modify(CI_JOB_URL: 'http://job.url') do
+          ex.run
+        end
       end
 
       it 'returns a description with checklist items for conflicting files' do

@@ -4,7 +4,6 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
   include SlackWebhookHelpers
 
   let(:webhook_url) { 'https://slack.example.com/' }
-  let(:ci_job_id) { '42' }
   let(:merge_request) do
     double(url: 'http://gitlab.com/mr',
            to_reference: '!123',
@@ -13,7 +12,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
   end
 
   around do |ex|
-    ClimateControl.modify(SLACK_UPSTREAM_MERGE_URL: webhook_url, CI_JOB_ID: ci_job_id) do
+    ClimateControl.modify(SLACK_UPSTREAM_MERGE_URL: webhook_url, CI_JOB_URL: 'https://example.com') do
       Timecop.freeze(Time.new(2018, 1, 4, 8, 30, 42)) do
         ex.run
       end
@@ -51,7 +50,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
 
   describe '.missing_merge_request' do
     it 'posts a message' do
-      expect_post({ body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://gitlab.com/gitlab-org/release-tools/-/jobs/#{ci_job_id}>. :boom:" }.to_json })
+      expect_post({ body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://example.com>. :boom:" }.to_json })
         .and_return(response(200))
 
       described_class.missing_merge_request
