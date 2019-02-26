@@ -67,7 +67,7 @@ module ReleaseTools
           the conflicts, please push this to be merged and **do not** choose to
           squash the commits.
 
-          Note: This merge request was [created by an automated script](#{CI.current_job_url}).
+          Note: This merge request was [created by an automated script](#{ENV['CI_JOB_URL']}).
           Please report any issue at https://gitlab.com/gitlab-org/release-tools/issues!
 
           /assign #{responsible_gitlab_username}

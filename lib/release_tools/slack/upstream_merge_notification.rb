@@ -39,7 +39,7 @@ module ReleaseTools
 
       def self.missing_merge_request
         text = <<~MSG.strip
-          The latest upstream merge MR could not be created! Please have a look at <#{CI.current_job_url}>. :boom:
+          The latest upstream merge MR could not be created! Please have a look at <#{ENV['CI_JOB_URL']}>. :boom:
         MSG
 
         fire_hook(text: text)
