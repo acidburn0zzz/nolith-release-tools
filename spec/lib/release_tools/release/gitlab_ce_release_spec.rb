@@ -13,18 +13,22 @@ describe ReleaseTools::Release::GitlabCeRelease, :silence_stdout do
   # gets checked out to `/tmp/release`.
   let(:repo_path)    { File.join('/tmp', ReleaseFixture.repository_name) }
   let(:ob_repo_path) { File.join('/tmp', OmnibusReleaseFixture.repository_name) }
+  let(:cng_repo_path) { File.join('/tmp', CNGImageReleaseFixture.repository_name) }
 
   # These two Rugged repositories are used for _verifying the result_ of the
   # release run. Not to be confused with the fixture repositories.
   let(:repository)    { Rugged::Repository.new(repo_path) }
   let(:ob_repository) { Rugged::Repository.new(ob_repo_path) }
+  let(:cng_repository) { Rugged::Repository.new(cng_repo_path) }
 
   before do
     fixture    = ReleaseFixture.new
     ob_fixture = OmnibusReleaseFixture.new
+    cng_fixture = CNGImageReleaseFixture.new
 
     fixture.rebuild_fixture!
     ob_fixture.rebuild_fixture!
+    cng_fixture.rebuild_fixture!
 
     # Disable cleanup so that we can see what's the state of the temp Git repos
     allow_any_instance_of(ReleaseTools::RemoteRepository)
@@ -37,12 +41,16 @@ describe ReleaseTools::Release::GitlabCeRelease, :silence_stdout do
 
     allow_any_instance_of(ReleaseTools::Release::OmnibusGitlabRelease).to receive(:remotes)
       .and_return({ gitlab: "file://#{ob_fixture.fixture_path}" })
+
+    allow_any_instance_of(ReleaseTools::Release::CNGImageRelease).to receive(:remotes)
+      .and_return({ gitlab: "file://#{cng_fixture.fixture_path}" })
   end
 
   after do
     # Manually perform the cleanup we disabled in the `before` block
     FileUtils.rm_rf(repo_path,    secure: true) if File.exist?(repo_path)
     FileUtils.rm_rf(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
+    FileUtils.rm_rf(cng_repo_path, secure: true) if File.exist?(cng_repo_path)
   end
 
   def execute(version, branch)

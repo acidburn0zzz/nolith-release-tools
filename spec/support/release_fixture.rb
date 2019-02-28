@@ -91,6 +91,20 @@ class OmnibusReleaseFixture
   end
 end
 
+class CNGImageReleaseFixture
+  include RepositoryFixture
+
+  def self.repository_name
+    'cng-image-release'
+  end
+
+  def build_fixture(options = {})
+    commit_blob(path: 'README.md', content: '', message: 'Add empty README.md')
+    repository.branches.create('9-1-stable',    'HEAD')
+    repository.branches.create('9-1-stable-ee', 'HEAD')
+  end
+end
+
 class HelmReleaseFixture
   include RepositoryFixture
 
