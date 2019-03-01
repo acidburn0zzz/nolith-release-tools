@@ -5,7 +5,7 @@ module ReleaseTools
     class ProjectChangeset
       attr_reader :project, :from, :to, :default_client
 
-      def initialize(project:, from:, to:, default_client: GitlabClient)
+      def initialize(project:, from:, to:, default_client: ReleaseTools::GitlabClient)
         @project = project
         @from = from
         @to = to
@@ -29,7 +29,11 @@ module ReleaseTools
       private
 
       def alternate_client
-        default_client == GitlabDevClient ? GitlabClient : GitlabDevClient
+        if default_client == ReleaseTools::GitlabDevClient
+          ReleaseTools::GitlabClient
+        else
+          ReleaseTools::GitlabDevClient
+        end
       end
 
       def gather_merge_requests

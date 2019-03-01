@@ -8,8 +8,8 @@ module ReleaseTools
 
         def initialize(version:, from:, to:, issue_project:, projects:)
           @version = version
-          @from = Ref.new(from)
-          @to = Ref.new(to)
+          @from = ReleaseTools::Qa::Ref.new(from)
+          @to = ReleaseTools::Qa::Ref.new(to)
           @issue_project = issue_project
           @projects = projects
         end
@@ -27,7 +27,7 @@ module ReleaseTools
 
         def changesets
           @changesets ||= projects.map do |project|
-            ProjectChangeset.new(
+            ReleaseTools::Qa::ProjectChangeset.new(
               project: project,
               from: from.for_project(project),
               to: to.for_project(project),
@@ -41,18 +41,27 @@ module ReleaseTools
             .flatten
             .uniq(&:id)
 
-          IssuableOmitterByLabels.new(merge_requests, Qa::UNPERMITTED_LABELS)
+          ReleaseTools::Qa::IssuableOmitterByLabels
+            .new(merge_requests, ReleaseTools::Qa::UNPERMITTED_LABELS)
             .execute
         end
 
         private
 
         def issue_class
-          SharedStatus.security_release? ? Qa::SecurityIssue : Qa::Issue
+          if ReleaseTools::SharedStatus.security_release?
+            ReleaseTools::Qa::SecurityIssue
+          else
+            ReleaseTools::Qa::Issue
+          end
         end
 
         def default_client
-          SharedStatus.security_release? ? GitlabDevClient : GitlabClient
+          if ReleaseTools::SharedStatus.security_release?
+            ReleaseTools::GitlabDevClient
+          else
+            ReleaseTools::GitlabClient
+          end
         end
       end
     end

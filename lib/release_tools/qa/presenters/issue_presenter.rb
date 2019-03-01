@@ -77,17 +77,17 @@ module ReleaseTools
         end
 
         def sort_merge_requests
-          IssuableSortByLabels.new(merge_requests).sort_by_labels(*labels)
+          ReleaseTools::Qa::IssuableSortByLabels.new(merge_requests).sort_by_labels(*labels)
         end
 
         def formatter
-          Formatters::MergeRequestsFormatter.new(
+          ReleaseTools::Qa::Formatters::MergeRequestsFormatter.new(
             merge_requests: sort_merge_requests,
             project_path: issue.project.path)
         end
 
         def labels
-          [Qa::TEAM_LABELS]
+          [ReleaseTools::Qa::TEAM_LABELS]
         end
 
         def due_date

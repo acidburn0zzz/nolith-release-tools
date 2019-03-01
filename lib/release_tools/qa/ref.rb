@@ -13,7 +13,7 @@ module ReleaseTools
       end
 
       def for_project(project)
-        if project == Project::GitlabEe && should_be_converted?
+        if project == ReleaseTools::Project::GitlabEe && should_be_converted?
           "#{ref}-ee"
         else
           ref

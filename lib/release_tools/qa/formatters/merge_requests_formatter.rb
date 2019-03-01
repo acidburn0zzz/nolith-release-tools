@@ -58,7 +58,7 @@ module ReleaseTools
         end
 
         def username_to_mention(mr)
-          UsernameExtractor.new(mr).extract_username
+          ReleaseTools::Qa::UsernameExtractor.new(mr).extract_username
         end
 
         def web_url_to_reference(web_url)

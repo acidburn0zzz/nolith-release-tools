@@ -35,9 +35,9 @@ module ReleaseTools
     ].freeze
 
     PROJECTS = [
-      Project::GitlabEe
+      ReleaseTools::Project::GitlabEe
     ].freeze
 
-    ISSUE_PROJECT = Project::Release::Tasks
+    ISSUE_PROJECT = ReleaseTools::Project::Release::Tasks
   end
 end

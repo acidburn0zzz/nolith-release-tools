@@ -33,14 +33,14 @@ module ReleaseTools
       end
 
       def close_issue(issue)
-        GitlabClient.create_issue_note(
-          Project::Release::Tasks,
+        ReleaseTools::GitlabClient.create_issue_note(
+          ReleaseTools::Project::Release::Tasks,
           issue: issue,
           body: CLOSING_NOTE
         )
 
-        GitlabClient.close_issue(
-          Project::Release::Tasks,
+        ReleaseTools::GitlabClient.close_issue(
+          ReleaseTools::Project::Release::Tasks,
           issue
         )
       end
@@ -58,7 +58,7 @@ module ReleaseTools
       end
 
       def qa_issues
-        GitlabClient.issues(
+        ReleaseTools::GitlabClient.issues(
           Project::Release::Tasks,
           labels: 'QA task',
           state: 'opened'

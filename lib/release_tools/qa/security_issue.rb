@@ -18,7 +18,8 @@ module ReleaseTools
       protected
 
       def issue_presenter
-        Qa::Presenters::SecurityIssuePresenter.new(merge_requests, self, version)
+        ReleaseTools::Qa::Presenters::SecurityIssuePresenter
+          .new(merge_requests, self, version)
       end
     end
   end

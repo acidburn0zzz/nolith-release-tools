@@ -16,7 +16,7 @@ module ReleaseTools
 
         def usernames
           @merge_requests.map do |merge_request|
-            UsernameExtractor.new(merge_request).extract_username
+            ReleaseTools::Qa::UsernameExtractor.new(merge_request).extract_username
           end
         end
       end
