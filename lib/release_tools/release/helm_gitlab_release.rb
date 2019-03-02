@@ -97,7 +97,7 @@ module ReleaseTools
 
         # Only update master to newer versions
         if version_manager.parse_chart_file.version < version
-          bump_version(version)
+          bump_versions
           push_ref('branch', 'master')
         end
       end

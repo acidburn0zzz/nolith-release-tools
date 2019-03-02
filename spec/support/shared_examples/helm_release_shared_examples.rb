@@ -18,8 +18,7 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_maste
   end
 
   it 'creates a new branch and updates the version and appVersion in Chart.yaml, and a new tag' do
-    allow(release).to receive(:add_changelog).and_return true
-    expect(release).to receive(:bump_version).with(expected_chart_version, gitlab_version).once do
+    def bump_version_helper(expected_chart_version, gitlab_version)
       original_chartfile = release.version_manager.method(:parse_chart_file)
       allow(release.version_manager).to receive(:parse_chart_file) do
         next original_chartfile.call unless repository.head.name == "refs/heads/#{branch}"
@@ -31,10 +30,15 @@ RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_maste
       end
     end
 
+    allow(release).to receive(:add_changelog).and_return true
     if expect_master
-      expect(release).to receive(:bump_version).with(expected_chart_version).once
+      expect(release).to receive(:bump_version).with(expected_chart_version, gitlab_version).twice do
+        bump_version_helper(expected_chart_version, gitlab_version)
+      end
     else
-      expect(release).not_to receive(:bump_version).with(expected_chart_version)
+      expect(release).to receive(:bump_version).with(expected_chart_version, gitlab_version).once do
+        bump_version_helper(expected_chart_version, gitlab_version)
+      end
     end
 
     execute(branch)
