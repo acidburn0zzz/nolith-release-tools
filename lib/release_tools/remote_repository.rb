@@ -68,8 +68,8 @@ module ReleaseTools
       status.success? || raise(CannotCheckoutBranchError.new(branch, output))
     end
 
-    def create_tag(tag)
-      message = "Version #{tag}"
+    def create_tag(tag, message: nil)
+      message ||= "Version #{tag}"
       output, status = run_git %W[tag -a #{tag} -m "#{message}"]
 
       status.success? || raise(CannotCreateTagError.new(tag, output))

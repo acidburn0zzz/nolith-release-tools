@@ -50,7 +50,7 @@ module ReleaseTools
 
         # Do not tag when passed a RC gitlab version
         unless version_manager.parse_chart_file.app_version.rc?
-          create_tag(tag)
+          create_tag(tag, message: "Version #{tag} - contains GitLab EE #{gitlab_version}")
           push_ref('tag', tag)
         end
       end

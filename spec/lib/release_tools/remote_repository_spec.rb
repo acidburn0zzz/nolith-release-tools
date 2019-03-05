@@ -179,6 +179,18 @@ describe ReleaseTools::RemoteRepository do
 
       expect(rugged_repo.tags['v42'].target).to eq(rugged_repo.branches['branch-1'].target)
     end
+
+    it 'uses the default tag message if not explicitly specified' do
+      subject.create_tag('v42')
+
+      expect(rugged_repo.tags['v42'].annotation.message.strip).to eq("Version v42")
+    end
+
+    it 'uses specified tag message' do
+      subject.create_tag('v42', message: 'This is a tag message')
+
+      expect(rugged_repo.tags['v42'].annotation.message.strip).to eq("This is a tag message")
+    end
   end
 
   describe '#write_file', :silence_stdout do
