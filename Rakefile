@@ -60,19 +60,19 @@ task :sync do
   if skip?('ee')
     $stdout.puts 'Skipping sync for EE'.colorize(:yellow)
   else
-    ReleaseTools::Sync.new(Project::GitlabEe.remotes).execute
+    ReleaseTools::Sync.new(ReleaseTools::Project::GitlabEe.remotes).execute
   end
 
   if skip?('ce')
     $stdout.puts 'Skipping sync for CE'.colorize(:yellow)
   else
-    ReleaseTools::Sync.new(Project::GitlabCe.remotes).execute
+    ReleaseTools::Sync.new(ReleaseTools::Project::GitlabCe.remotes).execute
   end
 
   if skip?('og')
     $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
   else
-    ReleaseTools::Sync.new(Project::OmnibusGitlab.remotes).execute
+    ReleaseTools::Sync.new(ReleaseTools::Project::OmnibusGitlab.remotes).execute
   end
 end
 
@@ -141,7 +141,7 @@ task :cherry_pick, [:version] do |_t, args|
   # CE
   version = get_version(args).to_ce
   $stdout.puts "--> Picking for #{version}..."
-  results = ReleaseTools::CherryPick::Service.new(Project::GitlabCe, version).execute
+  results = ReleaseTools::CherryPick::Service.new(ReleaseTools::Project::GitlabCe, version).execute
   results.each do |result|
     $stdout.puts "    #{icon.call(result)} #{result.url}"
   end
@@ -149,7 +149,7 @@ task :cherry_pick, [:version] do |_t, args|
   # EE
   version = version.to_ee
   $stdout.puts "--> Picking for #{version}..."
-  results = ReleaseTools::CherryPick::Service.new(Project::GitlabEe, version).execute
+  results = ReleaseTools::CherryPick::Service.new(ReleaseTools::Project::GitlabEe, version).execute
   results.each do |result|
     $stdout.puts "    #{icon.call(result)} #{result.url}"
   end
