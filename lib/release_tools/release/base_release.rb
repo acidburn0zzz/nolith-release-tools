@@ -88,9 +88,9 @@ module ReleaseTools
         repository.commit(file_name, message: "Update #{file_name} to #{version}")
       end
 
-      def create_tag(tag)
+      def create_tag(tag, message: nil)
         $stdout.puts "Create git tag #{tag}...".colorize(:green)
-        repository.create_tag(tag)
+        repository.create_tag(tag, message: message)
       end
 
       def push_ref(ref_type, ref)
