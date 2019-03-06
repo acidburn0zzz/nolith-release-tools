@@ -22,13 +22,15 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
 - [ ] Merge GitLab CE into EE on stable branches following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
-    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
-    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
-    - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
+      - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
+      - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
+      - [ ] [Omnibus CE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
+      - [ ] [Omnibus EE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>)
 - [ ] Sync master branches to `dev`
-    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
-    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
+      - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
+      - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
 - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` (when applicable. Builds should fail if this is needed.)
+- [ ] Repeat the process of syncing stable branches until the Feature Freeze date
 
 [CE to EE]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name[]=CE+upstream&scope=all&state=opened
 [Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
