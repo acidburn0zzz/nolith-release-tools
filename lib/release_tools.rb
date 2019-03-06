@@ -24,6 +24,9 @@ require 'rugged'
 require 'stringio'
 require 'time'
 require 'yaml'
+require 'parallel'
+require 'etc'
+require 'set'
 
 Dotenv.load
 
@@ -108,6 +111,10 @@ require 'release_tools/time_util'
 require 'release_tools/upstream_merge'
 require 'release_tools/upstream_merge_request'
 require 'release_tools/version_client'
+require 'release_tools/security/client'
+require 'release_tools/security/pipeline'
+require 'release_tools/security/merge_requests_validator'
+require 'release_tools/security/merge_request_validator'
 
 unless ENV['TEST']
   require 'sentry-raven'
