@@ -86,8 +86,10 @@ module ReleaseTools
 
         run_update_version(args)
 
-        repository.commit(Dir.glob(File.join(repository.path, '**', 'Chart.yaml')), message: message.join("\n"))
-        repository.commit(Dir.glob(File.join(repository.path, '**', 'version_mappings.md')), amend: true)
+        charts = Dir.glob(File.join(repository.path, '**', 'Chart.yaml'))
+        version_mappings = Dir.glob(File.join(repository.path, '**', 'version_mappings.md'))
+
+        repository.commit(charts + version_mappings, message: message.join("\n"))
       end
 
       def commit_master_versions
