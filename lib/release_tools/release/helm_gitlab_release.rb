@@ -87,6 +87,7 @@ module ReleaseTools
         run_update_version(args)
 
         repository.commit(Dir.glob(File.join(repository.path, '**', 'Chart.yaml')), message: message.join("\n"))
+        repository.commit(Dir.glob(File.join(repository.path, '**', 'version_mappings.md')), amend: true)
       end
 
       def commit_master_versions
@@ -97,7 +98,7 @@ module ReleaseTools
 
         # Only update master to newer versions
         if version_manager.parse_chart_file.version < version
-          bump_version(version)
+          bump_versions
           push_ref('branch', 'master')
         end
       end
