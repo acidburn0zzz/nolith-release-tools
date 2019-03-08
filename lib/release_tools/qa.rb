@@ -20,10 +20,13 @@ module ReleaseTools
       'database'
     ].freeze
 
+    PERMITTED_WITH_TEAM_LABELS = [
+      'Documentation'
+    ].freeze
+
     UNPERMITTED_LABELS = [
       'Quality',
       'meta',
-      'Documentation',
       'test',
       'broken master',
       'CE upstream',

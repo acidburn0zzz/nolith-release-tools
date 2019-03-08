@@ -3,15 +3,27 @@
 module ReleaseTools
   module Qa
     class IssuableOmitterByLabels
-      def initialize(issuables, unpermitted_labels)
+      attr_reader :issuables
+
+      def initialize(issuables)
         @issuables = issuables
-        @unpermitted_labels = unpermitted_labels
       end
 
       def execute
-        @issuables.reject do |issuable|
-          (issuable.labels & @unpermitted_labels).any?
+        issuables.select do |issuable|
+          no_unpermitted_labels?(issuable) && permitted_with_team_labels?(issuable)
         end
+      end
+
+      private
+
+      def no_unpermitted_labels?(issuable)
+        (issuable.labels & UNPERMITTED_LABELS).empty?
+      end
+
+      def permitted_with_team_labels?(issuable)
+        (issuable.labels & TEAM_LABELS).any? ||
+          (issuable.labels & PERMITTED_WITH_TEAM_LABELS).empty?
       end
     end
   end
