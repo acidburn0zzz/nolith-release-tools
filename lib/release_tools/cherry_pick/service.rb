@@ -65,9 +65,9 @@ module ReleaseTools
 
       def notifier
         if SharedStatus.dry_run?
-          @notifier ||= ::CherryPick::ConsoleNotifier.new(version, @prep_mr)
+          @notifier ||= ConsoleNotifier.new(version, @prep_mr)
         else
-          @notifier ||= ::CherryPick::CommentNotifier.new(version, @prep_mr)
+          @notifier ||= CommentNotifier.new(version, @prep_mr)
         end
       end
 
