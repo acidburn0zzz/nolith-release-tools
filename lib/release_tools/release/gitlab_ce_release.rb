@@ -21,7 +21,7 @@ module ReleaseTools
           options.merge(gitlab_repo_path: repository.path)
         ).execute
 
-        Release::CNGImageRelease.new(version).execute
+        Release::CNGImageRelease.new(version, options.merge(gitlab_repo_path: repository.path)).execute
       end
 
       def after_release
