@@ -148,6 +148,17 @@ close-expired-qa-issues:
     variables:
       - $CLOSE_EXPIRED_QA_ISSUES
 
+validate-security-merge-requests:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake validate_security_merge_requests
+  only:
+    refs:
+      - schedules
+    variables:
+      - $VALIDATE_SECURITY_MERGE_REQUESTS
+
 # chatops ---------------------------------------------------------------------
 
 chatops:

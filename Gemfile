@@ -11,6 +11,7 @@ gem 'rugged',        '~> 0.27.0'
 gem 'sentry-raven',  '~> 2.7', require: false
 gem 'merge_db_schema', '~> 0.1'
 gem 'version_sorter', '~> 2.2.0'
+gem 'parallel', '~> 1.14'
 
 group :development, :test do
   gem 'byebug'
