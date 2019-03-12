@@ -22,7 +22,7 @@ namespace :prepare do
   end
 
   desc 'Prepare the next security release'
-  task :security_release do
+  task :security do
     issue_task = Rake::Task['security_patch_issue']
     service = ReleaseTools::Services::SecurityPreparationService.new
 
