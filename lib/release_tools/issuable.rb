@@ -8,7 +8,7 @@ module ReleaseTools
     end
 
     def type
-      self.class.to_s.titlecase
+      self.class.to_s.demodulize.titlecase
     end
 
     def description
