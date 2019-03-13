@@ -58,6 +58,57 @@ bundle exec rake "cherry_pick[11.4.0-rc6]"
 bundle exec rake "cherry_pick[11.3.6]"
 ```
 
+## `green_master:<ee|ce|all>[trigger_build]`
+
+This task will show us the selected `sha` associated with the latest `master`
+branch that had a successful pipeline run.  When `trigger_build` is `true`, it
+will send the signal to `omnibus-gitlab` to start that build.
+
+When running `green_master:all`, it will run both the CE and EE builds
+synchronously.  Keep this in mind if on a time constraint.
+
+### Examples
+
+```sh
+# Informational gathering only
+% bundle exec rake green_master:ee
+Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
+
+% bundle exec rake green_master:ce
+Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
+
+% bundle exec rake green_master:all[true]
+Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
+Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
+
+# Actually triggers a build (Example output)
+% bundle exec rake green_master:ee[true]
+Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
+trigger build: 50b5b74315b8e8c440305d48cc8d26c3ef843bf4 for Project::GitlabCe
+Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205527
+...........................................
+Pipeline succeeded in 43 minutes.
+
+% bundle exec rake green_master:ce[true]
+Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
+trigger build: 5ff775fdef99eeec1f25bea7baf5480fa402f714 for Project::GitlabCe
+Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205528
+...........................................
+Pipeline succeeded in 43 minutes.
+
+% bundle exec rake green_master:all[true]
+Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
+trigger build: 50b5b74315b8e8c440305d48cc8d26c3ef843bf4 for Project::GitlabCe
+Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205527
+...........................................
+Pipeline succeeded in 43 minutes.
+Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
+trigger build: 5ff775fdef99eeec1f25bea7baf5480fa402f714 for Project::GitlabCe
+Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205528
+...........................................
+Pipeline succeeded in 43 minutes.
+```
+
 ## `monthly_issue[version]`
 
 This task will either return the URL of a monthly release issue if one already

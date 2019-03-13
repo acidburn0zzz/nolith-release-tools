@@ -6,6 +6,17 @@ describe ReleaseTools::TimeUtil do
       ex.run
     end
   end
+  describe '.timeout?' do
+    let(:start_time) { Time.now.to_i - 600 }
+
+    it 'returns false as it has not been exceeded' do
+      expect(described_class.timeout?(start_time, 900)).to eq(false)
+    end
+
+    it 'returns true as it has been exceeded' do
+      expect(described_class.timeout?(start_time, 9)).to eq(true)
+    end
+  end
 
   describe '.time_ago' do
     context 'when delta is less than a minute' do

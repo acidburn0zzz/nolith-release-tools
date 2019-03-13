@@ -8,6 +8,7 @@ module ReleaseTools
     class << self
       extend Forwardable
 
+      def_delegator :client, :commits
       def_delegator :client, :pipelines
       def_delegator :client, :pipeline_jobs
       def_delegator :client, :job_play
@@ -40,6 +41,14 @@ module ReleaseTools
 
     def self.merge_request_approvals(project = Project::GitlabCe, iid:)
       client.merge_request_approvals(project_path(project), iid)
+    end
+
+    def self.pipeline(project = Project::GitlabCe, id)
+      client.pipeline(project_path(project), id)
+    end
+
+    def self.run_trigger(project = Project::GitlabCe, token, ref, options)
+      client.run_trigger(project_path(project), token, ref, options)
     end
 
     def self.commit_merge_requests(project = Project::GitlabCe, sha:)

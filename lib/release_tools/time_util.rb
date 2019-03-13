@@ -4,6 +4,10 @@ module ReleaseTools
   module TimeUtil
     extend self
 
+    def timeout?(start, max_duration)
+      Time.now.to_i > (start + max_duration)
+    end
+
     def time_ago(time, precision: 1)
       return unless time
 
