@@ -12,6 +12,15 @@ describe ReleaseTools::CherryPick::CommentNotifier do
     double(iid: 3, project_id: 2, url: 'https://example.com')
   end
 
+  def result_double(value)
+    instance_double(
+      'ReleaseTools::CherryPick::Result',
+      title: value,
+      url: value,
+      to_markdown: "[#{value}](#{value})"
+    )
+  end
+
   subject do
     described_class.new(version, prep_mr)
   end
@@ -53,8 +62,8 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
   describe '#summary' do
     it 'posts a summary message to the preparation merge request' do
-      picked = [double(url: 'a'), double(url: 'b')]
-      unpicked = [double(url: 'c')]
+      picked = [result_double('a'), result_double('b')]
+      unpicked = [result_double('c')]
 
       subject.summary(picked, unpicked)
 
@@ -67,7 +76,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
     it 'excludes an empty picked list' do
       picked = []
-      unpicked = [double(url: 'a')]
+      unpicked = [result_double('a')]
 
       subject.summary(picked, unpicked)
 
@@ -79,7 +88,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
     end
 
     it 'excludes an empty unpicked list' do
-      picked = [double(url: 'a')]
+      picked = [result_double('a')]
       unpicked = []
 
       subject.summary(picked, unpicked)
@@ -93,6 +102,26 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
     it 'does not post an empty message' do
       subject.summary([], [])
+
+      expect(client).not_to have_received(:create_merge_request_comment)
+    end
+  end
+
+  describe '#blog_post_summary' do
+    it 'posts a blog post summary message to the preparation merge request' do
+      picked = [result_double('a'), result_double('b')]
+
+      subject.blog_post_summary(picked)
+
+      expect(client).to have_received(:create_merge_request_comment).with(
+        prep_mr.project_id,
+        prep_mr.iid,
+        BlogPostSummaryMessageArgument.new(version, picked)
+      )
+    end
+
+    it 'does not post an empty message' do
+      subject.blog_post_summary([])
 
       expect(client).not_to have_received(:create_merge_request_comment)
     end
@@ -152,6 +181,22 @@ class SummaryMessageArgument
     else
       other.include?("Failed to pick the following merge requests:") &&
         @unpicked.all? { |p| other.include?("* #{p.url}") }
+    end
+  end
+end
+
+class BlogPostSummaryMessageArgument
+  def initialize(version, picked)
+    @version = version
+    @picked = picked
+  end
+
+  def ===(other)
+    if @picked.empty?
+      !other.include?("can be added to the blog post")
+    else
+      other.include?("The following Markdown can be added to the blog post") &&
+        @picked.all? { |p| other.include?("* #{p.to_markdown}") }
     end
   end
 end

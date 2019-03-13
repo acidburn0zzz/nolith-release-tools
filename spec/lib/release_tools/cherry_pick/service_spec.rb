@@ -85,6 +85,14 @@ describe ReleaseTools::CherryPick::Service do
 
         expect(notifier).to have_received(:summary)
       end
+
+      it 'posts a blog post summary comment to the preparation MR' do
+        stub_picking
+
+        subject.execute
+
+        expect(notifier).to have_received(:blog_post_summary)
+      end
     end
   end
 end

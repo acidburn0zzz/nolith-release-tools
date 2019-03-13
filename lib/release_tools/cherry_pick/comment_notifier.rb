@@ -48,6 +48,20 @@ module ReleaseTools
         create_merge_request_comment(prep_mr, message.join("\n"))
       end
 
+      def blog_post_summary(picked)
+        return if picked.empty?
+
+        message = <<~MSG
+          The following Markdown can be added to the blog post:
+
+          ```
+          #{markdown_list(picked.collect(&:to_markdown))}
+          ```
+        MSG
+
+        create_merge_request_comment(prep_mr, message)
+      end
+
       private
 
       def markdown_list(array)

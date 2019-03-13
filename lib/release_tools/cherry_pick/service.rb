@@ -46,6 +46,8 @@ module ReleaseTools
           @results.select(&:failure?)
         )
 
+        notifier.blog_post_summary(@results.select(&:success?))
+
         @results
       end
 
