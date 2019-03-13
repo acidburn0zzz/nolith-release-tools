@@ -19,6 +19,46 @@ unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || Rele
   abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
+namespace :green_master do
+  desc "Trigger a green master build for EE"
+  task :ee, [:trigger_build] do |_t, args|
+    commit = ReleaseTools::Commits.new(ReleaseTools::Project::GitlabEe).latest_successful
+
+    raise 'No recent master builds have green pipelines' if commit.nil?
+
+    $stdout.puts "Found EE Green Master at #{commit.id}"
+
+    if args.trigger_build
+      ReleaseTools::Pipeline.new(
+        ReleaseTools::Project::GitlabEe,
+        commit.id
+      ).trigger
+    end
+  end
+
+  desc "Trigger a green master build for CE"
+  task :ce, [:trigger_build] do |_t, args|
+    commit = ReleaseTools::Commits.new(ReleaseTools::Project::GitlabCe).latest_successful
+
+    raise 'No recent master builds have green pipelines' if commit.nil?
+
+    $stdout.puts "Found CE Green Master at #{commit.id}"
+
+    if args.trigger_build
+      ReleaseTools::Pipeline.new(
+        ReleaseTools::Project::GitlabCe,
+        commit.id
+      ).trigger
+    end
+  end
+
+  desc "Trigger a green master build for both CE and EE"
+  task :all, [:trigger_build] do |_t, args|
+    Rake::Task['green_master:ee'].invoke(args.trigger_build)
+    Rake::Task['green_master:ce'].invoke(args.trigger_build)
+  end
+end
+
 desc "Tag a new GitLab release"
 task :tag, [:version] do |_t, args|
   version = get_version(args)
