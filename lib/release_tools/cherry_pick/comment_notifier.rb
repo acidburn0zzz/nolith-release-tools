@@ -49,6 +49,7 @@ module ReleaseTools
       end
 
       def blog_post_summary(picked)
+        return if version.rc?
         return if picked.empty?
 
         message = <<~MSG
