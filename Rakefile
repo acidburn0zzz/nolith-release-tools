@@ -291,10 +291,6 @@ desc "Publish packages for a specified version"
 task :publish, [:version] do |_t, args|
   version = get_version(args)
 
-  ReleaseTools::Packages::PublishService
-    .new(version)
-    .execute
-
   # Tag the Helm chart
   Rake::Task['helm:tag_chart'].invoke(nil, version.to_ce)
 end

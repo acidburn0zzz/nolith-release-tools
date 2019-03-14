@@ -31,7 +31,7 @@ module ReleaseTools
       end
 
       def repository
-        @repository ||= RemoteRepository.get(remotes, global_depth: 100)
+        @repository ||= RemoteRepository.get(remotes, global_depth: 2)
       end
 
       def prepare_release

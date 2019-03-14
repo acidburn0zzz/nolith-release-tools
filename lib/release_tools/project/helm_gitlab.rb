@@ -4,8 +4,8 @@ module ReleaseTools
   module Project
     class HelmGitlab < BaseProject
       REMOTES = {
-        dev: 'git@dev.gitlab.org:gitlab/charts/gitlab.git',
-        gitlab: 'git@gitlab.com:charts/gitlab.git',
+        dev: 'git@dev.gitlab.org:balasankarc/gitlab.git',
+        gitlab: 'git@gitlab.com:balasankarc/gitlab.git',
       }.freeze
     end
   end

@@ -50,7 +50,7 @@ module ReleaseTools
     end
 
     def fetch(ref, remote: canonical_remote.name, depth: global_depth)
-      base_cmd = %w[fetch --quiet]
+      base_cmd = %w[fetch]
       base_cmd << "--depth=#{depth}" if depth
       base_cmd << remote.to_s
 
@@ -63,7 +63,7 @@ module ReleaseTools
     def checkout_new_branch(branch, base: 'master')
       fetch(base)
 
-      output, status = run_git %W[checkout --quiet -b #{branch} #{base}]
+      output, status = run_git %W[checkout -b #{branch} #{base}]
 
       status.success? || raise(CannotCheckoutBranchError.new(branch, output))
     end
@@ -152,7 +152,7 @@ module ReleaseTools
     end
 
     def pull(ref, remote: canonical_remote.name, depth: global_depth)
-      cmd = %w[pull --quiet]
+      cmd = %w[pull]
       cmd << "--depth=#{depth}" if depth
       cmd << remote.to_s
       cmd << ref
@@ -229,7 +229,7 @@ module ReleaseTools
     end
 
     def checkout_branch(branch)
-      _, status = run_git %W[checkout --quiet #{branch}]
+      _, status = run_git %W[checkout #{branch}]
 
       status.success?
     end
@@ -257,7 +257,7 @@ module ReleaseTools
     def ensure_repo_exist
       return if File.exist?(path) && File.directory?(File.join(path, '.git'))
 
-      cmd = %w[clone --quiet]
+      cmd = %w[clone]
       cmd << "--depth=#{global_depth}" if global_depth
       cmd << '--origin' << canonical_remote.name.to_s << canonical_remote.url << path
 
