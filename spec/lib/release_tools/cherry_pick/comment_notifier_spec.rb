@@ -197,10 +197,12 @@ class BlogPostSummaryMessageArgument
   end
 
   def ===(other)
+    header = "The following merge requests were picked into"
+
     if @picked.empty?
-      !other.include?("can be added to the blog post")
+      !other.include?(header)
     else
-      other.include?("The following merge requests were picked into") &&
+      other.include?(header) &&
         @picked.all? { |p| other.include?("* #{p.to_markdown}") }
     end
   end
