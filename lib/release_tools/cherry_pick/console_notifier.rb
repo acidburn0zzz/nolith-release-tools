@@ -13,6 +13,12 @@ module ReleaseTools
       end
 
       class ConsoleClient
+        def self.create_issue_note(project, issue:, body:)
+          $stdout.puts "--> Adding the following comment to #{project.path}##{issue.iid}:"
+          $stdout.puts body.indent(4)
+          $stdout.puts
+        end
+
         def self.create_merge_request_comment(project_id, iid, comment)
           $stdout.puts "--> Adding the following comment to #{project_id}!#{iid}:"
           $stdout.puts comment.indent(4)

@@ -48,6 +48,21 @@ module ReleaseTools
         create_merge_request_comment(prep_mr, message.join("\n"))
       end
 
+      def blog_post_summary(picked)
+        return if version.rc?
+        return if picked.empty?
+
+        message = <<~MSG
+          The following merge requests were picked into #{prep_mr.url}:
+
+          ```
+          #{markdown_list(picked.collect(&:to_markdown))}
+          ```
+        MSG
+
+        create_issue_comment(prep_mr.release_issue, message)
+      end
+
       private
 
       def markdown_list(array)
@@ -77,6 +92,14 @@ module ReleaseTools
 
       def client
         GitlabClient
+      end
+
+      def create_issue_comment(issue, comment)
+        client.create_issue_note(
+          issue.project,
+          issue: issue,
+          body: comment
+        )
       end
 
       def create_merge_request_comment(merge_request, comment)

@@ -21,8 +21,16 @@ module ReleaseTools
         !success?
       end
 
+      def title
+        merge_request.title
+      end
+
       def url
         merge_request.web_url
+      end
+
+      def to_markdown
+        "[#{title}](#{url})"
       end
     end
   end

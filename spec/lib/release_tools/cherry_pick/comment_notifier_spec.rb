@@ -5,11 +5,25 @@ describe ReleaseTools::CherryPick::CommentNotifier do
   let(:version) { ReleaseTools::Version.new('11.4.0') }
 
   let(:prep_mr) do
-    double(iid: 1, project_id: 2, url: 'https://example.com')
+    double(
+      iid: 1,
+      project_id: 2,
+      url: 'https://example.com',
+      release_issue: double(project: spy, iid: 4)
+    )
   end
 
   let(:merge_request) do
     double(iid: 3, project_id: 2, url: 'https://example.com')
+  end
+
+  def result_double(value)
+    instance_double(
+      'ReleaseTools::CherryPick::Result',
+      title: value,
+      url: value,
+      to_markdown: "[#{value}](#{value})"
+    )
   end
 
   subject do
@@ -53,8 +67,8 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
   describe '#summary' do
     it 'posts a summary message to the preparation merge request' do
-      picked = [double(url: 'a'), double(url: 'b')]
-      unpicked = [double(url: 'c')]
+      picked = [result_double('a'), result_double('b')]
+      unpicked = [result_double('c')]
 
       subject.summary(picked, unpicked)
 
@@ -67,7 +81,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
     it 'excludes an empty picked list' do
       picked = []
-      unpicked = [double(url: 'a')]
+      unpicked = [result_double('a')]
 
       subject.summary(picked, unpicked)
 
@@ -79,7 +93,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
     end
 
     it 'excludes an empty unpicked list' do
-      picked = [double(url: 'a')]
+      picked = [result_double('a')]
       unpicked = []
 
       subject.summary(picked, unpicked)
@@ -93,6 +107,26 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
     it 'does not post an empty message' do
       subject.summary([], [])
+
+      expect(client).not_to have_received(:create_merge_request_comment)
+    end
+  end
+
+  describe '#blog_post_summary' do
+    it 'posts a blog post summary message to the preparation merge request' do
+      picked = [result_double('a'), result_double('b')]
+
+      subject.blog_post_summary(picked)
+
+      expect(client).to have_received(:create_issue_note).with(
+        prep_mr.release_issue.project,
+        issue: prep_mr.release_issue,
+        body: BlogPostSummaryMessageArgument.new(version, picked)
+      )
+    end
+
+    it 'does not post an empty message' do
+      subject.blog_post_summary([])
 
       expect(client).not_to have_received(:create_merge_request_comment)
     end
@@ -152,6 +186,24 @@ class SummaryMessageArgument
     else
       other.include?("Failed to pick the following merge requests:") &&
         @unpicked.all? { |p| other.include?("* #{p.url}") }
+    end
+  end
+end
+
+class BlogPostSummaryMessageArgument
+  def initialize(version, picked)
+    @version = version
+    @picked = picked
+  end
+
+  def ===(other)
+    header = "The following merge requests were picked into"
+
+    if @picked.empty?
+      !other.include?(header)
+    else
+      other.include?(header) &&
+        @picked.all? { |p| other.include?("* #{p.to_markdown}") }
     end
   end
 end

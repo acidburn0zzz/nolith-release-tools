@@ -58,15 +58,16 @@ module ReleaseTools
       nil
     end
 
-    protected
-
     def release_issue
-      if version.monthly?
-        MonthlyIssue.new(version: version)
-      else
-        PatchIssue.new(version: version)
-      end
+      @release_issue ||=
+        if version.monthly?
+          MonthlyIssue.new(version: version)
+        else
+          PatchIssue.new(version: version)
+        end
     end
+
+    protected
 
     def template_path
       File.expand_path('../../templates/preparation_merge_request.md.erb', __dir__)
