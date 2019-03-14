@@ -30,13 +30,15 @@ module ReleaseTools
             )
           end
 
-        new(client, raw_pipeline) if raw_pipeline
+        new(client, merge_request.project_id, raw_pipeline) if raw_pipeline
       end
 
       # @param [ReleaseTools::Security::Client] client
+      # @param [Integer] project_id
       # @param [Gitlab::ObjectifiedHash] raw_pipeline
-      def initialize(client, raw_pipeline)
+      def initialize(client, project_id, raw_pipeline)
         @client = client
+        @project_id = project_id
         @raw_pipeline = raw_pipeline
       end
 
@@ -63,7 +65,7 @@ module ReleaseTools
         # builds are allowed to fail.
         @client
           .commit_status(
-            @raw_pipeline.project_id,
+            @project_id,
             @raw_pipeline.sha,
             per_page: 100
           )
@@ -79,7 +81,7 @@ module ReleaseTools
         # what jobs are the latest ones, then manually verify their statuses.
         latest_per_name = @client
           .pipeline_jobs(
-            @raw_pipeline.project_id,
+            @project_id,
             @raw_pipeline.id,
             per_page: 100
           )

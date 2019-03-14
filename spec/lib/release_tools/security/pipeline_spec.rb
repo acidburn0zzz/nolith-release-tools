@@ -6,7 +6,7 @@ describe ReleaseTools::Security::Pipeline do
   describe '.latest_for_merge_request' do
     context 'when the merge request has a pipeline attached' do
       let(:merge_request) do
-        double(:merge_request, pipeline: double(:pipeline))
+        double(:merge_request, pipeline: double(:pipeline), project_id: 1)
       end
 
       let(:client) { instance_spy(ReleaseTools::Security::Client) }
@@ -77,14 +77,14 @@ describe ReleaseTools::Security::Pipeline do
   describe '#passed?' do
     it 'returns true when the pipeline passed' do
       pipeline = described_class
-        .new(double(:client), double(:pipeline, status: 'success'))
+        .new(double(:client), 1, double(:pipeline, status: 'success'))
 
       expect(pipeline).to be_passed
     end
 
     it 'returns false when the pipeline did not pass' do
       pipeline = described_class
-        .new(double(:client), double(:pipeline, status: 'failed'))
+        .new(double(:client), 1, double(:pipeline, status: 'failed'))
 
       expect(pipeline).not_to be_passed
     end
@@ -93,14 +93,14 @@ describe ReleaseTools::Security::Pipeline do
   describe '#failed?' do
     it 'returns false if the pipeline did not fail' do
       pipeline = described_class
-        .new(double(:client), double(:pipeline, status: 'success'))
+        .new(double(:client), 1, double(:pipeline, status: 'success'))
 
       expect(pipeline).not_to be_failed
     end
 
     it 'returns false if a job failed that is allowed to fail' do
       pipeline = described_class
-        .new(double(:client), double(:pipeline, status: 'failed'))
+        .new(double(:client), 1, double(:pipeline, status: 'failed'))
 
       allow(pipeline)
         .to receive(:allowed_failures)
@@ -115,7 +115,7 @@ describe ReleaseTools::Security::Pipeline do
 
     it 'returns false if a job failed that is allowed to fail on dev.gitlab.org' do
       pipeline = described_class
-        .new(double(:client), double(:pipeline, status: 'failed'))
+        .new(double(:client), 1, double(:pipeline, status: 'failed'))
 
       allow(pipeline)
         .to receive(:allowed_failures)
@@ -132,10 +132,7 @@ describe ReleaseTools::Security::Pipeline do
   describe '#allowed_failures' do
     it 'returns the names of the builds that are allowed to fail' do
       client = double(:client)
-      pipeline = described_class.new(
-        client,
-        double(:pipeline, sha: '123', project_id: 1)
-      )
+      pipeline = described_class.new(client, 1, double(:pipeline, sha: '123'))
 
       job1 = double(:job, allow_failure: false, name: 'foo')
       job2 = double(:job, allow_failure: true, name: 'bar')
@@ -153,8 +150,7 @@ describe ReleaseTools::Security::Pipeline do
   describe '#latest_jobs' do
     it 'returns an Array containing the latest pipeline jobs' do
       client = double(:client)
-      pipeline =
-        described_class.new(client, double(:pipeline, id: 1, project_id: 2))
+      pipeline = described_class.new(client, 2, double(:pipeline, id: 1))
 
       job1 = double(:job, id: 1, name: 'foo')
       job2 = double(:job, id: 2, name: 'foo')
