@@ -5,7 +5,12 @@ describe ReleaseTools::CherryPick::CommentNotifier do
   let(:version) { ReleaseTools::Version.new('11.4.0') }
 
   let(:prep_mr) do
-    double(iid: 1, project_id: 2, url: 'https://example.com')
+    double(
+      iid: 1,
+      project_id: 2,
+      url: 'https://example.com',
+      release_issue: double(project: spy, iid: 4)
+    )
   end
 
   let(:merge_request) do
@@ -113,10 +118,10 @@ describe ReleaseTools::CherryPick::CommentNotifier do
 
       subject.blog_post_summary(picked)
 
-      expect(client).to have_received(:create_merge_request_comment).with(
-        prep_mr.project_id,
-        prep_mr.iid,
-        BlogPostSummaryMessageArgument.new(version, picked)
+      expect(client).to have_received(:create_issue_note).with(
+        prep_mr.release_issue.project,
+        issue: prep_mr.release_issue,
+        body: BlogPostSummaryMessageArgument.new(version, picked)
       )
     end
 
@@ -195,7 +200,7 @@ class BlogPostSummaryMessageArgument
     if @picked.empty?
       !other.include?("can be added to the blog post")
     else
-      other.include?("The following Markdown can be added to the blog post") &&
+      other.include?("The following merge requests were picked into") &&
         @picked.all? { |p| other.include?("* #{p.to_markdown}") }
     end
   end

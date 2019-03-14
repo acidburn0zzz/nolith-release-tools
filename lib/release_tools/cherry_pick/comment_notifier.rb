@@ -53,14 +53,14 @@ module ReleaseTools
         return if picked.empty?
 
         message = <<~MSG
-          The following Markdown can be added to the blog post:
+          The following merge requests were picked into #{prep_mr.url}:
 
           ```
           #{markdown_list(picked.collect(&:to_markdown))}
           ```
         MSG
 
-        create_merge_request_comment(prep_mr, message)
+        create_issue_comment(prep_mr.release_issue, message)
       end
 
       private
@@ -92,6 +92,14 @@ module ReleaseTools
 
       def client
         GitlabClient
+      end
+
+      def create_issue_comment(issue, comment)
+        client.create_issue_note(
+          issue.project,
+          issue: issue,
+          body: comment
+        )
       end
 
       def create_merge_request_comment(merge_request, comment)
