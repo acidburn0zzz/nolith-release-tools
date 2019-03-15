@@ -42,7 +42,7 @@ module ReleaseTools
             .uniq(&:id)
 
           ReleaseTools::Qa::IssuableOmitterByLabels
-            .new(merge_requests, ReleaseTools::Qa::UNPERMITTED_LABELS)
+            .new(merge_requests)
             .execute
         end
 
