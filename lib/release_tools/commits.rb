@@ -15,8 +15,8 @@ module ReleaseTools
     private
 
     def commit_list
-      @commit_list ||= ReleaseTools::GitlabClient.commits(
-        project.path,
+      @commit_list ||= ReleaseTools::GitlabDevClient.commits(
+        @project.dev_path,
         {
           per_page: 1,
           ref_name: 'master'
@@ -25,7 +25,7 @@ module ReleaseTools
 
     def filter_for_green_builds
       commit_list.auto_paginate do |commit|
-        commit = ReleaseTools::GitlabClient.commit(@project, ref: commit.id)
+        commit = ReleaseTools::GitlabDevClient.commit(@project, ref: commit.id)
         return commit if commit.status == "success"
       end
     end
