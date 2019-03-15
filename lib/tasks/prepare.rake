@@ -5,20 +5,15 @@ namespace :prepare do
   task :monthly, [:version] do |_t, args|
     version = get_version(args)
 
-    # Create the `Pick into X.Y` label
-    ignoring_duplicates do
-      $stdout.puts "Creating `#{ReleaseTools::PickIntoLabel.for(version)}` label"
-      ReleaseTools::PickIntoLabel.create(version) unless dry_run?
-    end
+    raise "`#{version}` is not a monthly version!" unless version.monthly?
 
-    # Create the stable branches
-    ce_branch = version.stable_branch(ee: false)
-    ee_branch = version.stable_branch(ee: true)
+    service = ReleaseTools::Services::MonthlyPreparationService.new(version)
 
-    create_stable_branch(ReleaseTools::Project::GitlabEe, ee_branch)
-    create_stable_branch(ReleaseTools::Project::GitlabCe, ce_branch)
-    create_stable_branch(ReleaseTools::Project::OmnibusGitlab, ee_branch)
-    create_stable_branch(ReleaseTools::Project::OmnibusGitlab, ce_branch)
+    service.create_label
+    service.create_stable_branches
+
+    # Create the first RC issue right away
+    Rake::Task['patch_issue'].execute(version: version.to_rc(1))
   end
 
   desc 'Prepare the next security release'
@@ -28,27 +23,6 @@ namespace :prepare do
 
     service.next_versions.each do |version|
       issue_task.execute(version: version)
-    end
-  end
-
-  def ignoring_duplicates(&block)
-    yield
-  rescue Gitlab::Error::Conflict, Gitlab::Error::BadRequest => ex
-    if ex.message.match?('already exists')
-      # no-op for idempotency
-    else
-      raise
-    end
-  end
-
-  # Create a branch off of `master` in the specified project
-  def create_stable_branch(project, branch)
-    $stdout.puts "Creating `#{branch}` on `#{project.path}`"
-
-    return if dry_run?
-
-    ignoring_duplicates do
-      ReleaseTools::GitlabClient.create_branch(branch, 'master', project)
     end
   end
 end
