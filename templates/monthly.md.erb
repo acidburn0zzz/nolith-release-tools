@@ -24,16 +24,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` (when applicable. Builds should fail if this is needed.)
 - [ ] Repeat the process of syncing stable branches until the Feature Freeze date
 
-## RC1
-
-- [ ] Create a task list for RC1:
-
-    ```sh
-    # In Slack:
-    /chatops run release_issue <%= version.to_rc(1) %>
-    ```
-
-## Subsequent RCs
+## Release candidates
 
 - Create additional release candidates as needed:
 
@@ -49,6 +40,7 @@ Keep in mind that:
 2. The final RC should point to the same commit as the final release.
 
 ## On the first working day after the 7th
+
 - [ ] Follow the [Feature freeze RC](https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#feature-freeze-rc) guide
 
 ## Final RC

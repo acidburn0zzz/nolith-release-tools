@@ -187,6 +187,8 @@ This task will:
 
 1. Create the `Pick into X.Y` group label.
 1. Create the stable branches for the CE, EE, and Omnibus projects.
+1. Create the release task issue.
+1. Create the RC1 task issue.
 
 ### Examples
 

@@ -12,7 +12,8 @@ namespace :prepare do
     service.create_label
     service.create_stable_branches
 
-    # Create the first RC issue right away
+    # Create the monthly and RC1 task issues
+    Rake::Task['monthly_issue'].execute(version: version)
     Rake::Task['patch_issue'].execute(version: version.to_rc(1))
   end
 
