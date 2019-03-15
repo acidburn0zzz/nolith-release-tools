@@ -179,6 +179,48 @@ bundle exec rake 'patch_merge_request[10.4.20]'
 
 [patch merge request template]: ../../templates/preparation_merge_request.md.erb
 
+## `prepare:monthly[version]`
+
+Prepare for a new monthly release.
+
+This task will:
+
+1. Create the `Pick into X.Y` group label.
+1. Create the stable branches for the CE, EE, and Omnibus projects.
+1. Create the release task issue.
+1. Create the RC1 task issue.
+
+### Examples
+
+```sh
+$ bundle exec rake 'prepare:monthly[12.1.0]'
+Creating `Pick into 12.1` label
+Creating `12-1-stable-ee` on `gitlab-org/gitlab-ee`
+Creating `12-1-stable` on `gitlab-org/gitlab-ce`
+Creating `12-1-stable-ee` on `gitlab-org/omnibus-gitlab`
+Creating `12-1-stable` on `gitlab-org/omnibus-gitlab`
+```
+
+## `prepare:security`
+
+Prepare for a new security release.
+
+This task will execute three [`security_patch_issue`](#security_patch_issueversion)
+tasks, automatically providing the next patch version of the three most recent
+monthly releases.
+
+### Examples
+
+```sh
+$ bundle exec rake 'prepare:security'
+--> Security Patch Issue "Release 11.8.1" created.
+    https://gitlab.com/gitlab-org/release/tasks/issues/691
+--> Security Patch Issue "Release 11.7.6" created.
+    https://gitlab.com/gitlab-org/release/tasks/issues/690
+--> Security Patch Issue "Release 11.6.10" created.
+    https://gitlab.com/gitlab-org/release/tasks/issues/692
+```
+
 ## `publish[version]`
 
 This task will publish all available CE and EE packages for a specified version.

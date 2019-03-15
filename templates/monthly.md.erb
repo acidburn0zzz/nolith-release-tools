@@ -2,7 +2,6 @@
 
 Stable branch should be created after the 7th. The 7th is the last date to reliably get things in.
 
-- [ ] Assign this issue to all the [release managers and trainees](https://about.gitlab.com/release-managers/)
 - [ ] Create a new slack channel `<%= Slack::Channel.for(version) %>`
 - [ ] Set the channel topic to `RMs: https://about.gitlab.com/release-managers`
 - [ ] Invite all current release managers
@@ -13,14 +12,6 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
      We are starting <%= version.to_minor %> into <%= Slack::Channel.for(version) %>
      Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
      ```
-- [ ] Create the <%= PickIntoLabel.reference(version) %> group label if it doesn't exist: https://gitlab.com/groups/gitlab-org/labels/new
-  - Title: `Pick into <%= version.to_minor %>`
-  - Description: ``Merge requests to cherry-pick into the `<%= version.stable_branch %>` branch.``
-  - Color: `#00c8ca`
-- [ ] Create branch `<%= version.stable_branch %>` from CE `master` manually
-- [ ] Create branch `<%= version.stable_branch(ee: true) %>` from EE `master` manually
-- [ ] In Omnibus create both `<%= version.stable_branch %>` and `<%= version.stable_branch(ee: true) %>` from `master` manually
-- [ ] Merge GitLab CE into EE on stable branches following the [Merging a CE stable branch into its EE counterpart] guide
 - [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
       - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
       - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
@@ -32,22 +23,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 - [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` (when applicable. Builds should fail if this is needed.)
 - [ ] Repeat the process of syncing stable branches until the Feature Freeze date
 
-[CE to EE]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name[]=CE+upstream&scope=all&state=opened
-[Merging a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart
-
-## RC1
-
-- Follow the [Creating RC1] guide:
-  - [ ] Create a task list for RC1:
-
-      ```sh
-      # In Slack:
-      /chatops run release_issue <%= version.to_rc(1) %>
-      ```
-
-[Creating RC1]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#creating-rc1
-
-## Subsequent RCs
+## Release candidates
 
 - Create additional release candidates as needed:
 
@@ -63,6 +39,7 @@ Keep in mind that:
 2. The final RC should point to the same commit as the final release.
 
 ## On the first working day after the 7th
+
 - [ ] Follow the [Feature freeze RC](https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#feature-freeze-rc) guide
 
 ## Final RC
