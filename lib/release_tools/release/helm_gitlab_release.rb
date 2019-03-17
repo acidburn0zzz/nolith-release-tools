@@ -76,9 +76,14 @@ module ReleaseTools
       end
 
       def bump_version(chart_version, app_version = nil)
+        # Converting `git@dev.gitlab.org:gitlab/gitlab-ee.git` to
+        # `gitlab/gitlab-ee`
+        gitlab_repo = Project::GitlabEe.remotes[:dev].split(":").last.chomp(".git")
+
         args = ['--include-subcharts']
         args << "--chart-version #{chart_version}"
         args << "--app-version=#{app_version}" if app_version && app_version.valid?
+        args << "--gitlab-repo=#{gitlab_repo}"
 
         message = ["Update Chart Version to #{chart_version}"]
         message << "Update Gitlab Version to #{app_version}" if app_version && app_version.valid?
