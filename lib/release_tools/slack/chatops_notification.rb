@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# frozen_string_literal: true
 
 module ReleaseTools
   module Slack
@@ -32,6 +31,15 @@ module ReleaseTools
         }
 
         fire_hook(text: text, attachments: [attachment], channel: channel)
+      end
+
+      # @param [ReleaseTools::Security::MergeResult] merge_result
+      def self.merged_security_merge_requests(result)
+        fire_hook(
+          text: 'Finished merging security merge requests',
+          channel: channel,
+          attachments: result.slack_attachments
+        )
       end
     end
   end

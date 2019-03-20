@@ -315,8 +315,3 @@ task :freeze do
 
   HTTParty.post(webhook_url, body: { payload: JSON.dump(text: message) })
 end
-
-desc 'Validate security merge requests'
-task :validate_security_merge_requests do
-  ReleaseTools::Security::MergeRequestsValidator.new.execute
-end

@@ -118,6 +118,8 @@ require 'release_tools/security/client'
 require 'release_tools/security/pipeline'
 require 'release_tools/security/merge_requests_validator'
 require 'release_tools/security/merge_request_validator'
+require 'release_tools/security/merge_requests_merger'
+require 'release_tools/security/merge_result'
 
 unless ENV['TEST']
   require 'sentry-raven'

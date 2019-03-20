@@ -12,6 +12,17 @@ module ReleaseTools
         gitlab/omnibus-gitlab
       ].freeze
 
+      ERROR_FOOTNOTE = <<~FOOTNOTE.strip
+        <hr>
+
+        <sub>
+          :robot: This is an automated message generated using the
+          [release tools project](https://gitlab.com/gitlab-org/release-tools/).
+          If you believe there is an error, please create an issue in the
+          release tools project.
+        </sub>
+      FOOTNOTE
+
       ERROR_TEMPLATE = <<~TEMPLATE.strip
         @%<author_username>s
 
@@ -29,14 +40,7 @@ module ReleaseTools
 
         %<errors>s
 
-        <hr>
-
-        <sub>
-          :robot: This is an automated message generated using the
-          [release tools project](https://gitlab.com/gitlab-org/release-tools/).
-          If you believe there is an error, please create an issue in the
-          release tools project.
-        </sub>
+        #{ERROR_FOOTNOTE}
       TEMPLATE
 
       def initialize

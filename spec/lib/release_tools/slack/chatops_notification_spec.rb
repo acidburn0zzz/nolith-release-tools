@@ -77,4 +77,28 @@ describe ReleaseTools::Slack::ChatopsNotification do
       end
     end
   end
+
+  describe '.merged_security_merge_requests' do
+    it 'posts a message' do
+      result = double(:result)
+
+      allow(described_class)
+        .to receive(:channel)
+        .and_return('foo')
+
+      expect(result)
+        .to receive(:slack_attachments)
+        .and_return([])
+
+      expect(described_class)
+        .to receive(:fire_hook)
+        .with(
+          text: 'Finished merging security merge requests',
+          channel: 'foo',
+          attachments: []
+        )
+
+      described_class.merged_security_merge_requests(result)
+    end
+  end
 end

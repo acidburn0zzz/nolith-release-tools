@@ -153,7 +153,7 @@ validate-security-merge-requests:
   <<: *with-bundle
   stage: automation
   script:
-    - bundle exec rake validate_security_merge_requests
+    - bundle exec rake security:validate
   only:
     refs:
       - schedules

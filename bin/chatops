@@ -53,6 +53,9 @@ case $1 in
   "tag_security")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
+  "security:merge")
+    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$MERGE_MASTER_SECURITY_MERGE_REQUESTS]"
+    ;;
   *)
     echo "Don't know what to do with $1!"
     exit 1
