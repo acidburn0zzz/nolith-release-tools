@@ -64,9 +64,8 @@ can be done at will, just mention it in the `#production` channel.
   # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
   /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
   ```
-- [ ] Wait for the QA Task deadline to pass
 
-### canary VMs on gitlab.com
+### gitlab.com canary stage
 
 - [ ] Notify #production that you're about to deploy on **canary**
 - [ ] [Deploy] `<%= version %>` to the canary VMs on gitlab.com
@@ -80,8 +79,17 @@ can be done at will, just mention it in the `#production` channel.
   - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
   - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
 
-### gitlab.com (production)
 
+**If there are issues on canary you should immediately stop sending traffic to it by issuing the following chatops command**:
+
+```
+/chatops run canary --drain --production
+
+```
+
+### gitlab.com main stage (production)
+
+- [ ] Wait for the QA Task deadline to pass before deploying to the rest of gitlab.com
 - [ ] Get confirmation from a production team member to deploy **production**. If someone besides the oncall confirms, `@mention` the oncall so they are aware.
 - [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
 - [ ] [Deploy] `<%= version %>` to GitLab.com
