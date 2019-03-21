@@ -9,9 +9,15 @@ unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || Rele
   abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
-def deprecate_as(new_task, args)
+def deprecate_as(new_task, old_task, args)
   warn "This task has been deprecated in favor of " \
     "`#{new_task.colorize(:green)}` and will soon be removed."
+
+  Raven.capture_message(
+    "Use of deprecated task #{old_task.name}",
+    extra: args,
+    level: 'info'
+  )
 
   Rake::Task[new_task].invoke(*args)
 end
@@ -56,12 +62,12 @@ namespace :green_master do
   end
 end
 
-task :tag, [:version] do |_t, args|
-  deprecate_as 'release:tag', args
+task :tag, [:version] do |t, args|
+  deprecate_as 'release:tag', t, args
 end
 
-task :tag_security, [:version] do |_t, args|
-  deprecate_as 'security:tag', args
+task :tag_security, [:version] do |t, args|
+  deprecate_as 'security:tag', t, args
 end
 
 desc "Sync master branch in remotes"
@@ -85,20 +91,20 @@ task :sync do
   end
 end
 
-task :monthly_issue, [:version] do |_t, args|
-  deprecate_as 'release:issue', args
+task :monthly_issue, [:version] do |t, args|
+  deprecate_as 'release:issue', t, args
 end
 
-task :patch_issue, [:version] do |_t, args|
-  deprecate_as 'release:issue', args
+task :patch_issue, [:version] do |t, args|
+  deprecate_as 'release:issue', t, args
 end
 
-task :qa_issue, [:from, :to, :version] do |_t, args|
-  deprecate_as 'release:qa', args
+task :qa_issue, [:from, :to, :version] do |t, args|
+  deprecate_as 'release:qa', t, args
 end
 
-task :security_qa_issue, [:from, :to, :version] do |_t, args|
-  deprecate_as 'security:qa', args
+task :security_qa_issue, [:from, :to, :version] do |t, args|
+  deprecate_as 'security:qa', t, args
 end
 
 # Undocumented; executed via CI schedule
@@ -106,20 +112,20 @@ task :close_expired_qa_issues do
   ReleaseTools::Qa::IssueCloser.new.execute
 end
 
-task :patch_merge_request, [:version] do |_t, args|
-  deprecate_as 'release:prepare', args
+task :patch_merge_request, [:version] do |t, args|
+  deprecate_as 'release:prepare', t, args
 end
 
-task :cherry_pick, [:version] do |_t, args|
-  deprecate_as 'release:merge', args
+task :cherry_pick, [:version] do |t, args|
+  deprecate_as 'release:merge', t, args
 end
 
-task :security_cherry_pick, [:version] do |_t, args|
-  deprecate_as 'security:merge', args
+task :security_cherry_pick, [:version] do |t, args|
+  deprecate_as 'security:merge', t, args
 end
 
-task :security_patch_issue, [:version] do |_t, args|
-  deprecate_as 'security:issue', args
+task :security_patch_issue, [:version] do |t, args|
+  deprecate_as 'security:issue', t, args
 end
 
 # Undocumented; executed via CI schedule
