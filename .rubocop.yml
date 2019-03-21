@@ -512,6 +512,10 @@ Style/StringMethods:
     intern: to_sym
   Enabled: true
 
+Style/SymbolArray:
+  Exclude:
+    - 'lib/tasks/**/*.rake'
+
 # This cop checks for trailing comma in array and hash literals.
 Style/TrailingCommaInLiteral:
   Enabled: false
