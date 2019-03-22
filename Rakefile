@@ -19,6 +19,16 @@ unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || Rele
   abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
+namespace :auto_deploy  do
+  desc "Get the latest green commit for gitlab-ce"
+  task :ce do
+    commit = ReleaseTools::Commits.new(ReleaseTools::Project::GitlabEe).latest_successful
+    $stdout.puts "Found EE Green Master at #{commit.id}"
+
+  end
+end
+
+
 namespace :green_master do
   desc "Trigger a green master build for EE"
   task :ee, [:trigger_build] do |_t, args|
