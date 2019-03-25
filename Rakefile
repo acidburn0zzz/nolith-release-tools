@@ -72,23 +72,9 @@ end
 
 desc "Sync master branch in remotes"
 task :sync do
-  if skip?('ee')
-    $stdout.puts 'Skipping sync for EE'.colorize(:yellow)
-  else
-    ReleaseTools::Sync.new(ReleaseTools::Project::GitlabEe.remotes).execute
-  end
-
-  if skip?('ce')
-    $stdout.puts 'Skipping sync for CE'.colorize(:yellow)
-  else
-    ReleaseTools::Sync.new(ReleaseTools::Project::GitlabCe.remotes).execute
-  end
-
-  if skip?('og')
-    $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
-  else
-    ReleaseTools::Sync.new(ReleaseTools::Project::OmnibusGitlab.remotes).execute
-  end
+  ReleaseTools::Sync
+    .new(ReleaseTools::Project::GitlabEe.remotes)
+    .execute('rs-test-sync')
 end
 
 task :monthly_issue, [:version] do |t, args|

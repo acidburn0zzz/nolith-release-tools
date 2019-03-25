@@ -15,10 +15,22 @@ module ReleaseTools
     private
 
     def sync(branch)
-      repository = RemoteRepository.get(remotes, "gitlab-sync-#{Time.now.to_i}")
+      repository = RemoteRepository.get(
+        remotes,
+        global_depth: 200,
+        branch: branch
+      )
 
       repository.pull_from_all_remotes(branch)
-      repository.push_to_all_remotes(branch)
+
+      merge_result = repository.merge("dev/#{branch}", branch, no_ff: true)
+
+      if merge_result.status.success?
+        repository.push_to_all_remotes(branch)
+      else
+        warn 'Bad merge'
+        warn merge_result.output
+      end
     end
   end
 end

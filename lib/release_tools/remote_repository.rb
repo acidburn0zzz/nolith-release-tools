@@ -19,7 +19,7 @@ module ReleaseTools
     CanonicalRemote = Struct.new(:name, :url)
     GitCommandResult = Struct.new(:output, :status)
 
-    def self.get(remotes, repository_name = nil, global_depth: 1)
+    def self.get(remotes, repository_name = nil, global_depth: 1, branch: nil)
       repository_name ||= remotes
         .values
         .first
@@ -27,15 +27,16 @@ module ReleaseTools
         .last
         .sub(/\.git\Z/, '')
 
-      new(File.join('/tmp', repository_name), remotes, global_depth: global_depth)
+      new(File.join('/tmp', repository_name), remotes, global_depth: global_depth, branch: branch)
     end
 
-    attr_reader :path, :remotes, :canonical_remote, :global_depth
+    attr_reader :path, :remotes, :canonical_remote, :global_depth, :branch
 
-    def initialize(path, remotes, global_depth: 1)
+    def initialize(path, remotes, global_depth: 1, branch: nil)
       $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if SharedStatus.dry_run?
       @path = path
       @global_depth = global_depth
+      @branch = branch
 
       cleanup
 
@@ -259,6 +260,7 @@ module ReleaseTools
 
       cmd = %w[clone --quiet]
       cmd << "--depth=#{global_depth}" if global_depth
+      cmd << "--branch=#{branch}" if branch
       cmd << '--origin' << canonical_remote.name.to_s << canonical_remote.url << path
 
       output, status = self.class.run_git(cmd)
