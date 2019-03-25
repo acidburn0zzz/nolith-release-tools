@@ -69,8 +69,7 @@ namespace :release do
 
   desc 'Create a QA issue'
   task :qa, [:from, :to] do |_t, args|
-    # Attempt to infer the version from the `to` ref
-    version = get_version(args.with_defaults(version: args[:to].sub(/\Av/, '')))
+    version = get_version(args[:to].sub(/\Av/, ''))
 
     issue = ReleaseTools::Qa::Services::BuildQaIssueService.new(
       version: version,
