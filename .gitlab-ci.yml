@@ -51,6 +51,7 @@ rubocop:
     - schedules
     - triggers
   script:
+    - env
     - bundle exec rubocop
 
 specs:
