@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :release_managers do
-  desc "Verify release manager authorization"
+  # Undocumented; executed by ChatOps to authorize users
   task :auth, [:username] do |_t, args|
     unless args[:username].present?
       abort "You must provide a username to verify!"
@@ -12,7 +12,7 @@ namespace :release_managers do
     end
   end
 
-  desc "Sync Release Manager membership"
+  # Undocumented; executed via CI schedule
   task :sync do
     result = ReleaseTools::ReleaseManagers::Definitions.sync!
 
