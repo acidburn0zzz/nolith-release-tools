@@ -20,14 +20,11 @@ unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || Rele
 end
 
 namespace :auto_deploy  do
-  desc "Get the latest green commit for gitlab-ce"
-  task :ce do
-    commit = ReleaseTools::Commits.new(ReleaseTools::Project::GitlabEe).latest_successful
-    $stdout.puts "Found EE Green Master at #{commit.id}"
-
+  desc "Create auto-deploy branches from the latest green commit on gitlab-ee and omnibus-gitlab"
+  task :create_branches do
+    ReleaseTools::Services::AutoDeployBranchService.new.create_auto_deploy_branches!
   end
 end
-
 
 namespace :green_master do
   desc "Trigger a green master build for EE"

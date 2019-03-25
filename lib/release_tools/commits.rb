@@ -3,9 +3,11 @@
 module ReleaseTools
   class Commits
     attr_reader :project
+    MAX_COMMITS_TO_CHECK = 100
 
-    def initialize(project)
+    def initialize(project, client = ReleaseTools::GitlabClient)
       @project = project
+      @client = client
     end
 
     def latest_successful
@@ -15,8 +17,8 @@ module ReleaseTools
     private
 
     def commit_list
-      @commit_list ||= ReleaseTools::GitlabDevClient.commits(
-        @project.dev_path,
+      @commit_list ||= @client.commits(
+        @project.path,
         {
           per_page: 1,
           ref_name: 'master'
@@ -24,8 +26,11 @@ module ReleaseTools
     end
 
     def filter_for_green_builds
+      commit_counter = 0
       commit_list.auto_paginate do |commit|
-        commit = ReleaseTools::GitlabDevClient.commit(@project, ref: commit.id)
+        commit_counter += 1
+        abort("Examined #{MAX_COMMITS_TO_CHECK} commits, but could not find a passing build for #{@project.path}, aborting") if commit_counter > MAX_COMMITS_TO_CHECK
+        commit = @client.commit(@project, ref: commit.id)
         return commit if commit.status == "success"
       end
     end
