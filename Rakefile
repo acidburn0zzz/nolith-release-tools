@@ -19,9 +19,11 @@ unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || Rele
   abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
 end
 
-namespace :auto_deploy  do
+namespace :auto_deploy do
   desc "Create auto-deploy branches from the latest green commit on gitlab-ee and omnibus-gitlab"
-  task :create_branches do |_t, args|
+  task :create_branches do
+    pipeline_id = ENV['CI_PIPELINE_IID']
+    abort('CI_PIPELINE_IID must be set for this rake task'.colorize(:red)) unless pipeline_id
     ReleaseTools::Services::AutoDeployBranchService.new(pipeline_id).create_auto_deploy_branches!
   end
 end

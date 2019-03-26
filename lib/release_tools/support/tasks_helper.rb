@@ -1,14 +1,5 @@
 # frozen_string_literal: true
 
-def pipeline_id
-  pipeline_id = ENV['CI_PIPELINE_IID']
-  unless pipeline_id
-    $stdout.puts "Warning: CI_PIPELINE_IID is not set, using `1` as the ID"
-    pipeline_id = '1'
-  end
-  pipeline_id
-end
-
 def get_version(args)
   version = ReleaseTools::Version.new(args[:version])
 

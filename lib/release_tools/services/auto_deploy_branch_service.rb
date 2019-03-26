@@ -2,8 +2,10 @@
 
 module ReleaseTools
   module Services
-    class AutoDeployBranchService < BranchService
+    class AutoDeployBranchService
+      include BranchCreation
       PIPELINE_ID_PADDING = 7
+
       def initialize(pipeline_id)
         @pipeline_id = pipeline_id.to_s.rjust(PIPELINE_ID_PADDING, '0')
         @version = client.current_milestone.title.tr('.', '-')
@@ -11,11 +13,11 @@ module ReleaseTools
 
       def create_auto_deploy_branches!
         # Find passing commits before creating branches
-        commit_ee = branch_commit(Project::GitlabEe)
-        commit_omnibus = branch_commit(Project::OmnibusGitlab)
+        ref_ee = latest_successful_ref(Project::GitlabEe)
+        ref_omnibus = latest_successful_ref(Project::OmnibusGitlab)
 
-        create_branch(Project::GitlabEe, branch_name, commit_ee)
-        create_branch(Project::OmnibusGitlab, branch_name, commit_omnibus)
+        create_branch_from_ref(Project::GitlabEe, branch_name, ref_ee)
+        create_branch_from_ref(Project::OmnibusGitlab, branch_name, ref_omnibus)
       end
 
       private
@@ -24,7 +26,7 @@ module ReleaseTools
         "#{@version}-auto-deploy-#{@pipeline_id}-ee"
       end
 
-      def branch_commit(project)
+      def latest_successful_ref(project)
         ReleaseTools::Commits.new(project).latest_successful.id
       end
     end

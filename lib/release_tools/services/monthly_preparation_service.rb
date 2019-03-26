@@ -2,7 +2,9 @@
 
 module ReleaseTools
   module Services
-    class MonthlyPreparationService < BranchService
+    class MonthlyPreparationService
+      include BranchCreation
+
       def initialize(version)
         @version = version
       end
@@ -21,10 +23,10 @@ module ReleaseTools
         ce_branch = @version.stable_branch(ee: false)
         ee_branch = @version.stable_branch(ee: true)
 
-        create_branch(Project::GitlabEe, ee_branch)
-        create_branch(Project::GitlabCe, ce_branch)
-        create_branch(Project::OmnibusGitlab, ee_branch)
-        create_branch(Project::OmnibusGitlab, ce_branch)
+        create_branch_from_ref(Project::GitlabEe, ee_branch, 'master')
+        create_branch_from_ref(Project::GitlabCe, ce_branch, 'master')
+        create_branch_from_ref(Project::OmnibusGitlab, ee_branch, 'master')
+        create_branch_from_ref(Project::OmnibusGitlab, ce_branch, 'master')
       end
     end
   end

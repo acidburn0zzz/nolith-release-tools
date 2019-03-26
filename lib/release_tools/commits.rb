@@ -19,10 +19,9 @@ module ReleaseTools
     def commit_list
       @commit_list ||= @client.commits(
         @project.path,
-        {
-          per_page: 1,
-          ref_name: 'master'
-        })
+        per_page: 1,
+        sha: 'master'
+      )
     end
 
     def filter_for_green_builds
