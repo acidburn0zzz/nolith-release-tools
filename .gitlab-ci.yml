@@ -64,7 +64,7 @@ specs:
     - cp .env.example .env
     - git config --global user.email "you@example.com"
     - git config --global user.name "Your Name"
-    - bundle exec rake
+    - bundle exec rspec
   artifacts:
     paths:
       - coverage/assets
