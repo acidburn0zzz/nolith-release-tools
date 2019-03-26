@@ -160,6 +160,17 @@ validate-security-merge-requests:
     variables:
       - $VALIDATE_SECURITY_MERGE_REQUESTS
 
+create-auto-deploy-branches:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake auto_deploy:create_branches
+  only:
+    refs:
+      - schedules
+    variables:
+      - $CREATE_AUTO_DEPLOY_BRANCHES
+
 # chatops ---------------------------------------------------------------------
 
 chatops:
