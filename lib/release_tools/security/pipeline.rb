@@ -14,6 +14,8 @@ module ReleaseTools
         review-build-cng
       ].freeze
 
+      FINISHED_STATES = %w[success failed].to_set
+
       # @param [Gitlab::ObjectifiedHash] merge_request
       # @param [ReleaseTools::Security::Client] client
       def self.latest_for_merge_request(merge_request, client)
@@ -44,6 +46,10 @@ module ReleaseTools
 
       def passed?
         @raw_pipeline.status == 'success'
+      end
+
+      def pending?
+        !FINISHED_STATES.include?(@raw_pipeline.status)
       end
 
       def failed?

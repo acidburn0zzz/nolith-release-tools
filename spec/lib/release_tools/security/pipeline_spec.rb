@@ -90,6 +90,29 @@ describe ReleaseTools::Security::Pipeline do
     end
   end
 
+  describe '#pending?' do
+    it 'returns false when the pipeline failed' do
+      pipeline = described_class
+        .new(double(:client), 1, double(:pipeline, status: 'failed'))
+
+      expect(pipeline).not_to be_pending
+    end
+
+    it 'returns false when the pipeline passed' do
+      pipeline = described_class
+        .new(double(:client), 1, double(:pipeline, status: 'success'))
+
+      expect(pipeline).not_to be_pending
+    end
+
+    it 'returns true when the pipeline is pending' do
+      pipeline = described_class
+        .new(double(:client), 1, double(:pipeline, status: 'pending'))
+
+      expect(pipeline).to be_pending
+    end
+  end
+
   describe '#failed?' do
     it 'returns false if the pipeline did not fail' do
       pipeline = described_class

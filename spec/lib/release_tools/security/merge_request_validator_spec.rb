@@ -64,7 +64,8 @@ describe ReleaseTools::Security::MergeRequestValidator do
     end
 
     it 'adds an error when the pipeline is not yet finished' do
-      pipeline = double(:pipeline, failed?: false, passed?: false)
+      pipeline =
+        double(:pipeline, failed?: false, passed?: false, pending?: true)
 
       allow(ReleaseTools::Security::Pipeline)
         .to receive(:latest_for_merge_request)
@@ -77,7 +78,7 @@ describe ReleaseTools::Security::MergeRequestValidator do
     end
 
     it 'does not add an error when the pipeline passed' do
-      pipeline = double(:pipeline, failed?: false, passed?: true)
+      pipeline = double(:pipeline, failed?: false, pending?: false)
 
       allow(ReleaseTools::Security::Pipeline)
         .to receive(:latest_for_merge_request)
