@@ -23,7 +23,7 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     allow(service).to receive(:client).and_return(internal_client)
   end
 
-  describe '#create_auto_deploy_branches!' do
+  describe '#create_auto_deploy_branches!', :silence_stdout do
     it 'creates auto-deploy branches for gitlab-ee and gitlab-ce' do
       expect(ReleaseTools::Commits).to receive(:new).and_return(branch_commit).twice
       expect(internal_client).to receive(:create_branch).with(
