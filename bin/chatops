@@ -16,10 +16,53 @@ setup_env()
   export DEV_API_PRIVATE_TOKEN="$RELEASE_BOT_DEV_TOKEN"
 }
 
+auth_rake()
+{
+  bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1"
+}
+
 require_version
 setup_env
 
 case $1 in
+  # release namespace
+
+  "release:issue")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "release:merge")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "release:prepare")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "release:qa")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "release:tag")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+
+  # security namespace
+
+  "security:issue")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "security:merge")
+    auth_rake "$1[$MERGE_MASTER_SECURITY_MERGE_REQUESTS]"
+    ;;
+  "security:prepare")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "security:qa")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "security:tag")
+    auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+
+  # Deprecated commands
+
   "cherry_pick")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
@@ -53,9 +96,9 @@ case $1 in
   "tag_security")
     bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$RELEASE_VERSION]"
     ;;
-  "security:merge")
-    bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1[$MERGE_MASTER_SECURITY_MERGE_REQUESTS]"
-    ;;
+
+  # Fallback
+
   *)
     echo "Don't know what to do with $1!"
     exit 1
