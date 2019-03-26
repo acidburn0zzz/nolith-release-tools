@@ -66,7 +66,7 @@ module ReleaseTools
 
             * #{Pipeline::ALLOWED_FAILURES.join("\n* ")}
           ERROR
-        elsif !pipeline.passed?
+        elsif pipeline.pending?
           # This covers pipelines that are skipped, still running, or in another
           # unknown state.
           error('Pending pipeline', <<~ERROR)
