@@ -3,6 +3,9 @@
 This project includes several Rake tasks to automate parts of the release
 process.
 
+Generally these tasks are executed via [ChatOps](./chatops.md) and should not
+need to be run directly.
+
 ## Setup
 
 1. Install the required dependencies with Bundler:
@@ -41,22 +44,80 @@ process.
     SLACK_TAG_URL="https://hooks.slack.com/services/foo/bar/baz"
     ```
 
-## `cherry_pick[version]`
+## `release` tasks
 
-This task will cherry-pick merge requests into the [preparation
-branches](#patch_merge_requestversion) for the specified version.
+Tasks in this namespace automate release-related activities such as tagging and
+publishing packages.
 
-### Examples
+### `release:issue[version]`
 
-```sh
-# Cherry-pick merge requests in CE and EE labeled `Pick into 11.4` into the
-# `11-4-stable[-ee]-prepare-rc6` branches.
-bundle exec rake "cherry_pick[11.4.0-rc6]"
+Create a task issue for the specified version.
 
-# Cherry-pick merge requests in CE and EE labeled `Pick into 11.3` into the
-# `11-3-stable[-ee]-patch-6` branches.
-bundle exec rake "cherry_pick[11.3.6]"
-```
+### `release:merge[version]`
+
+Cherry-pick merge requests into the preparation branches for the specified
+version.
+
+### `release:prepare[version]`
+
+Prepare for a release of the specified version.
+
+For monthly versions (`X.Y.0`), it will:
+
+1. Create the `Pick into X.Y` group label
+1. Create the `X-Y-stable[-ee]` branches
+1. Create the monthly release task issue
+1. Create the RC1 task issue
+1. Create the RC1 preparation MRs
+
+For patch versions (`X.Y.Z` or `X.Y.0-rcX`), it will:
+
+1. Create the task issue
+1. Create the preparation MRs
+
+### `release:qa[from,to]`
+
+Create an issue that lists changes introduced between `from` and `to` and return
+the URL of the new issue.
+
+### `release:tag[version]`
+
+Tag the specified version.
+
+## `security` tasks
+
+Tasks in this namespace largely mirror their [`release`
+counterparts](#release-tasks), but with additional safeguards in place for
+performing a security release of GitLab.
+
+### `security:issue[version]`
+
+Create a confidential task issue for the specified version.
+
+### `security:merge[merge_master]`
+
+Merge validated merge requests in the security repositories for GitLab projects.
+
+If `merge_master` is truthy, it will also merge security MRs targeting `master`
+(default: `false`).
+
+### `security:prepare[version]`
+
+Create security issues for an upcoming security release. One issue is created
+for each of the backported releases.
+
+For example, if the current patch versions of the last three minor releases are
+`11.9.1`, `11.8.3`, and `11.7.6`, it will create confidential task issues for
+`11.9.2`, `11.8.4`, and `11.7.7`.
+
+### `security:qa[from,to]`
+
+Create a confidential QA issue, listing changes between `from` and `to` in order
+to verify changes in a release.
+
+### `security:tag[version]`
+
+Tag the specified version as a security release.
 
 ## `green_master:<ee|ce|all>[trigger_build]`
 
@@ -107,118 +168,6 @@ trigger build: 5ff775fdef99eeec1f25bea7baf5480fa402f714 for Project::GitlabCe
 Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205528
 ...........................................
 Pipeline succeeded in 43 minutes.
-```
-
-## `monthly_issue[version]`
-
-This task will either return the URL of a monthly release issue if one already
-exists for `version`, or it will create a new one and return the URL.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "Release X.Y" (e.g., "Release 8.3")
-- Its description is the monthly release issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-
-### Examples
-
-```sh
-bundle exec rake "monthly_issue[8.3.0]"
-
---> Issue "Release 8.3" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/3977
-```
-
-## `patch_issue[version]`
-
-This task will either return the URL of a patch issue if one already exists for
-`version`, or it will create a new one and return the URL.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "Release X.Y.Z" (e.g., "Release 10.6.4")
-- Its description is the patch release issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-
-### Examples
-
-```sh
-bundle exec rake "patch_issue[10.6.4]"
-
---> Issue "Release 8.3.1" created.
-    https://gitlab.com/gitlab-org/release/tasks/issues/153
-```
-
-## `patch_merge_request[version]`
-
-This task will create preparation merge requests in CE and EE for the specified
-patch version, and will return the URLs to both.
-
-Merge requests created with this Rake task have the following properties:
-
-- Its title is "WIP: Prepare X.Y.Z release" (e.g., "WIP: Prepare 8.3.1 release")
-- Its description is the [patch merge request template]
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-
-### Examples
-
-```sh
-bundle exec rake 'patch_merge_request[10.4.20]'
-
---> Merge Request "WIP: Prepare 10.4.20 release" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/17156
---> Merge Request "WIP: Prepare 10.4.20-ee release" created.
-    https://gitlab.com/gitlab-org/gitlab-ee/merge_requests/4561
-```
-
-[patch merge request template]: ../../templates/preparation_merge_request.md.erb
-
-## `prepare:monthly[version]`
-
-Prepare for a new monthly release.
-
-This task will:
-
-1. Create the `Pick into X.Y` group label.
-1. Create the stable branches for the CE, EE, and Omnibus projects.
-1. Create the release task issue.
-1. Create the RC1 task issue.
-
-### Examples
-
-```sh
-$ bundle exec rake 'prepare:monthly[12.1.0]'
-Creating `Pick into 12.1` label
-Creating `12-1-stable-ee` on `gitlab-org/gitlab-ee`
-Creating `12-1-stable` on `gitlab-org/gitlab-ce`
-Creating `12-1-stable-ee` on `gitlab-org/omnibus-gitlab`
-Creating `12-1-stable` on `gitlab-org/omnibus-gitlab`
-```
-
-## `prepare:security`
-
-Prepare for a new security release.
-
-This task will execute three [`security_patch_issue`](#security_patch_issueversion)
-tasks, automatically providing the next patch version of the three most recent
-monthly releases.
-
-### Examples
-
-```sh
-$ bundle exec rake 'prepare:security'
---> Security Patch Issue "Release 11.8.1" created.
-    https://gitlab.com/gitlab-org/release/tasks/issues/691
---> Security Patch Issue "Release 11.7.6" created.
-    https://gitlab.com/gitlab-org/release/tasks/issues/690
---> Security Patch Issue "Release 11.6.10" created.
-    https://gitlab.com/gitlab-org/release/tasks/issues/692
 ```
 
 ## `publish[version]`
@@ -276,118 +225,6 @@ $ bundle exec rake "publish[11.1.0-rc5]"
     Raspberry-Pi-2-Jessie-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600310
 ```
 
-## `qa_issue[from,to,version]`
-
-This task will create an issue that lists the Merge Requests introduced between
-two references and return the URL of the new issue.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "X.Y.Z-rcN QA Issue" (e.g., "v11.0.0-rc1 QA Issue")
-- Its description is the QA issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "QA task"
-
-### Arguments
-
-| argument  | required | description                                      |
-| ------    | -----    | -----------                                      |
-| `from`    | yes      | SHA, branch, or tag                              |
-| `to`      | yes      | SHA, branch, or tag                              |
-| `version` | no       | Version used for the issue title and description |
-
-If no `version` argument is provided, it will be inferred from the `to`
-argument, for example `v11.1.0-rc5` will become `11.1.0-rc5`.
-
-### Examples
-
-```sh
-bundle exec rake "qa_issue[10-8-stable,v11.0.0-rc1,v11.0.0-rc1]"
-
-# Do not create the issue, but output the final description
-TEST=true bundle exec rake "qa_issue[v11.0.0-rc12,v11.0.0-rc13,11.0.0-rc13]"
-```
-
-## `security_qa_issue[from,to,version]`
-
-This task does the same as the [`qa_issue[from,to,version]`](#qa_issuefromtoversion)
-task but forces the `SECURITY=true` flag.
-
-### Examples
-
-```sh
-bundle exec rake "security_qa_issue[v11.1.1,v11.1.2,11.1.2]"
-
-# Do not create the issue, but output the final description
-TEST=true bundle exec rake "security_qa_issue[v11.1.1,v11.1.2,11.1.2]"
-```
-
-## `release_managers:auth[username]`
-
-This task will check if the provided `gitlab.com` username is present in the
-[`config/release_managers.yml`] definitions.
-
-### Examples
-
-```sh
-$ bundle exec rake "release_managers:auth[valid-username]"
-
-$ bundle exec rake "release_managers:auth[invalid-username]"
-invalid-username is not an authorized release manager!
-```
-
-## `release_managers:sync`
-
-This task will read configuration data from [`config/release_managers.yml`] and
-sync the membership of the following groups:
-
-- [gitlab-org/release/managers] on production
-- [gitlab/release/managers] on dev
-
-Users in the configuration file but not in the groups will be added; users in
-the groups but not in the configuration file will be removed.
-
-[gitlab-org/release/managers]: https://gitlab.com/gitlab-org/release/managers
-[gitlab/release/managers]: https://dev.gitlab.org/groups/gitlab/release/managers
-
-### Examples
-
-```sh
-bundle exec rake release_managers:sync
-
---> Syncing dev
-    Adding jane-doe to gitlab/release/managers
-    Removing john-smith from gitlab/release/managers
---> Syncing production
-    Adding jane-doe to gitlab-org/release/managers
-    Removing john-smith from gitlab-org/release/managers
-```
-
-
-## `security_patch_issue[version]`
-
-This task will either return the URL of a patch issue if one already exists for
-`version`, or it will create a new one and return the URL.
-
-An issue created with this Rake task has the following properties:
-
-- Its title is "Release X.Y.Z" (e.g., "Release 8.3.1")
-- Its description is the security patch release issue template
-- It is assigned to the authenticated user
-- It is assigned to the release's milestone
-- It is labeled "Release"
-- It is confidential
-
-### Examples
-
-```sh
-bundle exec rake "security_patch_issue[8.3.1]"
-
---> Issue "Release 8.3.1" created.
-    https://gitlab.com/gitlab-org/gitlab-ce/issues/4245
-```
-
 ## `sync`
 
 This task ensures that the `master` branches for both CE and EE are in sync
@@ -409,72 +246,6 @@ the release process, you can safely skip this task.
 
 ```bash
 bundle exec rake sync
-```
-
-## `tag[version]`
-
-This task will:
-
-1. Create the `X-Y-stable` and `X-Y-stable-ee` branches off the current
-   `master`s for CE and EE, respectively, if they don't yet exist.
-1. Update the `VERSION` file in both `stable` branches created above.
-1. Update changelogs for CE and EE
-1. Create the `v[version]` and `v[version]-ee` tags, pointing to the respective
-   branches created above.
-1. Push all newly-created branches and tags to all remotes.
-
-This task **will NOT**:
-
-1. Release the packages to the public, see [publishing-packages doc](doc/publishing-packages.md).
-1. Perform a [deploy](doc/release-manager.md#deployment)
-
-### Configuration
-
-| Option          | Purpose                                                    |
-| ------          | -------                                                    |
-| `CE=false`      | Skip CE release                                            |
-| `EE=false`      | Skip EE release                                            |
-| `TEST=true`     | Don't push anything to remotes; don't create issues        |
-| `SECURITY=true` | Treat this as a security release, using only `dev` remotes |
-
-### Examples
-
-```sh
-# Tag 8.2 RC1:
-bundle exec rake "tag[8.2.0-rc1]"
-
-# Tag 8.2.3, but not for CE:
-CE=false bundle exec rake "tag[8.2.3]"
-
-# Tag 8.2.4, but not for EE:
-EE=false bundle exec rake "tag[8.2.4]"
-
-# Don't push branches or tags to remotes:
-TEST=true bundle exec rake "tag[8.2.1]"
-
-# Pull & push to `dev` only:
-SECURITY=true bundle exec rake "tag[8.2.1]"
-```
-
-## `tag_security[version]`
-
-This task does the same as the [`tag[version]`](#tagversion) task but forces the
-`SECURITY=true` flag.
-
-### Examples
-
-```sh
-# Tag 8.2 RC1:
-bundle exec rake "tag_security[8.2.0-rc1]"
-
-# Tag 8.2.3, but not for CE:
-CE=false bundle exec rake "tag_security[8.2.3]"
-
-# Tag 8.2.4, but not for EE:
-EE=false bundle exec rake "tag_security[8.2.4]"
-
-# Don't push branches or tags to remotes:
-TEST=true bundle exec rake "tag_security[8.2.1]"
 ```
 
 ## `helm:tag_chart[version,gitlab_version]`
