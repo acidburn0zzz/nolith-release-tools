@@ -20,7 +20,7 @@ module ReleaseTools
       @commit_list ||= @client.commits(
         @project.path,
         per_page: 1,
-        sha: 'master'
+        ref_name: 'master'
       )
     end
 

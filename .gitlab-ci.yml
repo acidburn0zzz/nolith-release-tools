@@ -164,7 +164,7 @@ create-auto-deploy-branches:
   <<: *with-bundle
   stage: automation
   script:
-    - bundle exec rake auto_deploy:create_branches
+    - bundle exec rake auto_deploy:prepare
   only:
     refs:
       - schedules
