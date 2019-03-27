@@ -6,8 +6,8 @@ describe ReleaseTools::Security::MergeRequestsMerger do
   describe '#execute' do
     it 'merges valid merge requests' do
       merger = described_class.new
-      mr1 = double(:merge_request)
-      mr2 = double(:merge_request)
+      mr1 = double(:merge_request, target_branch: 'foo')
+      mr2 = double(:merge_request, target_branch: 'bar')
       result = double(:result)
 
       allow(merger)
@@ -26,6 +26,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
       allow(ReleaseTools::Security::MergeResult)
         .to receive(:from_array)
+        .with([[true, mr1], [false, mr2]])
         .and_return(result)
 
       expect(ReleaseTools::Slack::ChatopsNotification)

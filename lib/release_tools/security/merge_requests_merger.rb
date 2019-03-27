@@ -26,13 +26,23 @@ module ReleaseTools
 
       # Merges all valid security merge requests.
       def execute
-        valid = validated_merge_requests
+        # We group MRs by target branch so we don't attempt to merge multiple
+        # MRs into the same target branch at the same time. This should lead to
+        # better concurrency, as we have to spend less time waiting for previous
+        # MRs to finish merging.
+        #
+        # It should also result in merges not happening less often, as we only
+        # merge a new MR into the target branch when the previous one finishes
+        # merging.
+        valid = validated_merge_requests.group_by(&:target_branch)
 
-        tuples = Parallel.map(valid, in_threads: Etc.nprocessors) do |mr|
-          [merge(mr), mr]
+        tuples = Parallel.map(valid, in_threads: Etc.nprocessors) do |_, mrs|
+          mrs.map do |mr|
+            [merge(mr), mr]
+          end
         end
 
-        merge_result = MergeResult.from_array(tuples)
+        merge_result = MergeResult.from_array(tuples.flatten(1))
 
         Slack::ChatopsNotification.merged_security_merge_requests(merge_result)
       end
