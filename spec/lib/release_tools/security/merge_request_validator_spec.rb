@@ -20,6 +20,7 @@ describe ReleaseTools::Security::MergeRequestValidator do
         validate_merge_request_template
         validate_reviewed
         validate_target_branch
+        validate_discussions
       ]
 
       validation_methods.each do |method|
@@ -260,6 +261,54 @@ describe ReleaseTools::Security::MergeRequestValidator do
       validator = described_class.new(merge_request, client)
 
       validator.validate_target_branch
+
+      expect(validator.errors).to be_empty
+    end
+  end
+
+  describe '#validate_discussions' do
+    it 'adds an error when there are unresolved discussions' do
+      client = double(:client)
+      response = double(:response)
+      merge_request = double(:merge_request, project_id: 1, iid: 2)
+      discussion1 = double(notes: [{ 'resolvable' => false }])
+      discussion2 =
+        double(notes: [{ 'resolvable' => true, 'resolved' => false }])
+
+      allow(response)
+        .to receive(:auto_paginate)
+        .and_yield(discussion1)
+        .and_yield(discussion2)
+
+      allow(client)
+        .to receive(:merge_request_discussions)
+        .and_return(response)
+
+      validator = described_class.new(merge_request, client)
+
+      validator.validate_discussions
+
+      expect(validator.errors.first)
+        .to include('There are unresolved discussions')
+    end
+
+    it 'does not add an error when there are no unresolved discussions' do
+      client = double(:client)
+      response = double(:response)
+      merge_request = double(:merge_request, project_id: 1, iid: 2)
+      discussion = double(notes: [{ 'resolvable' => false }])
+
+      allow(response)
+        .to receive(:auto_paginate)
+        .and_yield(discussion)
+
+      allow(client)
+        .to receive(:merge_request_discussions)
+        .and_return(response)
+
+      validator = described_class.new(merge_request, client)
+
+      validator.validate_discussions
 
       expect(validator.errors).to be_empty
     end

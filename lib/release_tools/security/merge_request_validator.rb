@@ -47,6 +47,7 @@ module ReleaseTools
         validate_merge_request_template
         validate_reviewed
         validate_target_branch
+        validate_discussions
       end
 
       def validate_pipeline_status
@@ -150,6 +151,25 @@ module ReleaseTools
             target branches.
           ERROR
         end
+      end
+
+      def validate_discussions
+        # There might be many discussions and notes. Buffering all of those in
+        # an Array might require quite a bit of memory, so instead we process
+        # discussions as we retrieve them.
+        @client
+          .merge_request_discussions(@merge_request.project_id, @merge_request.iid)
+          .auto_paginate do |discussion|
+            if discussion.notes.any? { |n| n['resolvable'] && !n['resolved'] }
+              error('There are unresolved discussions', <<~ERROR)
+                This merge request has one or more unresolved discussions,
+                preventing it from being merged. Please mark all discussions as
+                resolved, then assign this merge request back to me.
+              ERROR
+
+              break
+            end
+          end
       end
 
       # @param [String] summary
