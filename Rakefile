@@ -212,6 +212,9 @@ task :publish, [:version] do |_t, args|
   ReleaseTools::Packages::PublishService
     .new(version)
     .execute
+
+  # Tag the Helm chart
+  Rake::Task['helm:tag_chart'].invoke(nil, version.to_ce)
 end
 
 # Undocumented; executed via CI schedule
