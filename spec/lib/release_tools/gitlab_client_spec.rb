@@ -10,18 +10,6 @@ describe ReleaseTools::GitlabClient do
       allow(described_class).to receive(:client).and_return(internal_client)
     end
 
-    it 'delegates .pipelines' do
-      expect(internal_client).to receive(:pipelines)
-
-      described_class.pipelines('foo', 'bar')
-    end
-
-    it 'delegates .pipeline_jobs' do
-      expect(internal_client).to receive(:pipeline_jobs)
-
-      described_class.pipeline_jobs('foo', 'bar')
-    end
-
     it 'delegates .job_play' do
       expect(internal_client).to receive(:job_play)
 
@@ -37,6 +25,48 @@ describe ReleaseTools::GitlabClient do
 
     it 'returns the current user', vcr: { cassette_name: 'current_user' } do
       expect(described_class.current_user).not_to be_nil
+    end
+  end
+
+  describe '.pipelines', vcr: { cassette_name: 'pipelines' } do
+    it 'returns project pipelines' do
+      response = described_class.pipelines
+
+      expect(response.map(&:web_url)).to all(include('/pipelines/'))
+    end
+  end
+
+  describe '.pipeline', vcr: { cassette_name: 'pipeline' } do
+    it 'returns project pipeline' do
+      pipeline_id = '55053803'
+      response = described_class.pipeline(ReleaseTools::Project::GitlabCe, pipeline_id)
+
+      expect(response.web_url).to include("/pipelines/#{pipeline_id}")
+    end
+  end
+
+  describe '.pipeline_jobs', vcr: { cassette_name: 'pipeline_jobs' } do
+    it 'returns pipeline jobs' do
+      response = described_class.pipeline_jobs(ReleaseTools::Project::GitlabCe, '55053803')
+
+      expect(response.map(&:web_url)).to all(include('/jobs/'))
+    end
+  end
+
+  describe '.pipeline_job_by_name', vcr: { cassette_name: 'pipeline_job_by_name' } do
+    it 'returns first pipeline job by name' do
+      job_name = 'setup-test-env'
+      response = described_class.pipeline_job_by_name(ReleaseTools::Project::GitlabCe, '55053803', job_name)
+
+      expect(response.name).to eq(job_name)
+    end
+  end
+
+  describe '.job_trace', vcr: { cassette_name: 'job_trace' } do
+    it 'returns job trace' do
+      response = described_class.job_trace(ReleaseTools::Project::GitlabCe, '189985934')
+
+      expect(response).to include('mkdir -p rspec_flaky/')
     end
   end
 

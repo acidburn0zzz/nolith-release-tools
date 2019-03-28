@@ -14,13 +14,6 @@ module ReleaseTools
       def labels
         super + ',security'
       end
-
-      protected
-
-      def issue_presenter
-        ReleaseTools::Qa::Presenters::SecurityIssuePresenter
-          .new(merge_requests, self, version)
-      end
     end
   end
 end
