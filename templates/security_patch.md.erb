@@ -20,10 +20,10 @@
 - [ ] Ensure [tests are green on CE]
 - [ ] Ensure [tests are green on EE]
 
-- [ ] Tag the `<%= version.to_patch %>` version using the [`tag` command]:
+- [ ] Tag `<%= version.to_patch %>`:
    ```sh
    # In Slack:
-   /chatops run tag --security <%= version.to_patch %>
+   /chatops run release tag --security <%= version.to_patch %>
    ```
 - [ ] Check that [EE packages are built] and [CE packages are built]
 
@@ -40,7 +40,7 @@
 - [ ] Create a "QA Task" issue using the ChatOps command:
   ```sh
   # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
-  /chatops run qa_issue --security vLAST_DEPLOYED_VERSION..v<%= version %>
+  /chatops run release qa --security vLAST_DEPLOYED_VERSION  v<%= version %>
   ```
 - [ ] Wait for the QA tasks deadline to pass.
 
@@ -109,7 +109,6 @@ For references:
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
 
-[`tag` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 [`security_qa_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#security_qa_issuefromtoversion
 
 [staging.gitlab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab

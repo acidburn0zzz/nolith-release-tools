@@ -19,7 +19,7 @@ describe ReleaseTools::PatchIssue do
 
       aggregate_failures do
         expect(content).to include '8-3-stable-ee'
-        expect(content).to include("Tag the `8.3.1` version")
+        expect(content).to include("Tag `8.3.1`")
       end
     end
 

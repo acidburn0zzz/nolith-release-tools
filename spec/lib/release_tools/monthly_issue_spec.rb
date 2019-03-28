@@ -17,7 +17,7 @@ describe ReleaseTools::MonthlyIssue do
 
       content = issue.description
 
-      expect(content).to include("Tag the `8.3.0` version")
+      expect(content).to include("Tag `8.3.0`")
     end
 
     it "includes the slack channel" do

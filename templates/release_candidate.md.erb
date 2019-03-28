@@ -4,13 +4,13 @@
     - [ ] Create [Preparation MRs] for this version:
         ```sh
         # In Slack
-        /chatops run prepare <%= version %>
+        /chatops run release prepare <%= version %>
         ```
 
-    - [ ] Perform automated cherry picking into the preparation branches:
+    - [ ] Perform automated merging into the preparation branches:
         ```sh
         # In Slack
-        /chatops run cherry_pick <%= version.to_ce %>
+        /chatops run release merge <%= version.to_ce %>
         ```
 
 - [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
@@ -32,17 +32,15 @@
     - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
     - [ ] [Omnibus CE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
     - [ ] [Omnibus EE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>)
-- [ ] Tag the `<%= version %>` version using the [`tag` command]:
+- [ ] Tag `<%= version %>`:
 
   ```sh
   # In Slack:
-  /chatops run tag <%= version %>
+  /chatops run release tag <%= version %>
   ```
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
     - This might take a while (around 80 min).
     - We only need the EE packages to finish to continue with next steps.
-
-[`tag` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 
 ## Deploy
 
@@ -62,7 +60,7 @@ can be done at will, just mention it in the `#production` channel.
 - [ ] Create a "QA Task" issue using the ChatOps command:
   ```sh
   # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
-  /chatops run qa_issue vLAST_DEPLOYED_VERSION..v<%= version %>
+  /chatops run release qa vLAST_DEPLOYED_VERSION v<%= version %>
   ```
 
 ### gitlab.com canary stage
