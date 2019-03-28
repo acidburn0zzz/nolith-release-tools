@@ -49,10 +49,18 @@ module ReleaseTools
 
       # Validates all security merge requests, returning those that were valid.
       #
-      # The valid merge requests are returned so that other code can use these
-      # MRs, for example by merging them.
+      # The valid and invalid merge requests are returned so that other code can
+      # use these MRs, for example by merging them.
+      #
+      # The return value is an Array of Arrays, in the following format:
+      #
+      #     [
+      #       [valid_merge_request1, valid_merge_request2, ...],
+      #       [invalid_merge_request1, invalid_merge_request2, ...]
+      #     ]
       def execute
         valid = []
+        invalid = []
 
         PROJECTS_TO_VERIFY.each do |project|
           merge_requests = @client.open_security_merge_requests(project)
@@ -62,10 +70,16 @@ module ReleaseTools
               verify_merge_request(mr)
             end
 
-          valid.concat(validated.compact)
+          validated.each do |(is_valid, mr)|
+            if is_valid
+              valid << mr
+            else
+              invalid << mr
+            end
+          end
         end
 
-        valid
+        [valid, invalid]
       end
 
       # @param [Gitlab::ObjectifiedHash] basic_mr
@@ -80,9 +94,10 @@ module ReleaseTools
 
         if validator.errors.any?
           reassign_with_errors(mr, validator.errors)
-          nil
+
+          [false, mr]
         else
-          mr
+          [true, mr]
         end
       end
 

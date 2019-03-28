@@ -34,16 +34,17 @@ describe ReleaseTools::Security::MergeRequestsValidator do
       allow(validator)
         .to receive(:verify_merge_request)
         .with(merge_request1)
-        .and_return(merge_request1)
+        .and_return([true, merge_request1])
 
       allow(validator)
         .to receive(:verify_merge_request)
         .with(merge_request2)
-        .and_return(nil)
+        .and_return([false, merge_request2])
 
-      valid = validator.execute
+      valid, invalid = validator.execute
 
       expect(valid).to eq([merge_request1])
+      expect(invalid).to eq([merge_request2])
     end
   end
 
@@ -71,14 +72,14 @@ describe ReleaseTools::Security::MergeRequestsValidator do
         allow(validator).to receive(:reassign_with_errors)
 
         expect(validator.verify_merge_request(basic_merge_request))
-          .to eq(detailed_merge_request)
+          .to eq([true, detailed_merge_request])
 
         expect(validator).not_to have_received(:reassign_with_errors)
       end
     end
 
     context 'when the merge request is invalid' do
-      it 'reassigns the merge request and returns nil' do
+      it 'reassigns the merge request' do
         merge_request_validator =
           double(:validator, validate: nil, errors: ['foo'])
 
@@ -96,7 +97,9 @@ describe ReleaseTools::Security::MergeRequestsValidator do
           .to receive(:reassign_with_errors)
           .with(detailed_merge_request, ['foo'])
 
-        expect(validator.verify_merge_request(basic_merge_request)).to be_nil
+        expect(validator.verify_merge_request(basic_merge_request))
+          .to eq([false, detailed_merge_request])
+
         expect(validator).to have_received(:reassign_with_errors)
       end
     end

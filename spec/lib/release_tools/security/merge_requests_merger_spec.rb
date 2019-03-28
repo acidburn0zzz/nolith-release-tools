@@ -8,11 +8,12 @@ describe ReleaseTools::Security::MergeRequestsMerger do
       merger = described_class.new
       mr1 = double(:merge_request, target_branch: 'foo')
       mr2 = double(:merge_request, target_branch: 'bar')
+      mr3 = double(:merge_request, target_branch: 'invalid')
       result = double(:result)
 
       allow(merger)
         .to receive(:validated_merge_requests)
-        .and_return([mr1, mr2])
+        .and_return([[mr1, mr2], [mr3]])
 
       allow(merger)
         .to receive(:merge)
@@ -26,7 +27,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
       allow(ReleaseTools::Security::MergeResult)
         .to receive(:from_array)
-        .with([[true, mr1], [false, mr2]])
+        .with(valid: [[true, mr1], [false, mr2]], invalid: [mr3])
         .and_return(result)
 
       expect(ReleaseTools::Slack::ChatopsNotification)
@@ -64,13 +65,14 @@ describe ReleaseTools::Security::MergeRequestsMerger do
       it 'does not include merge requests that target master' do
         master_mr = double(:merge_request, target_branch: 'master')
         backport = double(:merge_request, target_branch: '11-8-stable')
+        invalid = double(:merge_request, target_branch: 'invalid')
         merger = described_class.new(merge_master: false)
 
         allow(validator)
           .to receive(:execute)
-          .and_return([master_mr, backport])
+          .and_return([[master_mr, backport], [invalid]])
 
-        expect(merger.validated_merge_requests).to eq([backport])
+        expect(merger.validated_merge_requests).to eq([[backport], [invalid]])
       end
     end
   end
