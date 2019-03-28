@@ -70,13 +70,6 @@ task :tag_security, [:version] do |t, args|
   deprecate_as 'security:tag', t, args
 end
 
-desc "Sync master branch in remotes"
-task :sync do
-  ReleaseTools::Sync
-    .new(ReleaseTools::Project::GitlabEe.remotes)
-    .execute('rs-test-sync')
-end
-
 task :monthly_issue, [:version] do |t, args|
   deprecate_as 'release:issue', t, args
 end
