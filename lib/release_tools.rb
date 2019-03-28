@@ -33,6 +33,7 @@ Dotenv.load
 $LOAD_PATH.unshift(__dir__)
 
 require 'release_tools/branch'
+require 'release_tools/branch_creation'
 require 'release_tools/version'
 require 'release_tools/changelog'
 require 'release_tools/changelog/config'
@@ -97,7 +98,6 @@ require 'release_tools/release_managers/sync_result'
 require 'release_tools/release_managers/schedule'
 require 'release_tools/remote_repository'
 require 'release_tools/security_patch_issue'
-require 'release_tools/services/branch_creation'
 require 'release_tools/services/auto_deploy_branch_service'
 require 'release_tools/services/monthly_preparation_service'
 require 'release_tools/services/security_preparation_service'
