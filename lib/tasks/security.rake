@@ -42,6 +42,18 @@ namespace :security do
     Rake::Task['release:qa'].invoke(*args)
   end
 
+  desc 'Sync stable branches from security to production'
+  task :sync, [:version] => :force_security do |_t, args|
+    version = get_version(args)
+    ob_version = ReleaseTools::OmnibusGitlabVersion.new(version.to_omnibus)
+
+    sync = ReleaseTools::SecuritySync
+    sync.new(ReleaseTools::Project::GitlabEe).execute(version.to_ee)
+    sync.new(ReleaseTools::Project::GitlabCe).execute(version.to_ce)
+    sync.new(ReleaseTools::Project::OmnibusGitlab).execute(ob_version.to_ee)
+    sync.new(ReleaseTools::Project::OmnibusGitlab).execute(ob_version.to_ce)
+  end
+
   desc 'Tag a new security release'
   task :tag, [:version] => :force_security do |_t, args|
     $stdout
