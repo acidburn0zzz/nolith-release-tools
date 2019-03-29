@@ -34,26 +34,31 @@ module ReleaseTools
         # It should also result in merges not happening less often, as we only
         # merge a new MR into the target branch when the previous one finishes
         # merging.
-        valid = validated_merge_requests.group_by(&:target_branch)
+        valid, invalid = validated_merge_requests
+        to_merge = valid.group_by(&:target_branch)
 
-        tuples = Parallel.map(valid, in_threads: Etc.nprocessors) do |_, mrs|
+        tuples = Parallel.map(to_merge, in_threads: Etc.nprocessors) do |_, mrs|
           mrs.map do |mr|
             [merge(mr), mr]
           end
         end
 
-        merge_result = MergeResult.from_array(tuples.flatten(1))
+        merge_result = MergeResult
+          .from_array(valid: tuples.flatten(1), invalid: invalid)
 
         Slack::ChatopsNotification.merged_security_merge_requests(merge_result)
       end
 
       def validated_merge_requests
-        valid = MergeRequestsValidator.new.execute
+        valid, invalid = MergeRequestsValidator.new.execute
 
         if @merge_master
-          valid
+          [valid, invalid]
         else
-          valid.reject { |mr| mr.target_branch == 'master' }
+          [
+            valid.reject { |mr| mr.target_branch == 'master' },
+            invalid
+          ]
         end
       end
 
