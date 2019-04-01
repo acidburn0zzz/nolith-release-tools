@@ -81,8 +81,7 @@ module ReleaseTools
     def self.current_milestone
       current = milestones(Project::GitlabCe, state: 'active')
         .select { |m| current_milestone?(m) }
-        .sort { |a, b| b.due_date <=> a.due_date }
-        .first
+        .max_by(&:due_date)
 
       current || MissingMilestone.new
     end
@@ -117,12 +116,15 @@ module ReleaseTools
           [current_user.id]
         end
 
-      client.create_issue(project_path(project), issue.title,
+      client.create_issue(
+        project_path(project),
+        issue.title,
         description: issue.description,
         assignee_ids: assignees,
         milestone_id: milestone.id,
         labels: issue.labels,
-        confidential: issue.confidential?)
+        confidential: issue.confidential?
+      )
     end
 
     # Update an issue in the CE project based on the provided issue
@@ -139,11 +141,14 @@ module ReleaseTools
     def self.update_issue(issue, project = Project::GitlabCe)
       milestone = milestone(project, title: issue.version.milestone_name)
 
-      client.edit_issue(project_path(project), issue.iid,
-        description:  issue.description,
+      client.edit_issue(
+        project_path(project),
+        issue.iid,
+        description: issue.description,
         milestone_id: milestone.id,
         labels: issue.labels,
-        confidential: issue.confidential?)
+        confidential: issue.confidential?
+      )
     end
 
     # Link an issue as related to another

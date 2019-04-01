@@ -6,7 +6,7 @@ module ReleaseTools
       ReleaseTools::GitlabClient
     end
 
-    def ignoring_duplicates(&block)
+    def ignoring_duplicates
       yield
     rescue Gitlab::Error::Conflict, Gitlab::Error::BadRequest => ex
       if ex.message.match?('already exists')

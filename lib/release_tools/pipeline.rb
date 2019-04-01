@@ -14,11 +14,10 @@ module ReleaseTools
         ReleaseTools::Project::OmnibusGitlab,
         @token,
         "master",
-        {
-          GITLAB_VERSION: sha,
-          NIGHTLY: "true",
-          ee: project == ReleaseTools::Project::GitlabEe
-        })
+        GITLAB_VERSION: sha,
+        NIGHTLY: "true",
+        ee: project == ReleaseTools::Project::GitlabEe
+      )
       $stdout.puts "Pipeline triggered: #{trigger.web_url}"
       wait(trigger.id)
     end
@@ -32,7 +31,9 @@ module ReleaseTools
       max_duration = 3600 * 3 # 3 hours
       start = Time.now.to_i
       loop do
-        raise "Pipeline timeout after waiting for #{max_duration} seconds." if ReleaseTools::TimeUtil.timeout?(start, max_duration)
+        if ReleaseTools::TimeUtil.timeout?(start, max_duration)
+          raise "Pipeline timeout after waiting for #{max_duration} seconds."
+        end
 
         case status(id)
         when 'created', 'pending', 'running'

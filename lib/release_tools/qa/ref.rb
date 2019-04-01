@@ -3,8 +3,8 @@
 module ReleaseTools
   module Qa
     class Ref
-      TAG_REGEX = /(?<prefix>\w?)(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(-rc?(?<rc>\d+))?/
-      STABLE_BRANCH_REGEX = /^(?<major>\d+)-(?<minor>\d+)-(?<stable>stable)$/
+      TAG_REGEX = /(?<prefix>\w?)(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(-rc?(?<rc>\d+))?/.freeze
+      STABLE_BRANCH_REGEX = /^(?<major>\d+)-(?<minor>\d+)-(?<stable>stable)$/.freeze
 
       attr_reader :ref
 

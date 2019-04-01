@@ -19,7 +19,7 @@ group :development, :test do
   gem 'pry'
   gem 'rspec',           '~> 3.7.0'
   gem 'rspec-parameterized'
-  gem 'rubocop',         '~> 0.50.0'
+  gem 'rubocop',         '~> 0.60.0'
   gem 'rubocop-rspec',   '~> 1.15.0'
   gem 'simplecov',       '~> 0.15.0'
   gem 'timecop',         '~> 0.9.0'

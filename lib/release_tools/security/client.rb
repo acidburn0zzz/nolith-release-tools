@@ -54,8 +54,7 @@ module ReleaseTools
         gitlab_client
           .merge_request_pipelines(project_id, merge_request_iid)
           .auto_paginate
-          .sort_by(&:id)
-          .last
+          .max_by(&:id)
       end
 
       def method_missing(name, *args)

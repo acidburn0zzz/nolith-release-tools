@@ -21,7 +21,7 @@ module ReleaseTools
         body[:channel] = channel if channel.present?
         body[:attachments] = attachments if attachments.any?
 
-        response = HTTParty.post(webhook_url, { body: body.to_json })
+        response = HTTParty.post(webhook_url, body: body.to_json)
 
         raise CouldNotPostError.new(response.inspect) unless response.code == 200
       end
