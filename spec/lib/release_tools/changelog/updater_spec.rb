@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ReleaseTools::Changelog::Updater do
@@ -75,12 +77,10 @@ describe ReleaseTools::Changelog::Updater do
   end
 
   def markdown(version)
-    markdown = ""
-    markdown << "## #{version}\n\n"
-    markdown << "- Change Z\n- Change Y\n- Change X\n"
-    markdown << "\n"
+    "## #{version}\n\n- Change Z\n- Change Y\n- Change X\n\n"
   end
 
+  # rubocop:disable RSpec/InstanceVariable
   matcher :have_inserted do |version|
     match do |contents|
       expect(contents[@line + 0]).to eq "## #{version}\n"
@@ -95,4 +95,5 @@ describe ReleaseTools::Changelog::Updater do
       @line = line
     end
   end
+  # rubocop:enable RSpec/InstanceVariable
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ReleaseTools::Qa::ProjectChangeset, vcr: { cassette_name: 'commits-api' } do

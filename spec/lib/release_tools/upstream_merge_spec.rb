@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do

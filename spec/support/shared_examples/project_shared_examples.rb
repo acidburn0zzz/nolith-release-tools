@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'project #remotes' do
   it 'returns all remotes by default' do
     expect(described_class.remotes).to eq(described_class::REMOTES)

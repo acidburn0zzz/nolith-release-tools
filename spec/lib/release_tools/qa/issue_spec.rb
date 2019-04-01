@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ReleaseTools::Qa::Issue do
@@ -47,41 +49,44 @@ describe ReleaseTools::Qa::Issue do
 
   describe '#description' do
     context 'for a new issue' do
+      let(:content) do
+        Timecop.freeze(current_date) { subject.description }
+      end
+
       before do
         expect(subject).to receive(:exists?).and_return(false)
-        @content = Timecop.freeze(current_date) { subject.description }
       end
 
       it "includes the current release version" do
-        expect(@content).to include("## Merge Requests tested in 10.8.0-rc1")
+        expect(content).to include("## Merge Requests tested in 10.8.0-rc1")
       end
 
       it "includes the Team label title" do
-        expect(@content).to include('### Platform')
+        expect(content).to include('### Platform')
       end
 
       it "includes the MR information" do
-        expect(@content).to include('Import/Export (import) is broken due to the addition of a CI table')
-        expect(@content).to include('gitlab-org/gitlab-ce!18745')
+        expect(content).to include('Import/Export (import) is broken due to the addition of a CI table')
+        expect(content).to include('gitlab-org/gitlab-ce!18745')
       end
 
       it "includes the MR author" do
-        expect(@content).to include("@author")
+        expect(content).to include("@author")
       end
 
       it "includes the qa task for version" do
-        expect(@content).to include("## Automated QA for 10.8.0-rc1")
+        expect(content).to include("## Automated QA for 10.8.0-rc1")
       end
 
       it 'includes the due date' do
-        expect(@content).to include('2018-09-11 14:40 UTC')
+        expect(content).to include('2018-09-11 14:40 UTC')
       end
 
       context 'for RC2' do
         let(:version) { ReleaseTools::Version.new('10.8.0-rc2') }
 
         it 'the due date is 12h in the future' do
-          expect(@content).to include('2018-09-11 02:40 UTC')
+          expect(content).to include('2018-09-11 02:40 UTC')
         end
       end
     end
@@ -95,11 +100,10 @@ describe ReleaseTools::Qa::Issue do
       before do
         expect(subject).to receive(:exists?).and_return(true)
         expect(subject).to receive(:remote_issuable).and_return(remote_issuable)
-        @content = subject.description
       end
 
       it "includes previous revision" do
-        expect(@content).to include("Previous Revision")
+        expect(subject.description).to include("Previous Revision")
       end
     end
   end
