@@ -8,6 +8,7 @@ describe ReleaseTools::TimeUtil do
       ex.run
     end
   end
+
   describe '.timeout?' do
     let(:start_time) { Time.now.to_i - 600 }
 
