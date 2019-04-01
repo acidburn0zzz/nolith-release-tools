@@ -5,7 +5,7 @@ module ReleaseTools
     class BaseRelease
       extend Forwardable
 
-      attr_reader :version, :remotes, :options
+      attr_reader :version, :options
 
       def_delegator :version, :tag
       def_delegator :version, :stable_branch

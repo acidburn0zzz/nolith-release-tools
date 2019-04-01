@@ -34,7 +34,7 @@ module ReleaseTools
         members =
           begin
             ReleaseManagers::Client.new.members
-          rescue
+          rescue StandardError
             []
           end
 
@@ -58,7 +58,7 @@ module ReleaseTools
       # @return [Array<Hash>]
       def download_release_manager_names
         YAML.safe_load(HTTParty.get(SCHEDULE_YAML).body)
-      rescue
+      rescue StandardError
         []
       end
     end

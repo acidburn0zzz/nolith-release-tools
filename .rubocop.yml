@@ -13,6 +13,14 @@ AllCops:
 Bundler/OrderedGems:
   Enabled: false
 
+## Minimal
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Style/SafeNavigation:
+  Enabled: false
+
 # Layout ######################################################################
 
 # Check indentation of private/protected visibility modifiers.
@@ -224,7 +232,7 @@ Style/TrailingCommaInLiteral:
 # Style #######################################################################
 
 # Check the naming of accessor methods for get_/set_.
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: true
 
 # Use alias_method instead of alias.
@@ -246,7 +254,7 @@ Style/AsciiComments:
   Enabled: true
 
 # Use only ascii symbols in identifiers.
-Style/AsciiIdentifiers:
+Naming/AsciiIdentifiers:
   Enabled: true
 
 # Checks for uses of Module#attr.
@@ -280,7 +288,7 @@ Style/CharacterLiteral:
   Enabled: true
 
 # Use CamelCase for classes and modules.'
-Style/ClassAndModuleCamelCase:
+Naming/ClassAndModuleCamelCase:
   Enabled: true
 
 # Checks style of children classes and modules.
@@ -316,7 +324,7 @@ Style/ConditionalAssignment:
   Enabled: false
 
 # Constants should use SCREAMING_SNAKE_CASE.
-Style/ConstantName:
+Naming/ConstantName:
   Enabled: true
 
 # Use def with parentheses when there are arguments.
@@ -342,7 +350,7 @@ Style/EvenOdd:
   Enabled: true
 
 # Use snake_case for source file names.
-Style/FileName:
+Naming/FileName:
   Enabled: true
 
 # Checks for flip flops.
@@ -394,7 +402,7 @@ Style/MethodDefParentheses:
   Enabled: true
 
 # Use the configured style when naming methods.
-Style/MethodName:
+Naming/MethodName:
   Enabled: true
 
 # Checks for usage of `extend self` in modules.
@@ -457,7 +465,7 @@ Style/OneLineConditional:
   Enabled: true
 
 # When defining binary operators, name the argument other.
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Enabled: true
 
 # Don't use parentheses around the condition of an if/unless/while.
@@ -533,12 +541,12 @@ Style/VariableInterpolation:
   Enabled: true
 
 # Use the configured style when naming variables.
-Style/VariableName:
+Naming/VariableName:
   EnforcedStyle: snake_case
   Enabled: true
 
 # Use the configured style when numbering variables.
-Style/VariableNumber:
+Naming/VariableNumber:
   Enabled: false
 
 # Use when x then ... for one-line cases.
@@ -624,7 +632,7 @@ Lint/AssignmentInCondition:
   Enabled: false
 
 # Align block ends correctly.
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   Enabled: true
 
 # Default values in optional keyword arguments and optional ordinal arguments
@@ -633,7 +641,7 @@ Lint/CircularArgumentReference:
   Enabled: true
 
 # Checks for condition placed in a confusing position relative to the keyword.
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 
 # Check for debugger calls.
@@ -641,7 +649,7 @@ Lint/Debugger:
   Enabled: true
 
 # Align ends corresponding to defs correctly.
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   Enabled: true
 
 # Check for deprecated class method calls.
@@ -665,7 +673,7 @@ Lint/EmptyWhen:
   Enabled: true
 
 # Align ends correctly.
-Lint/EndAlignment:
+Layout/EndAlignment:
   Enabled: true
 
 # END blocks should not be placed inside method definitions.
@@ -704,7 +712,7 @@ Lint/InvalidCharacterLiteral:
   Enabled: true
 
 # Checks of literals used in conditions.
-Lint/LiteralInCondition:
+Lint/LiteralAsCondition:
   Enabled: true
 
 # Checks for literals used in interpolation.
@@ -764,7 +772,7 @@ Lint/UnifiedInteger:
 # Checks for rubocop:disable comments that can be removed.
 # Note: this cop is not disabled when disabling all cops.
 # It must be explicitly disabled.
-Lint/UnneededDisable:
+Lint/UnneededCopDisableDirective:
   Enabled: true
 
 # This cop checks for unneeded usages of splat expansion
