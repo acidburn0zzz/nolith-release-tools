@@ -90,6 +90,22 @@ pages:
 
 # automation ------------------------------------------------------------------
 
+security-sync:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - source scripts/setup_ssh.sh
+    - echo "$RELEASE_BOT_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - git config --global user.email "robert+release-tools@gitlab.com"
+    - git config --global user.name "GitLab Release Tools Bot"
+    - bundle exec rake security:sync[$RELEASE_VERSION]
+  only:
+    variables:
+      - $SECURITY_SYNC
+  cache:
+    <<: *global-cache
+    policy: pull
+
 release-managers:
   <<: *with-bundle
   stage: automation
