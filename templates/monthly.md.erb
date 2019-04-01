@@ -29,7 +29,7 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
 
     ```sh
     # In Slack (update RC number):
-    /chatops run release_issue <%= version.to_rc(2) %>
+    /chatops run release prepare <%= version.to_rc(2) %>
     ```
 
 Keep in mind that:
@@ -54,7 +54,7 @@ Including changes at this stage requires signoff from the VP of Engineering.
 
     ```sh
     # In Slack (update RC number):
-    /chatops run release_issue <%= version.to_rc(22) %>
+    /chatops run release prepare <%= version.to_rc(22) %>
     ```
 
 ### At 15:00 UTC
@@ -80,10 +80,10 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Sync master branches to `dev`
 
 - Before 10:00 UTC:
-  - [ ] Tag the `<%= version.to_patch %>` version using the [`tag` command]:
+  - [ ] Tag `<%= version.to_patch %>`:
     ```sh
     # In Slack:
-    /chatops run tag <%= version.to_patch %>
+    /chatops run release tag <%= version.to_patch %>
     ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
 - Before 12:00 UTC:
@@ -129,7 +129,6 @@ No new code can be added to the release that was not included in the final RC.
 [Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [announce the deployment]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
-[`tag` command]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc/chatops.md#tag
 [Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [getting help]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/monthly.md#getting-help
