@@ -6,9 +6,12 @@
 
 ## Preparation
 
-- [ ] Picked into respective `stable` branches from the `dev/security` branch. Use the <SECURITY_RELEASE_ISSUE> as a guideline of what MR's should be picked.
-- [ ] **Push `ce/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
-- [ ] **Push `ee/<%= version.stable_branch(ee: true) %>` to `dev` only: `git push dev <%= version.stable_branch(ee: true) %>`**
+- [ ] Merge security merge requests using chatops:
+   ```sh
+   # In Slack:
+   /chatops run release merge --security
+   ```
+- [ ] If any merge requests could not be merged, investigate what needs to be done to resolve this issues. Do **not** proceed unless it has been determined safe to do so.
 - [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
 
 ## Packaging
@@ -85,7 +88,14 @@
   ```
   !tweet "GitLab <%= version %> is released! BLOG_POST_URL DESCRIPTION OF THE CHANGES"
   ```
-- [ ] Merge the MR's targeting `master` and push to all remotes
+- [ ] Merge security MRs targeting master:
+   ```sh
+   # In Slack:
+   /chatops run release merge --security --master
+   ```
+- [ ] Push `ce/master` to all remotes
+- [ ] Push `ee/master` to all remotes
+- [ ] Push `omnibus/master` to all remotes
 
 ---
 
