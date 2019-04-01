@@ -22,6 +22,15 @@ def deprecate_as(new_task, old_task, args)
   Rake::Task[new_task].invoke(*args)
 end
 
+namespace :auto_deploy do
+  desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab-ee and omnibus-gitlab"
+  task :prepare do
+    pipeline_id = ENV['CI_PIPELINE_IID']
+    abort('CI_PIPELINE_IID must be set for this rake task'.colorize(:red)) unless pipeline_id
+    ReleaseTools::Services::AutoDeployBranchService.new(pipeline_id).create_auto_deploy_branches!
+  end
+end
+
 namespace :green_master do
   desc "Trigger a green master build for EE"
   task :ee, [:trigger_build] do |_t, args|
