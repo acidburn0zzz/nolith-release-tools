@@ -22,7 +22,8 @@ module ReleaseTools
           @issue ||= issue_class.new(
             version: version,
             project: issue_project,
-            merge_requests: merge_requests)
+            merge_requests: merge_requests
+          )
         end
 
         def changesets
@@ -31,7 +32,8 @@ module ReleaseTools
               project: project,
               from: from.for_project(project),
               to: to.for_project(project),
-              default_client: default_client)
+              default_client: default_client
+            )
           end
         end
 

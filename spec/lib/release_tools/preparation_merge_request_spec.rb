@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ReleaseTools::PreparationMergeRequest do
-  it_behaves_like 'issuable #initialize'
-  it_behaves_like 'issuable #create', :create_merge_request
-
   let(:merge_request) { described_class.new(version: ReleaseTools::Version.new('9.4.1')) }
   let(:ee_merge_request) { described_class.new(version: ReleaseTools::Version.new('9.4.1-ee')) }
   let(:rc_merge_request) { described_class.new(version: ReleaseTools::Version.new('9.4.0-rc2')) }
   let(:ee_rc_merge_request) { described_class.new(version: ReleaseTools::Version.new('9.4.0-rc2-ee')) }
 
   let(:subject) { merge_request }
+
+  it_behaves_like 'issuable #initialize'
+  it_behaves_like 'issuable #create', :create_merge_request
 
   it 'has an informative WIP title', :aggregate_failures do
     expect(merge_request.title).to eq 'WIP: Prepare 9.4.1 release'

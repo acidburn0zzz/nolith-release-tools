@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'issuable #initialize' do
   it 'accepts arbitrary attributes as arguments' do
     issuable = described_class.new(foo: 'bar')

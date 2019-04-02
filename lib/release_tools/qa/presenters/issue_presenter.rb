@@ -83,7 +83,8 @@ module ReleaseTools
         def formatter
           ReleaseTools::Qa::Formatters::MergeRequestsFormatter.new(
             merge_requests: sort_merge_requests,
-            project_path: issue.project.path)
+            project_path: issue.project.path
+          )
         end
 
         def labels

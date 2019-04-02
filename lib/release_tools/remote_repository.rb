@@ -167,7 +167,7 @@ module ReleaseTools
     end
 
     def pull_from_all_remotes(ref, depth: global_depth)
-      remotes.each do |remote_name, _|
+      remotes.each_key do |remote_name|
         pull(ref, remote: remote_name, depth: depth)
       end
     end
@@ -188,7 +188,7 @@ module ReleaseTools
     end
 
     def push_to_all_remotes(ref)
-      remotes.each do |remote_name, _|
+      remotes.each_key do |remote_name|
         push(remote_name, ref)
       end
     end

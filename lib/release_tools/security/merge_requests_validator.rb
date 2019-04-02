@@ -112,11 +112,9 @@ module ReleaseTools
           iid,
           body: format(
             ERROR_TEMPLATE,
-            {
-              author_username: mr.author.username,
-              bot_username: Client::RELEASE_TOOLS_BOT_USERNAME,
-              errors: errors.join("\n\n")
-            }
+            author_username: mr.author.username,
+            bot_username: Client::RELEASE_TOOLS_BOT_USERNAME,
+            errors: errors.join("\n\n")
           )
         )
 

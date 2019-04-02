@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'helm-release #execute' do |expect_tag: true, expect_master: true|
   def execute(branch)
     release.execute

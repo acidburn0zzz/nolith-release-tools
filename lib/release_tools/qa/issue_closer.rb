@@ -18,7 +18,7 @@ module ReleaseTools
       # This pattern will look for text such as the following:
       #
       #     ... should be completed by 2019-02-13 13:53 UTC ...
-      DEADLINE_REGEX = /should be completed by \*\*(?<deadline>[^\*]+)\*\*/
+      DEADLINE_REGEX = /should be completed by \*\*(?<deadline>[^\*]+)\*\*/.freeze
 
       def execute
         qa_issues.each do |issue|

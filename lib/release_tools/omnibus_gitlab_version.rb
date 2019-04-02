@@ -11,7 +11,7 @@ module ReleaseTools
       (\.)?
       (?<edition>ce|ee)?
       (\.\d+)?\z
-    }x
+    }x.freeze
 
     def ee?
       edition == 'ee'

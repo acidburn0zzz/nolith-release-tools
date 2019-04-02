@@ -7,7 +7,7 @@ module ReleaseTools
       \.(?<minor>\d+)
       (\.(?<patch>\d+))?
       (-(?<rc>rc(?<rc_number>\d*)))?\z
-    }x
+    }x.freeze
 
     def diff(other)
       if major != other.major

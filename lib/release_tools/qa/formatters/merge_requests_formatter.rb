@@ -14,7 +14,7 @@ module ReleaseTools
           /merge_requests/
           (?<iid>\d+)
           \/?$
-        }x
+        }x.freeze
 
         attr_reader :merge_requests, :project_path
 

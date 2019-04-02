@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Layout/ExtraSpacing
 source "https://rubygems.org"
 
@@ -19,10 +21,11 @@ group :development, :test do
   gem 'pry'
   gem 'rspec',           '~> 3.7.0'
   gem 'rspec-parameterized'
-  gem 'rubocop',         '~> 0.49.0'
-  gem 'rubocop-rspec',   '~> 1.15.0'
+  gem 'rubocop',         '~> 0.66.0'
+  gem 'rubocop-rspec',   '~> 1.32.0'
   gem 'simplecov',       '~> 0.15.0'
   gem 'timecop',         '~> 0.9.0'
   gem 'vcr',             '~> 2.9.0'
   gem 'webmock',         '~> 3.4.0'
 end
+# rubocop:enable Layout/ExtraSpacing

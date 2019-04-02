@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ReleaseTools::Slack::TagNotification do
@@ -66,9 +68,10 @@ describe ReleaseTools::Slack::TagNotification do
       end
 
       it 'posts a message indicating a security release' do
-        message << " as a security release"
+        security_message = message.dup
+        security_message << " as a security release"
 
-        expect_post(body: { text: message }.to_json)
+        expect_post(body: { text: security_message }.to_json)
           .and_return(response(200))
 
         ClimateControl.modify(SECURITY: 'true') do

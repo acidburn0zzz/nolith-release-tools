@@ -4,7 +4,7 @@ module ReleaseTools
   class UpstreamMerge
     attr_reader :origin, :upstream, :merge_branch
 
-    CONFLICT_MARKER_REGEX = /\A(?<conflict_type>[ADU]{2}) /
+    CONFLICT_MARKER_REGEX = /\A(?<conflict_type>[ADU]{2}) /.freeze
 
     DownstreamAlreadyUpToDate = Class.new(StandardError)
     PushFailed = Class.new(StandardError)

@@ -24,7 +24,7 @@ module ReleaseTools
     # This is necessary because by the time this process is performed, CE has
     # already been merged into EE without the consolidated `CHANGELOG.md`.
     class Manager
-      attr_reader :repository, :version, :changelog_file
+      attr_reader :repository, :version
 
       # repository - Rugged::Repository object or String path to repository
       def initialize(repository, changelog_file = nil)

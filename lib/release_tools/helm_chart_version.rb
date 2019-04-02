@@ -6,6 +6,6 @@ module ReleaseTools
       \A(?<major>\d+)
       \.(?<minor>\d+)
       (\.(?<patch>\d+))?\z
-    }x
+    }x.freeze
   end
 end

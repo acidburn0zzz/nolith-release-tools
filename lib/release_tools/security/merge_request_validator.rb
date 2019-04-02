@@ -10,7 +10,7 @@ module ReleaseTools
       #
       #     - [ ] Task name here
       #     * [ ] Task name here
-      PENDING_TASKS = /(\*|-)\s*\[\s+\]/
+      PENDING_TASKS = /(\*|-)\s*\[\s+\]/.freeze
 
       # A regular expression to use for extracting all tasks (pending or not)
       # from the merge request description. This pattern will match the
@@ -20,15 +20,15 @@ module ReleaseTools
       #     * [ ] Task name here
       #     - [x] Task name here
       #     * [x] Task name here
-      ALL_TASKS = /(\*|-)\s*\[(\s+|x)\]/
+      ALL_TASKS = /(\*|-)\s*\[(\s+|x)\]/.freeze
 
       # A regular expression to use to determine if the merge request was
       # assigned to a reviewer.
-      APPROVED_TASK = /-\s*\[x\]\s*Assign to a reviewer/
+      APPROVED_TASK = /-\s*\[x\]\s*Assign to a reviewer/.freeze
 
       # A regular expression used to determine if the target branch of a merge
       # request is valid.
-      ALLOWED_TARGET_BRANCHES = /^(master|\d+-\d+-stable(-ee)?)$/
+      ALLOWED_TARGET_BRANCHES = /^(master|\d+-\d+-stable(-ee)?)$/.freeze
 
       # @param [Gitlab::ObjectifiedHash] merge_request
       # @param [ReleaseTools::Security::Client] client

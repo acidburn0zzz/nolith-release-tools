@@ -28,7 +28,7 @@ module ReleaseTools
       def prepare_release
         $stdout.puts "Prepare repository...".colorize(:green)
         repository.pull_from_all_remotes('master')
-        @version = version_manager.next_version(gitlab_version) unless @version
+        @version ||= version_manager.next_version(gitlab_version)
         repository.ensure_branch_exists(stable_branch)
         repository.pull_from_all_remotes(stable_branch)
       end

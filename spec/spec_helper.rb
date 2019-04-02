@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This ensures we don't push to the repo during tests
 ENV['TEST'] = 'true'
 

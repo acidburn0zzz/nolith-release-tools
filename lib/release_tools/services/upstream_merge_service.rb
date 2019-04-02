@@ -21,7 +21,8 @@ module ReleaseTools
         merge = UpstreamMerge.new(
           origin: Project::GitlabEe.remotes[:gitlab],
           upstream: Project::GitlabCe.remotes[:gitlab],
-          merge_branch: upstream_merge_request.source_branch)
+          merge_branch: upstream_merge_request.source_branch
+        )
         upstream_merge_request.conflicts = merge.execute!
 
         unless dry_run
@@ -39,11 +40,11 @@ module ReleaseTools
           end
         end
 
-        Result.new(true, { upstream_mr: upstream_merge_request })
+        Result.new(true, upstream_mr: upstream_merge_request)
       rescue UpstreamMerge::DownstreamAlreadyUpToDate
-        Result.new(false, { already_up_to_date: true })
+        Result.new(false, already_up_to_date: true)
       rescue UpstreamMergeInProgressError
-        return Result.new(false, { in_progress_mr: open_merge_requests.first })
+        Result.new(false, in_progress_mr: open_merge_requests.first)
       end
 
       def upstream_merge_request

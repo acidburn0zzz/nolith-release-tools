@@ -9,7 +9,7 @@ module ReleaseTools
         \/
         (?<project>[^\/]+)
         \.git\z
-      }x
+      }x.freeze
 
       def self.remotes
         if SharedStatus.security_release?
