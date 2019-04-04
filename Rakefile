@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'pry'
 
 require_relative 'lib/release_tools'
 require_relative 'lib/release_tools/support/tasks_helper'
@@ -11,6 +12,43 @@ namespace :auto_deploy do
     ReleaseTools::Services::AutoDeployBranchService
       .new(ReleaseTools::AutoDeploy::Naming.branch)
       .create_branches!
+  end
+
+  desc 'Pick commits into the auto deploy branches'
+  task :pick do
+    versions = {}
+    count = 0
+    ReleaseTools::GitlabClient.branches(ReleaseTools::Project::GitlabEe.path).auto_paginate.each do |branch|
+      if branch.name =~ /^(\d+-\d+)-auto-deploy.*$/
+        #binding.pry
+        # convert the version to version used for picking
+        branch_name = branch.name
+        version = branch.name.match(/^(\d+-\d+)-auto-deploy.*$/)[1].gsub('-', '.')
+        versions.merge!(branch_name => version)
+        count += 1
+      end
+    end
+    puts count
+    puts versions.count
+    versions.each do |branch_name, version|
+      icon = ->(result) { result.success? ? "✓" : "✗" }
+      version = ReleaseTools::Version.new(version).to_ee
+      puts "--> Picking for #{version}..."
+      results = ReleaseTools::CherryPick::Service
+        .new(ReleaseTools::Project::GitlabEe, version, branch_name)
+        .dry_run
+
+      binding.pry
+
+      results.each do |result|
+        $stdout.puts "    #{icon.call(result)} #{result.url}"
+      end
+    end
+
+    # check for valid pick tag that contains version
+    #versions.each do |version|
+    #end
+    # perform pick
   end
 end
 

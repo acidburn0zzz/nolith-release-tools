@@ -20,18 +20,29 @@ module ReleaseTools
       attr_reader :project
       attr_reader :version
 
-      def initialize(project, version)
+      def initialize(project, version, pick_branch = nil)
         @project = project
         @version = version
 
         assert_version!
 
-        @prep_mr = PreparationMergeRequest.new(version: version)
+        if pick_branch.nil?
+          @prep_mr = PreparationMergeRequest.new(version: version)
 
-        assert_prep_mr!
+          assert_prep_mr!
 
-        @prep_branch = @prep_mr.preparation_branch_name
+          @prep_branch = @prep_mr.preparation_branch_name
+        else
+          @prep_branch = pick_branch
+        end
+
         @results = []
+      end
+
+      def dry_run
+        return [] unless pickable_mrs.any?
+
+        pickable_mrs.auto_paginate
       end
 
       def execute

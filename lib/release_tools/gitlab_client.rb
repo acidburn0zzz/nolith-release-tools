@@ -9,7 +9,11 @@ module ReleaseTools
     class << self
       extend Forwardable
 
+      def_delegator :client, :branches
       def_delegator :client, :commits
+      def_delegator :client, :labels
+      def_delegator :client, :pipelines
+      def_delegator :client, :pipeline_jobs
       def_delegator :client, :file_contents
       def_delegator :client, :job_play
 

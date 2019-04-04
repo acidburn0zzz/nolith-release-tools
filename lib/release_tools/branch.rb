@@ -12,5 +12,9 @@ module ReleaseTools
     def create(ref:)
       GitlabClient.create_branch(name, ref, project)
     end
+
+    def get
+      GitLabClient.branches(@project, {})
+    end
   end
 end
