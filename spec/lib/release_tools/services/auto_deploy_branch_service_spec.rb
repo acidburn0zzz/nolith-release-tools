@@ -51,3 +51,18 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     end
   end
 end
+
+describe ReleaseTools::Services::AutoDeployBranchService do
+  describe '#filter_branches' do
+    subject(:service) do
+      VCR.use_cassette('branches/list') do
+        wut = described_class.new(1)
+        wut.filter_branches
+      end
+    end
+
+    it 'finds all auto-deploy branches' do
+      expect(subject).to be_nil
+    end
+  end
+end

@@ -19,11 +19,11 @@ namespace :auto_deploy do
     versions = {}
     count = 0
     ReleaseTools::GitlabClient.branches(ReleaseTools::Project::GitlabEe.path).auto_paginate.each do |branch|
-      if branch.name =~ /^(\d+-\d+)-auto-deploy.*$/
+      if branch.name =~ /^(\d+-\d+)-auto-deploy-\d+-ee$/
         #binding.pry
         # convert the version to version used for picking
         branch_name = branch.name
-        version = branch.name.match(/^(\d+-\d+)-auto-deploy.*$/)[1].gsub('-', '.')
+        version = branch.name.match(/^(\d+-\d+)-auto-deploy-\d+-ee$/)[1].gsub('-', '.')
         versions.merge!(branch_name => version)
         count += 1
       end
@@ -31,7 +31,6 @@ namespace :auto_deploy do
     puts count
     puts versions.count
     versions.each do |branch_name, version|
-      icon = ->(result) { result.success? ? "✓" : "✗" }
       version = ReleaseTools::Version.new(version).to_ee
       puts "--> Picking for #{version}..."
       results = ReleaseTools::CherryPick::Service
@@ -41,7 +40,7 @@ namespace :auto_deploy do
       binding.pry
 
       results.each do |result|
-        $stdout.puts "    #{icon.call(result)} #{result.url}"
+        puts result.inspect
       end
     end
 

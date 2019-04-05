@@ -28,6 +28,18 @@ module ReleaseTools
         update_auto_deploy_ci
       end
 
+      def filter_branches
+        versions = {}
+        ReleaseTools::GitlabClient.branches(ReleaseTools::Project::GitlabEe.path).auto_paginate.each do |branch|
+          next unless branch.name.match?(/^(\d+-\d+)-auto-deploy-\d+-ee$/)
+
+          branch_name = branch.name
+          version = branch.name.match(/^(\d+-\d+)-auto-deploy-\d+-ee$/)[1].tr('-', '.')
+          versions.merge!(branch_name => version)
+        end
+        versions
+      end
+
       private
 
       def update_auto_deploy_ci
