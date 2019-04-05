@@ -2,10 +2,11 @@ module ReleaseTools
   class Pipeline
     attr_reader :project, :sha
 
-    def initialize(project, sha)
+    def initialize(project, sha, versions)
       @project = project
       @sha = sha
       @token = ENV.fetch('OMNIBUS_BUILD_TRIGGER_TOKEN') { |name| raise "Missing environment variable `#{name}`" }
+      @versions = versions
     end
 
     def trigger
@@ -13,10 +14,8 @@ module ReleaseTools
       trigger = ReleaseTools::GitlabDevClient.run_trigger(
         ReleaseTools::Project::OmnibusGitlab,
         @token,
-        "master",
-        GITLAB_VERSION: sha,
-        NIGHTLY: "true",
-        ee: project == ReleaseTools::Project::GitlabEe
+        'master',
+        build_variables
       )
       $stdout.puts "Pipeline triggered: #{trigger.web_url}"
       wait(trigger.id)
@@ -48,6 +47,16 @@ module ReleaseTools
 
         $stdout.flush
       end
+    end
+
+    private
+
+    def build_variables
+      @versions.merge(
+        'GITLAB_VERSION' => @sha,
+        'NIGHTLY' => 'true',
+        'ee' => @project == ReleaseTools::Project::GitlabEe
+      )
     end
   end
 end
