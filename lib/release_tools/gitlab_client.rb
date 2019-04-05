@@ -11,6 +11,7 @@ module ReleaseTools
       def_delegator :client, :commits
       def_delegator :client, :pipelines
       def_delegator :client, :pipeline_jobs
+      def_delegator :client, :file_contents
       def_delegator :client, :job_play
 
       def_delegator :client, :create_merge_request_comment

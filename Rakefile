@@ -34,32 +34,48 @@ end
 namespace :green_master do
   desc "Trigger a green master build for EE"
   task :ee, [:trigger_build] do |_t, args|
-    commit = ReleaseTools::Commits.new(ReleaseTools::Project::GitlabEe).latest_successful
+    project = ReleaseTools::Project::GitlabEe
+    commit = ReleaseTools::Commits.new(project).latest_successful
 
     raise 'No recent master builds have green pipelines' if commit.nil?
 
     $stdout.puts "Found EE Green Master at #{commit.id}"
 
+    versions = ReleaseTools::ComponentVersions.get(project, commit)
+
+    versions.each do |component, version|
+      puts "#{component}: #{version}"
+    end
+
     if args.trigger_build
       ReleaseTools::Pipeline.new(
-        ReleaseTools::Project::GitlabEe,
-        commit.id
+        project,
+        commit.id,
+        versions
       ).trigger
     end
   end
 
   desc "Trigger a green master build for CE"
   task :ce, [:trigger_build] do |_t, args|
-    commit = ReleaseTools::Commits.new(ReleaseTools::Project::GitlabCe).latest_successful
+    project = ReleaseTools::Project::GitlabCe
+    commit = ReleaseTools::Commits.new(project).latest_successful
 
     raise 'No recent master builds have green pipelines' if commit.nil?
 
     $stdout.puts "Found CE Green Master at #{commit.id}"
 
+    versions = ReleaseTools::ComponentVersions.get(project, commit)
+
+    versions.each do |component, version|
+      puts "#{component}: #{version}"
+    end
+
     if args.trigger_build
       ReleaseTools::Pipeline.new(
-        ReleaseTools::Project::GitlabCe,
-        commit.id
+        project,
+        commit.id,
+        versions
       ).trigger
     end
   end
