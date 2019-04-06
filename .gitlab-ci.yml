@@ -194,7 +194,7 @@ ee-green-master-build-trigger:
   <<: *with-bundle
   stage: green-master-build-trigger
   script:
-    - bundle exec green_master:ee[true]
+    - bundle exec rake green_master:ee[true]
   only:
     variables:
       - $EE_GREEN_MASTER_BUILD_TRIGGER == "true"
@@ -203,7 +203,7 @@ ce-green-master-build-trigger:
   <<: *with-bundle
   stage: green-master-build-trigger
   script:
-    - bundle exec green_master:ce[true]
+    - bundle exec rake green_master:ce[true]
   only:
     variables:
       - $CE_GREEN_MASTER_BUILD_TRIGGER == "true"
