@@ -29,15 +29,33 @@ module ReleaseTools
       end
 
       def filter_branches
-        versions = {}
+        versions = []
+        Struct.new("Version", :version, :pipeline_id, :branch_name)
         ReleaseTools::GitlabClient.branches(ReleaseTools::Project::GitlabEe.path).auto_paginate.each do |branch|
-          next unless branch.name.match?(/^(\d+-\d+)-auto-deploy-\d+-ee$/)
+          next unless branch.name.match?(/^\d+-\d+-auto-deploy-\d+-ee$/)
 
           branch_name = branch.name
-          version = branch.name.match(/^(\d+-\d+)-auto-deploy-\d+-ee$/)[1].tr('-', '.')
-          versions.merge!(branch_name => version)
+          version = branch.name.match(/^(\d+-\d+)-auto-deploy-(\d+)-ee$/)[1].tr('-', '.')
+          pipeline_id = branch.name.match(/^(\d+-\d+)-auto-deploy-(\d+)-ee$/)[2]
+          version_data = Struct::Version.new(version, pipeline_id, branch_name)
+          versions << version_data
         end
-        versions
+
+        latest_version = []
+        versions.each do |v|
+          latest_version << v.version
+        end
+
+        latest_version.uniq!
+        latest_version = VersionSorter.rsort(latest_version).first
+
+        pipelines = []
+        versions.each do |v|
+          pipelines << v.pipeline_id if v.version == latest_version
+        end
+
+        branch = versions.find { |struct| struct.version == latest_version && struct.pipeline_id == pipelines.sort.reverse.first }.branch_name
+        { version: latest_version, branch: branch }
       end
 
       private

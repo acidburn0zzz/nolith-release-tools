@@ -16,32 +16,16 @@ namespace :auto_deploy do
 
   desc 'Pick commits into the auto deploy branches'
   task :pick do
-    versions = {}
-    count = 0
-    ReleaseTools::GitlabClient.branches(ReleaseTools::Project::GitlabEe.path).auto_paginate.each do |branch|
-      if branch.name =~ /^(\d+-\d+)-auto-deploy-\d+-ee$/
-        #binding.pry
-        # convert the version to version used for picking
-        branch_name = branch.name
-        version = branch.name.match(/^(\d+-\d+)-auto-deploy-\d+-ee$/)[1].gsub('-', '.')
-        versions.merge!(branch_name => version)
-        count += 1
-      end
-    end
-    puts count
-    puts versions.count
-    versions.each do |branch_name, version|
-      version = ReleaseTools::Version.new(version).to_ee
-      puts "--> Picking for #{version}..."
-      results = ReleaseTools::CherryPick::Service
-        .new(ReleaseTools::Project::GitlabEe, version, branch_name)
-        .dry_run
+    operating_branch_info = ReleaseTools::Services::AutoDeployBranchService.new(nil).filter_branches
+    binding.pry
+    version = ReleaseTools::Version.new(operating_branch_info[:version]).to_ee
+    puts "--> Picking for #{version}..."
+    results = ReleaseTools::CherryPick::Service
+      .new(ReleaseTools::Project::GitlabEe, version, operating_branch_info[:branch])
+      .dry_run
 
-      binding.pry
-
-      results.each do |result|
-        puts result.inspect
-      end
+    results.each do |result|
+      puts result.inspect
     end
 
     # check for valid pick tag that contains version

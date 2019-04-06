@@ -62,7 +62,7 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     end
 
     it 'finds all auto-deploy branches' do
-      expect(subject).to be_nil
+      expect(subject).to eq(version: "11.11", branch: "11-11-auto-deploy-0900001-ee")
     end
   end
 end
