@@ -63,11 +63,6 @@ describe ReleaseTools::Qa::SecurityIssue do
         expect(@content).to include('Import/Export (import) is broken due to the addition of a CI table')
         expect(@content).to include('https://dev.gitlab.org/gitlabhq/gitlabhq/merge_requests/612')
       end
-
-      it "includes some security-specific headers" do
-        expect(@content).to include('### Prepare the environments for testing the security fixes')
-        expect(@content).to include('### Coordinate the Manual QA validation of the release')
-      end
     end
   end
 

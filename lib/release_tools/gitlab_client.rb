@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 module ReleaseTools
   class GitlabClient
     DEFAULT_GITLAB_API_ENDPOINT = 'https://gitlab.com/api/v4'
@@ -9,8 +10,6 @@ module ReleaseTools
       extend Forwardable
 
       def_delegator :client, :commits
-      def_delegator :client, :pipelines
-      def_delegator :client, :pipeline_jobs
       def_delegator :client, :file_contents
       def_delegator :client, :job_play
 
@@ -44,8 +43,26 @@ module ReleaseTools
       client.merge_request_approvals(project_path(project), iid)
     end
 
-    def self.pipeline(project = Project::GitlabCe, id)
-      client.pipeline(project_path(project), id)
+    def self.pipelines(project = Project::GitlabCe, options = {})
+      client.pipelines(project_path(project), options)
+    end
+
+    def self.pipeline(project = Project::GitlabCe, pipeline_id)
+      client.pipeline(project_path(project), pipeline_id)
+    end
+
+    def self.pipeline_jobs(project = Project::GitlabCe, pipeline_id = nil, options = {})
+      client.pipeline_jobs(project_path(project), pipeline_id, options)
+    end
+
+    def self.pipeline_job_by_name(project = Project::GitlabCe, pipeline_id = nil, job_name = nil, options = {})
+      client.pipeline_jobs(project_path(project), pipeline_id, { per_page: 100 }.merge(options)).auto_paginate do |job|
+        return job if job.name == job_name
+      end
+    end
+
+    def self.job_trace(project = Project::GitlabCe, job_id)
+      client.job_trace(project_path(project), job_id)
     end
 
     def self.run_trigger(project = Project::GitlabCe, token, ref, options)
@@ -330,3 +347,4 @@ module ReleaseTools
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

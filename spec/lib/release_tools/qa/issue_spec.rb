@@ -78,6 +78,27 @@ describe ReleaseTools::Qa::Issue do
         expect(content).to include("## Automated QA for 10.8.0-rc1")
       end
 
+      it 'includes the steps to manually setup a QA Review App' do
+        expect(content).to include('No QA job could be found for this release!')
+        expect(content).to include('### Prepare the environments for testing the security fixes')
+      end
+
+      context 'when a QA job is passed' do
+        let(:qa_job) { double(web_url: 'https://qa-job-url') }
+        let(:args) do
+          {
+            version: version,
+            project: project,
+            merge_requests: merge_requests,
+            qa_job: qa_job
+          }
+        end
+
+        it 'includes a link to the QA job' do
+          expect(content).to include("A QA job was automatically started: <#{qa_job.web_url}>")
+        end
+      end
+
       it 'includes the due date' do
         expect(content).to include('2018-09-11 14:40 UTC')
       end

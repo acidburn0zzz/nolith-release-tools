@@ -55,9 +55,11 @@ describe ReleaseTools::Qa::Services::BuildQaIssueService do
 
   describe '#issue' do
     let(:mrs) { ["mr1"] }
+    let(:qa_job) { double(web_url: 'https://qa-job-url') }
 
     before do
       allow(subject).to receive(:merge_requests).and_return(mrs)
+      allow(subject).to receive(:gitlab_provisioner_gitlab_qa_job).and_return(qa_job)
     end
 
     it 'creates the correct issue' do
@@ -65,6 +67,7 @@ describe ReleaseTools::Qa::Services::BuildQaIssueService do
       expect(subject.issue.version).to eq(version)
       expect(subject.issue.project).to eq(issue_project)
       expect(subject.issue.merge_requests).to eq(mrs)
+      expect(subject.issue.qa_job).to eq(qa_job)
     end
 
     context 'when SharedStatus.security_release? == true' do
@@ -75,10 +78,11 @@ describe ReleaseTools::Qa::Services::BuildQaIssueService do
       end
 
       it 'creates the correct security issue' do
-        expect(subject.issue).to be_a(ReleaseTools::Qa::SecurityIssue)
+        expect(subject.issue).to be_a(ReleaseTools::Qa::Issue)
         expect(subject.issue.version).to eq(version)
         expect(subject.issue.project).to eq(issue_project)
         expect(subject.issue.merge_requests).to eq(mrs)
+        expect(subject.issue.qa_job).to eq(qa_job)
         expect(subject.issue).to be_confidential
       end
     end

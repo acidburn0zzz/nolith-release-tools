@@ -8,7 +8,6 @@ module ReleaseTools
 
       def initialize(pipeline_id)
         @pipeline_id = pipeline_id.to_s.rjust(PIPELINE_ID_PADDING, '0')
-        @version = client.current_milestone.title.tr('.', '-')
       end
 
       def create_auto_deploy_branches!
@@ -22,8 +21,12 @@ module ReleaseTools
 
       private
 
+      def version
+        @version ||= client.current_milestone.title.tr('.', '-')
+      end
+
       def branch_name
-        "#{@version}-auto-deploy-#{@pipeline_id}-ee"
+        "#{version}-auto-deploy-#{@pipeline_id}-ee"
       end
 
       def latest_successful_ref(project)

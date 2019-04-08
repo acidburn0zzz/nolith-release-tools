@@ -10,14 +10,10 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     end
   end
 
-  let(:internal_client) { spy('ReleaseTools::GitlabClient') }
+  let(:internal_client) { double('ReleaseTools::GitlabClient', current_milestone: double(title: '11.10')) }
   let(:branch_commit) { double(latest_successful: double(id: '1234')) }
 
-  subject(:service) do
-    VCR.use_cassette('milestones/active') do
-      described_class.new('9000')
-    end
-  end
+  subject(:service) { described_class.new('9000') }
 
   before do
     allow(service).to receive(:client).and_return(internal_client)

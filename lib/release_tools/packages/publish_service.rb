@@ -35,13 +35,13 @@ module ReleaseTools
       def execute
         [ee_version, ce_version].each do |version|
           pipeline = client
-            .pipelines(project_path, scope: :tags, ref: version)
+            .pipelines(project, scope: :tags, ref: version)
             .first
 
           raise PipelineNotFoundError.new(version) unless pipeline
 
           triggers = client
-            .pipeline_jobs(project_path, pipeline.id, scope: :manual)
+            .pipeline_jobs(project, pipeline.id, scope: :manual)
             .select { |job| PLAY_STAGES.include?(job.stage) }
 
           if triggers.any?
