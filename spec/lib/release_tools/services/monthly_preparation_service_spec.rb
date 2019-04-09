@@ -9,7 +9,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
   subject(:service) { described_class.new(version) }
 
   before do
-    allow(service).to receive(:client).and_return(internal_client)
+    allow(service).to receive(:gitlab_client).and_return(internal_client)
   end
 
   # Simulate an error class from the `gitlab` gem
