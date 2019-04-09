@@ -21,43 +21,52 @@ auth_rake()
   bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1"
 }
 
-require_version
 setup_env
 
 case $1 in
   # release namespace
 
   "release:issue")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
   "release:merge")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
   "release:prepare")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
   "release:qa")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
   "release:tag")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
 
   # security namespace
 
   "security:issue")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
   "security:merge")
+    # Explicitly does not require a version
     auth_rake "$1[$MERGE_MASTER_SECURITY_MERGE_REQUESTS]"
     ;;
   "security:prepare")
-    auth_rake "$1[$RELEASE_VERSION]"
+    # Explicitly does not require a version
+    auth_rake "$1"
     ;;
   "security:qa")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
   "security:tag")
+    require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
 
