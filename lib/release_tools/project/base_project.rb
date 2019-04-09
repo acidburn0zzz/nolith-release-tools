@@ -11,6 +11,11 @@ module ReleaseTools
         \.git\z
       }x.freeze
 
+      # The default remote should be set
+      # to the source of repository
+      # mirroring
+      DEFAULT_REMOTE = :gitlab
+
       def self.remotes
         if SharedStatus.security_release?
           self::REMOTES.slice(:dev)
@@ -20,7 +25,7 @@ module ReleaseTools
       end
 
       def self.path
-        extract_path_from_remote(:gitlab).captures.join('/')
+        extract_path_from_remote(self::DEFAULT_REMOTE).captures.join('/')
       end
 
       def self.dev_path
@@ -28,7 +33,7 @@ module ReleaseTools
       end
 
       def self.group
-        extract_path_from_remote(:gitlab)[:group]
+        extract_path_from_remote(self::DEFAULT_REMOTE)[:group]
       end
 
       def self.dev_group
