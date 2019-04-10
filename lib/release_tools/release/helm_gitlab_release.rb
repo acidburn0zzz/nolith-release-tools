@@ -79,6 +79,7 @@ module ReleaseTools
         args = ['--include-subcharts']
         args << "--chart-version #{chart_version}"
         args << "--app-version=#{app_version}" if app_version && app_version.valid?
+        args << "--gitlab-repo=#{Project::GitlabEe.dev_path}"
 
         message = ["Update Chart Version to #{chart_version}"]
         message << "Update Gitlab Version to #{app_version}" if app_version && app_version.valid?
