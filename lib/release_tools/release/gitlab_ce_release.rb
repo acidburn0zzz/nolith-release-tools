@@ -20,6 +20,14 @@ module ReleaseTools
           version.to_omnibus(ee: version.ee?),
           options.merge(gitlab_repo_path: repository.path)
         ).execute
+
+        begin
+          Release::CNGImageRelease.new(version, options.merge(gitlab_repo_path: repository.path)).execute
+        rescue StandardError => ex
+          $stderr.puts "Exception raised during CNG image release."
+          $stderr.puts ex.message
+          $stderr.puts ex.backtrace
+        end
       end
 
       def after_release
