@@ -1,17 +1,11 @@
 ## Preparation
 
-- [ ] If we are _NOT_ in Feature Freeze, one can ignore creating [Preparation MRs]
-    - [ ] Create [Preparation MRs] for this version:
-        ```sh
-        # In Slack
-        /chatops run release prepare <%= version %>
-        ```
-
-    - [ ] Perform automated merging into the preparation branches:
-        ```sh
-        # In Slack
-        /chatops run release merge <%= version.to_ce %>
-        ```
+- [ ] If we are _NOT_ in Feature Freeze, one can ignore and close the [Preparation MRs] 
+- [ ] Perform automated merging into the preparation branches:
+    ```sh
+    # In Slack
+    /chatops run release merge <%= version.to_ce %>
+    ```
 
 - [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
 - [ ] Merge the preparation branches
