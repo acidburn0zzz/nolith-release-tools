@@ -212,6 +212,13 @@ task :publish, [:version] do |_t, args|
   ReleaseTools::Packages::PublishService
     .new(version)
     .execute
+
+  # Tag the Helm chart
+  begin
+    Rake::Task['helm:tag_chart'].invoke(nil, version.to_ce)
+  rescue StandardError => ex
+    Raven.capture_exception(ex)
+  end
 end
 
 # Undocumented; executed via CI schedule
