@@ -53,9 +53,13 @@ module ReleaseTools
         end
 
         repository.ensure_branch_exists(stable_branch)
+        repository.verify_sync!(stable_branch)
+
         bump_versions
+
         push_ref('branch', stable_branch)
         push_ref('branch', 'master')
+
         create_tag(tag)
         push_ref('tag', tag)
       end

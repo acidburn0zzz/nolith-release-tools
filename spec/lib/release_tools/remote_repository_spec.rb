@@ -470,6 +470,43 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
+  describe '#verify_sync!', :silence_stdout do
+    around do |ex|
+      # TODO: Remove feature flag after testing
+      ClimateControl.modify(FEATURE_VERIFY_SYNC: 'true') do
+        ex.run
+      end
+    end
+
+    it 'does nothing with only one remote' do
+      repo = described_class.get(repo_remotes.slice(:gitlab))
+
+      expect(repo).not_to receive(:ls_remotes)
+
+      repo.verify_sync!('foo')
+    end
+
+    it 'does nothing when remotes are in sync' do
+      repo = described_class.get(repo_remotes)
+
+      expect(repo).to receive(:ls_remotes).with('foo')
+        .and_return(gitlab: 'a', security: 'a')
+
+      expect { repo.verify_sync!('foo') }
+        .not_to raise_error
+    end
+
+    it 'raises an error when remotes are out of sync' do
+      repo = described_class.get(repo_remotes)
+
+      expect(repo).to receive(:ls_remotes).with('foo')
+        .and_return(gitlab: 'a', security: 'b')
+
+      expect { repo.verify_sync!('foo') }
+        .to raise_error(described_class::OutOfSyncError)
+    end
+  end
+
   describe '#cleanup', :silence_stdout do
     it 'removes the repository path' do
       repository = described_class.new(repo_path, {})
