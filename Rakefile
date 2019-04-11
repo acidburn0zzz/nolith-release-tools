@@ -217,9 +217,7 @@ task :publish, [:version] do |_t, args|
   begin
     Rake::Task['helm:tag_chart'].invoke(nil, version.to_ce)
   rescue StandardError => ex
-    $stderr.puts "Exception raised during Helm charts release."
-    $stderr.puts ex.message
-    $stderr.puts ex.backtrace
+    Raven.capture_exception(ex)
   end
 end
 
