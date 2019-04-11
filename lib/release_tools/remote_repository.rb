@@ -2,6 +2,8 @@
 
 module ReleaseTools
   class RemoteRepository
+    OutOfSyncError = Class.new(StandardError)
+
     class GitCommandError < StandardError
       def initialize(message, output = nil)
         message += "\n\n  #{output.gsub("\n", "\n  ")}" unless output.nil?
@@ -172,6 +174,24 @@ module ReleaseTools
       end
     end
 
+    # Verify the specified ref is the same across all remotes
+    def verify_sync!(ref)
+      # TODO: Remove feature flag after testing
+      return unless ENV['FEATURE_VERIFY_SYNC']
+      return unless remotes.size > 1
+
+      refs = ls_remotes(ref)
+
+      return if refs.values.uniq.size == 1
+
+      failure_message = refs
+        .map { |k, v| "#{k}: #{v}" }
+        .join(', ')
+        .indent(2)
+
+      raise OutOfSyncError, "Remotes are out of sync:\n#{failure_message}"
+    end
+
     def push(remote, ref)
       cmd = %W[push #{remote} #{ref}:#{ref}]
 
@@ -226,6 +246,19 @@ module ReleaseTools
       _, status = run_git %W[remote add #{name} #{url}]
 
       status.success?
+    end
+
+    # Returns a Hash of remote => SHA pairs for the specified ref on all remotes
+    def ls_remotes(ref)
+      remotes.keys.map do |remote_name|
+        output, status = run_git(%W[ls-remote #{remote_name} #{ref}])
+
+        if status.success?
+          [remote_name, output.split("\t").first.strip]
+        else
+          [remote_name, 'unknown']
+        end
+      end.to_h
     end
 
     def checkout_branch(branch)
