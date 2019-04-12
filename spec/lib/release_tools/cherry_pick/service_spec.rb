@@ -8,6 +8,10 @@ describe ReleaseTools::CherryPick::Service do
   subject { described_class.new(ReleaseTools::Project::GitlabCe, version) }
 
   describe 'initialize' do
+    it 'for some reason retuns an empty array' do
+      expect(subject).to eq([])
+    end
+
     it 'validates version argument' do
       expect { described_class.new(double, double(valid?: false)) }
         .to raise_error(RuntimeError, /Invalid version provided/)
@@ -18,6 +22,10 @@ describe ReleaseTools::CherryPick::Service do
 
       expect { described_class.new(double, version) }
         .to raise_error(RuntimeError, /Preparation merge request not found/)
+    end
+
+    it 'creates branch' do
+      expect(ReleaseTools::PreparationMergeRequest).to receive(:new)
     end
   end
 

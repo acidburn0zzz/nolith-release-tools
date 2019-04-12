@@ -17,21 +17,24 @@ namespace :auto_deploy do
   desc 'Pick commits into the auto deploy branches'
   task :pick do
     operating_branch_info = ReleaseTools::Services::AutoDeployBranchService.new(nil).filter_branches
-    binding.pry
     version = ReleaseTools::Version.new(operating_branch_info[:version]).to_ee
-    puts "--> Picking for #{version}..."
+    $stdout.puts "--> Picking for #{version}..."
     results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, version, operating_branch_info[:branch])
       .dry_run
 
+    $stdout.puts "Nothing to pick." if results.empty?
+    exit 1 if results.empty?
+
+    binding.pry
+
+    results = ReleaseTools::CherryPick::Service
+      .new(ReleaseTools::Project::GitlabEe, version, operating_branch_info[:branch])
+      .execute
+
     results.each do |result|
       puts result.inspect
     end
-
-    # check for valid pick tag that contains version
-    #versions.each do |version|
-    #end
-    # perform pick
   end
 end
 
