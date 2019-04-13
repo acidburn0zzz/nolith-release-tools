@@ -323,6 +323,26 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
+  describe '#tag_messages', :silence_stdout do
+    subject { described_class.get(repo_remotes) }
+
+    it 'calls "git tag --list --format"' do
+      allow(subject).to receive(:fetch).and_return true
+      expect(subject).to receive(:run_git).with(%w[tag --list --format="%(tag),%(subject)"]).and_call_original
+
+      subject.tag_messages
+    end
+
+    context 'when :sort is set' do
+      it 'sorts tags by the given format' do
+        allow(subject).to receive(:fetch).and_return true
+        expect(subject).to receive(:run_git).with(%w[tag --list --format="%(tag),%(subject)" --sort='-v:refname']).and_call_original
+
+        subject.tag_messages(sort: '-v:refname')
+      end
+    end
+  end
+
   describe '#status', :silence_stdout do
     subject { described_class.get(repo_remotes) }
 

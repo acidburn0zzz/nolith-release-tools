@@ -33,7 +33,11 @@ describe ReleaseTools::Release::HelmGitlabRelease, :silence_stdout do
       allow(ReleaseTools::Changelog::Manager).to receive(:new).with(repo_path).and_return(changelog_manager)
     end
 
-    context "with an existing 0-2-stable stable branch, releasing a security patch" do
+    # In the fixtures, we specified GitLab 11.0.5 going into Charts version
+    # 0.2.7. So the backport release 11.0.6 becomes Charts version 0.2.8.
+    # This makes sure our code to map backport GitLab releases to a Chart
+    # version work.
+    context "with an existing 0-2-stable stable branch, releasing a backport security patch" do
       let(:chart_version)          { nil }
       let(:expected_chart_version) { '0.2.8' }
       let(:gitlab_version)         { "11.0.6" }
@@ -47,21 +51,22 @@ describe ReleaseTools::Release::HelmGitlabRelease, :silence_stdout do
       end
 
       describe "release GitLab Chart by passing only gitlab version" do
-        it 'cannot derive chart version' do
-          expect { release.execute }.to raise_error(RuntimeError, /Unable to derive chart version for an older GitLab/)
-        end
+        it_behaves_like 'helm-release #execute', expect_master: false
       end
     end
 
-    context "with an existing 0-3-stable stable branch, releasing a patch" do
+    # In the fixtures, we mimicked  Charts bumping the major version due to
+    # breaking changes, and thus GitLab 11.2.0 went into Charts version 1.0.0
+    # So, next patch release 11.2.1 becomes Charts version 1.0.1
+    context "with an existing 1-0-stable branch, releasing a regular patch version" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '0.3.1' }
-      let(:gitlab_version)         { "11.1.1" }
-      let(:branch)                 { "0-3-stable" }
+      let(:expected_chart_version) { '1.0.1' }
+      let(:gitlab_version)         { "11.2.1" }
+      let(:branch)                 { "1-0-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "release GitLab Chart" do
-        let(:chart_version) { "0.3.1" }
+        let(:chart_version) { "1.0.1" }
 
         it_behaves_like 'helm-release #execute'
       end
@@ -71,15 +76,15 @@ describe ReleaseTools::Release::HelmGitlabRelease, :silence_stdout do
       end
     end
 
-    context "with a new 1-0-stable stable branch, updating to a GitLab RC" do
+    context "with a new 1-1-stable branch, releasing a GitLab RC" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '1.0.0' }
-      let(:gitlab_version)         { "11.2.0-rc1" }
-      let(:branch)                 { "1-0-stable" }
+      let(:expected_chart_version) { '1.1.0' }
+      let(:gitlab_version)         { "11.4.0-rc1" }
+      let(:branch)                 { "1-1-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "update GitLab Chart" do
-        let(:chart_version) { "1.0.0" }
+        let(:chart_version) { "1.1.0" }
 
         it_behaves_like 'helm-release #execute', expect_tag: false, expect_master: false
       end
@@ -89,15 +94,15 @@ describe ReleaseTools::Release::HelmGitlabRelease, :silence_stdout do
       end
     end
 
-    context "with a new 1-0-stable stable branch, releasing a stable .0" do
+    context "with a new 1-1-stable branch, releasing a GitLab minor version" do
       let(:chart_version)          { nil }
-      let(:expected_chart_version) { '1.0.0' }
-      let(:gitlab_version)         { "11.2.0" }
-      let(:branch)                 { "1-0-stable" }
+      let(:expected_chart_version) { '1.1.0' }
+      let(:gitlab_version)         { "11.4.0" }
+      let(:branch)                 { "1-1-stable" }
       let(:release)                { described_class.new(chart_version, gitlab_version) }
 
       describe "update GitLab Chart" do
-        let(:chart_version) { "1.0.0" }
+        let(:chart_version) { "1.1.0" }
 
         it_behaves_like 'helm-release #execute'
       end

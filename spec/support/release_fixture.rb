@@ -151,25 +151,26 @@ class HelmReleaseFixture
     commit_blob(path: 'Chart.yaml', content: chart_data, message: 'Add chart yaml')
 
     repository.branches.create('0-2-stable', 'HEAD')
-    repository.tags.create('v0.2.7', 'HEAD')
+    repository.tags.create('v0.2.7', 'HEAD', message: 'Version v0.2.7 - contains GitLab EE 11.0.5')
 
+    # Charts bumping a major version due to breaking changes
     chart_data = <<~EOS
       apiVersion: v1
       name: gitlab
-      version: 0.3.0
-      appVersion: 11.1.0
+      version: 1.0.0
+      appVersion: 11.2.0
     EOS
 
     commit_blob(path: 'Chart.yaml', content: chart_data, message: 'Update chart yaml')
 
-    repository.branches.create('0-3-stable', 'HEAD')
-    repository.tags.create('v0.3.0', 'HEAD')
+    repository.branches.create('1-0-stable', 'HEAD')
+    repository.tags.create('v1.0.0', 'HEAD', message: 'Version v1.0.0 - contains GitLab EE 11.2.0')
 
     # Bump the versions in master
     chart_data = <<~EOS
       apiVersion: v1
       name: gitlab
-      version: 0.3.0
+      version: 1.0.0
       appVersion: master
     EOS
 
