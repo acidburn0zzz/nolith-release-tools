@@ -14,82 +14,53 @@ module ReleaseTools
         end
       end
 
-      # Determine the next helm chart version by comparing the difference in gitlab
-      # version between the last release and the new release
-      def next_version(gitlab_version)
-        # The 11.2.0 release marks the GA release of the charts.
-        # We will bump the chart version from 0.3.x to 1.0.0 for the GA, instead of
-        # bumping to 0.4.0
-        if gitlab_version >= HelmGitlabVersion.new('11.2.0-rc1') && gitlab_version <= HelmGitlabVersion.new('11.2.0')
-          return HelmChartVersion.new('1.0.0')
-        end
-
-        # switch to the latest branch, use the latest tag if we are doing a patch release
-        checkout_latest(use_tag: gitlab_version.patch?)
-
-        # Diff the old chart data with the new release to find the new chart version
-        self.class.derive_chart_version(parse_chart_file, gitlab_version)
+      def get_latest_version(versions)
+        latest_version = versions.max_by { |v| v.sub('v', '') }.sub('v', '')
+        HelmGitlabVersion.new(latest_version)
       end
 
-      def self.derive_chart_version(old_chart_file, new_gitlab_version)
-        old_chart_version = HelmChartVersion.new(old_chart_file.version)
-        old_gitlab_version = HelmGitlabVersion.new(old_chart_file.app_version)
+      def get_matching_tags(messages: {}, major: '\d+', minor: '\d+', patch: '\d+')
+        messages.select { |_tag, message| message =~ /contains GitLab .. #{major}\.#{minor}\.#{patch}/ }
+      end
 
-        # If the old gitlab version isn't semver, we are likely branching from master
-        # and are branching to prep for release. Bump the chart version based on the type
-        # of release we are doing
-        app_change =
-          if old_gitlab_version.valid?
-            if old_gitlab_version > new_gitlab_version
-              raise "Unable to derive chart version for an older GitLab #{new_gitlab_version}, " \
-                    "GitLab is already version #{old_gitlab_version}"
-            end
+      # Determine the next helm chart using existing tags in the repo. The
+      # logic is as follows
+      # 1. Check if tags already exist matching the pattern <MAJOR>.<MINOR>.#.
+      #    If so, we are releasing a new patch version
+      # 2. Else, check if tags already exist matching the pattern <MAJOR>.#.#.
+      #    If so, we are releasing a new minor version
+      # 3. Else, we are releasing a new major version
+      def next_version(gitlab_version)
+        tag_messages = repository.tag_messages
 
-            new_gitlab_version.diff(old_gitlab_version)
-          elsif new_gitlab_version.minor.zero? && new_gitlab_version.patch.zero?
-            :major
-          elsif new_gitlab_version.patch.zero?
-            :minor
-          else
-            :patch
-          end
-
-        case app_change
-        when :major
-          HelmChartVersion.new("#{old_chart_version.major + 1}.0.0")
-        when :minor
-          HelmChartVersion.new(old_chart_version.next_minor)
-        when :patch
-          HelmChartVersion.new(old_chart_version.next_patch)
-        else
-          old_chart_version.dup
+        unless get_matching_tags(messages: tag_messages, major: gitlab_version.major, minor: gitlab_version.minor, patch: gitlab_version.patch).empty?
+          raise "A Chart version already exists for GitLab version #{gitlab_version}."
         end
+
+        matching_minor_tags = get_matching_tags(messages: tag_messages, major: gitlab_version.major, minor: gitlab_version.minor)
+        matching_major_tags = get_matching_tags(messages: tag_messages, major: gitlab_version.major)
+
+        next_version = if !matching_minor_tags.empty?
+                         # There is a minor version series which matches the
+                         # incoming one, and we need to create a new patch
+                         # version in that series.
+                         get_latest_version(matching_minor_tags.keys).next_patch
+                       elsif !matching_major_tags.empty?
+                         # There is a major version series which matches the
+                         # incoming one, and we need to create a new minor
+                         # version in that series.
+                         get_latest_version(matching_major_tags.keys).next_minor
+                       else
+                         # We are on a new major version, and we need to find
+                         # the latest major version and bump it
+                         get_latest_version(tag_messages.keys).next_major
+                       end
+
+        HelmChartVersion.new(next_version)
       end
 
       def parse_chart_file
         Helm::ChartFile.new(File.join(repository.path, 'Chart.yaml'))
-      end
-
-      private
-
-      def checkout_latest(use_tag: false)
-        # Use the previous tag if requested
-        if use_tag
-          tags = repository.tags(sort: '-v:refname')
-          base_branch = tags.first if tags
-        else
-          base_branch = 'master'
-        end
-
-        unless base_branch
-          raise StandardError.new("Failed to find a previous tag.")
-        end
-
-        unless repository.fetch(base_branch)
-          raise StandardError.new("Failed to fetch #{base_branch}.")
-        end
-
-        repository.ensure_branch_exists(base_branch)
       end
     end
   end
