@@ -50,19 +50,4 @@ describe ReleaseTools::Services::AutoDeployBranchService do
       end
     end
   end
-
-  describe '#filter_branches' do
-    let(:branches) { double(version: "11.10") }
-
-
-    subject(:filter_branches) do
-      VCR.use_cassette('milestones/active') do
-        described_class.new('9000')
-      end
-    end
-
-    it 'finds all auto-deploy branches' do
-      expect(subject).to eq(version: "11.11", branch: "11-11-auto-deploy-0900001-ee")
-    end
-  end
 end
