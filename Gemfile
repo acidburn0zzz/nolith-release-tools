@@ -16,7 +16,7 @@ gem 'version_sorter', '~> 2.2.0'
 gem 'parallel', '~> 1.14'
 
 group :development, :test do
-  gem 'pry-byebug'
+  gem 'byebug'
   gem 'climate_control', '~> 0.2.0'
   gem 'pry'
   gem 'rspec',           '~> 3.7.0'
