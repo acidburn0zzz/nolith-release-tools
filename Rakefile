@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'pry'
 
 require_relative 'lib/release_tools'
 require_relative 'lib/release_tools/support/tasks_helper'
@@ -23,36 +24,23 @@ namespace :auto_deploy do
     version = ReleaseTools::Version.new(scrub_version).to_ee
     $stdout.puts "--> Picking for #{version}..."
 
+    $stdout.puts "Cherry-picking for EE..."
     results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
       .dry_run
 
-    if results.empty?
-      $stdout.puts "Nothing to pick."
-      exit 1
-    end
-
     results.each do |result|
       puts result.web_url
     end
 
+    $stdout.puts "Cherry-picking for CE..."
     results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabCe, version, auto_deploy_branch)
       .dry_run
 
-    if results.empty?
-      $stdout.puts "Nothing to pick."
-      exit 1
-    end
-
     results.each do |result|
       puts result.web_url
     end
-
-    # Fetch CE
-    # Fetch EE
-    # Merge CE into EE
-    # Push EE
   end
 end
 
