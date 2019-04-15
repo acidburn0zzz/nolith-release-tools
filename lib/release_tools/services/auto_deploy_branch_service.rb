@@ -34,21 +34,6 @@ module ReleaseTools
         @version ||= gitlab_client.current_milestone.title.tr('.', '-')
       end
 
-      def available_branches
-        Struct.new("Version", :version, :pipeline_id, :branch_name)
-        puts "finding available branches..."
-        ReleaseTools::GitlabClient.protected_branches(ReleaseTools::Project::GitlabEe.path).auto_paginate.each do |branch|
-          puts branch.name
-          next unless branch.name.match?(/^\d+-\d+-auto-deploy-\d+-ee$/)
-
-          branch_name = branch.name
-          version = branch.name.match(/^(\d+-\d+)-auto-deploy-(\d+)-ee$/)[1].tr('-', '.')
-          pipeline_id = branch.name.match(/^(\d+-\d+)-auto-deploy-(\d+)-ee$/)[2]
-          version_data = Struct::Version.new(version, pipeline_id, branch_name)
-          versions << version_data
-        end
-      end
-
       def update_auto_deploy_ci
         gitlab_client.update_variable(Project::ReleaseTools.path, CI_VAR_AUTO_DEPLOY, branch_name)
       rescue Gitlab::Error::NotFound
