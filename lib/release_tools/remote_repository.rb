@@ -65,7 +65,8 @@ module ReleaseTools
     def checkout_new_branch(branch, base: 'master')
       fetch(base)
 
-      output, status = run_git %W[checkout --quiet -b #{branch} #{base}]
+      # output, status = run_git %W[checkout --quiet -b #{branch} #{base}]
+      output, status = run_git %W[checkout --quiet #{branch}]
 
       status.success? || raise(CannotCheckoutBranchError.new(branch, output))
     end

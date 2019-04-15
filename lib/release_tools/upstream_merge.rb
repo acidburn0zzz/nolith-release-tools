@@ -33,7 +33,7 @@ module ReleaseTools
     private
 
     def repository
-      @repository ||= RemoteRepository.get({ origin: origin, upstream: upstream }, global_depth: 200)
+      @repository ||= RemoteRepository.get({ origin: origin, upstream: upstream }, global_depth: nil)
     end
 
     def setup_merge_drivers

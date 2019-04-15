@@ -26,7 +26,7 @@ namespace :auto_deploy do
 
     $stdout.puts "Cherry-picking for EE..."
     results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, "#{auto_deploy_branch}-ee")
+      .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
       .dry_run
 
     results.each do |result|
