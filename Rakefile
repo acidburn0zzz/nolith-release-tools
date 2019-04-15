@@ -35,6 +35,24 @@ namespace :auto_deploy do
     results.each do |result|
       puts result.web_url
     end
+
+    results = ReleaseTools::CherryPick::Service
+      .new(ReleaseTools::Project::GitlabCe, version, auto_deploy_branch)
+      .dry_run
+
+    if results.empty?
+      $stdout.puts "Nothing to pick."
+      exit 1
+    end
+
+    results.each do |result|
+      puts result.web_url
+    end
+
+    # Fetch CE
+    # Fetch EE
+    # Merge CE into EE
+    # Push EE
   end
 end
 
