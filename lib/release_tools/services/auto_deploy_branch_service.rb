@@ -28,28 +28,6 @@ module ReleaseTools
         update_auto_deploy_ci
       end
 
-      def filter_branches
-        puts "Getting available branches..."
-        versions = available_branches || branches
-        Struct.new("Version", :version, :pipeline_id, :branch_name)
-
-        latest_version = []
-        versions.each do |v|
-          latest_version << v.version
-        end
-
-        latest_version.uniq!
-        latest_version = VersionSorter.rsort(latest_version).first
-
-        pipelines = []
-        versions.each do |v|
-          pipelines << v.pipeline_id if v.version == latest_version
-        end
-
-        branch = versions.find { |struct| struct.version == latest_version && struct.pipeline_id == pipelines.sort.reverse.first }.branch_name
-        { version: latest_version, branch: branch }
-      end
-
       private
 
       def version
