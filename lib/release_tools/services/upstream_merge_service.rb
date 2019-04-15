@@ -21,7 +21,7 @@ module ReleaseTools
         merge = UpstreamMerge.new(
           origin: Project::GitlabEe.remotes[:gitlab],
           upstream: Project::GitlabCe.remotes[:gitlab],
-          merge_branch: upstream_merge_request.source_branch
+          source_branch: upstream_merge_request.source_branch
         )
         upstream_merge_request.conflicts = merge.execute!
 

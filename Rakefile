@@ -41,6 +41,13 @@ namespace :auto_deploy do
     results.each do |result|
       puts result.web_url
     end
+
+    ReleaseTools::UpstreamMerge.new(
+      origin: ReleaseTools::Project::GitlabEe.remotes[:gitlab],
+      upstream: ReleaseTools::Project::GitlabCe.remotes[:gitlab],
+      source_branch: auto_deploy_branch,
+      target_branch: auto_deploy_branch
+    ).dry_run
   end
 end
 

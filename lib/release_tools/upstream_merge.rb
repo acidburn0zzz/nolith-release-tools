@@ -2,17 +2,18 @@
 
 module ReleaseTools
   class UpstreamMerge
-    attr_reader :origin, :upstream, :merge_branch
+    attr_reader :origin, :upstream, :source_branch, :target_branch
 
     CONFLICT_MARKER_REGEX = /\A(?<conflict_type>[ADU]{2}) /.freeze
 
     DownstreamAlreadyUpToDate = Class.new(StandardError)
     PushFailed = Class.new(StandardError)
 
-    def initialize(origin:, upstream:, merge_branch:)
+    def initialize(origin:, upstream:, source_branch:, target_branch: 'master')
       @origin = origin
       @upstream = upstream
-      @merge_branch = merge_branch
+      @source_branch = source_branch
+      @target_branch = target_branch
     end
 
     def execute!
@@ -22,6 +23,11 @@ module ReleaseTools
       after_upstream_merge
 
       conflicts
+    end
+
+    def dry_run
+      setup_merge_drivers
+      prepare_upstream_merge
     end
 
     private
@@ -41,13 +47,13 @@ module ReleaseTools
     def prepare_upstream_merge
       $stdout.puts "Prepare repository...".colorize(:green)
       # We fetch CE first to make sure our EE copy is more up-to-date!
-      repository.fetch('master', remote: :upstream)
-      repository.fetch('master', remote: :origin)
-      repository.checkout_new_branch(merge_branch, base: 'origin/master')
+      repository.fetch(target_branch, remote: :upstream)
+      repository.fetch(target_branch, remote: :origin)
+      repository.checkout_new_branch(source_branch, base: "origin/#{target_branch}")
     end
 
     def execute_upstream_merge
-      result = repository.merge('upstream/master', merge_branch, no_ff: true)
+      result = repository.merge("upstream/#{target_branch}", source_branch, no_ff: true)
 
       # Depending on Git version, it's "up-to-date" or "up to date"...
       raise DownstreamAlreadyUpToDate if result.output =~ /\AAlready up[\s\-]to[\s\-]date/
@@ -61,7 +67,7 @@ module ReleaseTools
         add_latest_modifier_to_conflicts(conflicts)
       end
 
-      raise PushFailed unless repository.push(origin, merge_branch)
+      raise PushFailed unless repository.push(origin, source_branch)
 
       conflicts
     end

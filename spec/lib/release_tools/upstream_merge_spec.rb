@@ -16,7 +16,8 @@ describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do
     {
       origin: ee_repo_url,
       upstream: "file://#{ce_fixture.fixture_path}",
-      merge_branch: "ce-to-ee-#{SecureRandom.hex}"
+      source_branch: "ce-to-ee-#{SecureRandom.hex}",
+      target_branch: 'master'
     }
   end
   let(:git_author_name) { 'Your Name' }
@@ -53,12 +54,12 @@ describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do
         it 'creates a branch and merges upstream/master into it' do
           subject.execute!
 
-          expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
+          expect(ee_rugged_repo).to have_head(default_options[:source_branch])
           expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to eq('New CONTRIBUTING.md from CE')
           expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq('New README.md from EE')
 
           expect(ee_rugged_repo).to have_commit_message <<~COMMIT_MESSAGE
-            Merge remote-tracking branch 'upstream/master' into #{default_options[:merge_branch]}
+            Merge remote-tracking branch 'upstream/master' into #{default_options[:source_branch]}
           COMMIT_MESSAGE
         end
       end
@@ -76,7 +77,7 @@ describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do
         it 'commits the conflicts and includes `[ci skip]` in the commit message' do
           subject.execute!
 
-          expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
+          expect(ee_rugged_repo).to have_head(default_options[:source_branch])
           expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq <<~CONTENT
             <<<<<<< HEAD
             New README.md from EE
@@ -86,7 +87,7 @@ describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do
           CONTENT
 
           expect(ee_rugged_repo).to have_commit_message <<~COMMIT_MESSAGE
-            Merge remote-tracking branch 'upstream/master' into #{default_options[:merge_branch]}
+            Merge remote-tracking branch 'upstream/master' into #{default_options[:source_branch]}
 
             # Conflicts:
             #\tREADME.md
@@ -97,13 +98,13 @@ describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do
       end
 
       it 'pushed the merge branch' do
-        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch]).and_return(true)
+        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:source_branch]).and_return(true)
 
         subject.execute!
       end
 
       it 'raises a PushError upon failure' do
-        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:merge_branch]).and_return(false)
+        expect(subject.__send__(:repository)).to receive(:push).with(ee_repo_url, default_options[:source_branch]).and_return(false)
 
         expect { subject.execute! }.to raise_error(described_class::PushFailed)
       end
@@ -113,7 +114,7 @@ describe ReleaseTools::UpstreamMerge, :silence_stdout, :aggregate_failures do
       it 'raises a DownstreamAlreadyUpToDate error' do
         expect { subject.execute! }.to raise_error(described_class::DownstreamAlreadyUpToDate)
 
-        expect(ee_rugged_repo).to have_head(default_options[:merge_branch])
+        expect(ee_rugged_repo).to have_head(default_options[:source_branch])
         expect(File.read(File.join(ee_repo_path, 'CONTRIBUTING.md'))).to eq('Sample CONTRIBUTING.md')
         expect(File.read(File.join(ee_repo_path, 'README.md'))).to eq('Sample README.md')
 
