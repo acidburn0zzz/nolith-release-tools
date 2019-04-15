@@ -16,24 +16,25 @@ namespace :auto_deploy do
 
   desc 'Pick commits into the auto deploy branches'
   task :pick do
-    operating_branch_info = ReleaseTools::Services::AutoDeployBranchService.new(nil).filter_branches
-    version = ReleaseTools::Version.new(operating_branch_info[:version]).to_ee
+    auto_deploy_branch = ENV['AUTO_DEPLOY_BRANCH']
+    abort('AUTO_DEPLOY_BRANCH must be set for this rake task'.colorize(:red)) unless auto_deploy_branch
+    puts "We'll pick into #{auto_deploy_branch}"
+
+    scrub_version = auto_deploy_branch.match(/^(\d+-\d+)-auto-deploy-(\d+)-ee$/)[1].tr('-', '.')
+    version = ReleaseTools::Version.new(scrub_version).to_ee
     $stdout.puts "--> Picking for #{version}..."
+
     results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, operating_branch_info[:branch])
+      .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
       .dry_run
 
-    $stdout.puts "Nothing to pick." if results.empty?
-    exit 1 if results.empty?
-
-    binding.pry
-
-    results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, operating_branch_info[:branch])
-      .execute
+    if results.empty?
+      $stdout.puts "Nothing to pick."
+      exit 1
+    end
 
     results.each do |result|
-      puts result.inspect
+      puts result.web_url
     end
   end
 end
