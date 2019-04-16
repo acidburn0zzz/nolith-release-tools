@@ -50,16 +50,12 @@ namespace :auto_deploy do
 
     raise "Nothing was picked, bailing..." if successful_picks == 0
 
-    conflicts = ReleaseTools::UpstreamMerge.new(
-      origin: ReleaseTools::Project::GitlabEe.remotes[:gitlab],
-      upstream: ReleaseTools::Project::GitlabCe.remotes[:gitlab],
-      source_branch: auto_deploy_branch,
-      target_branch: auto_deploy_branch
-    ).execute!
-
-    unless conflicts.nil?
-      raise "Conflicts in CE to EE merge."
-    end
+    ReleaseTools::GitlabOpsClient.run_trigger(
+      ReleaseTools::Project::MergeTrain, 
+      ENV.fetch['MERGE_TRAIN_TRIGGER_TOKEN'],
+      master,
+      {}
+    )
   end
 end
 
