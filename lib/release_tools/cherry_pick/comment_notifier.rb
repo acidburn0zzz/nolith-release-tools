@@ -108,8 +108,8 @@ module ReleaseTools
       end
 
       def create_merge_request_comment(merge_request, comment)
-        return unless merge_request.respond_to?(:project_id) &&
-          merge_request.respond_to?(:iid)
+        return unless merge_request.respond_to?(:project_id)
+        return unless merge_request.respond_to?(:iid)
 
         client.create_merge_request_comment(
           merge_request.project_id,
