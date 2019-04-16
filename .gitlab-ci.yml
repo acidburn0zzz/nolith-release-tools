@@ -5,7 +5,6 @@ stages:
   - deploy
   - automation
   - chatops
-  - green-master-build-trigger
 
 cache: &global-cache
   key: "ruby-25"
@@ -192,18 +191,18 @@ chatops:
 
 ee-green-master-build-trigger:
   <<: *with-bundle
-  stage: green-master-build-trigger
+  stage: automation
   script:
-    - bundle exec rake green_master:ee[true]
+    - bundle exec rake passing_build:ee[master, true]
   only:
     variables:
       - $EE_GREEN_MASTER_BUILD_TRIGGER == "true"
 
 ce-green-master-build-trigger:
   <<: *with-bundle
-  stage: green-master-build-trigger
+  stage: automation
   script:
-    - bundle exec rake green_master:ce[true]
+    - bundle exec rake passing_build:ce[master, true]
   only:
     variables:
       - $CE_GREEN_MASTER_BUILD_TRIGGER == "true"

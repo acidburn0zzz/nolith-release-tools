@@ -1,25 +1,28 @@
 # frozen_string_literal: true
 
 module ReleaseTools
-  class GreenMaster
-    attr_reader :project
+  class PassingBuild
+    attr_reader :project, :ref
 
-    def initialize(project)
+    def initialize(project, ref)
       @project = project
+      @ref = ref
     end
 
     def execute(args)
-      commit = ReleaseTools::Commits.new(project, ref: 'master')
+      commit = ReleaseTools::Commits.new(project, ref: ref)
         .latest_dev_green_build_commit
 
-      raise "Unable to find a passing build for `master` on dev" if commit.nil?
+      if commit.nil?
+        raise "Unable to find a passing #{project} build for `#{ref}` on dev"
+      end
 
-      $stdout.puts "Found #{project} green master at #{commit.id}"
+      $stdout.puts "Found at #{commit.id}".indent(4)
 
       versions = ReleaseTools::ComponentVersions.get(project, commit)
 
       versions.each do |component, version|
-        $stdout.puts "#{component}: #{version}".indent(2)
+        $stdout.puts "#{component}: #{version}".indent(6)
       end
 
       trigger_build(commit, versions) if args.trigger_build
