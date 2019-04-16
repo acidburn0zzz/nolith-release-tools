@@ -193,7 +193,7 @@ ee-green-master-build-trigger:
   <<: *with-bundle
   stage: automation
   script:
-    - bundle exec rake passing_build:ee[master, true]
+    - bundle exec rake 'passing_build:ee[master, true]'
   only:
     variables:
       - $EE_GREEN_MASTER_BUILD_TRIGGER == "true"
@@ -202,7 +202,7 @@ ce-green-master-build-trigger:
   <<: *with-bundle
   stage: automation
   script:
-    - bundle exec rake passing_build:ce[master, true]
+    - bundle exec rake 'passing_build:ce[master, true]'
   only:
     variables:
       - $CE_GREEN_MASTER_BUILD_TRIGGER == "true"
