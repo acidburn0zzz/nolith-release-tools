@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'pry'
 
 require_relative 'lib/release_tools'
 require_relative 'lib/release_tools/support/tasks_helper'

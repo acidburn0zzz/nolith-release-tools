@@ -20,7 +20,7 @@ describe ReleaseTools::Services::UpstreamMergeService do
         .with(
           origin: ReleaseTools::Project::GitlabEe.remotes[:gitlab],
           upstream: ReleaseTools::Project::GitlabCe.remotes[:gitlab],
-          source_branch: 'ce-to-ee-2017-11-15'
+          merge_branch: 'ce-to-ee-2017-11-15'
         ).and_return(upstream_merge)
     end
   end
