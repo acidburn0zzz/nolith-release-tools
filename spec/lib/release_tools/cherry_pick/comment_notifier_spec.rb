@@ -16,7 +16,12 @@ describe ReleaseTools::CherryPick::CommentNotifier do
   end
 
   let(:merge_request) do
-    double(iid: 3, project_id: 2, url: 'https://example.com')
+    double(
+      iid: 3,
+      project_id: 2,
+      url: 'https://example.com',
+      author: double(username: 'liz.lemon')
+    )
   end
 
   def result_double(value)
@@ -61,7 +66,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
         expect(client).to have_received(:create_merge_request_comment).with(
           merge_request.project_id,
           merge_request.iid,
-          FailureMessageArgument.new(version)
+          FailureMessageArgument.new(version, merge_request.author)
         )
       end
     end
@@ -150,12 +155,14 @@ class SuccessMessageArgument
 end
 
 class FailureMessageArgument
-  def initialize(version)
+  def initialize(version, author)
     @version = version
+    @author = author
   end
 
   def ===(other)
-    other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
+    other.include?("@#{@author.username}") &&
+      other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
       other.include?("for `#{@version}`")
   end
 end
