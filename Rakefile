@@ -31,7 +31,9 @@ namespace :auto_deploy do
       .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
       .execute
 
+    successful_picks = 0
     results.each do |result|
+      successful_picks += 1 if result.success?
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
@@ -42,8 +44,11 @@ namespace :auto_deploy do
       .execute
 
     results.each do |result|
+      successful_picks += 1 if result.success?
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
+
+    raise "Nothing was picked, bailing..." if successful_picks == 0
 
     conflicts = ReleaseTools::UpstreamMerge.new(
       origin: ReleaseTools::Project::GitlabEe.remotes[:gitlab],
