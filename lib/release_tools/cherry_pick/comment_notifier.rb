@@ -5,10 +5,12 @@ module ReleaseTools
     class CommentNotifier
       attr_reader :version
       attr_reader :prep_mr
+      attr_reader :branch_name
 
-      def initialize(version, prep_mr)
+      def initialize(version, prep_mr: nil, branch_name: nil)
         @version = version
         @prep_mr = prep_mr
+        @branch_name = branch_name
       end
 
       def comment(pick_result)
@@ -52,15 +54,18 @@ module ReleaseTools
       def blog_post_summary(picked)
         return if version.rc?
         return if picked.empty?
-        return unless prep_mr
+
+        notify_object = prep_mr&.url || branch_name
 
         message = <<~MSG
-          The following merge requests were picked into #{prep_mr.url}:
+          The following merge requests were picked into #{notify_object}:
 
           ```
           #{markdown_list(picked.collect(&:to_markdown))}
           ```
         MSG
+
+        return message unless prep_mr
 
         create_issue_comment(prep_mr.release_issue, message)
       end
@@ -72,14 +77,16 @@ module ReleaseTools
       end
 
       def successful_comment(pick_result)
-        return unless prep_mr
+        notify_object = prep_mr&.url || branch_name
 
         comment = <<~MSG
-          Automatically picked into #{prep_mr.url}, will merge into
+          Automatically picked into #{notify_object}, will merge into
           `#{version.stable_branch}` ready for `#{version}`.
 
           /unlabel #{PickIntoLabel.reference(version)}
         MSG
+
+        return unless prep_mr
 
         create_merge_request_comment(pick_result.merge_request, comment)
       end

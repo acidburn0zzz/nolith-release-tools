@@ -19,10 +19,12 @@ module ReleaseTools
 
       attr_reader :project
       attr_reader :version
+      attr_reader :pick_branch
 
       def initialize(project, version, pick_branch = nil)
         @project = project
         @version = version
+        @pick_branch = pick_branch
 
         assert_version!
 
@@ -78,9 +80,9 @@ module ReleaseTools
 
       def notifier
         if SharedStatus.dry_run?
-          @notifier ||= ConsoleNotifier.new(version, @prep_mr)
+          @notifier ||= ConsoleNotifier.new(version, prep_mr: @prep_mr, branch_name: pick_branch)
         else
-          @notifier ||= CommentNotifier.new(version, @prep_mr)
+          @notifier ||= CommentNotifier.new(version, prep_mr: @prep_mr, branch_name: pick_branch)
         end
       end
 
