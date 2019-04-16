@@ -49,7 +49,8 @@ module ReleaseTools
       # We fetch CE first to make sure our EE copy is more up-to-date!
       repository.fetch(target_branch, remote: :upstream)
       repository.fetch(target_branch, remote: :origin)
-      repository.checkout_new_branch(source_branch, base: "origin/#{target_branch}")
+      repository.ensure_branch_exists(source_branch)
+      repository.configure_upstream_to(target_branch)
     end
 
     def execute_upstream_merge

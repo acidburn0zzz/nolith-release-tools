@@ -65,8 +65,7 @@ module ReleaseTools
     def checkout_new_branch(branch, base: 'master')
       fetch(base)
 
-      # output, status = run_git %W[checkout --quiet -b #{branch} #{base}]
-      output, status = run_git %W[checkout --quiet #{branch}]
+      output, status = run_git %W[checkout --quiet -b #{branch} #{base}]
 
       status.success? || raise(CannotCheckoutBranchError.new(branch, output))
     end
@@ -226,6 +225,12 @@ module ReleaseTools
       cmd_output = `#{final_args.join(' ')} 2>&1`
 
       [cmd_output, $CHILD_STATUS]
+    end
+
+    def configure_upstream_to(remote)
+      _, status = run_git %W[branch --set-upstream-to origin/#{remote}]
+
+      status.success?
     end
 
     private

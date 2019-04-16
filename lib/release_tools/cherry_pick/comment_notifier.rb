@@ -26,6 +26,7 @@ module ReleaseTools
       # unpicked - Array of failure Results
       def summary(picked, unpicked)
         return if picked.empty? && unpicked.empty?
+        return unless prep_mr
 
         message = []
 
@@ -51,6 +52,7 @@ module ReleaseTools
       def blog_post_summary(picked)
         return if version.rc?
         return if picked.empty?
+        return unless prep_mr
 
         message = <<~MSG
           The following merge requests were picked into #{prep_mr.url}:
@@ -70,6 +72,8 @@ module ReleaseTools
       end
 
       def successful_comment(pick_result)
+        return unless prep_mr
+
         comment = <<~MSG
           Automatically picked into #{prep_mr.url}, will merge into
           `#{version.stable_branch}` ready for `#{version}`.

@@ -16,6 +16,8 @@ namespace :auto_deploy do
 
   desc 'Pick commits into the auto deploy branches'
   task :pick do
+    icon = ->(result) { result.success? ? "✓" : "✗" }
+
     auto_deploy_branch = ENV['AUTO_DEPLOY_BRANCH']
     abort('AUTO_DEPLOY_BRANCH must be set for this rake task'.colorize(:red)) unless auto_deploy_branch
     puts "We'll pick into #{auto_deploy_branch}"
@@ -27,28 +29,32 @@ namespace :auto_deploy do
     $stdout.puts "Cherry-picking for EE..."
     results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
-      .dry_run
+      .execute
 
     results.each do |result|
-      puts result.web_url
+      $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
     $stdout.puts "Cherry-picking for CE..."
     version = ReleaseTools::Version.new(scrub_version).to_ce
     results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabCe, version, auto_deploy_branch)
-      .dry_run
+      .execute
 
     results.each do |result|
-      puts result.web_url
+      $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
-    ReleaseTools::UpstreamMerge.new(
+    conflicts = ReleaseTools::UpstreamMerge.new(
       origin: ReleaseTools::Project::GitlabEe.remotes[:gitlab],
       upstream: ReleaseTools::Project::GitlabCe.remotes[:gitlab],
       source_branch: auto_deploy_branch,
       target_branch: auto_deploy_branch
-    ).dry_run
+    ).execute!
+
+    unless conflicts.nil?
+      raise "Conflicts in CE to EE merge."
+    end
   end
 end
 
