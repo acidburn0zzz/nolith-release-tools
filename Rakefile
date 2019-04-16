@@ -53,7 +53,10 @@ namespace :auto_deploy do
       ReleaseTools::Project::MergeTrain,
       ENV.fetch['MERGE_TRAIN_TRIGGER_TOKEN'],
       master,
-      {}
+      {
+        CE_BRANCH: auto_deploy_branch,
+        EE_BRANCH: auto_deploy_branch
+      }
     ) unless ReleaseTools::SharedStatus.dry_run?
   end
 end
