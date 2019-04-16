@@ -200,6 +200,10 @@ module ReleaseTools
       client.create_branch(project_path(project), branch_name, ref)
     end
 
+    def self.delete_branch(branch_name, project = Project::GitlabCe)
+      client.delete_branch(project_path(project), branch_name)
+    end
+
     # Find a branch in a given project
     #
     # Returns a Gitlab::ObjectifiedHash object, or nil

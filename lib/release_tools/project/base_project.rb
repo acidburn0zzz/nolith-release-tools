@@ -40,6 +40,10 @@ module ReleaseTools
         extract_path_from_remote(:dev)[:group]
       end
 
+      def self.to_s
+        path
+      end
+
       def self.extract_path_from_remote(remote_key)
         raise "Invalid remote: #{remote_key}" unless self::REMOTES.key?(remote_key)
 
