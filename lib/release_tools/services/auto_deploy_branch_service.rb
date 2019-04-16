@@ -5,6 +5,7 @@ module ReleaseTools
     class AutoDeployBranchService
       include BranchCreation
       PIPELINE_ID_PADDING = 7
+      CI_VAR_AUTO_DEPLOY = 'AUTO_DEPLOY_BRANCH'
 
       def initialize(pipeline_id)
         @pipeline_id = pipeline_id.to_s.rjust(PIPELINE_ID_PADDING, '0')
@@ -20,6 +21,7 @@ module ReleaseTools
         create_branch_from_ref(Project::Deployer, branch_name, ref_deployer, gitlab_ops_client)
         create_branch_from_ref(Project::GitlabEe, branch_name, ref_ee)
         create_branch_from_ref(Project::OmnibusGitlab, branch_name, ref_omnibus)
+        update_auto_deploy_ci
       end
 
       private
@@ -30,6 +32,12 @@ module ReleaseTools
 
       def branch_name
         "#{version}-auto-deploy-#{@pipeline_id}-ee"
+      end
+
+      def update_auto_deploy_ci
+        gitlab_client.update_variable(Project::ReleaseTools.path, CI_VAR_AUTO_DEPLOY, branch_name)
+      rescue Gitlab::Error::NotFound
+        gitlab_client.create_variable(Project::ReleaseTools.path, CI_VAR_AUTO_DEPLOY, branch_name)
       end
     end
   end

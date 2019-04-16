@@ -10,7 +10,7 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     end
   end
 
-  let(:internal_client) { double('ReleaseTools::GitlabClient', current_milestone: double(title: '11.10')) }
+  let(:internal_client) { double('ReleaseTools::GitlabClient', current_milestone: double(title: '11.10'), update_variable: double) }
   let(:internal_client_ops) { spy('ReleaseTools::GitlabOpsClient') }
   let(:branch_commit) { double(latest_successful: double(id: '1234')) }
 
@@ -39,7 +39,11 @@ describe ReleaseTools::Services::AutoDeployBranchService do
         '1234',
         ReleaseTools::Project::Deployer
       )
-
+      expect(internal_client).to receive(:update_variable).with(
+        'gitlab-org/release-tools',
+        'AUTO_DEPLOY_BRANCH',
+        '11-10-auto-deploy-0009000-ee'
+      )
       without_dry_run do
         service.create_auto_deploy_branches!
       end
