@@ -41,12 +41,6 @@ module ReleaseTools
         @results = []
       end
 
-      def dry_run
-        return [] unless pickable_mrs.any?
-
-        pickable_mrs.auto_paginate
-      end
-
       def execute
         return [] unless pickable_mrs.any?
 

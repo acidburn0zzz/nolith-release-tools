@@ -227,12 +227,6 @@ module ReleaseTools
       [cmd_output, $CHILD_STATUS]
     end
 
-    def configure_upstream_to(remote)
-      _, status = run_git %W[branch --set-upstream-to origin/#{remote}]
-
-      status.success?
-    end
-
     private
 
     # Given a Hash of remotes {name: url}, add each one to the repository

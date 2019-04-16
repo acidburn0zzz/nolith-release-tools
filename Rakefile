@@ -26,28 +26,27 @@ namespace :auto_deploy do
     $stdout.puts "--> Picking for #{version}..."
 
     $stdout.puts "Cherry-picking for EE..."
-    results = ReleaseTools::CherryPick::Service
+    ee_results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
       .execute
 
-    successful_picks = 0
-    results.each do |result|
-      successful_picks += 1 if result.success?
+    ee_results.each do |result|
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
     $stdout.puts "Cherry-picking for CE..."
     version = ReleaseTools::Version.new(scrub_version).to_ce
-    results = ReleaseTools::CherryPick::Service
+    ce_results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabCe, version, auto_deploy_branch)
       .execute
 
     results.each do |result|
-      successful_picks += 1 if result.success?
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
-    raise "Nothing was picked, bailing..." if successful_picks == 0
+    if ee_results.none?(&:success?) && ce_results.nonde?(&:success?)
+      raise "Nothing was picked, bailing..."
+    end
 
     ReleaseTools::GitlabOpsClient.run_trigger(
       ReleaseTools::Project::MergeTrain, 
