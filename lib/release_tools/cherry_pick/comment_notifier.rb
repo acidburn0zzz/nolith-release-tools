@@ -4,13 +4,11 @@ module ReleaseTools
   module CherryPick
     class CommentNotifier
       attr_reader :version
-      attr_reader :prep_mr
-      attr_reader :branch_name
+      attr_reader :target
 
-      def initialize(version, prep_mr: nil, branch_name: nil)
+      def initialize(version, target:)
         @version = version
-        @prep_mr = prep_mr
-        @branch_name = branch_name
+        @target = target
       end
 
       def comment(pick_result)
@@ -28,7 +26,6 @@ module ReleaseTools
       # unpicked - Array of failure Results
       def summary(picked, unpicked)
         return if picked.empty? && unpicked.empty?
-        return unless prep_mr
 
         message = []
 
@@ -48,26 +45,22 @@ module ReleaseTools
           MSG
         end
 
-        create_merge_request_comment(prep_mr, message.join("\n"))
+        create_merge_request_comment(target, message.join("\n"))
       end
 
       def blog_post_summary(picked)
-        return if version.rc?
+        return if version.rc? || version.monthly?
         return if picked.empty?
 
-        notify_object = prep_mr&.url || branch_name
-
         message = <<~MSG
-          The following merge requests were picked into #{notify_object}:
+          The following merge requests were picked into #{target.url}:
 
           ```
           #{markdown_list(picked.collect(&:to_markdown))}
           ```
         MSG
 
-        return message unless prep_mr
-
-        create_issue_comment(prep_mr.release_issue, message)
+        create_issue_comment(target.release_issue, message)
       end
 
       private
@@ -77,16 +70,12 @@ module ReleaseTools
       end
 
       def successful_comment(pick_result)
-        notify_object = prep_mr&.url || branch_name
-
         comment = <<~MSG
-          Automatically picked into #{notify_object}, will merge into
+          Automatically picked into #{target.pick_destination}, will merge into
           `#{version.stable_branch}` ready for `#{version}`.
 
           /unlabel #{PickIntoLabel.reference(version)}
         MSG
-
-        return unless prep_mr
 
         create_merge_request_comment(pick_result.merge_request, comment)
       end
@@ -119,6 +108,9 @@ module ReleaseTools
       end
 
       def create_merge_request_comment(merge_request, comment)
+        return unless merge_request.respond_to?(:project_id) &&
+          merge_request.respond_to?(:iid)
+
         client.create_merge_request_comment(
           merge_request.project_id,
           merge_request.iid,

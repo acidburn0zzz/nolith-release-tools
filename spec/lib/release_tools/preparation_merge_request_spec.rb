@@ -30,22 +30,22 @@ describe ReleaseTools::PreparationMergeRequest do
     expect(merge_request.milestone).to eq '9.4'
   end
 
-  describe '#preparation_branch_name' do
+  describe '#branch_name' do
     it 'appends the stable branch with patch number' do
-      expect(merge_request.preparation_branch_name).to eq '9-4-stable-patch-1'
-      expect(ee_merge_request.preparation_branch_name).to eq '9-4-stable-ee-patch-1'
+      expect(merge_request.branch_name).to eq '9-4-stable-patch-1'
+      expect(ee_merge_request.branch_name).to eq '9-4-stable-ee-patch-1'
     end
 
     context 'release candidate' do
       it 'appends the stable branch with rc number' do
-        expect(rc_merge_request.preparation_branch_name).to eq '9-4-stable-prepare-rc2'
-        expect(ee_rc_merge_request.preparation_branch_name).to eq '9-4-stable-ee-prepare-rc2'
+        expect(rc_merge_request.branch_name).to eq '9-4-stable-prepare-rc2'
+        expect(ee_rc_merge_request.branch_name).to eq '9-4-stable-ee-prepare-rc2'
       end
     end
   end
 
   it 'sets source_branch to the new branch' do
-    expect(merge_request.source_branch).to eq merge_request.preparation_branch_name
+    expect(merge_request.source_branch).to eq merge_request.branch_name
   end
 
   it 'sets target_branch to the stable branch' do

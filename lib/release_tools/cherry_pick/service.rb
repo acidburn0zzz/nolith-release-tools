@@ -2,41 +2,33 @@
 
 module ReleaseTools
   module CherryPick
-    # Performs automated cherry picking to a preparation branch for the specified
+    # Performs automated cherry picking to a target branch for the specified
     # version.
     #
     # For the given project, this service will look for merged merge requests on
     # that project labeled `Pick into X.Y` and attempt to cherry-pick their merge
-    # commits into the preparation merge request for the specified version.
+    # commits into the target merge request for the specified version.
     #
     # It will post a comment to each merge request with the status of the pick,
-    # and then a final summary message to the preparation merge request with the
-    # list of picked and unpicked merge requests for the release managers to
-    # perform any further manual actions.
+    # and a final summary message with the list of picked and unpicked merge
+    # requests for the release managers to perform any further manual actions.
     class Service
       # TODO (rspeicher): Support `SharedStatus.security_release?`
       REMOTE = :gitlab
 
       attr_reader :project
       attr_reader :version
-      attr_reader :pick_branch
+      attr_reader :target
 
-      def initialize(project, version, pick_branch = nil)
+      def initialize(project, version, target)
         @project = project
         @version = version
-        @pick_branch = pick_branch
+        @target = target
 
         assert_version!
+        assert_target!
 
-        if pick_branch.nil?
-          @prep_mr = PreparationMergeRequest.new(version: version)
-
-          assert_prep_mr!
-
-          @prep_branch = @prep_mr.preparation_branch_name
-        else
-          @prep_branch = pick_branch
-        end
+        @target_branch = @target.branch_name
 
         @results = []
       end
@@ -66,17 +58,15 @@ module ReleaseTools
         raise "Invalid version provided: `#{version}`" unless version.valid?
       end
 
-      def assert_prep_mr!
-        unless @prep_mr.exists?
-          raise "Preparation merge request not found for `#{version}`"
-        end
+      def assert_target!
+        raise 'Invalid cherry-pick target provided' unless target.exists?
       end
 
       def notifier
         if SharedStatus.dry_run?
-          @notifier ||= ConsoleNotifier.new(version, prep_mr: @prep_mr, branch_name: pick_branch)
+          @notifier ||= ConsoleNotifier.new(version, target: target)
         else
-          @notifier ||= CommentNotifier.new(version, prep_mr: @prep_mr, branch_name: pick_branch)
+          @notifier ||= CommentNotifier.new(version, target: target)
         end
       end
 
@@ -87,7 +77,7 @@ module ReleaseTools
           GitlabClient.cherry_pick(
             project,
             ref: merge_request.merge_commit_sha,
-            target: @prep_branch
+            target: @target_branch
           )
         end
 

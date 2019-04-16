@@ -4,14 +4,15 @@ require 'spec_helper'
 
 describe ReleaseTools::CherryPick::CommentNotifier do
   let(:client) { spy('GitlabClient') }
-  let(:version) { ReleaseTools::Version.new('11.4.0') }
+  let(:version) { ReleaseTools::Version.new('11.4.1') }
 
   let(:prep_mr) do
     double(
       iid: 1,
       project_id: 2,
       url: 'https://example.com',
-      release_issue: double(project: spy, iid: 4)
+      release_issue: double(project: spy, iid: 4),
+      pick_destination: 'https://example.com'
     )
   end
 
@@ -34,7 +35,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
   end
 
   subject do
-    described_class.new(version, prep_mr: prep_mr)
+    described_class.new(version, target: prep_mr)
   end
 
   before do

@@ -11,7 +11,7 @@ module ReleaseTools
     end
 
     def source_branch
-      preparation_branch_name
+      branch_name
     end
 
     def target_branch
@@ -38,12 +38,16 @@ module ReleaseTools
       end
     end
 
-    def preparation_branch_name
+    def branch_name
       if version.rc?
         "#{version.stable_branch}-prepare-rc#{version.rc}"
       else
         "#{version.stable_branch}-patch-#{version.patch}"
       end
+    end
+
+    def pick_destination
+      url
     end
 
     def ee?
