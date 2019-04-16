@@ -34,7 +34,7 @@ describe ReleaseTools::CherryPick::CommentNotifier do
   end
 
   subject do
-    described_class.new(version, prep_mr)
+    described_class.new(version, prep_mr: prep_mr)
   end
 
   before do
