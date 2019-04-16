@@ -17,43 +17,44 @@ namespace :auto_deploy do
   task :pick do
     icon = ->(result) { result.success? ? "✓" : "✗" }
 
-    auto_deploy_branch = ENV['AUTO_DEPLOY_BRANCH']
-    abort('AUTO_DEPLOY_BRANCH must be set for this rake task'.colorize(:red)) unless auto_deploy_branch
-    puts "We'll pick into #{auto_deploy_branch}"
+    auto_deploy_branch = ENV.fetch('AUTO_DEPLOY_BRANCH') do |name|
+      abort("`#{name}` must be set for this rake task".colorize(:red))
+    end
 
     scrub_version = auto_deploy_branch.match(/^(\d+-\d+)-auto-deploy.*/)[1].tr('-', '.')
     version = ReleaseTools::Version.new(scrub_version).to_ee
-    $stdout.puts "--> Picking for #{version}..."
 
-    $stdout.puts "Cherry-picking for EE..."
+    target = ReleaseTools::AutoDeployBranch.new(version, auto_deploy_branch)
+
+    $stdout.puts "--> Picking for #{version}..."
     ee_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, auto_deploy_branch)
+      .new(ReleaseTools::Project::GitlabEe, version, target)
       .execute
 
     ee_results.each do |result|
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
-    $stdout.puts "Cherry-picking for CE..."
-    version = ReleaseTools::Version.new(scrub_version).to_ce
+    version = version.to_ce
+    $stdout.puts "--> Picking for #{version}..."
     ce_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, version, auto_deploy_branch)
+      .new(ReleaseTools::Project::GitlabCe, version, target)
       .execute
 
-    results.each do |result|
+    ce_results.each do |result|
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
-    if ee_results.none?(&:success?) && ce_results.nonde?(&:success?)
+    if ee_results.none?(&:success?) && ce_results.none?(&:success?)
       raise "Nothing was picked, bailing..."
     end
 
     ReleaseTools::GitlabOpsClient.run_trigger(
-      ReleaseTools::Project::MergeTrain, 
+      ReleaseTools::Project::MergeTrain,
       ENV.fetch['MERGE_TRAIN_TRIGGER_TOKEN'],
       master,
       {}
-    )
+    ) unless ReleaseTools::SharedStatus.dry_run?
   end
 end
 
