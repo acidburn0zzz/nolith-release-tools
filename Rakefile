@@ -31,62 +31,6 @@ namespace :auto_deploy do
   end
 end
 
-namespace :green_master do
-  desc "Trigger a green master build for EE"
-  task :ee, [:trigger_build] do |_t, args|
-    project = ReleaseTools::Project::GitlabEe
-    commit = ReleaseTools::Commits.new(project).latest_successful
-
-    raise 'No recent master builds have green pipelines' if commit.nil?
-
-    $stdout.puts "Found EE Green Master at #{commit.id}"
-
-    versions = ReleaseTools::ComponentVersions.get(project, commit)
-
-    versions.each do |component, version|
-      puts "#{component}: #{version}"
-    end
-
-    if args.trigger_build
-      ReleaseTools::Pipeline.new(
-        project,
-        commit.id,
-        versions
-      ).trigger
-    end
-  end
-
-  desc "Trigger a green master build for CE"
-  task :ce, [:trigger_build] do |_t, args|
-    project = ReleaseTools::Project::GitlabCe
-    commit = ReleaseTools::Commits.new(project).latest_successful
-
-    raise 'No recent master builds have green pipelines' if commit.nil?
-
-    $stdout.puts "Found CE Green Master at #{commit.id}"
-
-    versions = ReleaseTools::ComponentVersions.get(project, commit)
-
-    versions.each do |component, version|
-      puts "#{component}: #{version}"
-    end
-
-    if args.trigger_build
-      ReleaseTools::Pipeline.new(
-        project,
-        commit.id,
-        versions
-      ).trigger
-    end
-  end
-
-  desc "Trigger a green master build for both CE and EE"
-  task :all, [:trigger_build] do |_t, args|
-    Rake::Task['green_master:ee'].invoke(args.trigger_build)
-    Rake::Task['green_master:ce'].invoke(args.trigger_build)
-  end
-end
-
 task :tag, [:version] do |t, args|
   deprecate_as 'release:tag', t, args
 end

@@ -153,22 +153,6 @@ RSpec/PredicateMatcher:
   Exclude:
     - 'spec/lib/release_tools/merge_request_spec.rb'
 
-# Offense count: 49
-RSpec/SubjectStub:
-  Exclude:
-    - 'spec/lib/release_tools/cherry_pick/comment_notifier_spec.rb'
-    - 'spec/lib/release_tools/cherry_pick/service_spec.rb'
-    - 'spec/lib/release_tools/issuable_spec.rb'
-    - 'spec/lib/release_tools/qa/issue_spec.rb'
-    - 'spec/lib/release_tools/qa/security_issue_spec.rb'
-    - 'spec/lib/release_tools/qa/services/build_qa_issue_service_spec.rb'
-    - 'spec/lib/release_tools/release_managers/client_spec.rb'
-    - 'spec/lib/release_tools/release_managers/definitions_spec.rb'
-    - 'spec/lib/release_tools/remote_repository_spec.rb'
-    - 'spec/lib/release_tools/services/auto_deploy_branch_service_spec.rb'
-    - 'spec/lib/release_tools/services/monthly_preparation_service_spec.rb'
-    - 'spec/lib/release_tools/services/security_preparation_service_spec.rb'
-
 # Offense count: 257
 # Configuration parameters: IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:
