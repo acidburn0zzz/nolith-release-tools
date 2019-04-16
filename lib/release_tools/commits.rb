@@ -18,14 +18,14 @@ module ReleaseTools
 
     # Find a commit with a passing build on production that also exists on dev
     def latest_dev_green_build_commit
-      commit_list.each do |commit|
+      commit_list.detect do |commit|
         next unless success?(commit)
 
         begin
           # Hit the dev API with the specified commit to see if it even exists
-          return ReleaseTools::GitlabDevClient.commit(project, ref: commit.id)
+          ReleaseTools::GitlabDevClient.commit(project, ref: commit.id)
         rescue Gitlab::Error::Error
-          next
+          false
         end
       end
     end

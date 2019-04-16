@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::GreenMaster do
+describe ReleaseTools::PassingBuild do
   let(:project) { ReleaseTools::Project::GitlabCe }
   let(:fake_commit) { double('Commit', id: '1234') }
 
-  subject(:service) { described_class.new(project) }
+  subject(:service) { described_class.new(project, 'master') }
 
   describe '#execute' do
     let(:fake_commits) { spy }
@@ -20,7 +20,7 @@ describe ReleaseTools::GreenMaster do
         .and_return(nil)
 
       expect { service.execute(nil) }
-        .to raise_error(/Unable to find a passing build/)
+        .to raise_error(/Unable to find a passing/)
     end
 
     it 'fetches component versions', :silence_stdout do

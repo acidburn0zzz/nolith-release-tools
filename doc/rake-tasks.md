@@ -119,55 +119,27 @@ to verify changes in a release.
 
 Tag the specified version as a security release.
 
-## `green_master:<ee|ce|all>[trigger_build]`
+## `passing_build:<ee|ce|all>[ref, trigger_build]`
 
-This task will show us the selected `sha` associated with the latest `master`
-branch that had a successful pipeline run.  When `trigger_build` is `true`, it
-will send the signal to `omnibus-gitlab` to start that build.
+This task will show us the SHA from `ref` that had a successful pipeline run
+_and exists on dev.gitlab.org_.
 
-When running `green_master:all`, it will run both the CE and EE builds
+When `trigger_build` is `true`, it will send the signal to `omnibus-gitlab` to
+start that build.
+
+When running `passing_build:all`, it will run both the CE and EE builds
 synchronously.  Keep this in mind if on a time constraint.
 
 ### Examples
 
 ```sh
-# Informational gathering only
-% bundle exec rake green_master:ee
-Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
+# Information gathering only
+% bundle exec rake 'passing_build:ce'
+% bundle exec rake 'passing_build:all[11-10-stable]'
 
-% bundle exec rake green_master:ce
-Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
-
-% bundle exec rake green_master:all[true]
-Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
-Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
-
-# Actually triggers a build (Example output)
-% bundle exec rake green_master:ee[true]
-Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
-trigger build: 50b5b74315b8e8c440305d48cc8d26c3ef843bf4 for Project::GitlabCe
-Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205527
-...........................................
-Pipeline succeeded in 43 minutes.
-
-% bundle exec rake green_master:ce[true]
-Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
-trigger build: 5ff775fdef99eeec1f25bea7baf5480fa402f714 for Project::GitlabCe
-Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205528
-...........................................
-Pipeline succeeded in 43 minutes.
-
-% bundle exec rake green_master:all[true]
-Found EE Green Master at 50b5b74315b8e8c440305d48cc8d26c3ef843bf4
-trigger build: 50b5b74315b8e8c440305d48cc8d26c3ef843bf4 for Project::GitlabCe
-Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205527
-...........................................
-Pipeline succeeded in 43 minutes.
-Found CE Green Master at 5ff775fdef99eeec1f25bea7baf5480fa402f714
-trigger build: 5ff775fdef99eeec1f25bea7baf5480fa402f714 for Project::GitlabCe
-Pipeline triggered: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/205528
-...........................................
-Pipeline succeeded in 43 minutes.
+# Trigger a build
+% bundle exec rake 'passing_build:ee[master, true]'
+% bundle exec rake 'passing_build:all[11-10-stable, true]'
 ```
 
 ## `publish[version]`

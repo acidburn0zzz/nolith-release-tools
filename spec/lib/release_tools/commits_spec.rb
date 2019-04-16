@@ -31,14 +31,14 @@ describe ReleaseTools::Commits do
 
   describe '#latest_dev_green_build_commit' do
     it 'handles a missing commit on dev' do
-      expect(ReleaseTools::GitlabDevClient)
+      allow(ReleaseTools::GitlabDevClient)
         .to receive(:commit)
         .and_raise(api_error(Gitlab::Error::NotFound, 'foo'))
 
       instance = described_class.new(project)
 
       VCR.use_cassette('commits/list') do
-        expect { instance.latest_dev_green_build_commit }.not_to raise_error
+        expect(instance.latest_dev_green_build_commit).to be_nil
       end
     end
 
@@ -50,7 +50,7 @@ describe ReleaseTools::Commits do
       instance = described_class.new(project)
 
       VCR.use_cassette('commits/list') do
-        expect(instance.latest_dev_green_build_commit).to eq 'foo'
+        expect(instance.latest_dev_green_build_commit).not_to be_nil
       end
     end
   end
