@@ -24,11 +24,11 @@ namespace :auto_deploy do
     scrub_version = auto_deploy_branch.match(/^(\d+-\d+)-auto-deploy.*/)[1].tr('-', '.')
     version = ReleaseTools::Version.new(scrub_version).to_ee
 
-    target = ReleaseTools::AutoDeployBranch.new(version, auto_deploy_branch)
+    target_branch = ReleaseTools::AutoDeployBranch.new(version, auto_deploy_branch)
 
     $stdout.puts "--> Picking for #{version}..."
     ee_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, target)
+      .new(ReleaseTools::Project::GitlabEe, version, target_branch)
       .execute
 
     ee_results.each do |result|
@@ -38,7 +38,7 @@ namespace :auto_deploy do
     version = version.to_ce
     $stdout.puts "--> Picking for #{version}..."
     ce_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, version, target)
+      .new(ReleaseTools::Project::GitlabCe, version, target_branch)
       .execute
 
     ce_results.each do |result|
