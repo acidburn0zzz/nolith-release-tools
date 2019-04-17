@@ -12,7 +12,7 @@ namespace :passing_build do
   task :ee, [:ref, :trigger_build] do |_t, args|
     ref = args.fetch(:ref, 'master').dup
     # HACK: Allow `X-Y-stable` as an argument for both tasks, except master
-    ref << '-ee' unless ref == 'master'
+    ref << '-ee' unless ref == 'master' || ref.end_with?('-ee')
 
     passing_build(ReleaseTools::Project::GitlabEe, ref).execute(args)
   end
