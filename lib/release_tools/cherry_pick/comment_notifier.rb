@@ -89,7 +89,9 @@ module ReleaseTools
         comment = <<~MSG
           @#{author} This merge request could not automatically be picked into
           `#{version.stable_branch}` for `#{version}` and will need manual
-          intervention.
+          intervention.  Please create a new MR targeting the source branch
+          of #{target.pick_destination}, and assign to release managers.
+
         MSG
 
         create_merge_request_comment(pick_result.merge_request, comment)
