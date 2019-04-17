@@ -29,7 +29,7 @@ module ReleaseTools
     end
 
     def trigger_build(commit, versions)
-      pipeline_id = ENV.fetch('CI_PIPELINE_IID', 'pipeline_id_unset')
+      pipeline_id = ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset')
       branch_name = "nightly-#{pipeline_id}"
 
       $stdout.puts "Creating branch #{branch_name}"

@@ -62,7 +62,7 @@ describe ReleaseTools::PassingBuild do
     end
 
     it 'creates a temporary branch' do
-      ClimateControl.modify(CI_PIPELINE_IID: 'fake_pipeline_id') do
+      ClimateControl.modify(CI_PIPELINE_ID: 'fake_pipeline_id') do
         service.trigger_build(fake_commit, spy)
       end
 
@@ -81,7 +81,7 @@ describe ReleaseTools::PassingBuild do
     end
 
     it 'deletes the temporary branch' do
-      ClimateControl.modify(CI_PIPELINE_IID: 'fake_pipeline_id') do
+      ClimateControl.modify(CI_PIPELINE_ID: 'fake_pipeline_id') do
         service.trigger_build(fake_commit, spy)
       end
 
