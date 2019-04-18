@@ -24,7 +24,7 @@ describe ReleaseTools::PassingBuild do
         .to raise_error(/Unable to find a passing/)
     end
 
-    it 'fetches component versions', :silence_stdout do
+    it 'updates and tags Omnibus when `trigger_build` is true', :silence_stdout do
       expect(fake_commits).to receive(:latest_dev_green_build_commit)
         .and_return(fake_commit)
 
@@ -32,26 +32,17 @@ describe ReleaseTools::PassingBuild do
         .to receive(:get).with(project, fake_commit.id)
         .and_return(version_map)
 
-      expect(service).not_to receive(:trigger_build)
-
-      service.execute(double(trigger_build: false))
-    end
-
-    it 'triggers a build when specified', :silence_stdout do
-      expect(fake_commits).to receive(:latest_dev_green_build_commit)
+      expect(service).to receive(:update_omnibus)
+        .with(version_map)
         .and_return(fake_commit)
-
-      expect(ReleaseTools::ComponentVersions)
-        .to receive(:get).with(project, fake_commit.id)
-        .and_return(version_map)
-
-      expect(service).to receive(:trigger_build).with(version_map)
+      expect(service).to receive(:tag_omnibus)
+        .with(fake_commit, version_map)
 
       service.execute(double(trigger_build: true))
     end
   end
 
-  describe '#trigger_build' do
+  describe '#update_omnibus' do
     let(:fake_client) { spy }
 
     it 'updates Omnibus versions', :silence_stdout do
@@ -59,7 +50,11 @@ describe ReleaseTools::PassingBuild do
         .to receive(:update_omnibus).with('master', version_map)
         .and_return(double('Commit', short_id: 'abcdefg'))
 
-      service.trigger_build(version_map)
+      service.update_omnibus(version_map)
     end
+  end
+
+  describe '#tag_omnibus' do
+    # TODO (rspeicher): All of it!
   end
 end
