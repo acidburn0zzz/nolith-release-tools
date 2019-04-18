@@ -21,8 +21,8 @@ namespace :auto_deploy do
       abort("`#{name}` must be set for this rake task".colorize(:red))
     end
 
-    scrub_version = auto_deploy_branch.match(/^(\d+-\d+)-auto-deploy.*/)[1].tr('-', '.')
-    version = ReleaseTools::Version.new(scrub_version).to_ee
+    version = auto_deploy_branch.sub(/\A(\d+)-(\d+)-auto-deploy.*/, '\1.\2')
+    version = ReleaseTools::Version.new(version).to_ee
 
     target_branch = ReleaseTools::AutoDeployBranch.new(version, auto_deploy_branch)
 
