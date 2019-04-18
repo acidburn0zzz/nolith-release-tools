@@ -45,19 +45,20 @@ namespace :auto_deploy do
       $stdout.puts "    #{icon.call(result)} #{result.url}"
     end
 
-    if ee_results.none?(&:success?) && ce_results.none?(&:success?)
-      raise "Nothing was picked, bailing..."
-    end
+    return if ReleaseTools::SharedStatus.dry_run?
 
-    ReleaseTools::GitlabOpsClient.run_trigger(
-      ReleaseTools::Project::MergeTrain,
-      ENV.fetch['MERGE_TRAIN_TRIGGER_TOKEN'],
-      'master',
-      {
-        CE_BRANCH: auto_deploy_branch,
-        EE_BRANCH: auto_deploy_branch
-      }
-    ) unless ReleaseTools::SharedStatus.dry_run?
+    if ee_results.any?(&:success?) || ce_results.any?(&:success?)
+      ReleaseTools::GitlabOpsClient.run_trigger(
+        ReleaseTools::Project::MergeTrain,
+        ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
+        'master',
+        {
+          CE_BRANCH: auto_deploy_branch,
+          EE_BRANCH: auto_deploy_branch,
+          MERGE_MANUAL: '1'
+        }
+      )
+    end
   end
 end
 
