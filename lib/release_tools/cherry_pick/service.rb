@@ -13,7 +13,6 @@ module ReleaseTools
     # and a final summary message with the list of picked and unpicked merge
     # requests for the release managers to perform any further manual actions.
     class Service
-      # TODO (rspeicher): Support `SharedStatus.security_release?`
       REMOTE = :gitlab
 
       attr_reader :project
