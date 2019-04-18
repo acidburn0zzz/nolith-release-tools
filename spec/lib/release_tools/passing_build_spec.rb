@@ -5,6 +5,7 @@ require 'spec_helper'
 describe ReleaseTools::PassingBuild do
   let(:project) { ReleaseTools::Project::GitlabCe }
   let(:fake_commit) { double('Commit', id: '1234') }
+  let(:version_map) { { 'VERSION' => '1.2.3' } }
 
   subject(:service) { described_class.new(project, 'master') }
 
@@ -28,8 +29,8 @@ describe ReleaseTools::PassingBuild do
         .and_return(fake_commit)
 
       expect(ReleaseTools::ComponentVersions)
-        .to receive(:get).with(project, fake_commit)
-        .and_return({})
+        .to receive(:get).with(project, fake_commit.id)
+        .and_return(version_map)
 
       expect(service).not_to receive(:trigger_build)
 
@@ -41,52 +42,24 @@ describe ReleaseTools::PassingBuild do
         .and_return(fake_commit)
 
       expect(ReleaseTools::ComponentVersions)
-        .to receive(:get).with(project, fake_commit)
-        .and_return({})
+        .to receive(:get).with(project, fake_commit.id)
+        .and_return(version_map)
 
-      expect(service).to receive(:trigger_build).with(fake_commit, {})
+      expect(service).to receive(:trigger_build).with(version_map)
 
       service.execute(double(trigger_build: true))
     end
   end
 
-  describe '#trigger_build', :silence_stdout do
+  describe '#trigger_build' do
     let(:fake_client) { spy }
-    let(:fake_pipeline) { spy }
 
-    before do
-      # Ensure we don't actually perform branch creation or deletion
-      allow(service).to receive(:dev_client).and_return(fake_client)
+    it 'updates Omnibus versions', :silence_stdout do
+      expect(ReleaseTools::ComponentVersions)
+        .to receive(:update_omnibus).with('master', version_map)
+        .and_return(double('Commit', short_id: 'abcdefg'))
 
-      stub_const('ReleaseTools::Pipeline', fake_pipeline)
-    end
-
-    it 'creates a temporary branch' do
-      ClimateControl.modify(CI_PIPELINE_ID: 'fake_pipeline_id') do
-        service.trigger_build(fake_commit, spy)
-      end
-
-      expect(fake_client).to have_received(:create_branch)
-        .with('nightly-fake_pipeline_id', fake_commit.id, project)
-    end
-
-    it 'triggers a pipeline' do
-      versions = { foo: 'foo', bar: 'bar' }
-
-      service.trigger_build(fake_commit, versions)
-
-      expect(fake_pipeline).to have_received(:new)
-        .with(project, fake_commit.id, versions)
-      expect(fake_pipeline).to have_received(:trigger)
-    end
-
-    it 'deletes the temporary branch' do
-      ClimateControl.modify(CI_PIPELINE_ID: 'fake_pipeline_id') do
-        service.trigger_build(fake_commit, spy)
-      end
-
-      expect(fake_client).to have_received(:delete_branch)
-        .with('nightly-fake_pipeline_id', project)
+      service.trigger_build(version_map)
     end
   end
 end

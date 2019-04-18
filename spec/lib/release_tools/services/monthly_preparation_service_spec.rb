@@ -12,20 +12,6 @@ describe ReleaseTools::Services::MonthlyPreparationService do
     allow(service).to receive(:gitlab_client).and_return(internal_client)
   end
 
-  # Simulate an error class from the `gitlab` gem
-  def api_error(klass, message)
-    error = double(parsed_response: double(message: message)).as_null_object
-
-    klass.new(error)
-  end
-
-  # Unset the `TEST` environment variable that gets set by default
-  def without_dry_run(&block)
-    ClimateControl.modify(TEST: nil) do
-      yield
-    end
-  end
-
   describe '#create_label', :silence_stdout do
     it 'does nothing on a dry run' do
       expect(ReleaseTools::PickIntoLabel).not_to receive(:create)
@@ -37,7 +23,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
       allow(ReleaseTools::PickIntoLabel).to receive(:create)
 
       allow(internal_client).to receive(:create_branch)
-        .and_raise(api_error(Gitlab::Error::BadRequest, 'Label already exists'))
+        .and_raise(gitlab_error(:BadRequest, message: 'Label already exists'))
 
       without_dry_run do
         expect { service.create_label }.not_to raise_error
@@ -65,7 +51,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
 
     it 'is idempotent' do
       allow(internal_client).to receive(:create_branch)
-        .and_raise(api_error(Gitlab::Error::Conflict, 'Branch already exists'))
+        .and_raise(gitlab_error(:Conflict, message: 'Branch already exists'))
 
       without_dry_run do
         expect { service.create_stable_branches }.not_to raise_error

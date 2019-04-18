@@ -5,13 +5,6 @@ require 'spec_helper'
 describe ReleaseTools::Commits do
   let(:project) { ReleaseTools::Project::GitlabCe }
 
-  # Simulate an error class from the `gitlab` gem
-  def api_error(klass, message)
-    error = double(parsed_response: double(message: message)).as_null_object
-
-    klass.new(error)
-  end
-
   before do
     # Reduce our fixture payload
     stub_const('ReleaseTools::Commits::MAX_COMMITS_TO_CHECK', 5)
@@ -33,7 +26,7 @@ describe ReleaseTools::Commits do
     it 'handles a missing commit on dev' do
       allow(ReleaseTools::GitlabDevClient)
         .to receive(:commit)
-        .and_raise(api_error(Gitlab::Error::NotFound, 'foo'))
+        .and_raise(gitlab_error(:NotFound))
 
       instance = described_class.new(project)
 

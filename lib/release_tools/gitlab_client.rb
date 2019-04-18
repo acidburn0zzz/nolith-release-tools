@@ -17,6 +17,8 @@ module ReleaseTools
       def_delegator :client, :create_merge_request_comment
       def_delegator :client, :create_variable
       def_delegator :client, :update_variable
+
+      def_delegator :client, :create_commit
     end
 
     class MissingMilestone
