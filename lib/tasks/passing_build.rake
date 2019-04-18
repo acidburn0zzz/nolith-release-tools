@@ -8,11 +8,22 @@ namespace :passing_build do
     ReleaseTools::PassingBuild.new(project, ref)
   end
 
+  def append_ee?(ref)
+    if ref == 'master'
+      false
+    elsif ref.end_with?('-ee')
+      false
+    elsif ref.include?('auto-deploy')
+      false
+    else
+      true
+    end
+  end
+
   desc "Find and optionally trigger a passing build for EE"
   task :ee, [:ref, :trigger_build] do |_t, args|
     ref = args.fetch(:ref, 'master').dup
-    # HACK: Allow `X-Y-stable` as an argument for both tasks, except master
-    ref << '-ee' unless ref == 'master' || ref.end_with?('-ee')
+    ref << '-ee' if append_ee?(ref)
 
     passing_build(ReleaseTools::Project::GitlabEe, ref).execute(args)
   end
