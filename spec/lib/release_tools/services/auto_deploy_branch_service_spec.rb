@@ -23,26 +23,32 @@ describe ReleaseTools::Services::AutoDeployBranchService do
 
   describe '#create_auto_deploy_branches!', :silence_stdout do
     it 'creates auto-deploy branches for gitlab-ee and gitlab-ce' do
-      expect(ReleaseTools::Commits).to receive(:new).and_return(branch_commit).exactly(3).times
-      expect(internal_client).to receive(:create_branch).with(
-        '11-10-auto-deploy-0009000-ee',
+      branch_name = '11-10-auto-deploy-0009000'
+      expect(ReleaseTools::Commits).to receive(:new).and_return(branch_commit).exactly(4).times
+      expect(internal_client_ops).to receive(:create_branch).with(
+        branch_name,
         '1234',
-        ReleaseTools::Project::OmnibusGitlab
+        ReleaseTools::Project::Deployer
       )
       expect(internal_client).to receive(:create_branch).with(
-        '11-10-auto-deploy-0009000-ee',
+        branch_name,
+        '1234',
+        ReleaseTools::Project::GitlabCe
+      )
+      expect(internal_client).to receive(:create_branch).with(
+        branch_name,
         '1234',
         ReleaseTools::Project::GitlabEe
       )
-      expect(internal_client_ops).to receive(:create_branch).with(
-        '11-10-auto-deploy-0009000-ee',
+      expect(internal_client).to receive(:create_branch).with(
+        branch_name,
         '1234',
-        ReleaseTools::Project::Deployer
+        ReleaseTools::Project::OmnibusGitlab
       )
       expect(internal_client).to receive(:update_variable).with(
         'gitlab-org/release-tools',
         'AUTO_DEPLOY_BRANCH',
-        '11-10-auto-deploy-0009000-ee'
+        branch_name
       )
       without_dry_run do
         service.create_auto_deploy_branches!
