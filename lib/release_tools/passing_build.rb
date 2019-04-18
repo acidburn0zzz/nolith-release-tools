@@ -17,38 +17,29 @@ module ReleaseTools
         raise "Unable to find a passing #{project} build for `#{ref}` on dev"
       end
 
-      $stdout.puts "Found at #{commit.id}".indent(4)
-
-      versions = ReleaseTools::ComponentVersions.get(project, commit)
+      versions = ReleaseTools::ComponentVersions.get(project, commit.id)
 
       versions.each do |component, version|
-        $stdout.puts "#{component}: #{version}".indent(6)
+        $stdout.puts "#{component}: #{version}".indent(4)
       end
 
-      trigger_build(commit, versions) if args.trigger_build
+      trigger_build(versions) if args.trigger_build
     end
 
-    def trigger_build(commit, versions)
-      pipeline_id = ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset')
-      branch_name = "nightly-#{pipeline_id}"
+    def trigger_build(version_map)
+      commit = ReleaseTools::ComponentVersions.update_omnibus(ref, version_map)
 
-      $stdout.puts "Creating branch #{branch_name}"
-      dev_client.create_branch(branch_name, commit.id, project)
+      url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.short_id)
 
-      ReleaseTools::Pipeline.new(
-        project,
-        commit.id,
-        versions
-      ).trigger
+      $stdout.puts "Updated Omnibus versions at #{url}".indent(4)
 
-      $stdout.puts "Deleting branch #{branch_name}"
-      dev_client.delete_branch(branch_name, project)
+      # TODO: Tagging
     end
 
     private
 
-    def dev_client
-      ReleaseTools::GitlabDevClient
+    def commit_url(project, id)
+      "https://gitlab.com/#{project.path}/commit/#{id}"
     end
   end
 end

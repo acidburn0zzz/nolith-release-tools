@@ -3,13 +3,6 @@
 require 'spec_helper'
 
 describe ReleaseTools::Services::AutoDeployBranchService do
-  # Unset the `TEST` environment variable that gets set by default
-  def without_dry_run(&block)
-    ClimateControl.modify(TEST: nil) do
-      yield
-    end
-  end
-
   let(:internal_client) { double('ReleaseTools::GitlabClient', current_milestone: double(title: '11.10'), update_variable: double) }
   let(:internal_client_ops) { spy('ReleaseTools::GitlabOpsClient') }
   let(:branch_commit) { double(latest_successful: double(id: '1234')) }
