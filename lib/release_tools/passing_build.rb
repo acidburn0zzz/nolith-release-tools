@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/string/access'
+
 module ReleaseTools
   class PassingBuild
     attr_reader :project, :ref
