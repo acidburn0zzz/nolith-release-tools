@@ -87,6 +87,9 @@ module ReleaseTools
 
             ### Prepare the environments for testing the security fixes
 
+            <details>
+              <summary>Instructions to prepare environment</summary>
+
             1. In [Google Cloud Console](https://console.cloud.google.com/) (access to this
               should have been granted during on-boarding), create a new VM instance (in the
               `gitlab-internal` project) from the `qa-security-1cpu-3-75gb-ram-ubuntu-16-04-lts`
@@ -122,7 +125,12 @@ module ReleaseTools
                 1. Visit http://IP_OF_THE_GCP_VM and change `root`'s password.
                 1. Once the environments are ready, capture the information to add to the QA issue.
 
+            </details>
+
             ### Automated QA
+
+            <details>
+              <summary>Instructions to perform automated QA</summary>
 
             - (Optional) If the QA Docker image doesn't exist, you will need to build it
             manually on your machine, e.g.
@@ -194,7 +202,12 @@ module ReleaseTools
             - [ ] Create `Automation Triage RELEASE_MAJOR_VERSION RC#` issues for all the
                 automated QA failures (with failures logs + screenshots) and link it to this issue
 
+            </details>
+
             ### Coordinate the Manual QA validation of the release
+
+            <details>
+            <summary>Click for details</summary>
 
             1. Notify the Security Engineer to verify the security fixes for the release.
                 * The manner in which the security fixes are verified can be done in two ways.
@@ -209,6 +222,9 @@ module ReleaseTools
                   from the release issue leaving only the Security Engineer and the Release Manager.
 
             [pipelines page]: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines
+
+             </details>
+
           HEREDOC
         end
 
