@@ -5,20 +5,6 @@ require_relative 'lib/release_tools/support/tasks_helper'
 
 Dir.glob('lib/tasks/*.rake').each { |task| import(task) }
 
-
-def deprecate_as(new_task, old_task, args)
-  warn "This task has been deprecated in favor of " \
-    "`#{new_task.colorize(:green)}` and will soon be removed."
-
-  Raven.capture_message(
-    "Use of deprecated task #{old_task.name}",
-    extra: args,
-    level: 'info'
-  )
-
-  Rake::Task[new_task].invoke(*args)
-end
-
 namespace :auto_deploy do
   desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab-ee and omnibus-gitlab"
   task :prepare do
@@ -26,14 +12,6 @@ namespace :auto_deploy do
     abort('CI_PIPELINE_IID must be set for this rake task'.colorize(:red)) unless pipeline_id
     ReleaseTools::Services::AutoDeployBranchService.new(pipeline_id).create_auto_deploy_branches!
   end
-end
-
-task :tag, [:version] do |t, args|
-  deprecate_as 'release:tag', t, args
-end
-
-task :tag_security, [:version] do |t, args|
-  deprecate_as 'security:tag', t, args
 end
 
 desc "Sync master branch in remotes"
@@ -57,41 +35,9 @@ task :sync do
   end
 end
 
-task :monthly_issue, [:version] do |t, args|
-  deprecate_as 'release:issue', t, args
-end
-
-task :patch_issue, [:version] do |t, args|
-  deprecate_as 'release:issue', t, args
-end
-
-task :qa_issue, [:from, :to, :version] do |t, args|
-  deprecate_as 'release:qa', t, args
-end
-
-task :security_qa_issue, [:from, :to, :version] do |t, args|
-  deprecate_as 'security:qa', t, args
-end
-
 # Undocumented; executed via CI schedule
 task :close_expired_qa_issues do
   ReleaseTools::Qa::IssueCloser.new.execute
-end
-
-task :patch_merge_request, [:version] do |t, args|
-  deprecate_as 'release:prepare', t, args
-end
-
-task :cherry_pick, [:version] do |t, args|
-  deprecate_as 'release:merge', t, args
-end
-
-task :security_cherry_pick, [:version] do |t, args|
-  deprecate_as 'security:merge', t, args
-end
-
-task :security_patch_issue, [:version] do |t, args|
-  deprecate_as 'security:issue', t, args
 end
 
 # Undocumented; executed via CI schedule
