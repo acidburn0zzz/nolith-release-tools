@@ -159,16 +159,35 @@ validate-security-merge-requests:
     variables:
       - $VALIDATE_SECURITY_MERGE_REQUESTS
 
-create-auto-deploy-branches:
+auto-deploy:prepare:
   <<: *with-bundle
   stage: automation
+
   script:
-    - bundle exec rake auto_deploy:prepare
+    - bundle exec rake 'auto_deploy:prepare'
   only:
     refs:
       - schedules
     variables:
-      - $CREATE_AUTO_DEPLOY_BRANCHES
+      - $CREATE_AUTO_DEPLOY_BRANCH_SCHEDULE == "true"
+
+auto-deploy:pick:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake 'auto_deploy:pick'
+  only:
+    variables:
+      - $CHERRY_PICK_AUTO_DEPLOY_BRANCH_SCHEDULE == "true"
+
+auto-deploy:trigger:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake "passing_build:ee[$AUTO_DEPLOY_BRANCH,true]"
+  only:
+    variables:
+      - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
 
 # chatops ---------------------------------------------------------------------
 
