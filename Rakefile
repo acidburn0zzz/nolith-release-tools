@@ -5,9 +5,6 @@ require_relative 'lib/release_tools/support/tasks_helper'
 
 Dir.glob('lib/tasks/*.rake').each { |task| import(task) }
 
-unless ENV['CI'] || Rake.application.top_level_tasks.include?('default') || ReleaseTools::LocalRepository.ready?
-  abort('Please use the master branch and make sure you are up to date.'.colorize(:red))
-end
 
 def deprecate_as(new_task, old_task, args)
   warn "This task has been deprecated in favor of " \
