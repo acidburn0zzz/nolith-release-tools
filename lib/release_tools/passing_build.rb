@@ -42,19 +42,17 @@ module ReleaseTools
 
     def tag_omnibus(commit, versions)
       prod_client = ReleaseTools::GitlabClient
-      project = ReleaseTools::Project::OmnibusGitlab
 
-      pipeline_id = ENV.fetch('CI_PIPELINE_IID')
+      tag_name = ReleaseTools::AutoDeploy::Naming.tag(
+        ee_ref: versions['VERSION'],
+        omnibus_ref: commit.id
+      )
 
-      ob_ref = commit.short_id
-      ee_ref = versions['VERSION'].first(ob_ref.length)
-
-      # NOTE: The tag name includes the pipeline ID in order to approximate
-      # semantic versioning for packages.
-      # TODO (rspeicher): Use ReleaseTools::AutoDeploy::Naming.tag
-      tag_name = "1.1.#{pipeline_id}+#{ee_ref}.#{ob_ref}"
-
-      prod_client.create_tag(project, tag_name, commit.id)
+      prod_client.create_tag(
+        ReleaseTools::Project::OmnibusGitlab,
+        tag_name,
+        commit.id
+      )
     end
 
     private
