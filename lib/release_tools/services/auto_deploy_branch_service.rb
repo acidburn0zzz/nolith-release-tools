@@ -4,14 +4,16 @@ module ReleaseTools
   module Services
     class AutoDeployBranchService
       include BranchCreation
-      PIPELINE_ID_PADDING = 7
+
       CI_VAR_AUTO_DEPLOY = 'AUTO_DEPLOY_BRANCH'
 
-      def initialize(pipeline_id)
-        @pipeline_id = pipeline_id.to_s.rjust(PIPELINE_ID_PADDING, '0')
+      attr_reader :branch_name
+
+      def initialize(branch_name)
+        @branch_name = branch_name
       end
 
-      def create_auto_deploy_branches!
+      def create_branches!
         # Find passing commits before creating branches
         ref_deployer = latest_successful_ref(Project::Deployer, gitlab_ops_client)
         ref_ce = latest_successful_ref(Project::GitlabCe)
@@ -27,14 +29,6 @@ module ReleaseTools
       end
 
       private
-
-      def version
-        @version ||= gitlab_client.current_milestone.title.tr('.', '-')
-      end
-
-      def branch_name
-        "#{version}-auto-deploy-#{@pipeline_id}"
-      end
 
       def update_auto_deploy_ci
         gitlab_client.update_variable(Project::ReleaseTools.path, CI_VAR_AUTO_DEPLOY, branch_name)

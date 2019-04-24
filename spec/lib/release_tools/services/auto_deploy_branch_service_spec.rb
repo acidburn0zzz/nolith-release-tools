@@ -7,16 +7,17 @@ describe ReleaseTools::Services::AutoDeployBranchService do
   let(:internal_client_ops) { spy('ReleaseTools::GitlabOpsClient') }
   let(:branch_commit) { double(latest_successful: double(id: '1234')) }
 
-  subject(:service) { described_class.new('9000') }
+  subject(:service) { described_class.new('branch-name') }
 
   before do
     allow(service).to receive(:gitlab_client).and_return(internal_client)
     allow(service).to receive(:gitlab_ops_client).and_return(internal_client_ops)
   end
 
-  describe '#create_auto_deploy_branches!', :silence_stdout do
+  describe '#create_branches!', :silence_stdout do
     it 'creates auto-deploy branches for gitlab-ee and gitlab-ce' do
-      branch_name = '11-10-auto-deploy-0009000'
+      branch_name = 'branch-name'
+
       expect(ReleaseTools::Commits).to receive(:new).and_return(branch_commit).exactly(4).times
       expect(internal_client_ops).to receive(:create_branch).with(
         branch_name,
@@ -43,8 +44,9 @@ describe ReleaseTools::Services::AutoDeployBranchService do
         'AUTO_DEPLOY_BRANCH',
         branch_name
       )
+
       without_dry_run do
-        service.create_auto_deploy_branches!
+        service.create_branches!
       end
     end
   end
