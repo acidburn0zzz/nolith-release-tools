@@ -199,7 +199,7 @@ describe ReleaseTools::Security::MergeRequestValidator do
     end
 
     it 'does not add an error when at least one task is present' do
-      merge_request = double(:merge_request, description: '- [ ] Foo')
+      merge_request = double(:merge_request, description: '- [X] Foo')
       client = double(:client)
       validator = described_class.new(merge_request, client)
 
@@ -224,6 +224,18 @@ describe ReleaseTools::Security::MergeRequestValidator do
     it 'does not add an error when the merge request is reviewed' do
       merge_request =
         double(:merge_request, description: '- [x] Assign to a reviewer')
+
+      client = double(:client)
+      validator = described_class.new(merge_request, client)
+
+      validator.validate_reviewed
+
+      expect(validator.errors).to be_empty
+    end
+
+    it 'does not add an error when the merge request is reviewed using a manual edit' do
+      merge_request =
+        double(:merge_request, description: '- [X] Assign to a reviewer')
 
       client = double(:client)
       validator = described_class.new(merge_request, client)
