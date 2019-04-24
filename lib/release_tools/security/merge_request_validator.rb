@@ -20,11 +20,11 @@ module ReleaseTools
       #     * [ ] Task name here
       #     - [x] Task name here
       #     * [x] Task name here
-      ALL_TASKS = /(\*|-)\s*\[(\s+|x)\]/.freeze
+      ALL_TASKS = /(\*|-)\s*\[(\s+|[xX])\]/.freeze
 
       # A regular expression to use to determine if the merge request was
       # assigned to a reviewer.
-      APPROVED_TASK = /-\s*\[x\]\s*Assign to a reviewer/.freeze
+      APPROVED_TASK = /-\s*\[[xX]\]\s*Assign to a reviewer/.freeze
 
       # A regular expression used to determine if the target branch of a merge
       # request is valid.
