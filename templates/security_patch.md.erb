@@ -45,6 +45,11 @@
   # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
   /chatops run release qa --security vLAST_DEPLOYED_VERSION  v<%= version %>
   ```
+- [ ] Notify @appsec-team that packages are ready for QA
+  ```sh
+  # In Slack
+  @appsec-team - Security release packages are available for QA.
+  ```
 - [ ] Wait for the QA tasks deadline to pass.
 
 ### Canary VMs on gitlab.com
@@ -71,7 +76,7 @@
 - [ ] This section should be done in coordination with the Security team, so **make sure to confirm with them before proceeding**
   ```sh
   # In Slack
-  @Ethan Strike @James Ritchey - We are ready to publish the security release packages for <%= version %>, please let us know if the blog post is ready.
+  @appsec-team - We are ready to publish the security release packages for <%= version %>, please let us know if the blog post is ready.
   ```
 
 - [ ] Publish the packages via ChatOps:
