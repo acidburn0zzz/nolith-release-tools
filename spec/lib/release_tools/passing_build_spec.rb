@@ -52,14 +52,45 @@ describe ReleaseTools::PassingBuild do
   end
 
   describe '#trigger_build' do
-    let(:fake_client) { spy }
+    describe 'when using auto-deploy' do
+      let(:fake_client) { spy }
+      let(:project) { ReleaseTools::Project::GitlabCe }
+      let(:version_map) { { 'VERSION' => '1.2.3' } }
 
-    it 'updates Omnibus versions', :silence_stdout do
-      expect(ReleaseTools::ComponentVersions)
-        .to receive(:update_omnibus).with('master', version_map)
-        .and_return(double('Commit', short_id: 'abcdefg'))
+      subject(:service) { described_class.new(project, '11-10-auto-deploy-1234') }
 
-      service.trigger_build(version_map)
+      it 'updates Omnibus versions', :silence_stdout do
+        expect(ReleaseTools::ComponentVersions)
+          .to receive(:update_omnibus).with('11-10-auto-deploy-1234', version_map)
+          .and_return(double('Commit', short_id: 'abcdefg'))
+
+        service.trigger_build(version_map)
+      end
+    end
+
+    describe 'when not using auto-deploy' do
+      let(:fake_client) { spy }
+      let(:project) { ReleaseTools::Project::GitlabCe }
+      let(:version_map) { { 'VERSION' => '1.2.3' } }
+      let(:pipeline_id) { ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset') }
+
+      subject(:service) { described_class.new(project, 'master') }
+
+      it 'triggers a pipeline build', :silence_stdout do
+        expect(ReleaseTools::GitlabDevClient)
+          .to receive(:create_branch).with("master-#{pipeline_id}", 'master', project)
+
+        allow(ReleaseTools::Pipeline).to receive(:new).and_call_original
+        expect(ReleaseTools::Pipeline)
+          .to receive(:new).with(project, 'master', version_map)
+
+        expect(ReleaseTools::GitlabDevClient)
+          .to receive(:delete_branch).with("master-#{pipeline_id}", project)
+
+        VCR.use_cassette('pipeline/trigger') do
+          service.trigger_build(version_map)
+        end
+      end
     end
   end
 end
