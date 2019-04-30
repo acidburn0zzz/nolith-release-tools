@@ -19,6 +19,10 @@ module ReleaseTools
       attr_reader :version
       attr_reader :target
 
+      # project - ReleaseTools::Project object
+      # version - ReleaseTools::Version object
+      # target  - ReleaseTools::PreparationMergeRequest or
+      #           ReleaseTools::AutoDeployBranch object
       def initialize(project, version, target)
         @project = project
         @version = version

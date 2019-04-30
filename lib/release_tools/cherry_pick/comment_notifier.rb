@@ -19,12 +19,13 @@ module ReleaseTools
         end
       end
 
-      # Post a summary comment in the preparation merge request with a list of
-      # picked and unpicked merge requests
+      # Post a summary comment to the target with a list of picked and unpicked
+      # merge requests
       #
       # picked   - Array of successful Results
       # unpicked - Array of failure Results
       def summary(picked, unpicked)
+        return if version.monthly?
         return if picked.empty? && unpicked.empty?
 
         message = []
@@ -49,7 +50,7 @@ module ReleaseTools
       end
 
       def blog_post_summary(picked)
-        return if version.rc? || version.monthly?
+        return if version.monthly? || version.rc?
         return if picked.empty?
 
         message = <<~MSG
@@ -110,9 +111,6 @@ module ReleaseTools
       end
 
       def create_merge_request_comment(merge_request, comment)
-        return unless merge_request.respond_to?(:project_id)
-        return unless merge_request.respond_to?(:iid)
-
         client.create_merge_request_comment(
           merge_request.project_id,
           merge_request.iid,
