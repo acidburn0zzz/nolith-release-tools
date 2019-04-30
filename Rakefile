@@ -12,6 +12,54 @@ namespace :auto_deploy do
       .new(ReleaseTools::AutoDeploy::Naming.branch)
       .create_branches!
   end
+
+  desc 'Pick commits into the auto deploy branches'
+  task :pick do
+    icon = ->(result) { result.success? ? "✓" : "✗" }
+
+    auto_deploy_branch = ENV.fetch('AUTO_DEPLOY_BRANCH') do |name|
+      abort("`#{name}` must be set for this rake task".colorize(:red))
+    end
+
+    version = auto_deploy_branch.sub(/\A(\d+)-(\d+)-auto-deploy.*/, '\1.\2')
+    version = ReleaseTools::Version.new(version).to_ee
+
+    target_branch = ReleaseTools::AutoDeployBranch.new(version, auto_deploy_branch)
+
+    $stdout.puts "--> Picking for #{version}..."
+    ee_results = ReleaseTools::CherryPick::Service
+      .new(ReleaseTools::Project::GitlabEe, version, target_branch)
+      .execute
+
+    ee_results.each do |result|
+      $stdout.puts "    #{icon.call(result)} #{result.url}"
+    end
+
+    version = version.to_ce
+    $stdout.puts "--> Picking for #{version}..."
+    ce_results = ReleaseTools::CherryPick::Service
+      .new(ReleaseTools::Project::GitlabCe, version, target_branch)
+      .execute
+
+    ce_results.each do |result|
+      $stdout.puts "    #{icon.call(result)} #{result.url}"
+    end
+
+    return if ReleaseTools::SharedStatus.dry_run?
+
+    if ee_results.any?(&:success?) || ce_results.any?(&:success?)
+      ReleaseTools::GitlabOpsClient.run_trigger(
+        ReleaseTools::Project::MergeTrain,
+        ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
+        'master',
+        {
+          CE_BRANCH: auto_deploy_branch,
+          EE_BRANCH: auto_deploy_branch,
+          MERGE_MANUAL: '1'
+        }
+      )
+    end
+  end
 end
 
 desc "Sync master branch in remotes"

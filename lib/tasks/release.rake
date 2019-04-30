@@ -18,9 +18,10 @@ namespace :release do
 
     # CE
     version = get_version(args).to_ce
+    target = ReleaseTools::PreparationMergeRequest.new(version: version)
     $stdout.puts "--> Picking for #{version}..."
     results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, version)
+      .new(ReleaseTools::Project::GitlabCe, version, target)
       .execute
 
     results.each do |result|
@@ -31,7 +32,7 @@ namespace :release do
     version = version.to_ee
     $stdout.puts "--> Picking for #{version}..."
     results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version)
+      .new(ReleaseTools::Project::GitlabEe, version, target)
       .execute
 
     results.each do |result|

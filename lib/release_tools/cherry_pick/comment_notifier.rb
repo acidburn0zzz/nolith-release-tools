@@ -4,11 +4,11 @@ module ReleaseTools
   module CherryPick
     class CommentNotifier
       attr_reader :version
-      attr_reader :prep_mr
+      attr_reader :target
 
-      def initialize(version, prep_mr)
+      def initialize(version, target:)
         @version = version
-        @prep_mr = prep_mr
+        @target = target
       end
 
       def comment(pick_result)
@@ -19,12 +19,13 @@ module ReleaseTools
         end
       end
 
-      # Post a summary comment in the preparation merge request with a list of
-      # picked and unpicked merge requests
+      # Post a summary comment to the target with a list of picked and unpicked
+      # merge requests
       #
       # picked   - Array of successful Results
       # unpicked - Array of failure Results
       def summary(picked, unpicked)
+        return if version.monthly?
         return if picked.empty? && unpicked.empty?
 
         message = []
@@ -45,22 +46,22 @@ module ReleaseTools
           MSG
         end
 
-        create_merge_request_comment(prep_mr, message.join("\n"))
+        create_merge_request_comment(target, message.join("\n"))
       end
 
       def blog_post_summary(picked)
-        return if version.rc?
+        return if version.monthly? || version.rc?
         return if picked.empty?
 
         message = <<~MSG
-          The following merge requests were picked into #{prep_mr.url}:
+          The following merge requests were picked into #{target.url}:
 
           ```
           #{markdown_list(picked.collect(&:to_markdown))}
           ```
         MSG
 
-        create_issue_comment(prep_mr.release_issue, message)
+        create_issue_comment(target.release_issue, message)
       end
 
       private
@@ -71,7 +72,7 @@ module ReleaseTools
 
       def successful_comment(pick_result)
         comment = <<~MSG
-          Automatically picked into #{prep_mr.url}, will merge into
+          Automatically picked into #{target.pick_destination}, will merge into
           `#{version.stable_branch}` ready for `#{version}`.
 
           /unlabel #{PickIntoLabel.reference(version)}
@@ -89,7 +90,9 @@ module ReleaseTools
         comment = <<~MSG
           @#{author} This merge request could not automatically be picked into
           `#{version.stable_branch}` for `#{version}` and will need manual
-          intervention.
+          intervention.  Please create a new MR targeting the source branch
+          of #{target.pick_destination}, and assign to release managers.
+
         MSG
 
         create_merge_request_comment(pick_result.merge_request, comment)

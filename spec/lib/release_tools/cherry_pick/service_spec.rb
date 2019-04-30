@@ -4,20 +4,25 @@ require 'spec_helper'
 
 describe ReleaseTools::CherryPick::Service do
   let(:version) { ReleaseTools::Version.new('11.4.0-rc8') }
+  let(:target) { double(branch_name: 'branch-name', exists?: true) }
 
-  subject { described_class.new(ReleaseTools::Project::GitlabCe, version) }
+  subject do
+    described_class.new(ReleaseTools::Project::GitlabCe, version, target)
+  end
 
   describe 'initialize' do
     it 'validates version argument' do
-      expect { described_class.new(double, double(valid?: false)) }
+      version = double(valid?: false)
+
+      expect { described_class.new(double, version, target) }
         .to raise_error(RuntimeError, /Invalid version provided/)
     end
 
-    it 'validates preparation MR' do
-      stub_const('ReleaseTools::PreparationMergeRequest', spy(exists?: false))
+    it 'validates target exists' do
+      target = double(exists?: false)
 
-      expect { described_class.new(double, version) }
-        .to raise_error(RuntimeError, /Preparation merge request not found/)
+      expect { described_class.new(double, version, target) }
+        .to raise_error(RuntimeError, /Invalid cherry-pick target provided/)
     end
   end
 
@@ -43,7 +48,6 @@ describe ReleaseTools::CherryPick::Service do
         end
       end
 
-      let(:target) { '11-4-stable-prepare-rc8' }
       let(:notifier) { spy }
       let(:picks) do
         Gitlab::PaginatedResponse.new(
