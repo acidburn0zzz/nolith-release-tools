@@ -21,7 +21,7 @@ module ReleaseTools
     end
 
     def release_issue
-      MonthlyIssue.new(version: version)
+      ReleaseTools::MonthlyIssue.new(version: version)
     end
   end
 end
