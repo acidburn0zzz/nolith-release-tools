@@ -34,12 +34,16 @@ class ReleaseFixture
     repository.branches.create('1-9-stable',    'HEAD')
     repository.branches.create('1-9-stable-ee', 'HEAD')
 
+    repository.tags.create('v1.9.0', 'HEAD', message: 'GitLab Version 1.9.0')
+
     # At some point we release Pages!
     commit_blobs('GITLAB_PAGES_VERSION' => "4.4.4\n")
 
     # Create new stable branches
     repository.branches.create('9-1-stable',    'HEAD')
     repository.branches.create('9-1-stable-ee', 'HEAD')
+
+    repository.tags.create('v9.1.0', 'HEAD', message: 'GitLab Version 9.1.0')
 
     # Bump the versions in master
     commit_blobs(

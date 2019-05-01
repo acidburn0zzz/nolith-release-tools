@@ -326,20 +326,11 @@ describe ReleaseTools::RemoteRepository do
   describe '#tag_messages', :silence_stdout do
     subject { described_class.get(repo_remotes) }
 
-    it 'calls "git tag --list --format"' do
-      allow(subject).to receive(:fetch).and_return true
-      expect(subject).to receive(:run_git).with(%w[tag --list --format="%(tag),%(subject)"]).and_call_original
-
-      subject.tag_messages
-    end
-
-    context 'when :sort is set' do
-      it 'sorts tags by the given format' do
-        allow(subject).to receive(:fetch).and_return true
-        expect(subject).to receive(:run_git).with(%w[tag --list --format="%(tag),%(subject)" --sort='-v:refname']).and_call_original
-
-        subject.tag_messages(sort: '-v:refname')
-      end
+    it 'returns hash of tags and messages' do
+      expect(subject.tag_messages).to eq(
+        "v9.1.0" => "GitLab Version 9.1.0",
+        "v1.9.0" => "GitLab Version 1.9.0"
+      )
     end
   end
 
