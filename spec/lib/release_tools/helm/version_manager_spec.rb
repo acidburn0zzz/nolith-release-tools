@@ -35,13 +35,9 @@ describe ReleaseTools::Helm::VersionManager, :silence_stdout do
 
   describe "#get_latest_version" do
     it 'sorts versions correctly and returns latest version' do
-      versions = [
-        ReleaseTools::HelmGitlabVersion.new("v1.7.5"),
-        ReleaseTools::HelmGitlabVersion.new("v10.7.5"),
-        ReleaseTools::HelmGitlabVersion.new("v9.7.5")
-      ]
+      versions = %w[v1.7.5 v10.7.5 v9.7.5]
 
-      expect(version_manager.get_latest_version(versions)).to eq("10.7.5")
+      expect(version_manager.get_latest_version(versions)).to eq(ReleaseTools::HelmGitlabVersion.new("10.7.5"))
     end
   end
 

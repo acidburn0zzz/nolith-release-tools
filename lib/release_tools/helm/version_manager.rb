@@ -15,8 +15,7 @@ module ReleaseTools
       end
 
       def get_latest_version(versions)
-        latest_version = versions.max_by { |v| v.sub('v', '') }.sub('v', '')
-        HelmGitlabVersion.new(latest_version)
+        versions.map { |v| HelmGitlabVersion.new(v.sub('v', '')) }.max
       end
 
       def get_matching_tags(messages: {}, major: '\d+', minor: '\d+', patch: '\d+')
