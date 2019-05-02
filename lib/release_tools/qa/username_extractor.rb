@@ -19,7 +19,9 @@ module ReleaseTools
 
       def mention_for_mr
         if merge_request.labels.include?(COMMUNITY_CONTRIBUTION_LABEL)
-          merge_request.merged_by.username
+          merge_request.merged_by&.username ||
+            merge_request.assignee&.username ||
+            merge_request.author.username
         else
           merge_request.author.username
         end
