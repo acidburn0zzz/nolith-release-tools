@@ -42,6 +42,26 @@ describe ReleaseTools::Qa::UsernameExtractor do
       it 'mentions the merger' do
         expect(subject.extract_username).to eq(community_merger_tag)
       end
+
+      it 'mentions the assignee if the merger is not found' do
+        allow(merge_request)
+          .to receive(:merged_by)
+          .and_return(nil)
+
+        expect(subject.extract_username).to eq('@DouweM')
+      end
+
+      it 'mentions the author if the merger and assignee could not be found' do
+        allow(merge_request)
+          .to receive(:merged_by)
+          .and_return(nil)
+
+        allow(merge_request)
+          .to receive(:assignee)
+          .and_return(nil)
+
+        expect(subject.extract_username).to eq('@jameslopez')
+      end
     end
 
     context 'for a regular MR' do
