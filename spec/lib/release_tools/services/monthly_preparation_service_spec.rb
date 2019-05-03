@@ -5,14 +5,15 @@ require 'spec_helper'
 describe ReleaseTools::Services::MonthlyPreparationService do
   let(:internal_client) { spy('ReleaseTools::GitlabClient') }
   let(:version) { ReleaseTools::Version.new('12.1.0') }
+  let(:remote_repo) { double(cleanup: true) }
   let(:version_manager) { double(:next_version) }
 
   subject(:service) { described_class.new(version) }
 
   before do
     allow(service).to receive(:gitlab_client).and_return(internal_client)
-    allow(ReleaseTools::RemoteRepository).to receive(:get).with(ReleaseTools::Project::HelmGitlab.remotes).and_return(true)
-    allow(ReleaseTools::Helm::VersionManager).to receive(:new).with(true).and_return(version_manager)
+    allow(ReleaseTools::RemoteRepository).to receive(:get).with(ReleaseTools::Project::HelmGitlab.remotes).and_return(remote_repo)
+    allow(ReleaseTools::Helm::VersionManager).to receive(:new).with(remote_repo).and_return(version_manager)
     allow(version_manager).to receive(:next_version).with("12.1.0").and_return(ReleaseTools::HelmChartVersion.new("4.3.0"))
   end
 

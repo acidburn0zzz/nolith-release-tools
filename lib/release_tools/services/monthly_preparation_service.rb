@@ -34,8 +34,10 @@ module ReleaseTools
         helm_repo = ReleaseTools::RemoteRepository.get(ReleaseTools::Project::HelmGitlab.remotes)
         version_manager = ReleaseTools::Helm::VersionManager.new(helm_repo)
         helm_version = version_manager.next_version(@version.to_ce)
-        branch = helm_version.stable_branch(ee: false)
-        create_branch_from_ref(Project::HelmGitlab, branch, 'master')
+        helm_branch = helm_version.stable_branch(ee: false)
+        create_branch_from_ref(Project::HelmGitlab, helm_branch, 'master')
+      ensure
+        helm_repo.cleanup
       end
     end
   end
