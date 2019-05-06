@@ -28,7 +28,9 @@ module ReleaseTools
 
     def trigger_build(version_map)
       if ref.match?(/\A\d+-\d+-auto-deploy-\d+\z/)
-        trigger_commit_build(version_map)
+        update_omnibus(version_map).tap do |commit|
+          tag_omnibus(commit, version_map)
+        end
       else
         trigger_branch_build(version_map)
       end
@@ -36,14 +38,26 @@ module ReleaseTools
 
     private
 
-    def trigger_commit_build(version_map)
+    def update_omnibus(version_map)
       commit = ReleaseTools::ComponentVersions.update_omnibus(ref, version_map)
 
       url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.short_id)
-
       $stdout.puts "Updated Omnibus versions at #{url}".indent(4)
 
-      # TODO: Tagging
+      commit
+    end
+
+    def tag_omnibus(commit, version_map)
+      tag_name = ReleaseTools::AutoDeploy::Naming.tag(
+        ee_ref: version_map['VERSION'],
+        omnibus_ref: commit.id
+      )
+
+      ReleaseTools::GitlabClient.create_tag(
+        ReleaseTools::Project::OmnibusGitlab,
+        tag_name,
+        commit.id
+      )
     end
 
     def trigger_branch_build(version_map)
