@@ -32,7 +32,7 @@ namespace :auto_deploy do
       .execute
 
     ee_results.each do |result|
-      $stdout.puts "    #{icon.call(result)} #{result.url}"
+      $stdout.puts "#{icon.call(result)} #{result.url}".indent(4)
     end
 
     version = version.to_ce
@@ -42,13 +42,15 @@ namespace :auto_deploy do
       .execute
 
     ce_results.each do |result|
-      $stdout.puts "    #{icon.call(result)} #{result.url}"
+      $stdout.puts "#{icon.call(result)} #{result.url}".indent(4)
     end
 
     return if ReleaseTools::SharedStatus.dry_run?
 
     if ee_results.any?(&:success?) || ce_results.any?(&:success?)
-      ReleaseTools::GitlabOpsClient.run_trigger(
+      $stdout.puts "--> Triggering merge train for `#{auto_deploy_branch}`"
+
+      pipeline = ReleaseTools::GitlabOpsClient.run_trigger(
         ReleaseTools::Project::MergeTrain,
         ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
         'master',
@@ -58,6 +60,8 @@ namespace :auto_deploy do
           MERGE_MANUAL: '1'
         }
       )
+
+      $stdout.puts pipeline.web_url.indent(4)
     end
   end
 end
