@@ -69,7 +69,7 @@ describe ReleaseTools::PassingBuild do
         service.trigger_build(version_map)
       end
 
-      it 'tags Omnibus' do
+      it 'tags Omnibus', :silence_stdout do
         commit = double('Commit', id: 'abcdefg')
 
         expect(service).to receive(:update_omnibus)
