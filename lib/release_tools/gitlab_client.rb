@@ -19,6 +19,7 @@ module ReleaseTools
       def_delegator :client, :update_variable
 
       def_delegator :client, :create_commit
+      def_delegator :client, :create_tag
     end
 
     class MissingMilestone
