@@ -18,25 +18,20 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     it 'creates auto-deploy branches for gitlab-ee and gitlab-ce' do
       branch_name = 'branch-name'
 
-      expect(ReleaseTools::Commits).to receive(:new).and_return(branch_commit).exactly(4).times
-      expect(internal_client_ops).to receive(:create_branch).with(
-        branch_name,
-        '1234',
-        ReleaseTools::Project::Deployer
-      )
+      expect(service).to receive(:latest_successful_ref).and_return(branch_commit).exactly(3).times
       expect(internal_client).to receive(:create_branch).with(
         branch_name,
-        '1234',
+        branch_commit,
         ReleaseTools::Project::GitlabCe
       )
       expect(internal_client).to receive(:create_branch).with(
         branch_name,
-        '1234',
+        branch_commit,
         ReleaseTools::Project::GitlabEe
       )
       expect(internal_client).to receive(:create_branch).with(
         branch_name,
-        '1234',
+        branch_commit,
         ReleaseTools::Project::OmnibusGitlab
       )
       expect(internal_client).to receive(:update_variable).with(
