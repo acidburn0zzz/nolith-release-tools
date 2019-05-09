@@ -1,6 +1,6 @@
 ## Preparation
 
-- [ ] If we are _NOT_ in Feature Freeze, one can ignore and close the [Preparation MRs] 
+- [ ] If we are _NOT_ in Feature Freeze, one can ignore and close the [Preparation MRs]
 - [ ] Perform automated merging into the preparation branches:
     ```sh
     # In Slack
@@ -51,11 +51,13 @@ can be done at will, just mention it in the `#production` channel.
 
 #### QA
 
-- [ ] Create a "QA Task" issue using the ChatOps command:
-  ```sh
-  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
-  /chatops run release qa vLAST_DEPLOYED_VERSION v<%= version %>
-  ```
+The QA task is generated automatically when deploying to staging. If you need to
+manually generate the QA task, you can do so as follows:
+
+```sh
+# In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
+/chatops run release qa vLAST_DEPLOYED_VERSION  v<%= version %>
+```
 
 ### gitlab.com canary stage
 

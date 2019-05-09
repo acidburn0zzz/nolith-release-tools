@@ -40,11 +40,14 @@
 
 #### QA
 
-- [ ] Create a "QA Task" issue using the ChatOps command:
-  ```sh
-  # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
-  /chatops run release qa --security vLAST_DEPLOYED_VERSION  v<%= version %>
-  ```
+The QA task is generated automatically when deploying to staging. If you need to
+manually generate the QA task, you can do so as follows:
+
+```sh
+# In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
+/chatops run release qa --security vLAST_DEPLOYED_VERSION  v<%= version %>
+```
+
 - [ ] Notify @appsec-team that packages are ready for QA
   ```sh
   # In Slack
