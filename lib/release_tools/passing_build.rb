@@ -53,8 +53,12 @@ module ReleaseTools
         omnibus_ref: commit.id
       )
 
+      project = ReleaseTools::Project::OmnibusGitlab
+
+      $stdout.puts "Creating `#{project}` tag `#{tag_name}`".indent(4)
+
       ReleaseTools::GitlabClient.create_tag(
-        ReleaseTools::Project::OmnibusGitlab,
+        project,
         tag_name,
         commit.id
       )
@@ -64,7 +68,7 @@ module ReleaseTools
       pipeline_id = ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset')
       branch_name = "#{ref}-#{pipeline_id}"
 
-      $stdout.puts "Creating branch #{branch_name}"
+      $stdout.puts "Creating `#{project}` branch `#{branch_name}`"
       ReleaseTools::GitlabDevClient.create_branch(branch_name, ref, project)
 
       ReleaseTools::Pipeline.new(
@@ -73,7 +77,7 @@ module ReleaseTools
         version_map
       ).trigger
 
-      $stdout.puts "Deleting branch #{branch_name}"
+      $stdout.puts "Deleting `#{project}` branch `#{branch_name}`"
       ReleaseTools::GitlabDevClient.delete_branch(branch_name, project)
     end
 
