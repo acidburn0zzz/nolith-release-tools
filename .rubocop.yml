@@ -40,6 +40,9 @@ Metrics/LineLength:
 Naming/HeredocDelimiterNaming:
   Enabled: false
 
+Naming/RescuedExceptionsVariableName:
+  PreferredName: ex
+
 Naming/UncommunicativeMethodParamName:
   MinNameLength: 2
 

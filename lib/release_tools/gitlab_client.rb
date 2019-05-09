@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 module ReleaseTools
   class GitlabClient
     DEFAULT_GITLAB_API_ENDPOINT = 'https://gitlab.com/api/v4'
@@ -356,4 +355,3 @@ module ReleaseTools
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

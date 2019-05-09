@@ -104,8 +104,8 @@ module ReleaseTools
 
       def track_sync_errors
         yield
-      rescue SyncError => e
-        sync_errors << e
+      rescue SyncError => ex
+        sync_errors << ex
       end
     end
   end
