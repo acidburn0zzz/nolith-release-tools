@@ -57,10 +57,16 @@ module ReleaseTools
 
       $stdout.puts "Creating `#{project}` tag `#{tag_name}`".indent(4)
 
+      message = +"Auto-deploy #{tag_name}\n\n"
+      version_map.each_pair do |file, version|
+        message << "#{file}: #{version}\n"
+      end
+
       ReleaseTools::GitlabClient.create_tag(
         project,
         tag_name,
-        commit.id
+        commit.id,
+        message.strip
       )
     end
 
