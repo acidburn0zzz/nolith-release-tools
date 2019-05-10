@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe ReleaseTools::PassingBuild do
   let(:project) { ReleaseTools::Project::GitlabCe }
-  let(:fake_commit) { double('Commit', id: '1234') }
+  let(:fake_commit) { double('Commit', id: SecureRandom.hex(20)) }
   let(:version_map) { { 'VERSION' => '1.2.3' } }
 
   subject(:service) { described_class.new(project, 'master') }
@@ -53,41 +53,70 @@ describe ReleaseTools::PassingBuild do
 
   describe '#trigger_build' do
     let(:fake_client) { spy }
+    let(:fake_ops_client) { spy }
     let(:project) { ReleaseTools::Project::GitlabCe }
     let(:version_map) { { 'VERSION' => '1.2.3' } }
 
     context 'when using auto-deploy' do
+      let(:tag_name) { 'tag-name' }
+
       subject(:service) { described_class.new(project, '11-10-auto-deploy-1234') }
+
+      before do
+        allow(ReleaseTools::AutoDeploy::Naming).to receive(:tag)
+          .and_return(tag_name)
+
+        stub_const('ReleaseTools::GitlabClient', fake_client)
+        stub_const('ReleaseTools::GitlabOpsClient', fake_ops_client)
+      end
 
       it 'updates Omnibus versions', :silence_stdout do
         expect(ReleaseTools::ComponentVersions)
           .to receive(:update_omnibus).with('11-10-auto-deploy-1234', version_map)
-          .and_return(double('Commit', short_id: 'abcdefg'))
+          .and_return(fake_commit)
 
-        allow(service).to receive(:tag_omnibus)
+        expect(service).to receive(:tag_omnibus)
+        expect(service).to receive(:tag_deployer)
 
         service.trigger_build(version_map)
       end
 
       it 'tags Omnibus with an annotated tag', :silence_stdout do
-        commit = double('Commit', id: 'abcdefg')
-
         expect(service).to receive(:update_omnibus)
-          .and_return(commit)
-        expect(service).to receive(:tag_omnibus).with(commit, version_map)
+          .and_return(fake_commit)
+        expect(service).to receive(:tag_omnibus)
+          .with(tag_name, anything, fake_commit)
           .and_call_original
 
-        expect(ReleaseTools::AutoDeploy::Naming).to receive(:tag)
-          .and_return('tag-name')
-        expect(ReleaseTools::GitlabClient).to receive(:create_tag)
+        service.trigger_build(version_map)
+
+        expect(fake_client)
+          .to have_received(:create_tag)
           .with(
             ReleaseTools::Project::OmnibusGitlab,
-            'tag-name',
-            commit.id,
+            tag_name,
+            fake_commit.id,
             "Auto-deploy tag-name\n\nVERSION: 1.2.3"
           )
+      end
+
+      it 'tags Deployer with an annotated tag', :silence_stdout do
+        expect(service).to receive(:update_omnibus)
+          .and_return(fake_commit)
+        expect(service).to receive(:tag_deployer)
+          .with(tag_name, anything, fake_commit)
+          .and_call_original
 
         service.trigger_build(version_map)
+
+        expect(fake_ops_client)
+          .to have_received(:create_tag)
+          .with(
+            ReleaseTools::Project::Deployer,
+            tag_name,
+            fake_commit.id,
+            "Auto-deploy tag-name\n\nVERSION: 1.2.3"
+          )
       end
     end
 

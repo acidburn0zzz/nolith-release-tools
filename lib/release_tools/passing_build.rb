@@ -18,9 +18,8 @@ module ReleaseTools
       end
 
       versions = ReleaseTools::ComponentVersions.get(project, commit.id)
-
-      versions.each do |component, version|
-        $stdout.puts "#{component}: #{version}".indent(4)
+      component_strings(versions).each do |string|
+        $stdout.puts string.indent(4)
       end
 
       trigger_build(versions) if args.trigger_build
@@ -29,7 +28,16 @@ module ReleaseTools
     def trigger_build(version_map)
       if ref.match?(/\A\d+-\d+-auto-deploy-\d+\z/)
         update_omnibus(version_map).tap do |commit|
-          tag_omnibus(commit, version_map)
+          tag_name = ReleaseTools::AutoDeploy::Naming.tag(
+            ee_ref: version_map['VERSION'],
+            omnibus_ref: commit.id
+          )
+
+          tag_message = +"Auto-deploy #{tag_name}\n\n"
+          tag_message << component_strings(version_map).join("\n")
+
+          tag_omnibus(tag_name, tag_message, commit)
+          tag_deployer(tag_name, tag_message, commit)
         end
       else
         trigger_branch_build(version_map)
@@ -38,36 +46,35 @@ module ReleaseTools
 
     private
 
+    def component_strings(version_map)
+      version_map.map { |component, version| "#{component}: #{version}" }
+    end
+
     def update_omnibus(version_map)
       commit = ReleaseTools::ComponentVersions.update_omnibus(ref, version_map)
 
-      url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.short_id)
+      url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.id)
       $stdout.puts "Updated Omnibus versions at #{url}".indent(4)
 
       commit
     end
 
-    def tag_omnibus(commit, version_map)
-      tag_name = ReleaseTools::AutoDeploy::Naming.tag(
-        ee_ref: version_map['VERSION'],
-        omnibus_ref: commit.id
-      )
-
+    def tag_omnibus(name, message, commit)
       project = ReleaseTools::Project::OmnibusGitlab
 
-      $stdout.puts "Creating `#{project}` tag `#{tag_name}`".indent(4)
+      $stdout.puts "Creating `#{project}` tag `#{name}`".indent(4)
 
-      message = +"Auto-deploy #{tag_name}\n\n"
-      version_map.each_pair do |file, version|
-        message << "#{file}: #{version}\n"
-      end
+      ReleaseTools::GitlabClient
+        .create_tag(project, name, commit.id, message)
+    end
 
-      ReleaseTools::GitlabClient.create_tag(
-        project,
-        tag_name,
-        commit.id,
-        message.strip
-      )
+    def tag_deployer(name, message, commit)
+      project = ReleaseTools::Project::Deployer
+
+      $stdout.puts "Creating `#{project}` tag `#{name}`".indent(4)
+
+      ReleaseTools::GitlabOpsClient
+        .create_tag(project, name, commit.id, message)
     end
 
     def trigger_branch_build(version_map)
@@ -87,6 +94,7 @@ module ReleaseTools
       ReleaseTools::GitlabDevClient.delete_branch(branch_name, project)
     end
 
+    # See https://gitlab.com/gitlab-org/gitlab-ce/issues/25392
     def commit_url(project, id)
       "https://gitlab.com/#{project.path}/commit/#{id}"
     end
