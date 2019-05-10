@@ -69,7 +69,7 @@ describe ReleaseTools::PassingBuild do
         service.trigger_build(version_map)
       end
 
-      it 'tags Omnibus', :silence_stdout do
+      it 'tags Omnibus with an annotated tag', :silence_stdout do
         commit = double('Commit', id: 'abcdefg')
 
         expect(service).to receive(:update_omnibus)
@@ -80,7 +80,12 @@ describe ReleaseTools::PassingBuild do
         expect(ReleaseTools::AutoDeploy::Naming).to receive(:tag)
           .and_return('tag-name')
         expect(ReleaseTools::GitlabClient).to receive(:create_tag)
-          .with(ReleaseTools::Project::OmnibusGitlab, 'tag-name', commit.id)
+          .with(
+            ReleaseTools::Project::OmnibusGitlab,
+            'tag-name',
+            commit.id,
+            "Auto-deploy tag-name\n\nVERSION: 1.2.3"
+          )
 
         service.trigger_build(version_map)
       end
