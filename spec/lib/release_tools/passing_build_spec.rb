@@ -104,7 +104,7 @@ describe ReleaseTools::PassingBuild do
         expect(service).to receive(:update_omnibus)
           .and_return(fake_commit)
         expect(service).to receive(:tag_deployer)
-          .with(tag_name, anything, fake_commit)
+          .with(tag_name, anything, "master")
           .and_call_original
 
         service.trigger_build(version_map)
@@ -114,7 +114,7 @@ describe ReleaseTools::PassingBuild do
           .with(
             ReleaseTools::Project::Deployer,
             tag_name,
-            fake_commit.id,
+            "master",
             "Auto-deploy tag-name\n\nVERSION: 1.2.3"
           )
       end
