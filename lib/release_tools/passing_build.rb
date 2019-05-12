@@ -37,7 +37,7 @@ module ReleaseTools
           tag_message << component_strings(version_map).join("\n")
 
           tag_omnibus(tag_name, tag_message, commit)
-          tag_deployer(tag_name, tag_message, commit)
+          tag_deployer(tag_name, tag_message, "master")
         end
       else
         trigger_branch_build(version_map)
@@ -68,13 +68,13 @@ module ReleaseTools
         .create_tag(project, name, commit.id, message)
     end
 
-    def tag_deployer(name, message, commit)
+    def tag_deployer(name, message, ref)
       project = ReleaseTools::Project::Deployer
 
       $stdout.puts "Creating `#{project}` tag `#{name}`".indent(4)
 
       ReleaseTools::GitlabOpsClient
-        .create_tag(project, name, commit.id, message)
+        .create_tag(project, name, ref, message)
     end
 
     def trigger_branch_build(version_map)
