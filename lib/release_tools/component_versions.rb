@@ -33,7 +33,7 @@ module ReleaseTools
       if actions.empty?
         return ReleaseTools::GitlabClient.commit(
           ReleaseTools::Project::OmnibusGitlab,
-          target_branch
+          ref: target_branch
         )
       end
 

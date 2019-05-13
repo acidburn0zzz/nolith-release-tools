@@ -39,6 +39,7 @@ describe ReleaseTools::ComponentVersions do
         'VERSION' => '0cfa69752d82b8e134bdb8e473c185bdae26ccc2'
       }
     end
+    let(:commit) { double('commit', id: 'abcd') }
 
     it 'commits version updates for the specified ref' do
       without_dry_run do
@@ -59,10 +60,13 @@ describe ReleaseTools::ComponentVersions do
 
     it 'does not create a commit with a version update without changes' do
       allow(described_class).to receive(:version_changes).and_return({})
+      allow(fake_client).to receive(:commit).with(
+        ReleaseTools::Project::OmnibusGitlab, ref: 'foo-branch'
+      ).and_return(commit)
 
       expect(fake_client).not_to have_received(:create_commit)
       without_dry_run do
-        described_class.update_omnibus('foo-branch', version_map)
+        expect(described_class.update_omnibus('foo-branch', version_map).id).to be('abcd')
       end
     end
   end
