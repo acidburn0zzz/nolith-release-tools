@@ -17,12 +17,12 @@ module ReleaseTools
         raise "Unable to find a passing #{project} build for `#{ref}` on dev"
       end
 
-      versions = ReleaseTools::ComponentVersions.get(project, commit.id)
-      component_strings(versions).each do |string|
+      version_map = ReleaseTools::ComponentVersions.get(project, commit.id)
+      component_strings(version_map).each do |string|
         $stdout.puts string.indent(4)
       end
 
-      trigger_build(versions) if args.trigger_build
+      trigger_build(version_map) if args.trigger_build
     end
 
     def trigger_build(version_map)
