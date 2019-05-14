@@ -30,6 +30,7 @@ namespace :release do
 
     # EE
     version = version.to_ee
+    target = ReleaseTools::PreparationMergeRequest.new(version: version)
     $stdout.puts "--> Picking for #{version}..."
     results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, version, target)
