@@ -27,24 +27,32 @@ module ReleaseTools
 
     def trigger_build(version_map)
       if ref.match?(/\A\d+-\d+-auto-deploy-\d+\z/)
-        update_omnibus(version_map).tap do |commit|
-          tag_name = ReleaseTools::AutoDeploy::Naming.tag(
-            ee_ref: version_map['VERSION'],
-            omnibus_ref: commit.id
-          )
-
-          tag_message = +"Auto-deploy #{tag_name}\n\n"
-          tag_message << component_strings(version_map).join("\n")
-
-          tag_omnibus(tag_name, tag_message, commit)
-          tag_deployer(tag_name, tag_message, "master")
-        end
+        update_omnibus_for_autodeploy(version_map)
       else
         trigger_branch_build(version_map)
       end
     end
 
     private
+
+    def update_omnibus_for_autodeploy(version_map)
+      unless ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, version_map)
+        $stdout.puts "No version changes for components, not tagging omnibus"
+        return
+      end
+      update_omnibus(version_map).tap do |commit|
+        tag_name = ReleaseTools::AutoDeploy::Naming.tag(
+          ee_ref: version_map['VERSION'],
+          omnibus_ref: commit.id
+        )
+
+        tag_message = +"Auto-deploy #{tag_name}\n\n"
+        tag_message << component_strings(version_map).join("\n")
+
+        tag_omnibus(tag_name, tag_message, commit)
+        tag_deployer(tag_name, tag_message, "master")
+      end
+    end
 
     def component_strings(version_map)
       version_map.map { |component, version| "#{component}: #{version}" }
