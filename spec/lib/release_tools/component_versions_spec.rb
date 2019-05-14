@@ -57,21 +57,9 @@ describe ReleaseTools::ComponentVersions do
         )
       )
     end
-
-    it 'does not create a commit with a version update without changes' do
-      allow(described_class).to receive(:version_changes).and_return({})
-      allow(fake_client).to receive(:commit).with(
-        ReleaseTools::Project::OmnibusGitlab, ref: 'foo-branch'
-      ).and_return(commit)
-
-      expect(fake_client).not_to have_received(:create_commit)
-      without_dry_run do
-        expect(described_class.update_omnibus('foo-branch', version_map).id).to be('abcd')
-      end
-    end
   end
 
-  describe '.version_changes' do
+  describe '.omnibus_version_changes?' do
     let(:project) { ReleaseTools::Project::OmnibusGitlab }
     let(:version_map) { { 'GITALY_SERVER_VERSION' => '1.33.0' } }
 
@@ -80,11 +68,7 @@ describe ReleaseTools::ComponentVersions do
         .with(project.path, "/GITALY_SERVER_VERSION", 'foo-branch')
         .and_return("1.2.3\n")
 
-      expect(described_class.version_changes('foo-branch', version_map)).to match(
-        a_hash_including(
-          'GITALY_SERVER_VERSION' => '1.33.0'
-        )
-      )
+      expect(described_class.omnibus_version_changes?('foo-branch', version_map)).to be(true)
     end
 
     it 'rejects omnibus versions that have not changed' do
@@ -92,11 +76,7 @@ describe ReleaseTools::ComponentVersions do
         .with(project.path, "/GITALY_SERVER_VERSION", 'foo-branch')
         .and_return("1.33.0\n")
 
-      expect(described_class.version_changes('foo-branch', version_map)).not_to match(
-        a_hash_including(
-          'GITALY_SERVER_VERSION' => '1.33.0'
-        )
-      )
+      expect(described_class.omnibus_version_changes?('foo-branch', version_map)).to be(false)
     end
   end
 end

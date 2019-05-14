@@ -22,19 +22,12 @@ module ReleaseTools
     def self.update_omnibus(target_branch, version_map)
       return if SharedStatus.dry_run?
 
-      actions = version_changes(target_branch, version_map).map do |filename, contents|
+      actions = version_map.map do |filename, contents|
         {
           action: 'update',
           file_path: "/#{filename}",
           content: "#{contents}\n"
         }
-      end
-
-      if actions.empty?
-        return ReleaseTools::GitlabClient.commit(
-          ReleaseTools::Project::OmnibusGitlab,
-          ref: target_branch
-        )
       end
 
       ReleaseTools::GitlabClient.create_commit(
@@ -45,7 +38,7 @@ module ReleaseTools
       )
     end
 
-    def self.version_changes(target_branch, version_map)
+    def self.omnibus_version_changes?(target_branch, version_map)
       project = ReleaseTools::Project::OmnibusGitlab
       version_map.reject do |filename, contents|
         ReleaseTools::GitlabClient.file_contents(
@@ -53,7 +46,7 @@ module ReleaseTools
           "/#{filename}",
           target_branch
         ).chomp == contents
-      end
+      end.any?
     end
   end
 end
