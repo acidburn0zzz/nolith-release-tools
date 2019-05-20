@@ -37,6 +37,7 @@ describe ReleaseTools::ComponentVersions do
         'GITLAB_PAGES_VERSION' => '1.5.0',
         'GITLAB_SHELL_VERSION' => '9.0.0',
         'GITLAB_WORKHORSE_VERSION' => '8.6.0',
+        'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => '1.3.0',
         'VERSION' => '0cfa69752d82b8e134bdb8e473c185bdae26ccc2'
       }
     end
