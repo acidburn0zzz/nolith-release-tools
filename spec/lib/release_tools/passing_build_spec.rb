@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe ReleaseTools::PassingBuild do
   let(:project) { ReleaseTools::Project::GitlabCe }
-  let(:fake_commit) { double('Commit', id: SecureRandom.hex(20)) }
+  let(:fake_commit) { double('Commit', id: SecureRandom.hex(20), created_at: Time.now) }
   let(:version_map) { { 'VERSION' => '1.2.3' } }
 
   subject(:service) { described_class.new(project, 'master') }

@@ -32,12 +32,16 @@ describe ReleaseTools::AutoDeploy::Naming do
       allow(ReleaseTools::GitlabClient).to receive(:current_milestone)
         .and_return(double(title: '4.2'))
 
-      ee_ref = SecureRandom.hex(20)
-      ob_ref = SecureRandom.hex(20)
+      args = {
+        timestamp: Time.now.to_i,
+        omnibus_ref: SecureRandom.hex(20),
+        ee_ref: SecureRandom.hex(20)
+      }
 
       with_pipeline('1234') do
-        expect(described_class.tag(ee_ref: ee_ref, omnibus_ref: ob_ref))
-          .to eq("4.2.1234+#{ee_ref[0...11]}.#{ob_ref[0...11]}")
+        expect(described_class.tag(**args)).to eq(
+          "4.2.#{args[:timestamp]}+#{args[:ee_ref][0...11]}.#{args[:omnibus_ref][0...11]}"
+        )
       end
     end
   end

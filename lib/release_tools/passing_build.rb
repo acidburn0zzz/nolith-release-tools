@@ -40,10 +40,12 @@ module ReleaseTools
         $stdout.puts "No version changes for components, not tagging omnibus"
         return
       end
+
       update_omnibus(version_map).tap do |commit|
         tag_name = ReleaseTools::AutoDeploy::Naming.tag(
-          ee_ref: version_map['VERSION'],
-          omnibus_ref: commit.id
+          timestamp: commit.created_at.to_i,
+          omnibus_ref: commit.id,
+          ee_ref: version_map['VERSION']
         )
 
         tag_message = +"Auto-deploy #{tag_name}\n\n"
