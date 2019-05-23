@@ -4,10 +4,16 @@ require 'spec_helper'
 
 describe ReleaseTools::CherryPick::Service do
   let(:version) { ReleaseTools::Version.new('11.4.0-rc8') }
-  let(:target) { double(branch_name: 'branch-name', exists?: true) }
+  let(:target) do
+    double(
+      branch_name: 'branch-name',
+      exists?: true,
+      project: ReleaseTools::Project::GitlabCe
+    )
+  end
 
   subject do
-    described_class.new(ReleaseTools::Project::GitlabCe, version, target)
+    described_class.new(target.project, version, target)
   end
 
   describe 'initialize' do
@@ -39,7 +45,7 @@ describe ReleaseTools::CherryPick::Service do
       def stub_picking
         # If the `merge_commit_sha` contains `failure`, we raise an error to
         # simulate a failed pick; otherwise return true
-        allow(ReleaseTools::GitlabClient).to receive(:cherry_pick) do |_, keywords|
+        allow(internal_client).to receive(:cherry_pick) do |_, keywords|
           if keywords[:ref].start_with?('failure')
             raise Gitlab::Error::BadRequest.new(double.as_null_object)
           else
@@ -49,6 +55,7 @@ describe ReleaseTools::CherryPick::Service do
       end
 
       let(:notifier) { spy }
+      let(:internal_client) { spy }
       let(:picks) do
         Gitlab::PaginatedResponse.new(
           [
@@ -64,14 +71,15 @@ describe ReleaseTools::CherryPick::Service do
 
       before do
         allow(subject).to receive(:notifier).and_return(notifier)
+        allow(subject).to receive(:client).and_return(internal_client)
         allow(subject).to receive(:pickable_mrs).and_return(picks)
       end
 
       it 'attempts to cherry pick each merge request' do
-        expect(ReleaseTools::GitlabClient).to receive(:cherry_pick).exactly(5).times
+        expect(internal_client).to receive(:cherry_pick).exactly(5).times
 
         # Unset the `TEST` environment so we call the stubbed `cherry_pick`
-        ClimateControl.modify(TEST: nil) do
+        without_dry_run do
           subject.execute
         end
       end
@@ -98,6 +106,16 @@ describe ReleaseTools::CherryPick::Service do
         subject.execute
 
         expect(notifier).to have_received(:blog_post_summary)
+      end
+
+      it 'cancels redundant pipelines' do
+        without_dry_run do
+          subject.execute
+        end
+
+        expect(internal_client)
+          .to have_received(:cancel_redundant_pipelines)
+          .with(target.project, ref: target.branch_name)
       end
     end
   end
