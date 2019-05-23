@@ -33,14 +33,14 @@ describe ReleaseTools::AutoDeploy::Naming do
         .and_return(double(title: '4.2'))
 
       args = {
-        timestamp: Time.now.to_i,
+        timestamp: Time.new(2019, 7, 2, 10, 14).to_s,
         omnibus_ref: SecureRandom.hex(20),
         ee_ref: SecureRandom.hex(20)
       }
 
       with_pipeline('1234') do
         expect(described_class.tag(**args)).to eq(
-          "4.2.#{args[:timestamp]}+#{args[:ee_ref][0...11]}.#{args[:omnibus_ref][0...11]}"
+          "4.2.201907021014+#{args[:ee_ref][0...11]}.#{args[:omnibus_ref][0...11]}"
         )
       end
     end

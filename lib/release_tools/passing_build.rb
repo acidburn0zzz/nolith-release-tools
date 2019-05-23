@@ -43,7 +43,7 @@ module ReleaseTools
 
       update_omnibus(version_map).tap do |commit|
         tag_name = ReleaseTools::AutoDeploy::Naming.tag(
-          timestamp: commit.created_at.to_i,
+          timestamp: commit.created_at.to_s,
           omnibus_ref: commit.id,
           ee_ref: version_map['VERSION']
         )
