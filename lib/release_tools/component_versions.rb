@@ -39,14 +39,13 @@ module ReleaseTools
     end
 
     def self.omnibus_version_changes?(target_branch, version_map)
-      project = ReleaseTools::Project::OmnibusGitlab
-      version_map.reject do |filename, contents|
+      version_map.any? do |filename, contents|
         ReleaseTools::GitlabClient.file_contents(
-          project.path,
+          ReleaseTools::Project::OmnibusGitlab.path,
           "/#{filename}",
           target_branch
-        ).chomp == contents
-      end.any?
+        ).chomp != contents
+      end
     end
   end
 end
