@@ -122,7 +122,7 @@ class CNGImageReleaseFixture
         ASSETS_IMAGE_REGISTRY_PREFIX: "registry.gitlab.com/gitlab-org"
         COMPILE_ASSETS: "false"
         S3CMD_VERSION: "2.0.1"
-        PYTHON_VERSION: "3.4.9"
+        PYTHON_VERSION: "3.7.3"
     MSG
     commit_blob(path: 'ci_files/variables.yml', content: variables_file, message: 'Add variables file')
     commit_blob(path: 'README.md', content: '', message: 'Add empty README.md')
