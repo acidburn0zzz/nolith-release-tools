@@ -4,14 +4,18 @@ module ReleaseTools
   module AutoDeploy
     class Naming
       BRANCH_FORMAT = '%<major>d-%<minor>d-auto-deploy-%<pipeline_id>07d'
-      TAG_FORMAT = '%<major>d.%<minor>d.%<pipeline_id>d+%<ee_ref>.11s.%<omnibus_ref>.11s'
+      TAG_FORMAT = '%<major>d.%<minor>d.%<timestamp>s+%<ee_ref>.11s.%<omnibus_ref>.11s'
 
       def self.branch
         new.branch
       end
 
-      def self.tag(ee_ref:, omnibus_ref:)
-        new.tag(ee_ref: ee_ref, omnibus_ref: omnibus_ref)
+      def self.tag(timestamp:, omnibus_ref:, ee_ref:)
+        new.tag(
+          timestamp: timestamp,
+          omnibus_ref: omnibus_ref,
+          ee_ref: ee_ref
+        )
       end
 
       def initialize
@@ -29,14 +33,14 @@ module ReleaseTools
         )
       end
 
-      def tag(ee_ref:, omnibus_ref:)
+      def tag(timestamp:, omnibus_ref:, ee_ref:)
         format(
           TAG_FORMAT,
           major: version.first,
           minor: version.last,
-          pipeline_id: @pipeline_id,
-          ee_ref: ee_ref,
-          omnibus_ref: omnibus_ref
+          timestamp: Time.parse(timestamp).strftime('%Y%m%d%H%M'),
+          omnibus_ref: omnibus_ref,
+          ee_ref: ee_ref
         )
       end
 
