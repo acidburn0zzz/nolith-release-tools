@@ -471,13 +471,6 @@ describe ReleaseTools::RemoteRepository do
   end
 
   describe '#verify_sync!', :silence_stdout do
-    around do |ex|
-      # TODO: Remove feature flag after testing
-      ClimateControl.modify(FEATURE_VERIFY_SYNC: 'true') do
-        ex.run
-      end
-    end
-
     it 'does nothing with only one remote' do
       repo = described_class.get(repo_remotes.slice(:gitlab))
 

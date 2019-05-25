@@ -176,8 +176,6 @@ module ReleaseTools
 
     # Verify the specified ref is the same across all remotes
     def verify_sync!(ref)
-      # TODO: Remove feature flag after testing
-      return unless ENV['FEATURE_VERIFY_SYNC']
       return unless remotes.size > 1
 
       refs = ls_remotes(ref)
