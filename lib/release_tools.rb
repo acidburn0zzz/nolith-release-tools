@@ -33,6 +33,7 @@ Dotenv.load
 $LOAD_PATH.unshift(__dir__)
 
 require 'release_tools/auto_deploy/naming'
+require 'release_tools/auto_deploy/version'
 require 'release_tools/auto_deploy_branch'
 require 'release_tools/branch'
 require 'release_tools/branch_creation'
