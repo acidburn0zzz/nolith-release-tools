@@ -15,6 +15,10 @@ module ReleaseTools
       true
     end
 
+    def to_s
+      branch_name
+    end
+
     # Included in cherry-pick summary messages
     def pick_destination
       "`#{branch_name}`"
