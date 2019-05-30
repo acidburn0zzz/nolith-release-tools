@@ -20,7 +20,12 @@ module ReleaseTools
     end
 
     def self.for(version)
-      "Pick into #{version.to_minor}"
+      case version
+      when ReleaseTools::AutoDeploy::Version
+        "Pick into auto-deploy"
+      else
+        "Pick into #{version.to_minor}"
+      end
     end
 
     def self.reference(version)

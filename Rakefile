@@ -21,14 +21,13 @@ namespace :auto_deploy do
       abort("`#{name}` must be set for this rake task".colorize(:red))
     end
 
-    version = auto_deploy_branch.sub(/\A(\d+)-(\d+)-auto-deploy.*/, '\1.\2')
-    version = ReleaseTools::Version.new(version).to_ee
-
-    target_branch = ReleaseTools::AutoDeployBranch.new(version, auto_deploy_branch)
+    version = ReleaseTools::AutoDeploy::Version
+      .from_branch(auto_deploy_branch)
+      .to_ee
 
     $stdout.puts "--> Picking for #{version}..."
     ee_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, target_branch)
+      .new(ReleaseTools::Project::GitlabEe, version, version.stable_branch)
       .execute
 
     ee_results.each do |result|
@@ -38,7 +37,7 @@ namespace :auto_deploy do
     version = version.to_ce
     $stdout.puts "--> Picking for #{version}..."
     ce_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, version, target_branch)
+      .new(ReleaseTools::Project::GitlabCe, version, version.stable_branch)
       .execute
 
     ce_results.each do |result|
