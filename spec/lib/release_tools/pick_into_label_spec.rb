@@ -32,5 +32,11 @@ describe ReleaseTools::PickIntoLabel do
 
       expect(described_class.reference(version)).to eq '~"Pick into foo"'
     end
+
+    it 'handles an auto-deploy version' do
+      version = ReleaseTools::AutoDeploy::Version.new('1.2.3')
+
+      expect(described_class.reference(version)).to eq '~"Pick into auto-deploy"'
+    end
   end
 end
