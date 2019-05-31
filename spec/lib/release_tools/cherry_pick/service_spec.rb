@@ -109,8 +109,10 @@ describe ReleaseTools::CherryPick::Service do
       end
 
       it 'cancels redundant pipelines' do
-        without_dry_run do
-          subject.execute
+        ClimateControl.modify(FEATURE_CANCEL_REDUNDANT: 'true') do
+          without_dry_run do
+            subject.execute
+          end
         end
 
         expect(internal_client)

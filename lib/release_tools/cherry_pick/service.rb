@@ -72,6 +72,7 @@ module ReleaseTools
       end
 
       def cancel_redundant_pipelines
+        return unless ENV['FEATURE_CANCEL_REDUNDANT']
         return if SharedStatus.dry_run?
 
         client.cancel_redundant_pipelines(project, ref: @target_branch)
