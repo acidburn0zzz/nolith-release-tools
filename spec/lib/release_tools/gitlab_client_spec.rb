@@ -36,6 +36,26 @@ describe ReleaseTools::GitlabClient do
     end
   end
 
+  describe '.cancel_redundant_pipelines', vcr: { cassette_name: 'pipelines/redundant' } do
+    it 'cancels only redundant pipelines' do
+      # Cancel redundant
+      expect(described_class).to receive(:cancel_pipeline)
+        .with('gitlab-org/gitlab-ce', 64_179_668)
+      expect(described_class).to receive(:cancel_pipeline)
+        .with('gitlab-org/gitlab-ce', 64_181_884)
+
+      # Don't cancel latest running
+      expect(described_class).not_to receive(:cancel_pipeline)
+        .with(anything, 64_184_059)
+
+      # Don't cancel completed
+      expect(described_class).not_to receive(:cancel_pipeline)
+        .with(anything, 64_165_460)
+
+      described_class.cancel_redundant_pipelines(ref: 'master')
+    end
+  end
+
   describe '.pipeline', vcr: { cassette_name: 'pipeline' } do
     it 'returns project pipeline' do
       pipeline_id = '55053803'
