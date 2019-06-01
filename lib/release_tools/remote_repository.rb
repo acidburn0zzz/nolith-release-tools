@@ -114,11 +114,10 @@ module ReleaseTools
       output.lines.map(&:chomp) if status.success?
     end
 
-    def tag_messages(sort: nil, remote: canonical_remote.name)
+    def tag_messages(remote: canonical_remote.name)
       fetch('refs/tags/*', remote: remote)
 
       cmd = %w[tag --list --format="%(tag),%(subject)"]
-      cmd << "--sort='#{sort}'" if sort
 
       output, status = run_git(cmd)
 
