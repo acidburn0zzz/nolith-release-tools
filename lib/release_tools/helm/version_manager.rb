@@ -37,6 +37,8 @@ module ReleaseTools
       def next_version(gitlab_version)
         tag_messages = repository.tag_messages
 
+        raise "Tag messages could not be extracted from the repository to compute next tag. Aborting." unless tag_messages
+
         matching_patch_tags = get_matching_tags(tag_messages, major: gitlab_version.major, minor: gitlab_version.minor, patch: gitlab_version.patch)
         unless matching_patch_tags.empty?
           warn "A chart version already exists for GitLab version #{gitlab_version}"
