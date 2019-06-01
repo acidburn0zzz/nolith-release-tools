@@ -15,11 +15,12 @@ module ReleaseTools
       end
 
       def get_latest_version(versions)
-        versions.map { |v| HelmGitlabVersion.new(v.sub('v', '')) }.max
+        max_version = VersionSorter.sort(versions).last # rubocop:disable Performance/UnneededSort
+        HelmGitlabVersion.new(max_version.sub('v', ''))
       end
 
-      def get_matching_tags(messages: {}, major: '\d+', minor: '\d+', patch: '\d+')
-        messages.select { |_tag, message| message =~ /contains GitLab .. #{major}\.#{minor}\.#{patch}/ }
+      def get_matching_tags(messages, major: '\d+', minor: '\d+', patch: '\d+')
+        messages.select { |_tag, message| message.match?(/contains GitLab (?:CE|EE) #{major}\.#{minor}\.#{patch}/) }
       end
 
       # Determine the next helm chart using existing tags in the repo. The
@@ -32,12 +33,12 @@ module ReleaseTools
       def next_version(gitlab_version)
         tag_messages = repository.tag_messages
 
-        unless get_matching_tags(messages: tag_messages, major: gitlab_version.major, minor: gitlab_version.minor, patch: gitlab_version.patch).empty?
+        unless get_matching_tags(tag_messages, major: gitlab_version.major, minor: gitlab_version.minor, patch: gitlab_version.patch).empty?
           raise "A Chart version already exists for GitLab version #{gitlab_version}."
         end
 
-        matching_minor_tags = get_matching_tags(messages: tag_messages, major: gitlab_version.major, minor: gitlab_version.minor)
-        matching_major_tags = get_matching_tags(messages: tag_messages, major: gitlab_version.major)
+        matching_minor_tags = get_matching_tags(tag_messages, major: gitlab_version.major, minor: gitlab_version.minor)
+        matching_major_tags = get_matching_tags(tag_messages, major: gitlab_version.major)
 
         next_version = if !matching_minor_tags.empty?
                          # There is a minor version series which matches the
