@@ -25,7 +25,11 @@ module ReleaseTools
 
       # Determine the next helm chart using existing tags in the repo. The
       # logic is as follows
-      # 1. Check if tags already exist matching the pattern <MAJOR>.<MINOR>.#.
+      # 0. Check if a tag already exist matching the pattern <MAJOR>.<MINOR>.<PATCH>
+      #    If so, a chart version already exists for the specified GitLab version.
+      #    We return it, and let the tag creation code to detect it and skip
+      #    the tag push
+      # 1. Else, check if tags already exist matching the pattern <MAJOR>.<MINOR>.#.
       #    If so, we are releasing a new patch version
       # 2. Else, check if tags already exist matching the pattern <MAJOR>.#.#.
       #    If so, we are releasing a new minor version
@@ -33,8 +37,10 @@ module ReleaseTools
       def next_version(gitlab_version)
         tag_messages = repository.tag_messages
 
-        unless get_matching_tags(tag_messages, major: gitlab_version.major, minor: gitlab_version.minor, patch: gitlab_version.patch).empty?
-          raise "A Chart version already exists for GitLab version #{gitlab_version}."
+        matching_patch_tags = get_matching_tags(tag_messages, major: gitlab_version.major, minor: gitlab_version.minor, patch: gitlab_version.patch)
+        unless matching_patch_tags.empty?
+          warn "A chart version already exists for GitLab version #{gitlab_version}"
+          return HelmChartVersion.new(matching_patch_tags.keys.first.sub('v', ''))
         end
 
         matching_minor_tags = get_matching_tags(tag_messages, major: gitlab_version.major, minor: gitlab_version.minor)
