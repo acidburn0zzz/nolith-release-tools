@@ -44,7 +44,7 @@ describe ReleaseTools::Helm::VersionManager, :silence_stdout do
   describe "#get_matching_tags" do
     context 'minor version' do
       it 'returns matching tags correctly' do
-        expect(version_manager.get_matching_tags(messages: messages, major: '11', minor: '0')).to eq(
+        expect(version_manager.get_matching_tags(messages, major: '11', minor: '0')).to eq(
           'v0.2.7' => 'Version v0.2.7 - contains GitLab EE 11.0.5'
         )
       end
@@ -52,7 +52,7 @@ describe ReleaseTools::Helm::VersionManager, :silence_stdout do
 
     context 'major version' do
       it 'returns matching tags correctly' do
-        expect(version_manager.get_matching_tags(messages: messages, major: '11')).to eq(messages)
+        expect(version_manager.get_matching_tags(messages, major: '11')).to eq(messages)
       end
     end
   end
@@ -77,8 +77,9 @@ describe ReleaseTools::Helm::VersionManager, :silence_stdout do
     end
 
     context 'existing version' do
-      it 'raises error' do
-        expect { version_manager.next_version(ReleaseTools::HelmGitlabVersion.new('11.0.5')) }.to raise_error(RuntimeError, 'A Chart version already exists for GitLab version 11.0.5.')
+      it 'shows warning' do
+        expect(version_manager).to receive(:warn).with('A chart version already exists for GitLab version 11.0.5')
+        expect(version_manager.next_version(ReleaseTools::HelmGitlabVersion.new('11.0.5'))).to eq('0.2.7')
       end
     end
   end
