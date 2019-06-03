@@ -1,0 +1,149 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/pipelines?per_page=50&ref=master
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.10.0
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 31 May 2019 21:14:06 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '851'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"d71a6ad1e3f79e9858f704d266b5f9b6"
+      Link:
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/pipelines?id=gitlab-org%2Fgitlab-ce&order_by=id&page=2&per_page=5&ref=master&sort=desc>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/pipelines?id=gitlab-org%2Fgitlab-ce&order_by=id&page=1&per_page=5&ref=master&sort=desc>;
+        rel="first"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - '2'
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '5'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 9DA2Gagh9Pa
+      X-Runtime:
+      - '0.062720'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '1'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1559337306'
+      Ratelimit-Resettime:
+      - Fri, 31 May 2019 21:15:06 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":64184059,"sha":"15916ad55920ca582a9124f7f0737b0373432a99","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64184059"},{"id":64181884,"sha":"3e4862ac6d492807a0b2a6ba3dde819716dbfae1","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64181884"},{"id":64179668,"sha":"523ed2e72962e97be2603ab78aa13b372da582fa","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64179668"},{"id":64176295,"sha":"523ed2e72962e97be2603ab78aa13b372da582fa","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64176295"},{"id":64165460,"sha":"9209736a22501dd4ea16afee86d0968bead84100","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64165460"}]'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 21:14:06 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/pipelines?per_page=50&ref=master
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Gitlab Ruby Gem 4.10.0
+      Private-Token:
+      - "[GITLAB_API_PRIVATE_TOKEN]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 31 May 2019 21:19:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '8496'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"1fefb7fe98e5adcde4d097cb229d2f45"
+      Link:
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/pipelines?id=gitlab-org%2Fgitlab-ce&order_by=id&page=2&per_page=50&ref=master&sort=desc>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/pipelines?id=gitlab-org%2Fgitlab-ce&order_by=id&page=1&per_page=50&ref=master&sort=desc>;
+        rel="first"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - '2'
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '50'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - LCZwqMwxYA2
+      X-Runtime:
+      - '0.069430'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '1'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1559337613'
+      Ratelimit-Resettime:
+      - Fri, 31 May 2019 21:20:13 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":64184059,"sha":"15916ad55920ca582a9124f7f0737b0373432a99","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64184059"},{"id":64181884,"sha":"3e4862ac6d492807a0b2a6ba3dde819716dbfae1","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64181884"},{"id":64179668,"sha":"523ed2e72962e97be2603ab78aa13b372da582fa","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64179668"},{"id":64176295,"sha":"523ed2e72962e97be2603ab78aa13b372da582fa","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64176295"},{"id":64165460,"sha":"9209736a22501dd4ea16afee86d0968bead84100","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64165460"},{"id":64147271,"sha":"b9798c157ac5973e9dd2b7ad95267014034a219f","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64147271"},{"id":64146792,"sha":"d7b277df46ffa3723a16159878958f9a825315e6","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64146792"},{"id":64144063,"sha":"5cd0e721f78310bc2bb810d17451f046270148d9","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64144063"},{"id":64129770,"sha":"06c96cefd7ce31a69cf72474531577c7b536613e","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64129770"},{"id":64128755,"sha":"9a8955d3c06c23cfc95914254ec77cc78e2cf6b5","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64128755"},{"id":64127917,"sha":"3ef47ac83409cc7e00f7ef80d7cae0434e29ccd2","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64127917"},{"id":64126420,"sha":"be01c431423eaba1e9aefdca77eb9ac5c054e6ad","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64126420"},{"id":64121674,"sha":"12aff0b73cacf533533d584d68307b1b6a030cee","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64121674"},{"id":64118884,"sha":"4e888212a1cdf5898c5cef69f5a2de909a275d31","ref":"master","status":"failed","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64118884"},{"id":64100543,"sha":"4e888212a1cdf5898c5cef69f5a2de909a275d31","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64100543"},{"id":64098953,"sha":"1523d0785755f4ba0679bc08ec370d8299b299f0","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64098953"},{"id":64095771,"sha":"f1cf1be43bb1e4d5f358a2897d7d881ae521507c","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64095771"},{"id":64095613,"sha":"41cce06958ed74a5390f9d76e3b2f58656b40994","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64095613"},{"id":64094814,"sha":"8736165742ba09287f35d5199fbd9b25caa557de","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64094814"},{"id":64091895,"sha":"adc7221d5a17b69a8efc5b6df07760feed7b742f","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64091895"},{"id":64091624,"sha":"24a79ee13b36e9e73c7a58b489677e7f06d84373","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64091624"},{"id":64091402,"sha":"fef62cc6c53eb302d279f30d309dd316cbe12d0f","ref":"master","status":"failed","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64091402"},{"id":64091209,"sha":"1ab5895acf5c1d5b371f9ff5b6cda47db3563cf2","ref":"master","status":"failed","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64091209"},{"id":64085537,"sha":"ed7c8e7096bcfc3a5e4c7b8f38cfc2ff43962d9b","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64085537"},{"id":64079469,"sha":"fa32ae5d61e94823aef4d5c040b06b8ea65040a7","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64079469"},{"id":64075495,"sha":"bc32249b30f294db242928e9f76a353d2e7e5b5e","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64075495"},{"id":64074732,"sha":"290007c18f5f079c1f60d2c697e7601584e242dd","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64074732"},{"id":64071726,"sha":"a1c9a8aa1a09f783d88cd176537a4d5df78280f1","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64071726"},{"id":64069461,"sha":"faf506ea770bab6b746183790316e069e51e901c","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64069461"},{"id":64062924,"sha":"b095a0818d148cf930b979008dba333660bb813b","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64062924"},{"id":64053056,"sha":"b095a0818d148cf930b979008dba333660bb813b","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64053056"},{"id":64052968,"sha":"d8058a0a985ac6e3fc974d8dc5c610de3026009a","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64052968"},{"id":64037425,"sha":"6189c869b87aa469f5efb058834cd65afd8fe563","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64037425"},{"id":64036337,"sha":"c8c08d326942f30ad87d0702cc8b9c5896d296ad","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64036337"},{"id":64035630,"sha":"d972a60a208f6e681600bd8f455be962fd4a3bb4","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64035630"},{"id":64035399,"sha":"9b300c9799d519d4ed30c4a54ff89c49e1f09da9","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64035399"},{"id":64021252,"sha":"8ab0db4e8f74457c419e913dc6af6296a0a9fa52","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64021252"},{"id":64007992,"sha":"8ab0db4e8f74457c419e913dc6af6296a0a9fa52","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64007992"},{"id":64006601,"sha":"5e88463d3089e3b764ae6347b9ce709a01acb8b7","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64006601"},{"id":64006336,"sha":"09916aea40a50cfa0bcc4a74ae7367c3bd18cb96","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64006336"},{"id":64006181,"sha":"9302485eae6ffa663e01269e385ba4f4a05a0df7","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/64006181"},{"id":63989648,"sha":"c18136ae480121576b3b49c46078f46a1ceac9c9","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63989648"},{"id":63982951,"sha":"c18136ae480121576b3b49c46078f46a1ceac9c9","ref":"master","status":"failed","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63982951"},{"id":63978336,"sha":"13cd5b598c3eba95e02ba33d80d4dc33ed59deb5","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63978336"},{"id":63962358,"sha":"c7e5d046a54cd10145ea81983a7e3ceb94755f79","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63962358"},{"id":63959117,"sha":"62ac4b2485a774803eb6812fadb95c589438bd95","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63959117"},{"id":63956205,"sha":"c5ec8f98d8848880ed724100aa0be00ae637ed9e","ref":"master","status":"failed","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63956205"},{"id":63952068,"sha":"84a39659a2b1383cd064c1d2171660aad8a4da14","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63952068"},{"id":63948134,"sha":"4c81993c245e5117e81036e69d6b2b9950e2de6e","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63948134"},{"id":63938909,"sha":"a546b76ab263cf0d339087583762cd2b6ff50792","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/63938909"}]'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 21:19:13 GMT
+recorded_with: VCR 2.9.3

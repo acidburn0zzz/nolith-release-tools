@@ -43,6 +43,8 @@ module ReleaseTools
           cherry_pick(merge_request)
         end
 
+        cancel_redundant_pipelines
+
         notifier.summary(
           @results.select(&:success?),
           @results.select(&:failure?)
@@ -65,6 +67,17 @@ module ReleaseTools
         raise 'Invalid cherry-pick target provided' unless target.exists?
       end
 
+      def client
+        ReleaseTools::GitlabClient
+      end
+
+      def cancel_redundant_pipelines
+        return unless ENV['FEATURE_CANCEL_REDUNDANT']
+        return if SharedStatus.dry_run?
+
+        client.cancel_redundant_pipelines(project, ref: @target_branch)
+      end
+
       def notifier
         if SharedStatus.dry_run?
           @notifier ||= ConsoleNotifier.new(version, target: target)
@@ -77,7 +90,7 @@ module ReleaseTools
         result = nil
 
         unless SharedStatus.dry_run?
-          GitlabClient.cherry_pick(
+          client.cherry_pick(
             project,
             ref: merge_request.merge_commit_sha,
             target: @target_branch
@@ -98,7 +111,7 @@ module ReleaseTools
 
       def pickable_mrs
         @pickable_mrs ||=
-          GitlabClient.merge_requests(
+          client.merge_requests(
             project,
             state: 'merged',
             labels: PickIntoLabel.for(version),

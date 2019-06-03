@@ -19,6 +19,8 @@ module ReleaseTools
 
       def_delegator :client, :create_commit
       def_delegator :client, :create_tag
+
+      def_delegator :client, :cancel_pipeline
     end
 
     class MissingMilestone
@@ -49,6 +51,21 @@ module ReleaseTools
 
     def self.pipelines(project = Project::GitlabCe, options = {})
       client.pipelines(project_path(project), options)
+    end
+
+    # Given a ref, cancel all running or pending pipelines but the most recent
+    def self.cancel_redundant_pipelines(project = Project::GitlabCe, ref:)
+      statuses = %w[running pending]
+
+      cancelable = pipelines(project, ref: ref, per_page: 50)
+        .select { |pipeline| statuses.include?(pipeline.status) }
+        .sort_by(&:id)
+
+      cancelable.pop
+
+      cancelable.each do |pipeline|
+        cancel_pipeline(project_path(project), pipeline.id)
+      end
     end
 
     def self.pipeline(project = Project::GitlabCe, pipeline_id)
