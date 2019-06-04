@@ -98,8 +98,10 @@ module ReleaseTools
         end
 
         result = Result.new(merge_request, :success)
-      rescue Gitlab::Error::Error
+      rescue Gitlab::Error::Error => ex
         result = Result.new(merge_request, :failure)
+
+        Raven.capture_exception(ex) unless ex.is_a?(Gitlab::Error::BadRequest)
       ensure
         record_result(result)
       end
