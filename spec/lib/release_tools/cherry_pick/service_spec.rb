@@ -47,7 +47,7 @@ describe ReleaseTools::CherryPick::Service do
         # simulate a failed pick; otherwise return true
         allow(internal_client).to receive(:cherry_pick) do |_, keywords|
           if keywords[:ref].start_with?('failure')
-            raise Gitlab::Error::BadRequest.new(double.as_null_object)
+            raise gitlab_error(:BadRequest, code: 400)
           else
             true
           end

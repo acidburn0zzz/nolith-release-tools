@@ -162,7 +162,6 @@ validate-security-merge-requests:
 auto-deploy:prepare:
   <<: *with-bundle
   stage: automation
-
   script:
     - bundle exec rake 'auto_deploy:prepare'
   only:
