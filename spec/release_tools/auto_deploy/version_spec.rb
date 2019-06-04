@@ -22,6 +22,20 @@ describe ReleaseTools::AutoDeploy::Version do
     end
   end
 
+  describe '#stable_branch=' do
+    it 'converts the value to a String' do
+      version = described_class.from_branch(branch_name)
+
+      expect(version.stable_branch.branch_name)
+        .to eq(branch_name)
+
+      version = version.to_ce
+
+      expect(version.stable_branch.branch_name)
+        .to eq(branch_name)
+    end
+  end
+
   describe '#to_ce' do
     it 'converts to CE and assigns branch' do
       version = described_class

@@ -20,7 +20,7 @@ module ReleaseTools
       end
 
       def stable_branch=(value)
-        @stable_branch = ReleaseTools::AutoDeployBranch.new(self, value)
+        @stable_branch = ReleaseTools::AutoDeployBranch.new(self, value.to_s)
       end
 
       def to_ce
