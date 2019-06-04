@@ -24,10 +24,11 @@ namespace :auto_deploy do
     version = ReleaseTools::AutoDeploy::Version
       .from_branch(auto_deploy_branch)
       .to_ee
+    project = ReleaseTools::Project::GitlabEe
 
-    $stdout.puts "--> Picking for #{version}..."
+    $stdout.puts "--> Picking for #{project}@#{version.stable_branch}"
     ee_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, version.stable_branch)
+      .new(project, version, version.stable_branch)
       .execute
 
     ee_results.each do |result|
@@ -35,16 +36,18 @@ namespace :auto_deploy do
     end
 
     version = version.to_ce
-    $stdout.puts "--> Picking for #{version}..."
+    project = ReleaseTools::Project::GitlabCe
+
+    $stdout.puts "--> Picking for #{project}@#{version.stable_branch}"
     ce_results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, version, version.stable_branch)
+      .new(project, version, version.stable_branch)
       .execute
 
     ce_results.each do |result|
       $stdout.puts "#{icon.call(result)} #{result.url}".indent(4)
     end
 
-    return if ReleaseTools::SharedStatus.dry_run?
+    exit if ReleaseTools::SharedStatus.dry_run?
 
     if ee_results.any?(&:success?) || ce_results.any?(&:success?)
       $stdout.puts "--> Triggering merge train for `#{auto_deploy_branch}`"
