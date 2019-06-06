@@ -3,7 +3,7 @@
 # rubocop:disable Layout/ExtraSpacing
 source "https://rubygems.org"
 
-gem 'activesupport', '~> 4.2.0'
+gem 'activesupport', '~> 5.1.0'
 gem 'colorize'
 gem 'dotenv',        '~> 2.2.0'
 gem 'gitlab',        '~> 4.11'
