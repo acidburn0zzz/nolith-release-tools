@@ -279,37 +279,6 @@ TEST=true bundle exec rake "helm:tag_chart[0.3.3]"
 bundle exec rake "helm:tag_chart[,11.1.2]"
 ```
 
-## `upstream_merge`
-
-This task will:
-
-1. Merge the latest CE `master` into the latest EE `master`
-1. Push the merge to a new (unique per day) branch
-1. Create a Merge Request that will include:
-  1. A list the files for which conflicts need to be resolved
-  1. Mentions of the last ones who updated the conflicting files
-
-### Configuration
-
-| Option          | Purpose |
-| ------          | ------- |
-| `NO_MENTION=true` | Don't mention people in the MR description (wrap their usernames in backticks) |
-| `TEST=true`     | Don't push the new branch, nor create a MR for it |
-| `FORCE=true`    | Create a branch and MR even if another upstream merge is already in progress |
-
-### Examples
-
-```sh
-# Merge latest CE `master` into latest EE `master` and create a MR:
-bundle exec rake upstream_merge
-
-# Don't push the new branch nor create a MR for it:
-TEST=true bundle exec rake upstream_merge
-
-# Create a branch and MR even if one is already in progress:
-FORCE=true bundle exec rake upstream_merge
-```
-
 ---
 
 [Return to Documentation](../README.md#documentation)

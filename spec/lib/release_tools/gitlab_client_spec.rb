@@ -187,34 +187,6 @@ describe ReleaseTools::GitlabClient do
     end
   end
 
-  describe '.approve_merge_request' do
-    context 'when the author is the current user' do
-      let(:project) { ReleaseTools::Project::GitlabEe }
-      let(:iid) { 7868 }
-
-      it 'approves the MR as a second bot user' do
-        unapproved_mr = nil
-
-        VCR.use_cassette('merge_requests/upstream_unapproved') do
-          unapproved_mr = described_class.merge_request(project, iid: iid)
-          approvals = described_class.merge_request_approvals(project, iid: iid)
-
-          expect(approvals.approvals_left).to eq 1
-        end
-
-        # Because the MR author is the same as the default bot user, we expect
-        # to use a different client token
-        expect(described_class).to receive(:approval_client).and_call_original
-
-        VCR.use_cassette('merge_requests/upstream_approval') do
-          approvals = described_class.approve_merge_request(unapproved_mr, project)
-
-          expect(approvals.approvals_left).to eq 0
-        end
-      end
-    end
-  end
-
   describe '.create_merge_request' do
     before do
       allow(described_class).to receive_messages(

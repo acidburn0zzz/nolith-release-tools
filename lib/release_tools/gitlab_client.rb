@@ -45,10 +45,6 @@ module ReleaseTools
       client.merge_request(project_path(project), iid)
     end
 
-    def self.merge_request_approvals(project = Project::GitlabCe, iid:)
-      client.merge_request_approvals(project_path(project), iid)
-    end
-
     def self.pipelines(project = Project::GitlabCe, options = {})
       client.pipelines(project_path(project), options)
     end
@@ -281,22 +277,6 @@ module ReleaseTools
       client.accept_merge_request(project_path(project), merge_request.iid, params)
     end
 
-    # Approve a merge request in the given project
-    #
-    # Because an author cannot approve their own MRs, we use a client with the
-    # `GITLAB_API_APPROVAL_TOKEN` value when the author is the current user.
-    def self.approve_merge_request(merge_request, project = Project::GitlabCe)
-      approval = lambda do |client|
-        client.approve_merge_request(project_path(project), merge_request.iid)
-      end
-
-      if merge_request.author&.id == current_user.id
-        approval.call(approval_client)
-      else
-        approval.call(client)
-      end
-    end
-
     # Find an issue in the given project based on the provided issue
     #
     # issue - An object that responds to the following messages:
@@ -350,14 +330,6 @@ module ReleaseTools
       )
     end
     private_class_method :client
-
-    def self.approval_client
-      @approval_client ||= Gitlab.client(
-        endpoint: DEFAULT_GITLAB_API_ENDPOINT,
-        private_token: ENV['GITLAB_API_APPROVAL_TOKEN']
-      )
-    end
-    private_class_method :approval_client
 
     # Overriden by GitLabDevClient
     def self.project_path(project)
