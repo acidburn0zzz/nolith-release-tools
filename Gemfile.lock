@@ -15,7 +15,7 @@ GEM
     ast (2.4.0)
     binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
-    byebug (9.0.5)
+    byebug (11.0.1)
     climate_control (0.2.0)
     coderay (1.1.2)
     colorize (0.8.1)
