@@ -19,7 +19,7 @@ group :development, :test do
   gem 'byebug'
   gem 'climate_control', '~> 0.2.0'
   gem 'pry'
-  gem 'rspec',           '~> 3.7.0'
+  gem 'rspec',           '~> 3.8'
   gem 'rspec-parameterized'
   gem 'rubocop',         '~> 0.68.0'
   gem 'rubocop-rspec',   '~> 1.32.0'
