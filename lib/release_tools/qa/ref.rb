@@ -6,10 +6,33 @@ module ReleaseTools
       TAG_REGEX = /(?<prefix>\w?)(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(-rc?(?<rc>\d+))?/.freeze
       STABLE_BRANCH_REGEX = /^(?<major>\d+)-(?<minor>\d+)-(?<stable>stable)$/.freeze
 
-      attr_reader :ref
+      AUTO_DEPLOY_TAG_REGEX = /
+        \A
+        (?<prefix>\w?)
+        (?<major>\d+)
+        \.
+        (?<minor>\d+)
+        \.
+        (?<patch>\d+)
+        -
+        (?<commit>[a-fA-F0-9]+)
+        \.
+        [a-fA-F0-9]+
+        \z
+      /x.freeze
 
       def initialize(ref)
         @ref = ref
+      end
+
+      def ref
+        matches = @ref.match(AUTO_DEPLOY_TAG_REGEX)
+
+        if matches && matches[:commit]
+          matches[:commit]
+        else
+          @ref
+        end
       end
 
       def for_project(project)

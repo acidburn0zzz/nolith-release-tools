@@ -7,6 +7,7 @@ module ReleaseTools
       \.(?<minor>\d+)
       (\.(?<patch>\d+))?
       (-(?<rc>rc(?<rc_number>\d*)))?
+      (-[a-fA-F0-9]+\.[a-fA-F0-9]+)?
       (-ee)?\z
     }x.freeze
 
