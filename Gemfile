@@ -9,7 +9,7 @@ gem 'dotenv',        '~> 2.2.0'
 gem 'gitlab',        '~> 4.11'
 gem 'httparty',      '~> 0.16.0'
 gem 'rake'
-gem 'rugged',        '~> 0.27.0'
+gem 'rugged',        '~> 0.28'
 gem 'sentry-raven',  '~> 2.9', require: false
 gem 'merge_db_schema', '~> 0.1'
 gem 'version_sorter', '~> 2.2.0'
