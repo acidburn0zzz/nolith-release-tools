@@ -15,6 +15,7 @@ Manager](doc/release-manager.md).
 - [Rake tasks](doc/rake-tasks.md) contained in this project
 - [ChatOps triggers](doc/chatops.md) available from this project
 - [Issue templates](./templates) used for creating the release task lists
+- [CI variables](doc/variables.md) used by this project
 
 ## Contributing
 
