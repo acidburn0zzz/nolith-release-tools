@@ -10,7 +10,7 @@ gem 'gitlab',        '~> 4.10.0'
 gem 'httparty',      '~> 0.16.0'
 gem 'rake'
 gem 'rugged',        '~> 0.27.0'
-gem 'sentry-raven',  '~> 2.7', require: false
+gem 'sentry-raven',  '~> 2.9', require: false
 gem 'merge_db_schema', '~> 0.1'
 gem 'version_sorter', '~> 2.2.0'
 gem 'parallel', '~> 1.14'
