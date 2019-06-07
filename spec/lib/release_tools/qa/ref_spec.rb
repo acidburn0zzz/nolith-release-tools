@@ -7,6 +7,20 @@ describe ReleaseTools::Qa::Ref do
   let(:release_tag_ref) { 'v10.0.0' }
   let(:rc_tag_ref) { 'v10.0.0-rc1' }
 
+  context '#ref' do
+    it 'returns the EE commit when using an auto deploy ref' do
+      ref = described_class.new('v12.0.2019123-123.456')
+
+      expect(ref.ref).to eq('123')
+    end
+
+    it 'returns the ref as-is when using a regular tag' do
+      ref = described_class.new('v12.0.0')
+
+      expect(ref.ref).to eq('v12.0.0')
+    end
+  end
+
   context '#for_project' do
     context 'for ee' do
       let(:project) { ReleaseTools::Project::GitlabEe }
