@@ -79,7 +79,7 @@ module ReleaseTools
       #
       # branch_name - Branch name to checkout
       def checkout(branch_name)
-        @ref    = repository.checkout(branch_name)
+        @ref    = repository.checkout(branch_name, strategy: :allow_conflicts)
         @commit = @ref.target.target
         @tree   = @commit.tree
         @index  = repository.index
