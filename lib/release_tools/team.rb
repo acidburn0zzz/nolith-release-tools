@@ -38,9 +38,9 @@ module ReleaseTools
         members = []
 
         100.times do |i|
-          response = HTTParty.get("#{USERS_API_URL}?per_page=100&page=#{i}")
+          response = HTTP.get("#{USERS_API_URL}?per_page=100&page=#{i}")
 
-          users = JSON.parse(response.body)
+          users = response.parse
 
           break if users.empty?
 

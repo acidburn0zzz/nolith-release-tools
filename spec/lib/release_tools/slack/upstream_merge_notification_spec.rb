@@ -23,7 +23,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
 
   describe '.new_merge_request' do
     it 'posts a message' do
-      expect_post(body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}>" }.to_json)
+      expect_post(json: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}>" })
         .and_return(response(200))
 
       described_class.new_merge_request(merge_request)
@@ -34,7 +34,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
                              to_reference: '!123',
                              created_at: Time.new(2018, 1, 4, 6),
                              conflicts: %i[a b c])
-      expect_post(body: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> with #{merge_request.conflicts.count} conflicts! :warning:" }.to_json)
+      expect_post(json: { text: "Created a new merge request <#{merge_request.url}|#{merge_request.to_reference}> with #{merge_request.conflicts.count} conflicts! :warning:" })
         .and_return(response(200))
 
       described_class.new_merge_request(merge_request)
@@ -43,7 +43,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
 
   describe '.existing_merge_request' do
     it 'posts a message' do
-      expect_post(body: { text: "Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from 2 hours ago is still pending! :hourglass:" }.to_json)
+      expect_post(json: { text: "Tried to create a new merge request but <#{merge_request.url}|#{merge_request.to_reference}> from 2 hours ago is still pending! :hourglass:" })
         .and_return(response(200))
 
       described_class.existing_merge_request(merge_request)
@@ -52,7 +52,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
 
   describe '.missing_merge_request' do
     it 'posts a message' do
-      expect_post({ body: { text: "The latest upstream merge MR could not be created! Please have a look at <https://example.com>. :boom:" }.to_json })
+      expect_post(json: { text: "The latest upstream merge MR could not be created! Please have a look at <https://example.com>. :boom:" })
         .and_return(response(200))
 
       described_class.missing_merge_request
@@ -61,7 +61,7 @@ describe ReleaseTools::Slack::UpstreamMergeNotification do
 
   describe '.downstream_is_up_to_date' do
     it 'posts a message' do
-      expect_post(body: { text: "EE is already up-to-date with CE. No merge request was created. :tada:" }.to_json)
+      expect_post(json: { text: "EE is already up-to-date with CE. No merge request was created. :tada:" })
         .and_return(response(200))
 
       described_class.downstream_is_up_to_date

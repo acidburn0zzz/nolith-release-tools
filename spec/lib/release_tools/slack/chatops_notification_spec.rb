@@ -46,16 +46,18 @@ describe ReleaseTools::Slack::ChatopsNotification do
       it 'posts a success message' do
         issue = double(status: :created, title: 'Title', url: 'example.com')
 
-        expect_post(body: {
-          text: 'The `release_issue` command at ci.example.com completed!',
-          channel: 'foo',
-          attachments: [{
-            fallback: '',
-            color: 'good',
-            title: 'Title',
-            title_link: 'example.com'
-          }]
-        }.to_json).and_return(response(200))
+        expect_post(
+          json: {
+            text: 'The `release_issue` command at ci.example.com completed!',
+            channel: 'foo',
+            attachments: [{
+              fallback: '',
+              color: 'good',
+              title: 'Title',
+              title_link: 'example.com'
+            }]
+          }
+        ).and_return(response(200))
 
         described_class.release_issue(issue)
       end
@@ -65,15 +67,17 @@ describe ReleaseTools::Slack::ChatopsNotification do
       it 'posts a warning message' do
         issue = double(status: :persisted, title: 'Title', url: 'example.com')
 
-        expect_post(body: {
-          text: 'The `release_issue` command at ci.example.com completed!',
-          attachments: [{
-            fallback: '',
-            color: 'warning',
-            title: 'Title',
-            title_link: 'example.com'
-          }]
-        }.to_json).and_return(response(200))
+        expect_post(
+          json: {
+            text: 'The `release_issue` command at ci.example.com completed!',
+            attachments: [{
+              fallback: '',
+              color: 'warning',
+              title: 'Title',
+              title_link: 'example.com'
+            }]
+          }
+        ).and_return(response(200))
 
         described_class.release_issue(issue)
       end
