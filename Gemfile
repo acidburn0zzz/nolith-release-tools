@@ -25,7 +25,7 @@ group :development, :test do
   gem 'rubocop-rspec',   '~> 1.33.0'
   gem 'simplecov',       '~> 0.16.0'
   gem 'timecop',         '~> 0.9.0'
-  gem 'vcr',             '~> 2.9.0'
+  gem 'vcr',             '~> 5.0.0'
   gem 'webmock',         '~> 3.4.0'
 end
 # rubocop:enable Layout/ExtraSpacing
