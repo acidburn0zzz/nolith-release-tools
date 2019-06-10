@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/ExtraSpacing
 source "https://rubygems.org"
 
 gem 'activesupport', '~> 5.1.0'
@@ -26,4 +25,3 @@ group :development, :test do
   gem 'vcr',             '~> 5.0.0'
   gem 'webmock',         '~> 3.4.0'
 end
-# rubocop:enable Layout/ExtraSpacing
