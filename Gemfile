@@ -11,7 +11,6 @@ gem 'http',          '~> 4.1.0'
 gem 'rake'
 gem 'rugged',        '~> 0.28'
 gem 'sentry-raven',  '~> 2.9', require: false
-gem 'merge_db_schema', '~> 0.1'
 gem 'version_sorter', '~> 2.2.0'
 gem 'parallel', '~> 1.14'
 
