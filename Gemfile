@@ -20,7 +20,6 @@ group :development, :test do
   gem 'climate_control', '~> 0.2.0'
   gem 'pry'
   gem 'rspec',           '~> 3.8'
-  gem 'rspec-parameterized'
   gem 'rubocop',         '~> 0.71.0'
   gem 'rubocop-rspec',   '~> 1.33.0'
   gem 'simplecov',       '~> 0.16.0'
