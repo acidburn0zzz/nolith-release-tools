@@ -77,9 +77,9 @@ describe ReleaseTools::ReleaseManagers::Schedule do
   describe '#download_release_manager_names' do
     context 'when the download succeeds' do
       it 'returns the release manager data' do
-        response = double(:response, body: yaml)
+        response = double(:response, to_s: yaml)
 
-        allow(HTTParty)
+        allow(HTTP)
           .to receive(:get)
           .and_return(response)
 
@@ -89,7 +89,7 @@ describe ReleaseTools::ReleaseManagers::Schedule do
 
     context 'when the download fails' do
       it 'returns an empty Array' do
-        allow(HTTParty)
+        allow(HTTP)
           .to receive(:get)
           .and_raise(Errno::ENOENT)
 

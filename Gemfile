@@ -7,7 +7,7 @@ gem 'activesupport', '~> 5.1.0'
 gem 'colorize'
 gem 'dotenv',        '~> 2.2.0'
 gem 'gitlab',        '~> 4.11'
-gem 'httparty',      '~> 0.17.0'
+gem 'http',          '~> 4.1.0'
 gem 'rake'
 gem 'rugged',        '~> 0.28'
 gem 'sentry-raven',  '~> 2.9', require: false

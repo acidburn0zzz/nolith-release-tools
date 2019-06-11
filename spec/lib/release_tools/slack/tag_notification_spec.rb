@@ -37,14 +37,16 @@ describe ReleaseTools::Slack::TagNotification do
 
     context 'with a CI job URL' do
       it 'posts an attachment' do
-        expect_post(body: {
-          attachments: [{
-            fallback: '',
-            color: 'good',
-            text: "<foo|#{message}>",
-            mrkdwn_in: ['text']
-          }]
-        }.to_json).and_return(response(200))
+        expect_post(
+          json: {
+            attachments: [{
+              fallback: '',
+              color: 'good',
+              text: "<foo|#{message}>",
+              mrkdwn_in: ['text']
+            }]
+          }
+        ).and_return(response(200))
 
         ClimateControl.modify(CI_JOB_URL: 'foo') do
           described_class.release(version)
@@ -61,7 +63,7 @@ describe ReleaseTools::Slack::TagNotification do
       end
 
       it 'posts a message' do
-        expect_post(body: { text: message }.to_json)
+        expect_post(json: { text: message })
           .and_return(response(200))
 
         described_class.release(version)
@@ -71,7 +73,7 @@ describe ReleaseTools::Slack::TagNotification do
         security_message = message.dup
         security_message << " as a security release"
 
-        expect_post(body: { text: security_message }.to_json)
+        expect_post(json: { text: security_message })
           .and_return(response(200))
 
         ClimateControl.modify(SECURITY: 'true') do

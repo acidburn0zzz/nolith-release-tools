@@ -33,14 +33,14 @@ describe ReleaseTools::Slack::Webhook do
 
       context 'when channel is not given' do
         it 'posts to the given url with the given arguments' do
-          expect_post(body: { text: text }.to_json).and_return(response(200))
+          expect_post(json: { text: text }).and_return(response(200))
 
           described_class.fire_hook(text: text)
         end
 
         context 'when response is not successfull' do
           it 'raises CouldNotPostError' do
-            expect_post(body: { text: text }.to_json).and_return(response(400))
+            expect_post(json: { text: text }).and_return(response(400))
 
             expect { described_class.fire_hook(text: text) }
               .to raise_error(described_class::CouldNotPostError)
@@ -52,7 +52,7 @@ describe ReleaseTools::Slack::Webhook do
         it 'passes the given channel' do
           channel = '#ce-to-ee'
 
-          expect_post(body: { text: text, channel: channel }.to_json)
+          expect_post(json: { text: text, channel: channel })
             .and_return(response(200))
 
           described_class.fire_hook(channel: channel, text: text)
@@ -63,7 +63,7 @@ describe ReleaseTools::Slack::Webhook do
         it 'passes the attachments' do
           attachments = [{ title: 'foo' }]
 
-          expect_post(body: { attachments: attachments }.to_json)
+          expect_post(json: { attachments: attachments })
             .and_return(response(200))
 
           described_class.fire_hook(attachments: attachments)

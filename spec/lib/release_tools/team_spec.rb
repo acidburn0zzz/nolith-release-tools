@@ -53,16 +53,17 @@ describe ReleaseTools::Team do
       end
 
       before do
+        json = JSON.dump([
+          { name: core_member_wanted, username: core_member_wanted },
+          { name: core_member_not_wanted, username: core_member_not_wanted }
+        ])
+
         stub_request(:get, described_class::USERS_API_URL)
           .with(query: { per_page: 100, page: 0 })
-          .to_return(headers: { 'x-next-page': '' }, body:
-            JSON.dump(
-              [
-                { name: core_member_wanted,
-                  username: core_member_wanted },
-                { name: core_member_not_wanted,
-                  username: core_member_not_wanted }
-              ]))
+          .to_return(
+            headers: { 'content-type' => 'application/json', 'x-next-page': '' },
+            body: json
+          )
       end
 
       it 'does not find the core members we do not include' do

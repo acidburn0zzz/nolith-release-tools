@@ -57,7 +57,7 @@ module ReleaseTools
 
       # @return [Array<Hash>]
       def download_release_manager_names
-        YAML.safe_load(HTTParty.get(SCHEDULE_YAML).body)
+        YAML.safe_load(HTTP.get(SCHEDULE_YAML).to_s)
       rescue StandardError
         []
       end
