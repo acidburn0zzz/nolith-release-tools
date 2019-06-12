@@ -28,8 +28,6 @@ authenticating over HTTPS with an access token.
 
 - `RELEASE_BOT_PRIVATE_KEY` -- Private key for
   [@gitlab-release-tools-bot][bot-com].
-- `AUTO_UPSTREAM_MERGE_BOT_SSH_PRIVATE_KEY` -- Private key for the bot
-  performing an upstream merge (deprecated).
 
 ## Auto-deploy
 
@@ -45,7 +43,6 @@ authenticating over HTTPS with an access token.
   [Sentry](https://sentry.gitlab.net/gitlab/release-tools/).
 - `SLACK_CHATOPS_URL` -- Full Slack webhook URL for ChatOps responses.
 - `SLACK_TAG_URL` -- Full Slack webhook URL for tagging notifications.
-- `SLACK_UPSTREAM_MERGE_URL` -- Full Slack webhook URL for upstream merge
   notifications.
 
 [bot-com]: https://gitlab.com/gitlab-release-tools-bot

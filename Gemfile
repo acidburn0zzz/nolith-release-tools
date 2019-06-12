@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/ExtraSpacing
 source "https://rubygems.org"
 
 gem 'activesupport', '~> 5.1.0'
@@ -11,7 +10,6 @@ gem 'http',          '~> 4.1.0'
 gem 'rake'
 gem 'rugged',        '~> 0.28'
 gem 'sentry-raven',  '~> 2.9', require: false
-gem 'merge_db_schema', '~> 0.1'
 gem 'version_sorter', '~> 2.2.0'
 gem 'parallel', '~> 1.14'
 
@@ -20,7 +18,6 @@ group :development, :test do
   gem 'climate_control', '~> 0.2.0'
   gem 'pry'
   gem 'rspec',           '~> 3.8'
-  gem 'rspec-parameterized'
   gem 'rubocop',         '~> 0.71.0'
   gem 'rubocop-rspec',   '~> 1.33.0'
   gem 'simplecov',       '~> 0.16.0'
@@ -28,4 +25,3 @@ group :development, :test do
   gem 'vcr',             '~> 5.0.0'
   gem 'webmock',         '~> 3.4.0'
 end
-# rubocop:enable Layout/ExtraSpacing

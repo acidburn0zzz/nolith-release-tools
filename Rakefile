@@ -94,41 +94,6 @@ task :close_expired_qa_issues do
   ReleaseTools::Qa::IssueCloser.new.execute
 end
 
-# Undocumented; executed via CI schedule
-task :upstream_merge do
-  result = ReleaseTools::Services::UpstreamMergeService
-    .new(dry_run: dry_run?, mention_people: !no_mention?, force: force?)
-    .perform
-
-  if result.success?
-    upstream_mr = result.payload[:upstream_mr]
-    if upstream_mr.exists?
-      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:green)
-        --> Merge request "#{upstream_mr.title}" created.
-            #{upstream_mr.url}
-      SUCCESS_MESSAGE
-      ReleaseTools::Slack::UpstreamMergeNotification.new_merge_request(upstream_mr) unless dry_run?
-    else
-      $stdout.puts <<~SUCCESS_MESSAGE.colorize(:yellow)
-        --> Merge request "#{upstream_mr.title}" not created.
-      SUCCESS_MESSAGE
-      ReleaseTools::Slack::UpstreamMergeNotification.missing_merge_request unless dry_run?
-    end
-  elsif result.payload[:in_progress_mr]
-    in_progress_mr = result.payload[:in_progress_mr]
-    $stdout.puts <<~ERROR_MESSAGE.colorize(:red)
-    --> An upstream merge request already exists.
-        #{in_progress_mr.url}
-    ERROR_MESSAGE
-    ReleaseTools::Slack::UpstreamMergeNotification.existing_merge_request(in_progress_mr) unless dry_run?
-  elsif result.payload[:already_up_to_date]
-    $stdout.puts <<~ERROR_MESSAGE.colorize(:green)
-    --> EE is already up-to-date with CE. No merge request was created.
-    ERROR_MESSAGE
-    ReleaseTools::Slack::UpstreamMergeNotification.downstream_is_up_to_date unless dry_run?
-  end
-end
-
 namespace :helm do
   desc "Create a chart release by passing in chart_version,gitlab_version"
   task :tag_chart, [:version, :gitlab_version] do |_t, args|

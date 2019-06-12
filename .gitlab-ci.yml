@@ -108,24 +108,6 @@ release-managers:
     <<: *global-cache
     policy: pull
 
-upstream-merge:
-  <<: *with-bundle
-  stage: automation
-  script:
-    - source scripts/setup_ssh.sh
-    - echo "$AUTO_UPSTREAM_MERGE_BOT_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - git config --global user.email "gitlab-bot@gitlab.com"
-    - git config --global user.name "GitLab Bot"
-    - bundle exec rake upstream_merge
-  only:
-    refs:
-      - schedules
-    variables:
-      - $UPSTREAM_MERGE
-  cache:
-    <<: *global-cache
-    policy: pull
-
 feature-freeze:
   <<: *with-bundle
   stage: automation
