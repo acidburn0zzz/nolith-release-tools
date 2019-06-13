@@ -57,4 +57,14 @@ namespace :security do
       .new
       .execute
   end
+
+  namespace :gitaly do
+    desc 'Tag a new Gitaly security release'
+    task :tag, [:version] => :force_security do |_, args|
+      version = get_version(args)
+
+      ReleaseTools::Release::GitalyRelease.new(version).execute
+      ReleaseTools::Slack::TagNotification.release(version) unless dry_run?
+    end
+  end
 end
