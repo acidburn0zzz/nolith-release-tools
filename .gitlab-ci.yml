@@ -13,6 +13,9 @@ cache: &global-cache
 
 # templates -------------------------------------------------------------------
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 .with-bundle: &with-bundle
   before_script:
     - bundle install --jobs=$(nproc) --retry=3 --path=vendor
