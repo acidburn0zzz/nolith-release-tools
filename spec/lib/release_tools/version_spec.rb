@@ -154,6 +154,24 @@ describe ReleaseTools::Version do
     end
   end
 
+  describe '#next_major' do
+    it 'returns next minor version' do
+      expect(version('1.2.0').next_major).to eq '2.0.0'
+    end
+
+    it 'returns next major version when version is not a release' do
+      expect(version('1.2.3-rc1').next_major).to eq '2.0.0'
+    end
+
+    it 'returns next major version when version is EE' do
+      expect(version('1.2.3-ee').next_major).to eq '2.0.0'
+    end
+
+    it 'returns next major version when patch is > 0' do
+      expect(version('1.2.3').next_major).to eq '2.0.0'
+    end
+  end
+
   describe '#previous_patch' do
     it 'returns nil when patch is missing' do
       expect(version('1.2').previous_patch).to be_nil

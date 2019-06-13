@@ -2,56 +2,85 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Helm::VersionManager do
-  describe "#self.derive_chart_version" do
-    let(:manager) { described_class }
+describe ReleaseTools::Helm::VersionManager, :silence_stdout do
+  include RuggedMatchers
 
-    context 'old app version is "master"' do
-      let(:chart) { stubbed_chart(version: '0.0.1', app_version: 'master') }
+  let(:repo_path) { File.join('/tmp', HelmReleaseFixture.repository_name) }
+  let(:repository) { Rugged::Repository.new(repo_path) }
+  let(:version_manager) { ReleaseTools::Release::HelmGitlabRelease.new(nil, '11.5.4').version_manager }
+  let(:messages) do
+    {
+      'v0.2.7' => 'Version v0.2.7 - contains GitLab EE 11.0.5',
+      'v1.0.0' => 'Version v1.0.0 - contains GitLab EE 11.2.0'
+    }
+  end
 
-      it { expect(manager.derive_chart_version(chart, gitlab_version('10.8.1'))).to eq chart_version('0.0.2') }
-      it { expect(manager.derive_chart_version(chart, gitlab_version('10.8.0'))).to eq chart_version('0.1.0') }
-      it { expect(manager.derive_chart_version(chart, gitlab_version('11.0.0'))).to eq chart_version('1.0.0') }
+  before do
+    fixture = HelmReleaseFixture.new
 
-      it 'increases chart version for a gitlab rc update from a non-rc' do
-        expect(manager.derive_chart_version(chart, gitlab_version('11.0.0-rc1'))).to eq chart_version('1.0.0')
+    fixture.rebuild_fixture!
+
+    # Disable cleanup so that we can see what's the state of the temp Git repos
+    allow_any_instance_of(ReleaseTools::RemoteRepository).to receive(:cleanup).and_return(true) # rubocop:disable RSpec/AnyInstance
+
+    # Override the actual remotes with our local fixture repositories
+    allow_any_instance_of(ReleaseTools::Release::HelmGitlabRelease).to receive(:remotes) # rubocop:disable RSpec/AnyInstance
+      .and_return(gitlab: "file://#{fixture.fixture_path}")
+  end
+
+  after do
+    # Manually perform the cleanup we disabled in the `before` block
+    FileUtils.rm_rf(repo_path, secure: true) if File.exist?(repo_path)
+  end
+
+  describe "#get_latest_version" do
+    it 'sorts versions correctly and returns latest version' do
+      versions = %w[v1.7.5 v10.7.5 v9.7.5]
+
+      expect(version_manager.get_latest_version(versions)).to eq(ReleaseTools::HelmGitlabVersion.new("10.7.5"))
+    end
+  end
+
+  describe "#get_matching_tags" do
+    context 'minor version' do
+      it 'returns matching tags correctly' do
+        expect(version_manager.get_matching_tags(messages, major: '11', minor: '0')).to eq(
+          'v0.2.7' => 'Version v0.2.7 - contains GitLab EE 11.0.5'
+        )
       end
     end
 
-    context 'old app version is a valid gitlab version' do
-      let(:chart) { stubbed_chart(version: '0.0.1', app_version: '10.8.0') }
-
-      it { expect(manager.derive_chart_version(chart, gitlab_version('10.8.1'))).to eq chart_version('0.0.2') }
-      it { expect(manager.derive_chart_version(chart, gitlab_version('10.9.1'))).to eq chart_version('0.1.0') }
-      it { expect(manager.derive_chart_version(chart, gitlab_version('11.1.5'))).to eq chart_version('1.0.0') }
-    end
-
-    context 'old app version is an RC' do
-      let(:chart) { stubbed_chart(version: '0.0.1', app_version: '11.0.0-rc1') }
-
-      it 'ignores chart version changes when gitlab RC version has been bumped' do
-        expect(manager.derive_chart_version(chart, gitlab_version('11.0.0-rc2'))).to eq chart_version('0.0.1')
-      end
-
-      it 'ignores chart version changes when gitlab have been update off of an RC' do
-        expect(manager.derive_chart_version(chart, gitlab_version('11.0.0'))).to eq chart_version('0.0.1')
+    context 'major version' do
+      it 'returns matching tags correctly' do
+        expect(version_manager.get_matching_tags(messages, major: '11')).to eq(messages)
       end
     end
   end
 
-  def gitlab_version(version_string)
-    ReleaseTools::HelmGitlabVersion.new(version_string)
-  end
+  describe '#next_version' do
+    context 'new gitlab patch version' do
+      it 'returns correct next version' do
+        expect(version_manager.next_version(ReleaseTools::HelmGitlabVersion.new('11.2.1'))).to eq('1.0.1')
+      end
+    end
 
-  def chart_version(version_string)
-    ReleaseTools::HelmChartVersion.new(version_string)
-  end
+    context 'new gitlab minor version' do
+      it 'returns correct next version' do
+        expect(version_manager.next_version(ReleaseTools::HelmGitlabVersion.new('11.3.0'))).to eq('1.1.0')
+      end
+    end
 
-  def stubbed_chart(version: '0.0.1', app_version: '0.0.1')
-    instance_double(
-      "ChartFile",
-      version: version && ReleaseTools::HelmChartVersion.new(version),
-      app_version: app_version && ReleaseTools::HelmGitlabVersion.new(app_version)
-    )
+    context 'new gitlab major version' do
+      it 'returns correct next version' do
+        expect(version_manager.next_version(ReleaseTools::HelmGitlabVersion.new('12.0.0'))).to eq('2.0.0')
+      end
+    end
+
+    context 'existing version' do
+      it 'shows warning' do
+        expect(version_manager).to receive(:warn).with('A chart version already exists for GitLab version 11.0.5')
+        expect(version_manager.next_version(ReleaseTools::HelmGitlabVersion.new('11.0.5'))).to eq('0.2.7')
+      end
+    end
   end
 end

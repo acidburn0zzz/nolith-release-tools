@@ -323,6 +323,17 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
+  describe '#tag_messages', :silence_stdout do
+    subject { described_class.get(repo_remotes) }
+
+    it 'returns hash of tags and messages' do
+      expect(subject.tag_messages).to eq(
+        "v9.1.0" => "GitLab Version 9.1.0",
+        "v1.9.0" => "GitLab Version 1.9.0"
+      )
+    end
+  end
+
   describe '#status', :silence_stdout do
     subject { described_class.get(repo_remotes) }
 

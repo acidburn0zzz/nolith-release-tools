@@ -114,6 +114,17 @@ module ReleaseTools
       output.lines.map(&:chomp) if status.success?
     end
 
+    def tag_messages(remote: canonical_remote.name)
+      fetch('refs/tags/*', remote: remote)
+
+      cmd = %w[tag --list --format="%(tag),%(subject)"]
+
+      output, status = run_git(cmd)
+
+      # Convert to a hash with the format { tag1 => message1, tag2 => message2 }
+      output.lines.map { |string| string.chomp.split(',', 2) }.to_h if status.success?
+    end
+
     def status(short: false)
       cmd = %w[status]
       cmd << '--short' if short

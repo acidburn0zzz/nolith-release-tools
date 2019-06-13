@@ -90,6 +90,10 @@ module ReleaseTools
       valid? && !rc? && !ee?
     end
 
+    def next_major
+      "#{major + 1}.0.0"
+    end
+
     def next_minor
       "#{major}.#{minor + 1}.0"
     end
