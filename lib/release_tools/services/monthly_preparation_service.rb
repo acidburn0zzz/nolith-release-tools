@@ -31,13 +31,19 @@ module ReleaseTools
         create_branch_from_ref(Project::CNGImage, ee_branch, 'master')
 
         # Helm charts follow different branching scheme
-        helm_repo = ReleaseTools::RemoteRepository.get(ReleaseTools::Project::HelmGitlab.remotes)
-        version_manager = ReleaseTools::Helm::VersionManager.new(helm_repo)
+        create_helm_branch
+      end
+
+      def create_helm_branch
+        project = ReleaseTools::Project::HelmGitlab
+        repo = ReleaseTools::RemoteRepository.get(project.remotes)
+
+        version_manager = ReleaseTools::Helm::VersionManager.new(repo)
         helm_version = version_manager.next_version(@version.to_ce)
-        helm_branch = helm_version.stable_branch(ee: false)
-        create_branch_from_ref(Project::HelmGitlab, helm_branch, 'master')
+
+        create_branch_from_ref(project, helm_version.stable_branch, 'master')
       ensure
-        helm_repo.cleanup
+        repo.cleanup
       end
     end
   end
