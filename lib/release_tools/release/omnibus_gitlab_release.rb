@@ -27,7 +27,7 @@ module ReleaseTools
       end
 
       def compile_changelog
-        return if version.rc?
+        return if version.rc? || version.ee?
 
         ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version)
       rescue ReleaseTools::Changelog::NoChangelogError => ex
