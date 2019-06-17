@@ -1,39 +1,28 @@
 # frozen_string_literal: true
 
 module ReleaseTools
-  module Packages
-    class PublishService
+  module Services
+    class BasePublishService
       class PipelineNotFoundError < StandardError
         def initialize(version)
           super("Pipeline not found for #{version}")
         end
       end
 
-      attr_reader :ce_version, :ee_version, :project
+      def play_stages
+        raise NotImplementedError
+      end
 
-      # Jobs in these stages will be "played"
-      # Related: https://gitlab.com/gitlab-org/omnibus-gitlab/issues/3663
-      #
-      # TODO: Remove package-release and image-release from the list when we no
-      # longer release versions prior to 11.7. package-and-image-release made
-      # them obsolete.
-      PLAY_STAGES = %w[
-        package-release
-        image-release
-        package-and-image-release
-        raspbian-release
-        metrics
-      ].freeze
+      def release_versions
+        raise NotImplementedError
+      end
 
-      def initialize(version)
-        @ce_version = version.to_omnibus(ee: false)
-        @ee_version = version.to_omnibus(ee: true)
-
-        @project = Project::OmnibusGitlab
+      def project
+        raise NotImplementedError
       end
 
       def execute
-        [ee_version, ce_version].each do |version|
+        release_versions.each do |version|
           pipeline = client
             .pipelines(project, scope: :tags, ref: version)
             .first
@@ -42,7 +31,7 @@ module ReleaseTools
 
           triggers = client
             .pipeline_jobs(project, pipeline.id, scope: :manual)
-            .select { |job| PLAY_STAGES.include?(job.stage) }
+            .select { |job| play_stages.include?(job.stage) }
 
           if triggers.any?
             $stdout.puts "--> #{version}: #{pipeline.web_url}"

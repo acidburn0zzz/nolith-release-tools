@@ -110,7 +110,7 @@ desc "Publish packages for a specified version"
 task :publish, [:version] do |_t, args|
   version = get_version(args)
 
-  ReleaseTools::Packages::PublishService
+  ReleaseTools::Services::OmnibusPublishService
     .new(version)
     .execute
 
