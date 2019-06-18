@@ -27,6 +27,23 @@ module ReleaseTools
         create_branch_from_ref(Project::GitlabCe, ce_branch, 'master')
         create_branch_from_ref(Project::OmnibusGitlab, ee_branch, 'master')
         create_branch_from_ref(Project::OmnibusGitlab, ce_branch, 'master')
+        create_branch_from_ref(Project::CNGImage, ce_branch, 'master')
+        create_branch_from_ref(Project::CNGImage, ee_branch, 'master')
+
+        # Helm charts follow different branching scheme
+        create_helm_branch
+      end
+
+      def create_helm_branch
+        project = ReleaseTools::Project::HelmGitlab
+        repo = ReleaseTools::RemoteRepository.get(project.remotes)
+
+        version_manager = ReleaseTools::Helm::VersionManager.new(repo)
+        helm_version = version_manager.next_version(@version.to_ce)
+
+        create_branch_from_ref(project, helm_version.stable_branch, 'master')
+      ensure
+        repo.cleanup
       end
     end
   end
