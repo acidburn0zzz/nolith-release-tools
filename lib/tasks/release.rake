@@ -109,4 +109,14 @@ namespace :release do
       ReleaseTools::Slack::TagNotification.release(ce_version) unless dry_run?
     end
   end
+
+  namespace :gitaly do
+    desc 'Tag a new release'
+    task :tag, [:version] do |_, args|
+      version = get_version(args)
+
+      ReleaseTools::Release::GitalyRelease.new(version).execute
+      ReleaseTools::Slack::TagNotification.release(version) unless dry_run?
+    end
+  end
 end
