@@ -23,6 +23,8 @@ module ReleaseTools
         @stable_branch = ReleaseTools::AutoDeployBranch.new(self, value.to_s)
       end
 
+      alias auto_deploy_branch stable_branch
+
       def to_ce
         super.tap do |instance|
           instance.stable_branch = stable_branch
