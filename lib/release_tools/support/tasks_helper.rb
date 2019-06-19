@@ -57,3 +57,11 @@ end
 def create_or_show_merge_request(merge_request)
   create_or_show_issuable(merge_request)
 end
+
+def cherry_pick_result(result)
+  if result.success?
+    "✓ #{result.url}"
+  else
+    "✗ #{result.url}"
+  end
+end
