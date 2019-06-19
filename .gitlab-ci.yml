@@ -13,51 +13,38 @@ cache: &global-cache
 
 # templates -------------------------------------------------------------------
 
+.except-automation: &except-automation
+  except:
+    - schedules
+    - triggers
+
 .with-bundle: &with-bundle
   before_script:
     - bundle install --jobs=$(nproc) --retry=3 --path=vendor
 
 # test ------------------------------------------------------------------------
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+
+code_quality:
+  <<: *except-automation
+
 dependency_scanning:
-  image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
-  allow_failure: true
-  tags: []
-  before_script: []
-  cache: {}
-  dependencies: []
-  services:
-    - docker:stable-dind
-  script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-    - docker run
-        --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:$SP_VERSION" /code
-  artifacts:
-    paths: [gl-dependency-scanning-report.json]
-  except:
-    - schedules
-    - triggers
+  <<: *except-automation
 
 rubocop:
+  <<: *except-automation
   <<: *with-bundle
   stage: test
-  except:
-    - schedules
-    - triggers
   script:
     - bundle exec rubocop
 
 specs:
+  <<: *except-automation
   <<: *with-bundle
   stage: test
-  except:
-    - schedules
-    - triggers
   retry: 1
   script:
     - cp .env.example .env
@@ -72,6 +59,7 @@ specs:
 # deploy ----------------------------------------------------------------------
 
 pages:
+  <<: *except-automation
   stage: deploy
   script:
     - mkdir -p public/
@@ -83,9 +71,6 @@ pages:
       - public/
   only:
     - master
-  except:
-    - schedules
-    - triggers
 
 # automation ------------------------------------------------------------------
 
