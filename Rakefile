@@ -37,6 +37,7 @@ namespace :auto_deploy do
 
     ee_results = auto_deploy_pick(ReleaseTools::Project::GitlabEe, version)
     ce_results = auto_deploy_pick(ReleaseTools::Project::GitlabCe, version.to_ce)
+    _ob_results = auto_deploy_pick(ReleaseTools::Project::OmnibusGitlab, version)
 
     exit if ReleaseTools::SharedStatus.dry_run?
 
