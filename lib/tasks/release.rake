@@ -14,8 +14,6 @@ namespace :release do
 
   desc 'Merges valid merge requests into preparation branches'
   task :merge, [:version] do |_t, args|
-    icon = ->(result) { result.success? ? "✓" : "✗" }
-
     # CE
     version = get_version(args).to_ce
     target = ReleaseTools::PreparationMergeRequest.new(version: version)
@@ -25,7 +23,7 @@ namespace :release do
       .execute
 
     results.each do |result|
-      $stdout.puts "    #{icon.call(result)} #{result.url}"
+      $stdout.puts cherry_pick_result(result).indent(4)
     end
 
     # EE
@@ -37,7 +35,7 @@ namespace :release do
       .execute
 
     results.each do |result|
-      $stdout.puts "    #{icon.call(result)} #{result.url}"
+      $stdout.puts cherry_pick_result(result).indent(4)
     end
   end
 

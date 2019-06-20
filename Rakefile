@@ -13,10 +13,20 @@ namespace :auto_deploy do
       .create_branches!
   end
 
+  def auto_deploy_pick(project, version)
+    $stdout.puts "--> Picking for #{project}@#{version.auto_deploy_branch}"
+
+    results = ReleaseTools::CherryPick::Service
+      .new(project, version, version.auto_deploy_branch)
+      .execute
+
+    results.each do |result|
+      $stdout.puts cherry_pick_result(result).indent(4)
+    end
+  end
+
   desc 'Pick commits into the auto deploy branches'
   task :pick do
-    icon = ->(result) { result.success? ? "✓" : "✗" }
-
     auto_deploy_branch = ENV.fetch('AUTO_DEPLOY_BRANCH') do |name|
       abort("`#{name}` must be set for this rake task".colorize(:red))
     end
@@ -24,28 +34,10 @@ namespace :auto_deploy do
     version = ReleaseTools::AutoDeploy::Version
       .from_branch(auto_deploy_branch)
       .to_ee
-    project = ReleaseTools::Project::GitlabEe
 
-    $stdout.puts "--> Picking for #{project}@#{version.stable_branch}"
-    ee_results = ReleaseTools::CherryPick::Service
-      .new(project, version, version.stable_branch)
-      .execute
-
-    ee_results.each do |result|
-      $stdout.puts "#{icon.call(result)} #{result.url}".indent(4)
-    end
-
-    version = version.to_ce
-    project = ReleaseTools::Project::GitlabCe
-
-    $stdout.puts "--> Picking for #{project}@#{version.stable_branch}"
-    ce_results = ReleaseTools::CherryPick::Service
-      .new(project, version, version.stable_branch)
-      .execute
-
-    ce_results.each do |result|
-      $stdout.puts "#{icon.call(result)} #{result.url}".indent(4)
-    end
+    ee_results = auto_deploy_pick(ReleaseTools::Project::GitlabEe, version)
+    ce_results = auto_deploy_pick(ReleaseTools::Project::GitlabCe, version.to_ce)
+    _ob_results = auto_deploy_pick(ReleaseTools::Project::OmnibusGitlab, version)
 
     exit if ReleaseTools::SharedStatus.dry_run?
 
