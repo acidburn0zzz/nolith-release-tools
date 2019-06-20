@@ -19,11 +19,11 @@ namespace :release do
     ce_target = ReleaseTools::PreparationMergeRequest.new(version: ce_version)
 
     $stdout.puts "--> Picking for #{ce_version}..."
-    results = ReleaseTools::CherryPick::Service
+    ce_results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabCe, ce_version, ce_target)
       .execute
 
-    results.each do |result|
+    ce_results.each do |result|
       $stdout.puts cherry_pick_result(result).indent(4)
     end
 
@@ -32,11 +32,11 @@ namespace :release do
     ee_target = ReleaseTools::PreparationMergeRequest.new(version: ee_version)
 
     $stdout.puts "--> Picking for #{ee_version}..."
-    results = ReleaseTools::CherryPick::Service
+    ee_results = ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, ee_version, ee_target)
       .execute
 
-    results.each do |result|
+    ee_results.each do |result|
       $stdout.puts cherry_pick_result(result).indent(4)
     end
 
