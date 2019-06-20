@@ -15,11 +15,12 @@ namespace :release do
   desc 'Merges valid merge requests into preparation branches'
   task :merge, [:version] do |_t, args|
     # CE
-    version = get_version(args).to_ce
-    target = ReleaseTools::PreparationMergeRequest.new(version: version)
-    $stdout.puts "--> Picking for #{version}..."
+    ce_version = get_version(args).to_ce
+    ce_target = ReleaseTools::PreparationMergeRequest.new(version: ce_version)
+
+    $stdout.puts "--> Picking for #{ce_version}..."
     results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, version, target)
+      .new(ReleaseTools::Project::GitlabCe, ce_version, ce_target)
       .execute
 
     results.each do |result|
@@ -27,15 +28,34 @@ namespace :release do
     end
 
     # EE
-    version = version.to_ee
-    target = ReleaseTools::PreparationMergeRequest.new(version: version)
-    $stdout.puts "--> Picking for #{version}..."
+    ee_version = ce_version.to_ee
+    ee_target = ReleaseTools::PreparationMergeRequest.new(version: ee_version)
+
+    $stdout.puts "--> Picking for #{ee_version}..."
     results = ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, version, target)
+      .new(ReleaseTools::Project::GitlabEe, ee_version, ee_target)
       .execute
 
     results.each do |result|
       $stdout.puts cherry_pick_result(result).indent(4)
+    end
+
+    exit if ReleaseTools::SharedStatus.dry_run?
+
+    # If we picked anything in CE, we need to merge into EE via MergeTrain
+    if ce_results.any?(&:success?)
+      $stdout.puts "--> Triggering merge train for `#{ce_target.target_branch}`"
+
+      pipeline = ReleaseTools::GitlabOpsClient.run_trigger(
+        ReleaseTools::Project::MergeTrain,
+        ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
+        'master',
+        CE_BRANCH: ce_target.target_branch,
+        EE_BRANCH: ee_target.target_branch,
+        MERGE_MANUAL: '1'
+      )
+
+      $stdout.puts pipeline.web_url.indent(4)
     end
   end
 
