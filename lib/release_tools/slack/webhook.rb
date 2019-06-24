@@ -26,6 +26,14 @@ module ReleaseTools
 
         raise CouldNotPostError.new(response.inspect) unless response.code == 200
       end
+
+      # Return a Slack "mrkdwn" element Hash
+      def self.mrkdwn(text)
+        {
+          type: 'mrkdwn',
+          text: text
+        }
+      end
     end
   end
 end

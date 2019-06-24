@@ -15,7 +15,7 @@ describe ReleaseTools::Services::AutoDeployBranchService do
   end
 
   describe '#create_branches!', :silence_stdout do
-    it 'creates auto-deploy branches for gitlab-ee and gitlab-ce' do
+    it 'creates auto-deploy branches' do
       branch_name = 'branch-name'
 
       expect(service).to receive(:latest_successful_ref).and_return(branch_commit).exactly(3).times
