@@ -43,10 +43,16 @@ module ReleaseTools
 
             General Quality info can be found in the [Quality Handbook](https://about.gitlab.com/handbook/engineering/quality/).
 
+            Note: If you are assigned tasks outside your normal work hours, you're not expected to work overtime. Please complete the tasks as soon
+            as possible during your normal work hours.
+
             ## Deadline
 
             QA testing on [staging.gitlab.com](https://staging.gitlab.com) for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
             After this deadline has passed, Release Managers will proceed with the canary and production deployment.
+
+            If the deadline has passed, please perform your task as soon as possible anyway (during your normal work hours). It's important that the testing is
+            performed, even if deployment has proceeded to a later stage.
 
             ## Merge Requests tested in #{version}
 
