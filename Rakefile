@@ -8,9 +8,12 @@ Dir.glob('lib/tasks/*.rake').each { |task| import(task) }
 namespace :auto_deploy do
   desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab-ee and omnibus-gitlab"
   task :prepare do
-    ReleaseTools::Services::AutoDeployBranchService
+    results = ReleaseTools::Services::AutoDeployBranchService
       .new(ReleaseTools::AutoDeploy::Naming.branch)
       .create_branches!
+
+    ReleaseTools::Slack::AutoDeployNotification
+      .on_create(results)
   end
 
   def auto_deploy_pick(project, version)

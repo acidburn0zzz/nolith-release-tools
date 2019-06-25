@@ -2,6 +2,8 @@
 
 module ReleaseTools
   module BranchCreation
+    Result = Struct.new(:project, :branch, :response)
+
     def gitlab_client
       ReleaseTools::GitlabClient
     end
@@ -26,7 +28,7 @@ module ReleaseTools
       return if dry_run?
 
       ignoring_duplicates do
-        client.create_branch(branch, ref, project)
+        Result.new(project, branch, client.create_branch(branch, ref, project))
       end
     end
 
