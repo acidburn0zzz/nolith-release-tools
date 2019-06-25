@@ -44,7 +44,7 @@ namespace :release do
 
     # If we picked anything in CE, we need to merge into EE via MergeTrain
     if ce_results.any?(&:success?)
-      $stdout.puts "--> Triggering merge train for `#{ce_target.target_branch}`"
+      $stdout.puts "--> Triggering merge train for `#{ce_target.source_branch}`"
 
       pipeline = ReleaseTools::GitlabOpsClient.run_trigger(
         ReleaseTools::Project::MergeTrain,
