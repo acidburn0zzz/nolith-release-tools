@@ -11,12 +11,8 @@
     # In Slack
     /chatops run release merge <%= version.to_ce %>
     ```
-
-- [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
 - [ ] Merge the preparation branches
-- [ ] For `omnibus-gitlab` add the changes to the stable branches:
-  - Before the 7th: merge master into the CE stable branch, then merge the CE stable branch into EE.
-  - After the 7th: cherry-pick [remaining merge requests] directly into CE stable branch. Then, merge the CE Omnibus stable branch into EE.
+- [ ] For `omnibus-gitlab` add the changes to the stable branches: cherry-pick [remaining merge requests] directly into CE stable branch. Then, merge the CE Omnibus stable branch into EE.
 - Check the following list of critical issues/MRs which are to be included in `<%= version %>`. Ensure each has made both CE and EE:
   - [ ] REFERENCE_TO_MR_TO_PICK
 - [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
@@ -29,7 +25,7 @@
 
 ## Packaging
 
-- [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
+- [ ] [Check if mirroring synced stable branches to dev](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md)
     - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
     - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
     - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
@@ -49,25 +45,15 @@
 
 ## Deploy
 
-Deploys to production require confirmation from a production team member
-before proceeding. Use `/chatops run oncall production` in the
-`#production` channel to find who's on call and ping someone. Deploys to
-staging or canary can be done at will, just mention it in the
-`#production` channel.
+For patch releases, the only available environment for deploys is `pre.gitlab.com`. All GitLab Inc. team members can login to that installation using their email address (through google oauth).
 
-### staging.gitlab.com
+### pre.gitlab.com
 
-- [ ] Inform the oncall in the #production channel about **staging** deploy
-- [ ] Check if there are any [post-deployment
-      patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
-      version.to_minor %>) that need to be re-applied. If there are,
-      the deployment must be halted and assessed as to the impact of undoing the
-      patches because of the release. To proceed, approval must be given by the
-      manager oncall.
-- [ ] [Deploy] `<%= version %>` to **staging.gitlab.com**. Note that starting in release **11.6** staging deploys are automatically triggered from the  [EE omnibus pipeline](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) `gitlab_com:upload_deploy` stage.
+
+- [ ] [Deploy] `<%= version %>` to **pre.gitlab.com**. Note that starting in release **11.6** staging deploys are automatically triggered from the  [EE omnibus pipeline](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) `gitlab_com:upload_deploy` stage.
     ```sh
     # In Slack:
-    /chatops run deploy <%= version %>-ee.0
+    /chatops run deploy <%= version %>-ee.0 --pre
     ```
 - [ ] Link to deployment job (even failed attempts) =>
 
@@ -82,52 +68,6 @@ manually generate the QA task, you can do so as follows:
 /chatops run release qa vLAST_DEPLOYED_VERSION v<%= version %>
 ```
 
-### gitlab.com canary stage
-
-
-- [ ] Inform the oncall in the #production channel about **canary** deploy
-- [ ] [Deploy] `<%= version %>` to canary vms in production
-
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version %>-ee.0 --production --canary
-    ```
-- [ ] Link to deployment job (even failed attempts) =>
-- [ ] Confirm that there are no errors on canary
-  - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
-  - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
-
-**If there are issues on canary you should immediately stop sending traffic to it by issuing the following chatops command**:
-
-```
-/chatops run canary --drain --production
-
-```
-
-### gitlab.com main stage (production)
-
-- [ ] Wait for the QA Task deadline to pass before deploying to the rest of gitlab.com
-- [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
-- [ ] Get confirmation from a production team member to deploy to **production**
-      In `#production`, use `/chatops run oncall production` to find who's on call, and `@mention` them asking to deploy to production
-- [ ] If someone besides the oncall confirms, `@mention` the oncall so they are aware.
-- [ ] [Deploy] `<%= version %>` to GitLab.com
-
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version %>-ee.0 --production
-    ```
-- [ ] Link to deployment job (even failed attempts) =>
-- [ ] Check if there are any [post-deployment
-      patches](https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/<%=
-      version.to_minor %>) that need to be re-applied. If there are,
-      the deployment must be halted and assessed as to the impact of undoing the
-      patches because of the release. To proceed, approval must be given by the
-      manager oncall.
-
-[Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
-[announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
-
 ## Release
 
 - [ ] Publish the packages via ChatOps:
@@ -139,10 +79,10 @@ manually generate the QA task, you can do so as follows:
 - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>)
 - [ ] Deploy the blog post
-- [ ] Post a [tweet about] the `<%= version %>` release in the `#releases` channel:
+- [ ] In the `#releases` channel, mention `@advocates` to [tweet about] the new release:
 
     ```
-    !tweet "GitLab <%= version %> is now available: [BLOG_POST_URL] [DESCRIPTION_OF_CHANGES]"
+    "GitLab <%= version %> is now available: [BLOG_POST_URL] [DESCRIPTION_OF_CHANGES]"
     ```
 
 [tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
