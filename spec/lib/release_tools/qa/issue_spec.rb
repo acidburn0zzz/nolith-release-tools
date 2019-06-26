@@ -106,8 +106,8 @@ describe ReleaseTools::Qa::Issue do
       context 'for RC2' do
         let(:version) { ReleaseTools::Version.new('10.8.0-rc2') }
 
-        it 'the due date is 12h in the future' do
-          expect(content).to include('2018-09-11 02:40 UTC')
+        it 'the due date is 24h in the future' do
+          expect(content).to include('2018-09-11 14:40 UTC')
         end
       end
     end
