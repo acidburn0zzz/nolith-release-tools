@@ -32,13 +32,6 @@ describe ReleaseTools::PatchIssue do
 
       expect(content).to include '8.3.1'
     end
-
-    it 'includes the link to post deployment patches' do
-      issue = described_class.new(version: ReleaseTools::Version.new('8.3.1'))
-
-      expect(issue.description)
-        .to include('https://dev.gitlab.org/gitlab/post-deployment-patches/tree/master/8.3')
-    end
   end
 
   describe '#labels' do
