@@ -49,7 +49,7 @@ module ReleaseTools
             ## Deadline
 
             QA testing on [staging.gitlab.com](https://staging.gitlab.com) for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
-            After this deadline has passed, Release Managers will proceed with the canary and production deployment.
+            After this deadline has passed, the issue will be closed automatically.
 
             If the deadline has passed, please perform your task as soon as possible anyway (during your normal work hours). It's important that the testing is
             performed, even if deployment has proceeded to a later stage.
@@ -252,11 +252,7 @@ module ReleaseTools
         def due_date
           utc_date = DateTime.now.new_offset(0)
 
-          if version.rc == 1
-            utc_date + 24.hours
-          else
-            utc_date + 12.hours
-          end
+          utc_date + 24.hours
         end
       end
     end
