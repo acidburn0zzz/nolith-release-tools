@@ -13,8 +13,8 @@ module ReleaseTools
       versions = { 'VERSION' => commit_id }
 
       FILES.each_with_object(versions) do |file, memo|
-        memo[file] = ReleaseTools::GitlabClient
-          .file_contents(project.path, file, commit_id)
+        memo[file] = client
+          .file_contents(client.project_path(project), file, commit_id)
           .chomp
       end
     end
@@ -30,8 +30,8 @@ module ReleaseTools
         }
       end
 
-      ReleaseTools::GitlabClient.create_commit(
-        ReleaseTools::Project::OmnibusGitlab,
+      client.create_commit(
+        client.project_path(ReleaseTools::Project::OmnibusGitlab),
         target_branch,
         'Update component versions',
         actions
@@ -40,11 +40,19 @@ module ReleaseTools
 
     def self.omnibus_version_changes?(target_branch, version_map)
       version_map.any? do |filename, contents|
-        ReleaseTools::GitlabClient.file_contents(
-          ReleaseTools::Project::OmnibusGitlab.path,
+        client.file_contents(
+          client.project_path(ReleaseTools::Project::OmnibusGitlab),
           "/#{filename}",
           target_branch
         ).chomp != contents
+      end
+    end
+
+    def self.client
+      if SharedStatus.security_release?
+        ReleaseTools::GitlabDevClient
+      else
+        ReleaseTools::GitlabClient
       end
     end
   end
