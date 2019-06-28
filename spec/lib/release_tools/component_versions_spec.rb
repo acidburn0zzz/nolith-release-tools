@@ -15,6 +15,7 @@ describe ReleaseTools::ComponentVersions do
       commit_id = 'abcdefg'
       file = described_class::FILES.sample
 
+      allow(fake_client).to receive(:project_path).and_return(project.path)
       expect(fake_client).to receive(:file_contents)
         .with(project.path, file, commit_id)
         .and_return("1.2.3\n")
@@ -42,12 +43,14 @@ describe ReleaseTools::ComponentVersions do
     let(:commit) { double('commit', id: 'abcd') }
 
     it 'commits version updates for the specified ref' do
+      allow(fake_client).to receive(:project_path).and_return(project.path)
+
       without_dry_run do
         described_class.update_omnibus('foo-branch', version_map)
       end
 
       expect(fake_client).to have_received(:create_commit).with(
-        ReleaseTools::Project::OmnibusGitlab,
+        project.path,
         'foo-branch',
         anything,
         array_including(
@@ -64,6 +67,8 @@ describe ReleaseTools::ComponentVersions do
     let(:version_map) { { 'GITALY_SERVER_VERSION' => '1.33.0' } }
 
     it 'keeps omnibus versions that have changed' do
+      allow(fake_client).to receive(:project_path).and_return(project.path)
+
       expect(fake_client).to receive(:file_contents)
         .with(project.path, "/GITALY_SERVER_VERSION", 'foo-branch')
         .and_return("1.2.3\n")
@@ -72,6 +77,8 @@ describe ReleaseTools::ComponentVersions do
     end
 
     it 'rejects omnibus versions that have not changed' do
+      allow(fake_client).to receive(:project_path).and_return(project.path)
+
       expect(fake_client).to receive(:file_contents)
         .with(project.path, "/GITALY_SERVER_VERSION", 'foo-branch')
         .and_return("1.33.0\n")
