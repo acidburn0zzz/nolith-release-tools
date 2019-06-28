@@ -10,8 +10,16 @@ module ReleaseTools
     end
 
     def execute(args)
-      commit = ReleaseTools::Commits.new(project, ref: ref)
-        .latest_dev_green_build_commit
+      commits = ReleaseTools::Commits.new(project, ref: ref)
+
+      commit =
+        if SharedStatus.security_release?
+          # Passing builds on dev are few and far between; for a security
+          # release we'll just use the latest commit on the branch
+          commits.latest
+        else
+          commits.latest_dev_green_build_commit
+        end
 
       if commit.nil?
         raise "Unable to find a passing #{project} build for `#{ref}` on dev"
@@ -74,8 +82,14 @@ module ReleaseTools
 
       $stdout.puts "Creating `#{project}` tag `#{name}`".indent(4)
 
-      ReleaseTools::GitlabClient
-        .create_tag(project, name, commit.id, message)
+      client =
+        if SharedStatus.security_release?
+          ReleaseTools::GitlabDevClient
+        else
+          ReleaseTools::GitlabClient
+        end
+
+      client.create_tag(client.project_path(project), name, commit.id, message)
     end
 
     def tag_deployer(name, message, ref)
@@ -94,6 +108,7 @@ module ReleaseTools
       $stdout.puts "Creating `#{project}` branch `#{branch_name}`"
       ReleaseTools::GitlabDevClient.create_branch(branch_name, ref, project)
 
+      # NOTE: `trigger` always happens on dev here
       ReleaseTools::Pipeline.new(
         project,
         ref,
@@ -106,7 +121,11 @@ module ReleaseTools
 
     # See https://gitlab.com/gitlab-org/gitlab-ce/issues/25392
     def commit_url(project, id)
-      "https://gitlab.com/#{project.path}/commit/#{id}"
+      if SharedStatus.security_release?
+        "https://dev.gitlab.org/#{project}/commit/#{id}"
+      else
+        "https://gitlab.com/#{project}/commit/#{id}"
+      end
     end
   end
 end

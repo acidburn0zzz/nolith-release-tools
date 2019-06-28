@@ -9,7 +9,19 @@ module ReleaseTools
     def initialize(project, ref: 'master', client: ReleaseTools::GitlabClient)
       @project = project
       @ref = ref
-      @client = client
+
+      @client =
+        if SharedStatus.security_release?
+          # For security releases, we only work on dev
+          ReleaseTools::GitlabDevClient
+        else
+          client
+        end
+    end
+
+    # Get the latest commit for `ref`
+    def latest
+      commit_list.first
     end
 
     def latest_successful
@@ -34,7 +46,7 @@ module ReleaseTools
 
     def commit_list
       @commit_list ||= @client.commits(
-        @project.path,
+        @project,
         per_page: MAX_COMMITS_TO_CHECK,
         ref_name: @ref
       )

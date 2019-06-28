@@ -8,7 +8,6 @@ module ReleaseTools
     class << self
       extend Forwardable
 
-      def_delegator :client, :commits
       def_delegator :client, :file_contents
       def_delegator :client, :job_play
 
@@ -92,6 +91,10 @@ module ReleaseTools
 
     def self.compare(project = Project::GitlabCe, from:, to:)
       client.compare(project_path(project), from, to)
+    end
+
+    def self.commits(project = Project::GitlabCe, options = {})
+      client.commits(project_path(project), options)
     end
 
     def self.commit(project = Project::GitlabCe, ref:)

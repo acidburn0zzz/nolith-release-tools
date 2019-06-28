@@ -88,12 +88,16 @@ describe ReleaseTools::PassingBuild do
           .with(tag_name, anything, fake_commit)
           .and_call_original
 
+        allow(fake_client).to receive(:project_path)
+          .with(ReleaseTools::Project::OmnibusGitlab)
+          .and_return('foo/bar')
+
         service.trigger_build(version_map)
 
         expect(fake_client)
           .to have_received(:create_tag)
           .with(
-            ReleaseTools::Project::OmnibusGitlab,
+            'foo/bar',
             tag_name,
             fake_commit.id,
             "Auto-deploy tag-name\n\nVERSION: 1.2.3"
