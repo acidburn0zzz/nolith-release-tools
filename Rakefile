@@ -106,11 +106,15 @@ namespace :helm do
   end
 end
 
-desc "Publish packages for a specified version"
+desc "Publish packages and CNG images for a specified version"
 task :publish, [:version] do |_t, args|
   version = get_version(args)
 
   ReleaseTools::Services::OmnibusPublishService
+    .new(version)
+    .execute
+
+  ReleaseTools::Services::CNGPublishService
     .new(version)
     .execute
 
