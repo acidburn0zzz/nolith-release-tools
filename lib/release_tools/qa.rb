@@ -34,7 +34,8 @@ module ReleaseTools
       'development guidelines',
       'static analysis',
       'QA',
-      'rails5'
+      'rails5',
+      'backstage'
     ].freeze
 
     PROJECTS = [
