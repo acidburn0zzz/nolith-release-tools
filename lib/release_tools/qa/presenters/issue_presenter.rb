@@ -48,7 +48,7 @@ module ReleaseTools
 
             ## Deadline
 
-            QA testing on [staging.gitlab.com](https://staging.gitlab.com) for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
+            QA testing on [staging.gitlab.com](https://staging.gitlab.com/users/sign_in) for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
             After this deadline has passed, the issue will be closed automatically.
 
             If the deadline has passed, please perform your task as soon as possible anyway (during your normal work hours). It's important that the testing is
