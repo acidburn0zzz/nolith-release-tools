@@ -49,7 +49,7 @@ case $1 in
 
   "release:gitaly:tag")
     require_version
-    auth_rake "$1[$RELEASE_VERSION]"
+    "$1[$RELEASE_VERSION]"
     ;;
 
   # security namespace
@@ -76,7 +76,7 @@ case $1 in
     ;;
   "security:gitaly:tag")
     require_version
-    auth_rake "$1[$RELEASE_VERSION]"
+    "$1[$RELEASE_VERSION]"
     ;;
 
   # Deprecated commands
