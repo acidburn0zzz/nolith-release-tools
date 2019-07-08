@@ -21,11 +21,6 @@ auth_rake()
   bundle exec rake "release_managers:auth[$RELEASE_USER]" "$1"
 }
 
-auth_gitaly_maintainer()
-{
-  bundle exec rake "maintainers:gitaly:auth[$RELEASE_USER]" "$1"
-}
-
 setup_env
 
 case $1 in
@@ -54,7 +49,7 @@ case $1 in
 
   "release:gitaly:tag")
     require_version
-    auth_gitaly_maintainer "$1[$RELEASE_VERSION]"
+    "$1[$RELEASE_VERSION]"
     ;;
 
   # security namespace
@@ -81,7 +76,7 @@ case $1 in
     ;;
   "security:gitaly:tag")
     require_version
-    auth_gitaly_maintainer "$1[$RELEASE_VERSION]"
+    "$1[$RELEASE_VERSION]"
     ;;
 
   # Deprecated commands
