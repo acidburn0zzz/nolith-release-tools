@@ -141,20 +141,14 @@ describe ReleaseTools::Qa::Issue do
     let(:remote_issuable) { double(iid: remote_issue_iid) }
 
     before do
-      expect(subject).to receive(:comment_body).and_return(comment_body)
       expect(subject).to receive(:remote_issuable).and_return(remote_issuable)
     end
 
     it "calls the api to create a comment" do
-      expect(ReleaseTools::GitlabClient).to receive(:create_issue_note).with(project, issue: remote_issuable, body: comment_body)
+      expect(ReleaseTools::GitlabClient).to receive(:create_issue_note)
+        .with(project, issue: remote_issuable, body: comment_body)
 
-      subject.add_comment
-    end
-  end
-
-  describe '#comment_body' do
-    it 'has the correct content' do
-      expect(subject.comment_body).to eq("New QA items for: @author")
+      subject.add_comment(comment_body)
     end
   end
 
