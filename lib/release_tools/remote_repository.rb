@@ -262,11 +262,15 @@ module ReleaseTools
       remotes.keys.map do |remote_name|
         output, status = run_git(%W[ls-remote #{remote_name} #{ref}])
 
-        if status.success?
-          [remote_name, output.split("\t").first.strip]
-        else
-          [remote_name, 'unknown']
-        end
+        value = if !status.success?
+                  'unknown'
+                elsif output.empty?
+                  output
+                else
+                  output.split("\t").first.strip
+                end
+
+        [remote_name, value]
       end.to_h
     end
 
