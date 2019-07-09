@@ -223,7 +223,7 @@ describe ReleaseTools::Security::MergeRequestValidator do
 
     it 'does not add an error when the merge request is reviewed' do
       merge_request =
-        double(:merge_request, description: '- [x] Assign to a reviewer')
+        double(:merge_request, description: '* [x] Assign to a reviewer')
 
       client = double(:client)
       validator = described_class.new(merge_request, client)

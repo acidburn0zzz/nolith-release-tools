@@ -24,7 +24,7 @@ module ReleaseTools
 
       # A regular expression to use to determine if the merge request was
       # assigned to a reviewer.
-      APPROVED_TASK = /-\s*\[[xX]\]\s*Assign to a reviewer/.freeze
+      APPROVED_TASK = /(\*|-)\s*\[[xX]\]\s*Assign to a reviewer/.freeze
 
       # A regular expression used to determine if the target branch of a merge
       # request is valid.
