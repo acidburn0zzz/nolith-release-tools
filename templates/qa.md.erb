@@ -1,3 +1,9 @@
 <%= issue_presenter.present %>
 
 /cc @gl-quality
+
+<% if ENV['CI_PIPELINE_TRIGGERED'] -%>
+---
+
+:robot: This issue was generated via [triggered pipeline](<%= ENV['CI_JOB_URL'] %>).
+<% end -%>
