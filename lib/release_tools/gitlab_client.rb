@@ -120,7 +120,7 @@ module ReleaseTools
       current = milestones(Project::GitlabCe, state: 'active')
         .select { |m| current_milestone?(m) }
         .select { |m| m.title.match?(/\A\d+.\d+\z/) }
-        .max_by(&:due_date)
+        .min_by(&:due_date)
 
       current || MissingMilestone.new
     end
