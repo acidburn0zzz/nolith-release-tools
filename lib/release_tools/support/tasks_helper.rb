@@ -34,6 +34,8 @@ def create_or_show_issuable(issuable)
     $stdout.puts
     $stdout.puts issuable.description
   elsif issuable.exists?
+    issuable.status = :exists
+
     $stdout.puts "--> #{issuable.type} \"#{issuable.title}\" already exists.".red
     $stdout.puts "    #{issuable.url}"
 
