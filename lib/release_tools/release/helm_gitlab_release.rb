@@ -99,11 +99,8 @@ module ReleaseTools
         repository.ensure_branch_exists('master')
         repository.pull_from_all_remotes('master')
 
-        # Only update master to newer versions
-        if version_manager.parse_chart_file.version < version
-          bump_versions
-          push_ref('branch', 'master')
-        end
+        bump_versions
+        push_ref('branch', 'master')
       end
 
       def run_update_version(args)
