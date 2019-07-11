@@ -3,7 +3,7 @@
 module ReleaseTools
   module AutoDeploy
     class Naming
-      BRANCH_FORMAT = '%<major>d-%<minor>d-auto-deploy-%<pipeline_id>07d'
+      BRANCH_FORMAT = '%<major>d-%<minor>d-auto-deploy-%<timestamp>s'
       TAG_FORMAT = '%<major>d.%<minor>d.%<timestamp>s+%<ee_ref>.11s.%<omnibus_ref>.11s'
 
       def self.branch
@@ -18,18 +18,12 @@ module ReleaseTools
         )
       end
 
-      def initialize
-        @pipeline_id = ENV.fetch('CI_PIPELINE_IID') do |key|
-          raise ArgumentError, "`#{key}` must be set in order to proceed"
-        end
-      end
-
       def branch
         format(
           BRANCH_FORMAT,
           major: version.first,
           minor: version.last,
-          pipeline_id: @pipeline_id
+          timestamp: Time.now.strftime('%Y%m%d')
         )
       end
 

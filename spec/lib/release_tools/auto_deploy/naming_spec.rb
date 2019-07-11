@@ -3,26 +3,13 @@
 require 'spec_helper'
 
 describe ReleaseTools::AutoDeploy::Naming do
-  def with_pipeline(iid)
-    ClimateControl.modify(CI_PIPELINE_IID: iid) { yield }
-  end
-
-  describe 'initialize' do
-    it 'fails when CI_PIPELINE_IID is unset' do
-      with_pipeline(nil) do
-        expect { described_class.new }
-          .to raise_error(/must be set in order to proceed/)
-      end
-    end
-  end
-
   describe '.branch' do
     it 'returns a branch name in the appropriate format' do
       allow(ReleaseTools::GitlabClient).to receive(:current_milestone)
         .and_return(double(title: '4.2'))
 
-      with_pipeline('1234') do
-        expect(described_class.branch).to eq('4-2-auto-deploy-0001234')
+      Timecop.travel(Date.new(2019, 7, 2)) do
+        expect(described_class.branch).to eq('4-2-auto-deploy-20190702')
       end
     end
   end
@@ -38,11 +25,9 @@ describe ReleaseTools::AutoDeploy::Naming do
         ee_ref: SecureRandom.hex(20)
       }
 
-      with_pipeline('1234') do
-        expect(described_class.tag(**args)).to eq(
-          "4.2.201907021014+#{args[:ee_ref][0...11]}.#{args[:omnibus_ref][0...11]}"
-        )
-      end
+      expect(described_class.tag(**args)).to eq(
+        "4.2.201907021014+#{args[:ee_ref][0...11]}.#{args[:omnibus_ref][0...11]}"
+      )
     end
   end
 
@@ -51,10 +36,8 @@ describe ReleaseTools::AutoDeploy::Naming do
       allow(ReleaseTools::GitlabClient).to receive(:current_milestone)
         .and_return(double(title: 'Backlog'))
 
-      with_pipeline('1234') do
-        expect { described_class.new.version }
-          .to raise_error(/Invalid version from milestone/)
-      end
+      expect { described_class.new.version }
+        .to raise_error(/Invalid version from milestone/)
     end
   end
 end
