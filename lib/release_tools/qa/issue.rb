@@ -11,13 +11,9 @@ module ReleaseTools
         'QA task'
       end
 
-      def add_comment
+      def add_comment(message)
         ReleaseTools::GitlabClient
-          .create_issue_note(project, issue: remote_issuable, body: comment_body)
-      end
-
-      def comment_body
-        comment_presenter.present
+          .create_issue_note(project, issue: remote_issuable, body: message)
       end
 
       def link!
@@ -33,11 +29,6 @@ module ReleaseTools
       def issue_presenter
         ReleaseTools::Qa::Presenters::IssuePresenter
           .new(merge_requests, self, version)
-      end
-
-      def comment_presenter
-        ReleaseTools::Qa::Presenters::CommentPresenter
-          .new(merge_requests)
       end
 
       def parent_issue

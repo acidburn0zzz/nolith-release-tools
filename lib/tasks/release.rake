@@ -101,6 +101,13 @@ namespace :release do
     ).execute
 
     create_or_show_issue(issue)
+
+    if ENV['RELEASE_ENVIRONMENT'] && issue.status == :exists
+      issue.add_comment(<<~MSG)
+        :robot: The changes listed in this issue have been deployed
+        to `#{ENV['RELEASE_ENVIRONMENT']}`.
+      MSG
+    end
   end
 
   desc 'Tag a new release'
