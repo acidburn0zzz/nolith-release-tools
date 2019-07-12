@@ -11,7 +11,7 @@ module ReleaseTools
 
       def before_execute_hook
         unless version.rc?
-          ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version)
+          ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md', include_date: false).release(version)
         end
       rescue ReleaseTools::Changelog::NoChangelogError => ex
         warn "Cannot perform changelog update for #{version} on " \
