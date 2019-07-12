@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe ReleaseTools::Services::CNGPublishService do
   describe '#execute' do
-    context 'when no pipeline exists', vcr: { cassette_name: 'services/publish_service/cng/no_pipeline' } do
+    context 'when no pipeline exists', vcr: { cassette_name: 'pipelines/cng/no_pipeline' } do
       let(:version) { ReleaseTools::Version.new('83.7.2') }
 
       it 'raises PipelineNotFoundError' do
@@ -16,7 +16,7 @@ describe ReleaseTools::Services::CNGPublishService do
     end
 
     context 'when one pipeline exists' do
-      context 'and there are manual jobs', :silence_stdout, vcr: { cassette_name: 'services/publish_service/cng/pending' } do
+      context 'and there are manual jobs', :silence_stdout, vcr: { cassette_name: 'pipelines/cng/pending' } do
         let(:version) { ReleaseTools::Version.new('12.1.0') }
 
         it 'plays all jobs in a release stage' do
@@ -35,7 +35,7 @@ describe ReleaseTools::Services::CNGPublishService do
         end
       end
 
-      context 'and there are no manual jobs', :silence_stderr, vcr: { cassette_name: 'services/publish_service/cng/released' } do
+      context 'and there are no manual jobs', :silence_stderr, vcr: { cassette_name: 'pipelines/cng/released' } do
         let(:version) { ReleaseTools::Version.new('12.0.0') }
 
         it 'does not play any job' do
