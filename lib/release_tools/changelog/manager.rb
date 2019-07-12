@@ -27,7 +27,7 @@ module ReleaseTools
       attr_reader :repository, :version
 
       # repository - Rugged::Repository object or String path to repository
-      def initialize(repository, changelog_file = nil)
+      def initialize(repository, changelog_file = nil, params = {})
         case repository
         when String
           @repository = Rugged::Repository.new(repository)
@@ -37,6 +37,7 @@ module ReleaseTools
           raise "Invalid repository: #{repository}"
         end
         @changelog_file = changelog_file
+        @params = params
       end
 
       def release(version, stable_branch: version.stable_branch)
@@ -97,7 +98,7 @@ module ReleaseTools
         raise ::ReleaseTools::Changelog::NoChangelogError.new(changelog_file) if blob.nil?
 
         updater  = Updater.new(blob.content, version)
-        markdown = MarkdownGenerator.new(version, unreleased_entries).to_s
+        markdown = MarkdownGenerator.new(version, unreleased_entries, include_date: @params[:include_date]).to_s
 
         changelog_oid = repository.write(updater.insert(markdown), :blob)
         index.add(path: changelog_file, oid: changelog_oid, mode: 0o100644)
