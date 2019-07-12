@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Packages::PublishService do
+describe ReleaseTools::Services::OmnibusPublishService do
   describe '#execute' do
-    context 'when no pipeline exists', vcr: { cassette_name: 'packages/no_pipeline' } do
+    context 'when no pipeline exists', vcr: { cassette_name: 'pipelines/omnibus/no_pipeline' } do
       let(:version) { ReleaseTools::Version.new('83.7.2') }
 
       it 'raises PipelineNotFoundError' do
@@ -18,7 +18,7 @@ describe ReleaseTools::Packages::PublishService do
     context 'when one pipeline exists' do
       # EE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/96413
       # CE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/96417
-      context 'and there are manual jobs', :silence_stdout, vcr: { cassette_name: 'packages/pending' } do
+      context 'and there are manual jobs', :silence_stdout, vcr: { cassette_name: 'pipelines/omnibus/pending' } do
         let(:version) { ReleaseTools::Version.new('11.4.0-rc3') }
 
         it 'plays all jobs in a release stage' do
@@ -31,8 +31,7 @@ describe ReleaseTools::Packages::PublishService do
           # EE and CE each have 17 manual jobs
           expect(client).to receive(:job_play).exactly(17 * 2).times
 
-          # Unset the `TEST` environment so we call the stubbed `job_play`
-          ClimateControl.modify(TEST: nil) do
+          without_dry_run do
             service.execute
           end
         end
@@ -40,7 +39,7 @@ describe ReleaseTools::Packages::PublishService do
 
       # EE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86189
       # CE: https://dev.gitlab.org/gitlab/omnibus-gitlab/pipelines/86193
-      context 'and there are no manual jobs', :silence_stderr, vcr: { cassette_name: 'packages/released' } do
+      context 'and there are no manual jobs', :silence_stderr, vcr: { cassette_name: 'pipelines/omnibus/released' } do
         let(:version) { ReleaseTools::Version.new('11.1.0-rc4') }
 
         it 'does not play any job' do
