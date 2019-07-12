@@ -31,8 +31,7 @@ describe ReleaseTools::Services::OmnibusPublishService do
           # EE and CE each have 17 manual jobs
           expect(client).to receive(:job_play).exactly(17 * 2).times
 
-          # Unset the `TEST` environment so we call the stubbed `job_play`
-          ClimateControl.modify(TEST: nil) do
+          without_dry_run do
             service.execute
           end
         end

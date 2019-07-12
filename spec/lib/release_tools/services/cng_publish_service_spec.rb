@@ -29,8 +29,7 @@ describe ReleaseTools::Services::CNGPublishService do
           # EE and CE each have 1 manual job
           expect(client).to receive(:job_play).twice
 
-          # Unset the `TEST` environment so we call the stubbed `job_play`
-          ClimateControl.modify(TEST: nil) do
+          without_dry_run do
             service.execute
           end
         end
