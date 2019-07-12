@@ -7,10 +7,6 @@ module ReleaseTools
         @play_stages ||= %w[release].freeze
       end
 
-      def initialize(version)
-        @version = version
-      end
-
       def release_versions
         @release_versions ||= [@version.to_ce.tag, @version.to_ee.tag]
       end

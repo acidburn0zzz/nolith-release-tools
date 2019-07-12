@@ -9,6 +9,10 @@ module ReleaseTools
         end
       end
 
+      def initialize(version)
+        @version = version
+      end
+
       def play_stages
         raise NotImplementedError
       end

@@ -11,10 +11,6 @@ module ReleaseTools
         ].freeze
       end
 
-      def initialize(version)
-        @version = version
-      end
-
       def release_versions
         @release_versions ||= [@version.to_omnibus(ee: false), @version.to_omnibus(ee: true)]
       end
