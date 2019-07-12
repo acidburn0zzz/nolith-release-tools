@@ -42,7 +42,7 @@ module ReleaseTools
       # Returns the updated Markdown String
       def insert(markdown)
         contents.each_with_index do |line, index|
-          if line =~ /\A## (\d+\.\d+\.\d+)/
+          if line =~ /\A## v?(\d+\.\d+\.\d+)/
             header = Version.new($1)
 
             if version.to_ce == header

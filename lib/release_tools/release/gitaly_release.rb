@@ -23,15 +23,6 @@ module ReleaseTools
         # to write the new version in their GITALY_SERVER_VERSION file.
         # https://gitlab.com/gitlab-org/release-tools/issues/298
       end
-
-      private
-
-      def bump_version
-        version_file = File.join(repository.path, 'VERSION')
-        File.open(version_file, 'w') { |f| f.puts version }
-
-        repository.commit(version_file, message: "Update #{version_file} for #{version}")
-      end
     end
   end
 end
