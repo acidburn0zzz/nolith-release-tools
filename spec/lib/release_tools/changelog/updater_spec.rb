@@ -74,6 +74,34 @@ describe ReleaseTools::Changelog::Updater do
         - Change A
       MD
     end
+
+    context 'when the version is prefixed with a v' do
+      let(:content) do
+        File
+          .read(File.expand_path("../../../fixtures/changelog/CHANGELOG.md", __dir__))
+          .gsub!('## 8.10.4', '## v8.10.4')
+      end
+
+      it 'correctly inserts a new major release' do
+        version = ReleaseTools::Version.new('9.0.0')
+        markdown = markdown(version)
+
+        writer = described_class.new(contents, version)
+        contents = writer.insert(markdown).lines
+
+        expect(contents).to have_inserted(version).at_line(2)
+      end
+
+      it 'correctly inserts a new minor release' do
+        version = ReleaseTools::Version.new('8.11.0')
+        markdown = markdown(version)
+
+        writer = described_class.new(contents, version)
+        contents = writer.insert(markdown).lines
+
+        expect(contents).to have_inserted(version).at_line(2)
+      end
+    end
   end
 
   def markdown(version)

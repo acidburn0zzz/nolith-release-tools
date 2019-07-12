@@ -5,9 +5,10 @@ module ReleaseTools
     class MarkdownGenerator
       attr_reader :version, :entries
 
-      def initialize(version, entries)
+      def initialize(version, entries, include_date: true)
         @version = version
         @entries = entries.select(&:valid?)
+        @include_date = include_date
       end
 
       def to_s
@@ -29,7 +30,9 @@ module ReleaseTools
       private
 
       def header
-        "## #{version.to_patch} (#{date})"
+        head = "## #{version.to_patch}"
+        head += " (#{date})" if @include_date
+        head
       end
 
       def date
