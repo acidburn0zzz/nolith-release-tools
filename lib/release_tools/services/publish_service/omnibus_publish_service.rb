@@ -5,8 +5,6 @@ module ReleaseTools
     class OmnibusPublishService < BasePublishService
       def play_stages
         @play_stages ||= %w[
-          package-release
-          image-release
           package-and-image-release
           raspbian-release
           metrics
