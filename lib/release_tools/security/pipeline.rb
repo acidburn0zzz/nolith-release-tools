@@ -7,10 +7,11 @@ module ReleaseTools
       # checking jobs. For security MRs we allow these jobs to fail, at least
       # while we still use dev.gitlab.org for the security workflow.
       ALLOWED_FAILURES = %w[
-        ee_compat_check
         code_quality
-        ee-specific-lines-check
+        downtime_check
         ee-files-location-check
+        ee-specific-lines-check
+        ee_compat_check
         review-build-cng
       ].freeze
 
