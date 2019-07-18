@@ -1,27 +1,6 @@
-## Preparation
-
-- [ ] If we are _NOT_ in Feature Freeze, one can ignore and close the [Preparation MRs]
-- [ ] Perform automated merging into the preparation branches:
-    ```sh
-    # In Slack
-    /chatops run release merge <%= version.to_ce %>
-    ```
-
-- [ ] Ensure the CE preparation MR has been fully merged into the EE counterpart
-- [ ] Merge the preparation branches
-- [ ] For `omnibus-gitlab` cherry-pick [remaining merge requests] directly into CE stable branch. Then, merge the CE Omnibus stable branch into EE.
-- Check the following list of critical issues/MRs which are to be included in `<%= version %>`. Ensure each has made both CE and EE:
-  - [ ] REFERENCE_TO_MR_TO_PICK
-- [ ] Ensure builds are green on [Omnibus CE stable branch] and [Omnibus EE stable branch]
-
-[Preparation MRs]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md
-[remaining merge requests]: https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests?scope=all&utf8=%E2%9C%93&state=merged&label_name[]=Pick%20into%20<%= version.to_minor %>
-[Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
-[Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-
 ## Packaging
 
-- [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
+- [ ] [Sync stable branches from  the latest successful auto-deploy branch](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
     - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
     - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
     - [ ] [Omnibus CE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
@@ -38,42 +17,19 @@
 
 ## Deploy
 
-Deploys to production require confirmation from a production team member
-before proceeding. Use `/chatops run oncall prod` in the `#production`
-channel to find who's on call and ping someone. Deploys to staging or canary
-can be done at will, just mention it in the `#production` channel.
-
 ### staging.gitlab.com
 
 - Staging deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
   [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>)
   reaches the `gitlab_com:upload_deploy` stage of the pipeline.
 
-#### QA
+### canary stage gitlab.com
 
-The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
-is generated automatically when deploying to staging. If you need to
-manually generate the QA task, you can do so as follows:
-
-```sh
-# In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
-/chatops run release qa vLAST_DEPLOYED_VERSION v<%= version %>
-```
-
-### gitlab.com canary stage
-
-- [ ] Notify #production that you're about to deploy on **canary**
-- [ ] [Deploy] `<%= version %>` to the canary VMs on gitlab.com
-
-   ```sh
-   # In Slack:
-   /chatops run deploy <%= version %>.ee.0 --production --canary
-   ```
-- [ ] Link to deployment job (even failed attempts) =>
+- Canary deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
+  QA jobs have completed successfully
 - [ ] Confirm that there are no errors on canary
   - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
   - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
-
 
 **If there are issues on canary you should immediately stop sending traffic to it by issuing the following chatops command**:
 
@@ -82,21 +38,7 @@ manually generate the QA task, you can do so as follows:
 
 ```
 
-### gitlab.com main stage (production)
-
-- [ ] Wait for the QA Task deadline to pass before deploying to the rest of gitlab.com
-- [ ] Get confirmation from a production team member to deploy **production**. If someone besides the oncall confirms, `@mention` the oncall so they are aware.
-- [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
-- [ ] [Deploy] `<%= version %>` to GitLab.com
-
-   ```sh
-   # In Slack:
-   /chatops run deploy <%= version %>.ee.0 --production
-   ```
-- [ ] Link to deployment job (even failed attempts) =>
-
-[Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
-[announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
+- This package shall not reach the rest of the production environment as we want to keep production on the auto-devops process
 
 ## Release
 
@@ -115,3 +57,9 @@ manually generate the QA task, you can do so as follows:
    ```
 
 [tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
+[Preparation MRs]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md
+[remaining merge requests]: https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests?scope=all&utf8=%E2%9C%93&state=merged&label_name[]=Pick%20into%20<%= version.to_minor %>
+[Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
+[Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
+[announce the deploy]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md

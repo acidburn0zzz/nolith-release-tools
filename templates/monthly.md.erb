@@ -1,7 +1,5 @@
 ## First steps
 
-Stable branch should be created after the 7th. The 7th is the last date to reliably get things in.
-
 - [ ] Create a new slack channel `<%= Slack::Channel.for(version) %>`
 - [ ] Set the channel topic to `RMs: https://about.gitlab.com/release-managers`
 - [ ] Invite all current release managers
@@ -12,50 +10,25 @@ Stable branch should be created after the 7th. The 7th is the last date to relia
      We are starting <%= version.to_minor %> into <%= Slack::Channel.for(version) %>
      Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
      ```
-- [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
-    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
-    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
-    - [ ] [Omnibus CE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
-    - [ ] [Omnibus EE branch](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>)
-- [ ] Sync master branches to `dev`
-    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/master)
-    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/master)
-- [ ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`, `gitlab-pages`, `gitaly`) to `dev` (when applicable. Builds should fail if this is needed.)
-- [ ] Repeat the process of syncing stable branches until the Feature Freeze date
+- [ ] Determine latest day of the month where we'd create the stable branch: __________________
+  - This will be known as the freeze date
 
-## Release candidates
+## Monitor
 
-- Create additional release candidates as needed:
+- [Monitor QA issues for each deploy to `gstg`](https://gitlab.com/gitlab-org/release/tasks/issues?scope=all&utf8=%E2%9C%93&state=opened&label_name[]=QA%20task)
+- Ensure any deploys that do not make it to canary are investigated
+- Try to push any successful deploy to canary into production after some time has passed, preferrably after all QA tasks are accounted and checked
+- Monitor for any blockers to production and determine if canary should be disabled
 
-    ```sh
-    # In Slack (update RC number):
-    /chatops run release prepare <%= version.to_rc(2) %>
-    ```
+## Release Candidate
+
+- Follow instructions in the release candidate issue on the aforementioned freeze date
 
 Keep in mind that:
 
-1. After the feature freeze only regression, security, and documentation fixes should be
+1. After the freeze date only regression, security, and documentation fixes should be
    cherry-picked into stable branches.
 2. The final RC should point to the same commit as the final release.
-
-## On the first working day after the 7th
-
-- [ ] Follow the [Feature freeze RC](https://gitlab.com/gitlab-org/release/docs/blob/master/general/release-candidates.md#feature-freeze-rc) guide
-
-## Final RC
-
-The final RC should be created on the 21st of the month.
-
-### Before 13:00 UTC
-
-Including changes at this stage requires signoff from the VP of Engineering.
-
-- [ ] Create a task list for the final RC:
-
-    ```sh
-    # In Slack (update RC number):
-    /chatops run release prepare <%= version.to_rc(22) %>
-    ```
 
 ### At 15:00 UTC
 
@@ -76,8 +49,7 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Ensure tests are green on [EE stable branch]
   - [ ] Ensure tests are green on [Omnibus CE stable branch]
   - [ ] Ensure tests are green on [Omnibus EE stable branch]
-  - [ ] [Sync stable branches](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) for CE, EE, and Omnibus to `dev`
-  - [ ] Sync master branches to `dev`
+  - [ ] Ensure master and stable branches are synced
 
 - Before 10:00 UTC:
   - [ ] Tag `<%= version.to_patch %>`:
@@ -95,13 +67,7 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Confirm that there are no errors on canary
     - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
     - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
-  - [ ] Get confirmation from a production team member to deploy production. Use `/chatops run oncall production` if needed to find who's on call. If someone besides the oncall confirms, `@mention` the oncall so they are aware.
-  - [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
-  - [ ] [Deploy] `<%= version.to_patch %>` to GitLab.com
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version.to_patch %>-ee.0 --production
-    ```
+
 - At 13:30 UTC:
   - [ ] Publish the packages via ChatOps:
     ```
