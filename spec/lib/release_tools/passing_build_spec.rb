@@ -24,7 +24,7 @@ describe ReleaseTools::PassingBuild do
         .to raise_error(/Unable to find a passing/)
     end
 
-    it 'fetches component versions', :silence_stdout do
+    it 'fetches component versions' do
       expect(fake_commits).to receive(:latest_dev_green_build_commit)
         .and_return(fake_commit)
 
@@ -37,7 +37,7 @@ describe ReleaseTools::PassingBuild do
       service.execute(double(trigger_build: false))
     end
 
-    it 'triggers a build when specified', :silence_stdout do
+    it 'triggers a build when specified' do
       expect(fake_commits).to receive(:latest_dev_green_build_commit)
         .and_return(fake_commit)
 
@@ -70,7 +70,7 @@ describe ReleaseTools::PassingBuild do
         stub_const('ReleaseTools::GitlabOpsClient', fake_ops_client)
       end
 
-      it 'updates Omnibus versions', :silence_stdout do
+      it 'updates Omnibus versions' do
         expect(ReleaseTools::ComponentVersions)
           .to receive(:update_omnibus).with('11-10-auto-deploy-1234', version_map)
           .and_return(fake_commit)
@@ -81,7 +81,7 @@ describe ReleaseTools::PassingBuild do
         service.trigger_build(version_map)
       end
 
-      it 'tags Omnibus with an annotated tag', :silence_stdout do
+      it 'tags Omnibus with an annotated tag' do
         expect(service).to receive(:update_omnibus)
           .and_return(fake_commit)
         expect(service).to receive(:tag_omnibus)
@@ -104,7 +104,7 @@ describe ReleaseTools::PassingBuild do
           )
       end
 
-      it 'tags Deployer with an annotated tag', :silence_stdout do
+      it 'tags Deployer with an annotated tag' do
         expect(service).to receive(:update_omnibus)
           .and_return(fake_commit)
         expect(service).to receive(:tag_deployer)
@@ -127,7 +127,7 @@ describe ReleaseTools::PassingBuild do
     context 'when not using auto-deploy' do
       subject(:service) { described_class.new(project, 'master') }
 
-      it 'triggers a pipeline build', :silence_stdout do
+      it 'triggers a pipeline build' do
         ClimateControl.modify(CI_PIPELINE_ID: '1234', OMNIBUS_BUILD_TRIGGER_TOKEN: 'token') do
           expect(ReleaseTools::GitlabDevClient)
             .to receive(:create_branch).with("master-1234", 'master', project)

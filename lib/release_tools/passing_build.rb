@@ -2,6 +2,8 @@
 
 module ReleaseTools
   class PassingBuild
+    include ::SemanticLogger::Loggable
+
     attr_reader :project, :ref
 
     def initialize(project, ref)
@@ -26,9 +28,6 @@ module ReleaseTools
       end
 
       version_map = ReleaseTools::ComponentVersions.get(project, commit.id)
-      component_strings(version_map).each do |string|
-        $stdout.puts string.indent(4)
-      end
 
       trigger_build(version_map) if args.trigger_build
     end
@@ -45,7 +44,7 @@ module ReleaseTools
 
     def update_omnibus_for_autodeploy(version_map)
       unless ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, version_map)
-        $stdout.puts "No version changes for components, not tagging omnibus"
+        logger.warn "No version changes for components, not tagging omnibus"
         return
       end
 
@@ -72,7 +71,7 @@ module ReleaseTools
       commit = ReleaseTools::ComponentVersions.update_omnibus(ref, version_map)
 
       url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.id)
-      $stdout.puts "Updated Omnibus versions at #{url}".indent(4)
+      logger.info "Updated Omnibus versions at #{url}"
 
       commit
     end
@@ -80,7 +79,7 @@ module ReleaseTools
     def tag_omnibus(name, message, commit)
       project = ReleaseTools::Project::OmnibusGitlab
 
-      $stdout.puts "Creating `#{project}` tag `#{name}`".indent(4)
+      logger.info "Creating `#{project}` tag `#{name}`"
 
       client =
         if SharedStatus.security_release?
@@ -95,7 +94,7 @@ module ReleaseTools
     def tag_deployer(name, message, ref)
       project = ReleaseTools::Project::Deployer
 
-      $stdout.puts "Creating `#{project}` tag `#{name}`".indent(4)
+      logger.info "Creating `#{project}` tag `#{name}`"
 
       ReleaseTools::GitlabOpsClient
         .create_tag(project, name, ref, message)
@@ -105,7 +104,7 @@ module ReleaseTools
       pipeline_id = ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset')
       branch_name = "#{ref}-#{pipeline_id}"
 
-      $stdout.puts "Creating `#{project}` branch `#{branch_name}`"
+      logger.info "Creating `#{project}` branch `#{branch_name}`"
       ReleaseTools::GitlabDevClient.create_branch(branch_name, ref, project)
 
       # NOTE: `trigger` always happens on dev here
@@ -115,7 +114,7 @@ module ReleaseTools
         version_map
       ).trigger
 
-      $stdout.puts "Deleting `#{project}` branch `#{branch_name}`"
+      logger.info "Deleting `#{project}` branch `#{branch_name}`"
       ReleaseTools::GitlabDevClient.delete_branch(branch_name, project)
     end
 
