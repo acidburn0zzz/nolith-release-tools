@@ -60,7 +60,7 @@ namespace :release do
   end
 
   desc 'Prepare for a new release'
-  task :prepare, [:version] do |task, args|
+  task :prepare, [:version] do |_t, args|
     version = get_version(args)
 
     Rake::Task['release:issue'].execute(version: version)
@@ -70,9 +70,6 @@ namespace :release do
 
       service.create_label
       service.create_stable_branches
-
-      # Recurse so that RC1 gets prep MRs too
-      task.execute(version: version.to_rc(1))
     else
       # Create preparation MR for CE
       version = version.to_ce
