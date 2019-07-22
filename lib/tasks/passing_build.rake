@@ -35,13 +35,6 @@ namespace :passing_build do
     passing_build(ReleaseTools::Project::GitlabCe, ref).execute(args)
   end
 
-  desc "Find and optionally trigger a passing build for Omnibus"
-  task :omnibus, [:ref, :trigger_build] do |_t, args|
-    ref = args.fetch(:ref, 'master').dup
-
-    passing_build(ReleaseTools::Project::OmnibusGitlab, ref).execute(args)
-  end
-
   desc "Trigger a green master build for both CE and EE"
   task :all, [:ref, :trigger_build] do |_t, args|
     Rake::Task['passing_build:ee'].invoke(*args)
