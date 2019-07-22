@@ -27,7 +27,7 @@ module ReleaseTools
       end
 
       def issue_presenter
-        ReleaseTools::Qa::Presenters::IssuePresenter
+        ReleaseTools::Qa::IssuePresenter
           .new(merge_requests, self, version)
       end
 

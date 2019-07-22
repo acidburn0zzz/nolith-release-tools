@@ -160,7 +160,7 @@ Style/BracesAroundHashParameters:
 Style/ConditionalAssignment:
   Exclude:
     - 'lib/release_tools/cherry_pick/service.rb'
-    - 'lib/release_tools/qa/presenters/issue_presenter.rb'
+    - 'lib/release_tools/qa/issue_presenter.rb'
     - 'lib/release_tools/version.rb'
     - 'lib/tasks/release.rake'
 

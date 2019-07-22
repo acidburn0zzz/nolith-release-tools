@@ -2,7 +2,6 @@
 
 module ReleaseTools
   module Qa
-    module Presenters
       class IssuePresenter
         attr_reader :merge_requests, :issue, :version
 
@@ -262,6 +261,5 @@ module ReleaseTools
           utc_date + 24.hours
         end
       end
-    end
   end
 end
