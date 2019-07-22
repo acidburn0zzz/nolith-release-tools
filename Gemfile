@@ -9,6 +9,7 @@ gem 'gitlab',        '~> 4.11'
 gem 'http',          '~> 4.1.0'
 gem 'rake'
 gem 'rugged',        '~> 0.28'
+gem 'semantic_logger', '~> 4.5.0'
 gem 'sentry-raven',  '~> 2.9', require: false
 gem 'version_sorter', '~> 2.2.0'
 gem 'parallel', '~> 1.14'
