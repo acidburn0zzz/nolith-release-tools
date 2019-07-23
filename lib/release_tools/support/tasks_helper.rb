@@ -40,7 +40,7 @@ def create_or_show_issuable(issuable)
     $stdout.puts "    #{issuable.url}"
 
     ReleaseTools::Slack::ChatopsNotification.release_issue(issuable)
-  else
+  elsif issuable.create?
     issuable.create
     issuable.status = :created
     issuable.link!
@@ -49,6 +49,8 @@ def create_or_show_issuable(issuable)
     $stdout.puts "    #{issuable.url}"
 
     ReleaseTools::Slack::ChatopsNotification.release_issue(issuable)
+  else
+    $stdout.puts 'No QA issue has to be created'
   end
 end
 

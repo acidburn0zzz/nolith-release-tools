@@ -87,4 +87,8 @@ describe ReleaseTools::Issuable do
   describe '#url' do
     it { expect { subject.url }.to raise_error(NotImplementedError) }
   end
+
+  describe '#create?' do
+    it { expect(subject.create?).to eq(true) }
+  end
 end
