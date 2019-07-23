@@ -47,6 +47,10 @@ module ReleaseTools
       raise NotImplementedError
     end
 
+    def create?
+      true
+    end
+
     def remote_issuable
       raise NotImplementedError
     end

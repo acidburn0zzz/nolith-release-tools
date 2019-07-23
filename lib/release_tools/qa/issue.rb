@@ -20,6 +20,10 @@ module ReleaseTools
         ReleaseTools::GitlabClient.link_issues(self, parent_issue)
       end
 
+      def create?
+        merge_requests.any?
+      end
+
       protected
 
       def template_path

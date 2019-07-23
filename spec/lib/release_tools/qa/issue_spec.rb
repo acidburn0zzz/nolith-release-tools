@@ -162,4 +162,20 @@ describe ReleaseTools::Qa::Issue do
       issue.link!
     end
   end
+
+  describe '#create?' do
+    it 'returns true when there are merge requests' do
+      expect(subject.create?).to eq(true)
+    end
+
+    it 'returns false when there are no merge requests' do
+      issue = described_class.new(
+        version: version,
+        project: project,
+        merge_requests: []
+      )
+
+      expect(issue.create?).to eq(false)
+    end
+  end
 end
