@@ -45,7 +45,7 @@ describe ReleaseTools::PassingBuild do
         .to receive(:get).with(project, fake_commit.id)
         .and_return(version_map)
 
-      expect(service).to receive(:trigger_build).with(version_map)
+      expect(service).to receive(:trigger_build)
 
       service.execute(double(trigger_build: true))
     end
@@ -56,6 +56,11 @@ describe ReleaseTools::PassingBuild do
     let(:fake_ops_client) { spy }
     let(:project) { ReleaseTools::Project::GitlabCe }
     let(:version_map) { { 'VERSION' => '1.2.3' } }
+
+    before do
+      # Normally this gets set by `execute`, but we're bypassing that in specs
+      service.instance_variable_set(:@version_map, version_map)
+    end
 
     context 'when using auto-deploy' do
       let(:tag_name) { 'tag-name' }
@@ -78,7 +83,7 @@ describe ReleaseTools::PassingBuild do
         expect(service).to receive(:tag_omnibus)
         expect(service).to receive(:tag_deployer)
 
-        service.trigger_build(version_map)
+        service.trigger_build
       end
 
       it 'tags Omnibus with an annotated tag' do
@@ -92,7 +97,7 @@ describe ReleaseTools::PassingBuild do
           .with(ReleaseTools::Project::OmnibusGitlab)
           .and_return('foo/bar')
 
-        service.trigger_build(version_map)
+        service.trigger_build
 
         expect(fake_client)
           .to have_received(:create_tag)
@@ -111,7 +116,7 @@ describe ReleaseTools::PassingBuild do
           .with(tag_name, anything, "master")
           .and_call_original
 
-        service.trigger_build(version_map)
+        service.trigger_build
 
         expect(fake_ops_client)
           .to have_received(:create_tag)
@@ -138,7 +143,7 @@ describe ReleaseTools::PassingBuild do
             .to receive(:delete_branch).with("master-1234", project)
 
           VCR.use_cassette('pipeline/trigger') do
-            service.trigger_build(version_map)
+            service.trigger_build
           end
         end
       end

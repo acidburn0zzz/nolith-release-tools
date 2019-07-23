@@ -4,7 +4,7 @@ module ReleaseTools
   class PassingBuild
     include ::SemanticLogger::Loggable
 
-    attr_reader :project, :ref
+    attr_reader :project, :ref, :version_map
 
     def initialize(project, ref)
       @project = project
@@ -27,28 +27,28 @@ module ReleaseTools
         raise "Unable to find a passing #{project} build for `#{ref}` on dev"
       end
 
-      version_map = ReleaseTools::ComponentVersions.get(project, commit.id)
+      @version_map = ReleaseTools::ComponentVersions.get(project, commit.id)
 
-      trigger_build(version_map) if args.trigger_build
+      trigger_build if args.trigger_build
     end
 
-    def trigger_build(version_map)
+    def trigger_build
       if ref.match?(/\A\d+-\d+-auto-deploy-\d+\z/)
-        update_omnibus_for_autodeploy(version_map)
+        update_omnibus_for_autodeploy
       else
-        trigger_branch_build(version_map)
+        trigger_branch_build
       end
     end
 
     private
 
-    def update_omnibus_for_autodeploy(version_map)
+    def update_omnibus_for_autodeploy
       unless ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, version_map)
         logger.warn "No version changes for components, not tagging omnibus"
         return
       end
 
-      update_omnibus(version_map).tap do |commit|
+      update_omnibus.tap do |commit|
         tag_name = ReleaseTools::AutoDeploy::Naming.tag(
           timestamp: commit.created_at.to_s,
           omnibus_ref: commit.id,
@@ -56,18 +56,18 @@ module ReleaseTools
         )
 
         tag_message = +"Auto-deploy #{tag_name}\n\n"
-        tag_message << component_strings(version_map).join("\n")
+        tag_message << component_strings.join("\n")
 
         tag_omnibus(tag_name, tag_message, commit)
         tag_deployer(tag_name, tag_message, "master")
       end
     end
 
-    def component_strings(version_map)
+    def component_strings
       version_map.map { |component, version| "#{component}: #{version}" }
     end
 
-    def update_omnibus(version_map)
+    def update_omnibus
       commit = ReleaseTools::ComponentVersions.update_omnibus(ref, version_map)
 
       url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.id)
@@ -100,7 +100,7 @@ module ReleaseTools
         .create_tag(project, name, ref, message)
     end
 
-    def trigger_branch_build(version_map)
+    def trigger_branch_build
       pipeline_id = ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset')
       branch_name = "#{ref}-#{pipeline_id}"
 
