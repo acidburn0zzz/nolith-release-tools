@@ -40,31 +40,48 @@ module ReleaseTools
       end
     end
 
+    def tag(target_commit)
+      tag_name = ReleaseTools::AutoDeploy::Naming.tag(
+        timestamp: target_commit.created_at.to_s,
+        omnibus_ref: target_commit.id,
+        ee_ref: version_map['VERSION']
+      )
+
+      tag_message = +"Auto-deploy #{tag_name}\n\n"
+      tag_message << version_map
+        .map { |component, version| "#{component}: #{version}" }
+        .join("\n")
+
+      tag_omnibus(tag_name, tag_message, target_commit)
+      tag_deployer(tag_name, tag_message, 'master')
+    end
+
     private
 
     def update_omnibus_for_autodeploy
-      unless ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, version_map)
-        logger.warn "No version changes for components, not tagging omnibus"
-        return
-      end
+      if ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, version_map)
+        commit = update_omnibus
 
-      update_omnibus.tap do |commit|
-        tag_name = ReleaseTools::AutoDeploy::Naming.tag(
-          timestamp: commit.created_at.to_s,
-          omnibus_ref: commit.id,
-          ee_ref: version_map['VERSION']
-        )
+        tag(commit)
+      elsif omnibus_changes?
+        commit = ReleaseTools::Commits
+          .new(ReleaseTools::Project::OmnibusGitlab, ref)
+          .latest
 
-        tag_message = +"Auto-deploy #{tag_name}\n\n"
-        tag_message << component_strings.join("\n")
-
-        tag_omnibus(tag_name, tag_message, commit)
-        tag_deployer(tag_name, tag_message, "master")
+        tag(commit)
+      else
+        logger.warn 'No changes to component versions or Omnibus, nothing to tag'
       end
     end
 
-    def component_strings
-      version_map.map { |component, version| "#{component}: #{version}" }
+    def omnibus_changes?
+      project = ReleaseTools::Project::OmnibusGitlab
+      refs = GitlabClient.commit_refs(project, ref)
+
+      # When our auto-deploy branch `ref` has no associated tags, then there
+      # have been changes on the branch since we last tagged it, and should be
+      # considered changed
+      refs.none? { |ref| ref.type == 'tag' }
     end
 
     def update_omnibus
@@ -88,7 +105,7 @@ module ReleaseTools
           ReleaseTools::GitlabClient
         end
 
-      client.create_tag(client.project_path(project), name, commit.id, message)
+      client.create_tag(project, name, commit.id, message)
     end
 
     def tag_deployer(name, message, ref)
