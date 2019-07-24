@@ -2,6 +2,8 @@
 
 module ReleaseTools
   class ComponentVersions
+    include ::SemanticLogger::Loggable
+
     FILES = %w[
       GITALY_SERVER_VERSION
       GITLAB_PAGES_VERSION
@@ -17,6 +19,10 @@ module ReleaseTools
           .file_contents(client.project_path(project), file, commit_id)
           .chomp
       end
+
+      logger.debug({ project: project }.merge(versions))
+
+      versions
     end
 
     def self.update_omnibus(target_branch, version_map)

@@ -2,8 +2,7 @@
 
 namespace :passing_build do
   def passing_build(project, ref)
-    $stdout.print '--> '.colorize(:green)
-    $stdout.puts "Searching for passing build on #{project}@#{ref}..."
+    ReleaseTools.logger.info "Searching for passing build on #{project}@#{ref}..."
 
     ReleaseTools::PassingBuild.new(project, ref)
   end
