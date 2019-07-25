@@ -4,7 +4,7 @@ module ReleaseTools
   class PassingBuild
     include ::SemanticLogger::Loggable
 
-    attr_reader :project, :ref, :version_map
+    attr_reader :project, :ref
 
     def initialize(project, ref)
       @project = project
@@ -44,11 +44,11 @@ module ReleaseTools
       tag_name = ReleaseTools::AutoDeploy::Naming.tag(
         timestamp: target_commit.created_at.to_s,
         omnibus_ref: target_commit.id,
-        ee_ref: version_map['VERSION']
+        ee_ref: @version_map['VERSION']
       )
 
       tag_message = +"Auto-deploy #{tag_name}\n\n"
-      tag_message << version_map
+      tag_message << @version_map
         .map { |component, version| "#{component}: #{version}" }
         .join("\n")
 
@@ -59,7 +59,7 @@ module ReleaseTools
     private
 
     def update_omnibus_for_autodeploy
-      if ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, version_map)
+      if ReleaseTools::ComponentVersions.omnibus_version_changes?(ref, @version_map)
         commit = update_omnibus
 
         tag(commit)
@@ -85,7 +85,7 @@ module ReleaseTools
     end
 
     def update_omnibus
-      commit = ReleaseTools::ComponentVersions.update_omnibus(ref, version_map)
+      commit = ReleaseTools::ComponentVersions.update_omnibus(ref, @version_map)
 
       url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.id)
       logger.info "Updated Omnibus versions at #{url}"
@@ -128,7 +128,7 @@ module ReleaseTools
       ReleaseTools::Pipeline.new(
         project,
         ref,
-        version_map
+        @version_map
       ).trigger
 
       logger.info "Deleting `#{project}` branch `#{branch_name}`"
