@@ -23,7 +23,7 @@ module ReleaseTools
     end
 
     def create_branch_from_ref(project, branch, ref, client = gitlab_client)
-      $stdout.puts "Creating `#{branch}` from `#{ref}` on `#{project.path}`"
+      logger&.info("Creating `#{branch}` from `#{ref}` on `#{project.path}`")
 
       return if dry_run?
 

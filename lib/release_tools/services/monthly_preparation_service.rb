@@ -3,6 +3,7 @@
 module ReleaseTools
   module Services
     class MonthlyPreparationService
+      include ::SemanticLogger::Loggable
       include BranchCreation
 
       def initialize(version)
