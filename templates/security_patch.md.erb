@@ -32,17 +32,19 @@
 
 ## Deploy
 
-### staging.gitlab.com
+###  Deploy to Pre for QA testing
 
-- Staging deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
-  [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>)
-  reaches the `gitlab_com:upload_deploy` stage of the pipeline.
+- [ ] Notify #production channel about canary deploy.
+- [ ] Deploy `<%= version %>` to the canary VMs on gitlab.com
+  ```sh
+  # In Slack:
+  /chatops run deploy <%= version.to_patch %>-ee.0 --pre
+  ```
 
 #### QA
 
 The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
-is generated automatically when deploying to staging. If you need to
-manually generate the QA task, you can do so as follows:
+is manually generated, you can do so as follows:
 
 ```sh
 # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
@@ -55,25 +57,6 @@ manually generate the QA task, you can do so as follows:
   @appsec-team - Security release packages are available for QA.
   ```
 - [ ] Wait for the QA tasks deadline to pass.
-
-### Canary VMs on gitlab.com
-
-- [ ] Notify #production channel about canary deploy.
-- [ ] Deploy `<%= version %>` to the canary VMs on gitlab.com
-  ```sh
-  # In Slack:
-  /chatops run deploy <%= version.to_patch %>-ee.0 --production --canary
-  ```
-
-### gitlab.com (production)
-
-- [ ] Get confirmation from a production team member to deploy production. Use `/chatops run oncall production` if needed to find who's on call. If someone besides the oncall confirms, `@mention` the oncall so they are aware.
-- [ ] Confirm there are no critical alerts on gitlab.com on the [alerting dashboard](https://dashboards.gitlab.net/d/SOn6MeNmk/alerts)
-- [ ] Deploy `<%= version %>` to [GitLab.com]
-  ```sh
-  # In Slack:
-  /chatops run deploy <%= version.to_patch %>-ee.0 --production
-  ```
 
 ## Release
 
