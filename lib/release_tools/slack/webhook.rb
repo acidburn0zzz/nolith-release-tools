@@ -3,6 +3,8 @@
 module ReleaseTools
   module Slack
     class Webhook
+      include ::SemanticLogger::Loggable
+
       NoWebhookURLError = Class.new(StandardError)
       CouldNotPostError = Class.new(StandardError)
 
@@ -21,6 +23,8 @@ module ReleaseTools
         body[:channel] = channel if channel.present?
         body[:attachments] = attachments if attachments.any?
         body[:blocks] = blocks if blocks.any?
+
+        logger.trace(__method__, body)
 
         response = HTTP.post(webhook_url, json: body)
 
