@@ -3,6 +3,8 @@
 module ReleaseTools
   module Services
     class BasePublishService
+      include ::SemanticLogger::Loggable
+
       class PipelineNotFoundError < StandardError
         def initialize(version)
           super("Pipeline not found for #{version}")
@@ -33,25 +35,23 @@ module ReleaseTools
 
           raise PipelineNotFoundError.new(version) unless pipeline
 
+          logger.info('Finding manual jobs', pipeline: pipeline.web_url, version: version)
+
           triggers = client
             .pipeline_jobs(project, pipeline.id, scope: :manual)
             .select { |job| play_stages.include?(job.stage) }
 
           if triggers.any?
-            $stdout.puts "--> #{version}: #{pipeline.web_url}"
-
             triggers.each do |job|
               if SharedStatus.dry_run?
-                $stdout.puts "    #{job.name}: #{job.web_url.colorize(:yellow)}"
+                logger.warn('Would play job', job: job.name, url: job.web_url)
               else
-                $stdout.puts "    #{job.name}: #{job.web_url.colorize(:green)}"
+                logger.info('Play job', job: job.name, url: job.web_url)
                 client.job_play(project_path, job.id)
               end
             end
-
-            $stdout.puts
           else
-            warn "Nothing to be done for #{version}: #{pipeline.web_url}"
+            logger.warn('No jobs found')
           end
         end
       end
