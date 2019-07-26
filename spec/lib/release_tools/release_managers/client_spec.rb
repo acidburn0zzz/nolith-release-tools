@@ -39,7 +39,7 @@ describe ReleaseTools::ReleaseManagers::Client do
     end
   end
 
-  describe '#sync_membership', :silence_stdout do
+  describe '#sync_membership' do
     subject { described_class.new(:dev) }
 
     let(:internal_client) do
