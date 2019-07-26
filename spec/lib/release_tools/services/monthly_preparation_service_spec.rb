@@ -17,7 +17,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
     allow(version_manager).to receive(:next_version).with("12.1.0").and_return(ReleaseTools::HelmChartVersion.new("4.3.0"))
   end
 
-  describe '#create_label', :silence_stdout do
+  describe '#create_label' do
     it 'does nothing on a dry run' do
       expect(ReleaseTools::PickIntoLabel).not_to receive(:create)
 
@@ -47,7 +47,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
     end
   end
 
-  describe '#create_stable_branches', :silence_stdout do
+  describe '#create_stable_branches' do
     it 'does nothing on a dry run' do
       expect(internal_client).not_to receive(:create_branch)
 
