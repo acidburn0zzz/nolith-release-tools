@@ -1,5 +1,7 @@
 module ReleaseTools
   class Pipeline
+    include ::SemanticLogger::Loggable
+
     attr_reader :project, :sha
 
     def initialize(project, sha, versions)
@@ -12,7 +14,7 @@ module ReleaseTools
     end
 
     def trigger
-      $stdout.puts "Trigger build: #{sha} for #{project.path}".indent(4)
+      logger.info('Trigger pipeline', project: project, sha: sha)
 
       trigger = ReleaseTools::GitlabDevClient.run_trigger(
         ReleaseTools::Project::OmnibusGitlab,
@@ -21,7 +23,7 @@ module ReleaseTools
         build_variables
       )
 
-      $stdout.puts "Pipeline triggered: #{trigger.web_url}".indent(4)
+      logger.info('Triggered pipeline', url: trigger.web_url)
 
       wait(trigger.id)
     end
@@ -37,21 +39,22 @@ module ReleaseTools
       max_duration = 3600 * 3 # 3 hours
       start = Time.now.to_i
 
-      $stdout.puts "Waiting on pipeline for #{max_duration} seconds...".indent(4)
+      logger.info("Waiting on pipeline success", id: id, timeout: max_duration)
 
-      loop do
-        if ReleaseTools::TimeUtil.timeout?(start, max_duration)
-          raise "Pipeline timeout after waiting for #{max_duration} seconds."
-        end
+      logger.measure_info('Waiting for pipeline', metric: 'pipeline/waiting') do
+        loop do
+          if ReleaseTools::TimeUtil.timeout?(start, max_duration)
+            raise "Pipeline timeout after waiting for #{max_duration} seconds."
+          end
 
-        case status(id)
-        when 'created', 'pending', 'running'
-          sleep interval
-        when 'success'
-          $stdout.puts "Pipeline succeeded in #{max_duration} seconds."
-          break
-        else
-          raise 'Pipeline did not succeed.'
+          case status(id)
+          when 'created', 'pending', 'running'
+            sleep(interval)
+          when 'success'
+            break
+          else
+            raise 'Pipeline did not succeed.'
+          end
         end
       end
     end
