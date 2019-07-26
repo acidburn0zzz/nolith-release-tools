@@ -24,9 +24,8 @@ module ReleaseTools
         begin
           Release::CNGImageRelease.new(version, options.merge(gitlab_repo_path: repository.path)).execute
         rescue StandardError => ex
-          $stderr.puts "Exception raised during CNG image release."
-          $stderr.puts ex.message
-          $stderr.puts ex.backtrace
+          logger.error('CNG image release failed', error: ex.message)
+          Raven.capture_exception(ex)
         end
       end
 
@@ -39,10 +38,11 @@ module ReleaseTools
       def compile_changelog
         return if version.rc?
 
+        logger.info('Compiling changelog', version: version)
+
         Changelog::Manager.new(repository.path).release(version)
       rescue Changelog::NoChangelogError => ex
-        $stderr.puts "Cannot perform changelog update for #{version} on " \
-          "#{ex.changelog_path}".colorize(:red)
+        logger.error('Changelog update failed', version: version, path: ex.changelog_path)
       end
 
       def tag_next_minor_pre_version

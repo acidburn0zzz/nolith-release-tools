@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Release::HelmGitlabRelease, :silence_stdout do
+describe ReleaseTools::Release::HelmGitlabRelease do
   include RuggedMatchers
 
   let(:repo_path) { File.join('/tmp', HelmReleaseFixture.repository_name) }

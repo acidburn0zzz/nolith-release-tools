@@ -50,7 +50,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe 'initialize', :silence_stdout do
+  describe 'initialize' do
     it 'performs cleanup' do
       expect_any_instance_of(described_class).to receive(:cleanup)
 
@@ -79,7 +79,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#remotes=', :silence_stdout, :aggregate_failures do
+  describe '#remotes=' do
     it 'assigns the canonical remote' do
       remotes = { origin: repo_url }
 
@@ -112,7 +112,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#ensure_branch_exists', :silence_stdout do
+  describe '#ensure_branch_exists' do
     subject { described_class.get(repo_remotes) }
 
     context 'with an existing branch' do
@@ -136,7 +136,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#fetch', :silence_stdout do
+  describe '#fetch' do
     subject { described_class.get(repo_remotes) }
 
     it 'fetches the branch with the default configured global depth' do
@@ -154,7 +154,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#checkout_new_branch', :silence_stdout do
+  describe '#checkout_new_branch' do
     subject { described_class.get(repo_remotes) }
 
     it 'creates and checks out a new branch' do
@@ -172,7 +172,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#create_tag', :silence_stdout do
+  describe '#create_tag' do
     subject { described_class.get(repo_remotes) }
 
     it 'creates the tag in the current branch' do
@@ -195,7 +195,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#write_file', :silence_stdout do
+  describe '#write_file' do
     subject { described_class.get(repo_remotes) }
 
     context 'with an existing file' do
@@ -215,7 +215,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#commit', :silence_stdout, :aggregate_failures do
+  describe '#commit' do
     subject { described_class.get(repo_remotes) }
 
     before do
@@ -282,7 +282,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#merge', :silence_stdout, :aggregate_failures do
+  describe '#merge' do
     subject { described_class.get(repo_remotes, global_depth: 10) }
 
     before do
@@ -303,7 +303,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#tags', :silence_stdout do
+  describe '#tags' do
     subject { described_class.get(repo_remotes) }
 
     it 'calls "git tag --list"' do
@@ -323,7 +323,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#tag_messages', :silence_stdout do
+  describe '#tag_messages' do
     subject { described_class.get(repo_remotes) }
 
     it 'returns hash of tags and messages' do
@@ -334,7 +334,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#status', :silence_stdout do
+  describe '#status' do
     subject { described_class.get(repo_remotes) }
 
     before do
@@ -358,7 +358,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#log', :silence_stdout do
+  describe '#log' do
     subject { described_class.get(repo_remotes, global_depth: 10) }
 
     before do
@@ -424,7 +424,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#head', :silence_stdout do
+  describe '#head' do
     subject { described_class.get(repo_remotes) }
 
     before do
@@ -436,7 +436,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#pull', :silence_stdout do
+  describe '#pull' do
     subject { described_class.get(repo_remotes) }
 
     before do
@@ -456,7 +456,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#pull_from_all_remotes', :silence_stdout do
+  describe '#pull_from_all_remotes' do
     subject { described_class.get(Hash[*repo_remotes.first]) }
 
     context 'when there are conflicts' do
@@ -481,7 +481,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#verify_sync!', :silence_stdout do
+  describe '#verify_sync!' do
     it 'does nothing with only one remote' do
       repo = described_class.get(repo_remotes.slice(:gitlab))
 
@@ -511,7 +511,7 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
-  describe '#cleanup', :silence_stdout do
+  describe '#cleanup' do
     it 'removes the repository path' do
       repository = described_class.new(repo_path, {})
 
