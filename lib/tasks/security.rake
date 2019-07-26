@@ -30,9 +30,8 @@ namespace :security do
   desc 'Prepare for a new security release'
   task :prepare, [:version] => :force_security do |_t, _args|
     issue_task = Rake::Task['security:issue']
-    service = ReleaseTools::Services::SecurityPreparationService.new
 
-    service.next_versions.each do |version|
+    ReleaseTools::Versions.next_security_versions.each do |version|
       issue_task.execute(version: version)
     end
   end

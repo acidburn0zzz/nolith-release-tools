@@ -33,12 +33,14 @@ Dotenv.load
 
 $LOAD_PATH.unshift(__dir__)
 
+# Kind of a God class, so load it first
+require 'release_tools/version'
+
 require 'release_tools/auto_deploy/naming'
 require 'release_tools/auto_deploy/version'
 require 'release_tools/auto_deploy_branch'
 require 'release_tools/branch'
 require 'release_tools/branch_creation'
-require 'release_tools/version'
 require 'release_tools/changelog'
 require 'release_tools/changelog/config'
 require 'release_tools/changelog/entry'
@@ -110,7 +112,6 @@ require 'release_tools/remote_repository'
 require 'release_tools/security_patch_issue'
 require 'release_tools/services/auto_deploy_branch_service'
 require 'release_tools/services/monthly_preparation_service'
-require 'release_tools/services/security_preparation_service'
 require 'release_tools/services/publish_service/base_publish_service'
 require 'release_tools/services/publish_service/cng_publish_service'
 require 'release_tools/services/publish_service/omnibus_publish_service'
@@ -123,13 +124,14 @@ require 'release_tools/slack/tag_notification'
 require 'release_tools/support/tasks_helper'
 require 'release_tools/sync'
 require 'release_tools/time_util'
-require 'release_tools/version_client'
 require 'release_tools/security/client'
 require 'release_tools/security/pipeline'
 require 'release_tools/security/merge_requests_validator'
 require 'release_tools/security/merge_request_validator'
 require 'release_tools/security/merge_requests_merger'
 require 'release_tools/security/merge_result'
+require 'release_tools/version_client'
+require 'release_tools/versions'
 
 unless ENV['TEST']
   require 'sentry-raven'
