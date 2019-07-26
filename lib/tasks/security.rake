@@ -41,6 +41,19 @@ namespace :security do
     Rake::Task['release:qa'].invoke(*args)
   end
 
+  desc "Check a security release's build status"
+  task status: :force_security do
+    status = ReleaseTools::BranchStatus.for_security_release
+
+    status.each_pair do |project, results|
+      results.each do |result|
+        ReleaseTools.logger.info(project, result.to_h)
+      end
+    end
+
+    ReleaseTools::Slack::ChatopsNotification.branch_status(status)
+  end
+
   desc 'Tag a new security release'
   task :tag, [:version] => :force_security do |_t, args|
     $stdout
