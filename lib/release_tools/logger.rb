@@ -8,6 +8,15 @@ module ReleaseTools
   module Logger
     # Remove process info from the default Color formatter
     class NoProcessColorFormatter < SemanticLogger::Formatters::Color
+      # The default warn color is `BOLD`, but `YELLOW` looks better
+      def initialize(**args)
+        args[:color_map] ||= ::SemanticLogger::Formatters::Color::ColorMap.new(
+          warn: ::SemanticLogger::AnsiColors::YELLOW
+        )
+
+        super
+      end
+
       def process_info
         nil
       end
