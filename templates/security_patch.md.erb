@@ -34,8 +34,7 @@
 
 ###  Deploy to Pre for QA testing
 
-- [ ] Notify #production channel about canary deploy.
-- [ ] Deploy `<%= version %>` to the canary VMs on gitlab.com
+- [ ] Deploy `<%= version %>` to preprod
   ```sh
   # In Slack:
   /chatops run deploy <%= version.to_patch %>-ee.0 --pre
