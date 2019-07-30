@@ -101,6 +101,14 @@ module ReleaseTools
       client.commit(project_path(project), ref)
     end
 
+    def self.commit_refs(project, sha, options = {})
+      # NOTE: The GitLab gem doesn't currently support this API
+      # See https://github.com/NARKOZ/gitlab/pull/507
+      path = client.url_encode(project_path(project))
+
+      client.get("/projects/#{path}/repository/commits/#{sha}/refs", query: options)
+    end
+
     def self.create_issue_note(project = Project::GitlabCe, issue:, body:)
       client.create_issue_note(project_path(project), issue.iid, body)
     end
