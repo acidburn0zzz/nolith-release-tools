@@ -49,14 +49,12 @@ module ReleaseTools
 
         status.each_pair do |project, values|
           text = ["*#{project}*"]
+
           text << values.map do |result|
             ":status_#{result.status}: <#{result.web_url}|#{result.ref}>"
           end
 
-          fields << {
-            type: 'mrkdwn',
-            text: text.join("\n")
-          }
+          fields << mrkdwn(text.join("\n"))
         end
 
         blocks = [{ type: 'section', fields: fields }]
