@@ -33,7 +33,6 @@ Dotenv.load
 
 $LOAD_PATH.unshift(__dir__)
 
-# God Objects get loaded first :disappointed:
 require 'release_tools/version'
 require 'release_tools/project/base_project'
 require 'release_tools/project/cng_image'

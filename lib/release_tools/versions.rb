@@ -23,7 +23,10 @@ module ReleaseTools
       end
     end
 
-    # Given an Array of version strings, find the three latest by minor number
+    # Given an Array of version strings, find the `count` latest by minor number
+    #
+    # versions - Array of version strings
+    # count    - Number of versions to return (default: 3)
     #
     # Example:
     #
