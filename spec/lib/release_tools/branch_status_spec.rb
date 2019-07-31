@@ -3,9 +3,10 @@
 require 'spec_helper'
 
 describe ReleaseTools::BranchStatus do
+  let(:versions) { %w[1.1.0 1.2.1 1.3.4] }
+
   describe '.for_security_release' do
     it 'supplies the latest security versions' do
-      versions = %w[1.1.0 1.2.1 1.3.4]
       mapped = versions.map { |v| ReleaseTools::Version.new(v) }
 
       expect(ReleaseTools::Versions).to receive(:next_security_versions)
@@ -17,8 +18,6 @@ describe ReleaseTools::BranchStatus do
   end
 
   describe '.for' do
-    let(:versions) { %w[1.1.0 1.2.1 1.3.4] }
-
     it 'returns a `project => status` Hash' do
       allow(described_class).to receive(:project_pipeline).and_return(true)
 

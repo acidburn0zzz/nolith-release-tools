@@ -5,9 +5,9 @@ module ReleaseTools
     include ::SemanticLogger::Loggable
 
     PROJECTS = [
-      ::ReleaseTools::Project::GitlabEe,
-      ::ReleaseTools::Project::GitlabCe,
-      ::ReleaseTools::Project::OmnibusGitlab
+      Project::GitlabEe,
+      Project::GitlabCe,
+      Project::OmnibusGitlab
     ].freeze
 
     def self.for_security_release
@@ -28,7 +28,7 @@ module ReleaseTools
       end
     end
 
-    def self.project_pipeline(project, version)
+    private_class_method def self.project_pipeline(project, version)
       # For simplicity's sake, Omnibus will only check the EE branch
       ref = version.stable_branch(ee: !project.to_s.include?('ce'))
 
@@ -40,6 +40,5 @@ module ReleaseTools
         per_page: 1
       ).first
     end
-    private_class_method :project_pipeline
   end
 end
