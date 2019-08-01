@@ -35,6 +35,7 @@ module ReleaseTools
 
           triggers = client
             .pipeline_jobs(project, pipeline.id, scope: :manual)
+            .auto_paginate
             .select { |job| play_stages.include?(job.stage) }
 
           if triggers.any?
