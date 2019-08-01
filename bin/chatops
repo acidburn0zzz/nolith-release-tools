@@ -42,6 +42,11 @@ case $1 in
     require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
+  "release:status")
+    require_version
+    # Runnable by any user
+    bundle exec rake "$1[$RELEASE_VERSION]"
+    ;;
   "release:tag")
     require_version
     auth_rake "$1[$RELEASE_VERSION]"
@@ -69,6 +74,11 @@ case $1 in
   "security:qa")
     require_version
     auth_rake "$1[$RELEASE_VERSION]"
+    ;;
+  "security:status")
+    # Explicitly does not require a version
+    # Runnable by any user
+    bundle exec rake "$1"
     ;;
   "security:tag")
     require_version
