@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Release::GitlabCeRelease, :silence_stdout do
+describe ReleaseTools::Release::GitlabCeRelease do
   include RuggedMatchers
 
   # NOTE (rspeicher): There is some "magic" here that can be confusing.

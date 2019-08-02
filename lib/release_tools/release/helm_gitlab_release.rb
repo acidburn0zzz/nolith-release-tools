@@ -26,7 +26,8 @@ module ReleaseTools
       private
 
       def prepare_release
-        $stdout.puts "Prepare repository...".colorize(:green)
+        logger.info("Preparing repository...")
+
         repository.pull_from_all_remotes('master')
         @version ||= version_manager.next_version(gitlab_version)
         repository.ensure_branch_exists(stable_branch)
@@ -65,10 +66,11 @@ module ReleaseTools
         app_version = gitlab_version || version_manager.parse_chart_file.app_version
         return if app_version.rc?
 
+        logger.info('Compiling changelog', version: version)
+
         Changelog::Manager.new(repository.path).release(version)
       rescue Changelog::NoChangelogError => ex
-        $stderr.puts "Cannot perform changelog update for #{version} on " \
-          "#{ex.changelog_path}".colorize(:red)
+        logger.error('Changelog update failed', version: version, path: ex.changelog_path)
       end
 
       def bump_versions
@@ -81,9 +83,13 @@ module ReleaseTools
         args << "--app-version=#{app_version}" if app_version && app_version.valid?
         args << "--gitlab-repo=#{Project::GitlabEe.dev_path}"
 
+        logger.info('Update Chart version', chart_version: chart_version)
         message = ["Update Chart Version to #{chart_version}"]
-        message << "Update Gitlab Version to #{app_version}" if app_version && app_version.valid?
-        $stdout.puts "#{message.join(' ')}...".colorize(:green)
+
+        if app_version && app_version.valid?
+          logger.info('Update GitLab version', app_version: app_version)
+          message << "Update Gitlab Version to #{app_version}"
+        end
 
         run_update_version(args)
 
@@ -105,10 +111,11 @@ module ReleaseTools
 
       def run_update_version(args)
         Dir.chdir(repository.path) do
-          final_args = ['./scripts/manage_version.rb', *args]
-          $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
+          final_args = ['./scripts/manage_version.rb', *args].join(' ')
 
-          cmd_output = `#{final_args.join(' ')} 2>&1`
+          logger.trace(__method__, pwd: Dir.pwd, command: final_args)
+
+          cmd_output = `#{final_args} 2>&1`
 
           raise(StandardError.new(cmd_output)) unless $CHILD_STATUS.success?
         end
@@ -120,10 +127,10 @@ module ReleaseTools
         message = "Update GitLab Version to #{gitlab_version}"
 
         Dir.chdir(repository.path) do
-          final_args = ['./bin/changelog', '-t other', message]
-          $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
+          final_args = ['./bin/changelog', '-t other', message].join(' ')
+          logger.trace(__method__, pwd: Dir.pwd, command: final_args)
 
-          cmd_output = `#{final_args.join(' ')} 2>&1`
+          cmd_output = `#{final_args} 2>&1`
 
           raise(StandardError.new(cmd_output)) unless $CHILD_STATUS.success?
         end

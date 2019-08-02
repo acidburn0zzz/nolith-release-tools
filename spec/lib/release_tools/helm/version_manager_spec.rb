@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Helm::VersionManager, :silence_stdout do
+describe ReleaseTools::Helm::VersionManager do
   include RuggedMatchers
 
   let(:repo_path) { File.join('/tmp', HelmReleaseFixture.repository_name) }

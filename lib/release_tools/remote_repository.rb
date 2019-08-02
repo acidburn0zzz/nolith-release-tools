@@ -2,6 +2,8 @@
 
 module ReleaseTools
   class RemoteRepository
+    include ::SemanticLogger::Loggable
+
     OutOfSyncError = Class.new(StandardError)
 
     class GitCommandError < StandardError
@@ -35,7 +37,8 @@ module ReleaseTools
     attr_reader :path, :remotes, :canonical_remote, :global_depth
 
     def initialize(path, remotes, global_depth: 1)
-      $stdout.puts 'Pushes will be ignored because of TEST env'.colorize(:yellow) if SharedStatus.dry_run?
+      logger.warn("Pushes will be ignored because of TEST env") if SharedStatus.dry_run?
+
       @path = path
       @global_depth = global_depth
 
@@ -205,9 +208,7 @@ module ReleaseTools
       cmd = %W[push #{remote} #{ref}:#{ref}]
 
       if SharedStatus.dry_run?
-        $stdout.puts
-        $stdout.puts 'The following command will not be actually run, because of TEST env:'.colorize(:yellow)
-        $stdout.puts "[#{Time.now}] --| git #{cmd.join(' ')}".colorize(:yellow)
+        logger.trace(__method__, remote: remote, ref: ref)
 
         true
       else
@@ -223,15 +224,17 @@ module ReleaseTools
     end
 
     def cleanup
-      $stdout.puts "Removing #{path}...".colorize(:green) if Dir.exist?(path)
+      logger.trace(__method__, path: path) if Dir.exist?(path)
+
       FileUtils.rm_rf(path, secure: true)
     end
 
     def self.run_git(args)
-      final_args = ['git', *args]
-      $stdout.puts "[#{Time.now}] [#{Dir.pwd}] #{final_args.join(' ')}".colorize(:cyan)
+      final_args = ['git', *args].join(' ')
 
-      cmd_output = `#{final_args.join(' ')} 2>&1`
+      logger.trace(__method__, command: final_args)
+
+      cmd_output = `#{final_args} 2>&1`
 
       [cmd_output, $CHILD_STATUS]
     end

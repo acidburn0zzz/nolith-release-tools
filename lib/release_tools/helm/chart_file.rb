@@ -3,16 +3,18 @@
 module ReleaseTools
   module Helm
     class ChartFile
+      include ::SemanticLogger::Loggable
+
       attr_reader :metadata
 
       def initialize(filepath)
         unless filepath && File.exist?(filepath)
-          $stderr.puts "Chart file must exist"
+          logger.fatal('Chart file must exist', path: filepath)
           exit 1
         end
         @filepath = filepath
 
-        $stdout.puts "Reading #{@filepath}"
+        logger.info('Reading chart file', path: @filepath)
         @metadata = YAML.safe_load(File.read(@filepath))
       end
 
@@ -32,7 +34,7 @@ module ReleaseTools
         @metadata['version'] = chart_version.to_s if chart_version
         @metadata['appVersion'] = app_version.to_s if app_version
 
-        $stdout.puts "Updating #{@filepath}"
+        logger.info('Updating chart file', path: @filepath)
         File.write(@filepath, YAML.dump(@metadata))
       end
     end

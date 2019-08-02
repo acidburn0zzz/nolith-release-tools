@@ -5,6 +5,8 @@ module ReleaseTools
     class BaseRelease
       extend Forwardable
 
+      include ::SemanticLogger::Loggable
+
       attr_reader :version, :options
 
       def_delegator :version, :tag
@@ -35,7 +37,8 @@ module ReleaseTools
       end
 
       def prepare_release
-        $stdout.puts "Prepare repository...".colorize(:green)
+        logger.info("Preparing repository...")
+
         repository.pull_from_all_remotes('master')
         repository.ensure_branch_exists(stable_branch)
         repository.pull_from_all_remotes(stable_branch)
@@ -48,7 +51,7 @@ module ReleaseTools
 
       def execute_release
         if repository.tags.include?(tag)
-          $stdout.puts "#{tag} already exists... Skipping...".colorize(:yellow)
+          logger.warn('Tag already exists, skipping', tag: tag)
           return
         end
 
@@ -87,18 +90,21 @@ module ReleaseTools
         file = File.join(repository.path, file_name)
         return if File.read(file).chomp == version
 
-        $stdout.puts "Update #{file_name} to #{version}...".colorize(:green)
+        logger.info('Bumping version', file_name: file_name, version: version)
+
         repository.write_file(file_name, "#{version}\n")
         repository.commit(file_name, message: "Update #{file_name} to #{version}")
       end
 
       def create_tag(tag, message: nil)
-        $stdout.puts "Create git tag #{tag}...".colorize(:green)
+        logger.info('Creating tag', tag: tag)
+
         repository.create_tag(tag, message: message)
       end
 
-      def push_ref(ref_type, ref)
-        $stdout.puts "Push #{ref_type} #{ref} to all remotes...".colorize(:green)
+      def push_ref(_ref_type, ref)
+        logger.info('Pushing ref to all remotes', ref: ref)
+
         repository.push_to_all_remotes(ref)
       end
     end

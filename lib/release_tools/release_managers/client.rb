@@ -3,6 +3,8 @@
 module ReleaseTools
   module ReleaseManagers
     class Client
+      include ::SemanticLogger::Loggable
+
       SyncError = Class.new(StandardError)
       UserNotFoundError = Class.new(SyncError)
       UnauthorizedError = Class.new(SyncError)
@@ -50,7 +52,7 @@ module ReleaseTools
       end
 
       def sync_membership(usernames)
-        $stdout.puts "--> Syncing #{target}"
+        logger.info('Syncing membership', target: target)
 
         usernames.map!(&:downcase)
         existing = members.collect(&:username).map(&:downcase)
@@ -86,7 +88,7 @@ module ReleaseTools
       def add_member(username)
         user = get_user(username)
 
-        $stdout.puts "    Adding #{user.username} to #{group}"
+        logger.info('Adding user to group', user: user.username, group: group)
         client.add_group_member(group, user.id, MASTER_ACCESS)
       rescue Gitlab::Error::Conflict => ex
         raise SyncError.new(ex) unless ex.message =~ /Member already exists/
@@ -98,7 +100,7 @@ module ReleaseTools
       def remove_member(username)
         user = get_user(username)
 
-        $stdout.puts "    Removing #{username} from #{group}"
+        logger.info('Removing user from group', user: username, group: group)
         client.remove_group_member(group, user.id)
       end
 

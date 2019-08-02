@@ -14,7 +14,7 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     allow(service).to receive(:gitlab_ops_client).and_return(internal_client_ops)
   end
 
-  describe '#create_branches!', :silence_stdout do
+  describe '#create_branches!' do
     it 'creates auto-deploy branches' do
       branch_name = 'branch-name'
 

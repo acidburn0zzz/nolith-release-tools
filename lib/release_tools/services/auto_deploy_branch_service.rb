@@ -3,6 +3,7 @@
 module ReleaseTools
   module Services
     class AutoDeployBranchService
+      include ::SemanticLogger::Loggable
       include BranchCreation
 
       CI_VAR_AUTO_DEPLOY = 'AUTO_DEPLOY_BRANCH'

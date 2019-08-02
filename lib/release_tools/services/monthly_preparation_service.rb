@@ -3,6 +3,7 @@
 module ReleaseTools
   module Services
     class MonthlyPreparationService
+      include ::SemanticLogger::Loggable
       include BranchCreation
 
       def initialize(version)
@@ -10,7 +11,7 @@ module ReleaseTools
       end
 
       def create_label
-        $stdout.puts "Creating `#{PickIntoLabel.for(@version)}` label"
+        logger.info("Creating monthly Pick label", label: PickIntoLabel.for(@version))
 
         return if dry_run?
 

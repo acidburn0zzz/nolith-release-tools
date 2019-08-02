@@ -29,10 +29,11 @@ module ReleaseTools
       def compile_changelog
         return if version.rc? || version.ee?
 
+        logger.info('Compiling changelog', version: version)
+
         ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md').release(version)
       rescue ReleaseTools::Changelog::NoChangelogError => ex
-        $stderr.puts "Cannot perform changelog update for #{version} on " \
-          "#{ex.changelog_path}".colorize(:red)
+        logger.error('Changelog update failed', version: version, path: ex.changelog_path)
       end
 
       def remotes
