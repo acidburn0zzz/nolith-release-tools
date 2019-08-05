@@ -11,7 +11,7 @@
      Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
      ```
 - [ ] Determine latest day of the month where we'd create the stable branch: __________________
-  - This will be known as the freeze date
+  - This will be known as the [freeze date]
 
 ## Monitor
 
@@ -22,11 +22,11 @@
 
 ## Release Candidate
 
-- Follow instructions in the release candidate issue on the aforementioned freeze date
+- Follow instructions in the release candidate issue on the aforementioned [freeze date]
 
 Keep in mind that:
 
-1. After the freeze date only regression, security, and documentation fixes should be
+1. After the [freeze date] only regression, security, and documentation fixes should be
    cherry-picked into stable branches.
 2. The final RC should point to the same commit as the final release.
 
@@ -59,14 +59,11 @@ No new code can be added to the release that was not included in the final RC.
     ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
 - Before 12:00 UTC:
-  - [ ] [Deploy] `<%= version.to_patch %>` to the canary VMs on gitlab.com
+  - [ ] [Deploy] `<%= version.to_patch %>` to the preprod VMs
     ```sh
     # In Slack:
-    /chatops run deploy <%= version.to_patch %>-ee.0 --production --canary
+    /chatops run deploy <%= version.to_patch %>-ee.0 --pre
     ```
-  - [ ] Confirm that there are no errors on canary
-    - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
-    - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
 
 - At 13:30 UTC:
   - [ ] Publish the packages via ChatOps:
@@ -94,10 +91,10 @@ No new code can be added to the release that was not included in the final RC.
 [EE stable branch]: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 [Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[announce the deployment]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md
 [Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [getting help]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/monthly.md#getting-help
+[freeze date]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/faq.md#feature-freeze-date
 [#release-post channel]: https://gitlab.slack.com/messages/C3TRESYPJ
 
 /milestone %"<%= version.to_minor %>"
