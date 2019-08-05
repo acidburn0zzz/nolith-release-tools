@@ -107,6 +107,21 @@ namespace :release do
     end
   end
 
+  desc "Check a release's build status"
+  task :status, [:version] do |_t, args|
+    version = get_version(args)
+
+    status = ReleaseTools::BranchStatus.for([version])
+
+    status.each_pair do |project, results|
+      results.each do |result|
+        ReleaseTools.logger.info(project, result.to_h)
+      end
+    end
+
+    ReleaseTools::Slack::ChatopsNotification.branch_status(status)
+  end
+
   desc 'Tag a new release'
   task :tag, [:version] do |_t, args|
     version = get_version(args)

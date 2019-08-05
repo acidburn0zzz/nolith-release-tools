@@ -30,9 +30,8 @@ namespace :security do
   desc 'Prepare for a new security release'
   task :prepare, [:version] => :force_security do |_t, _args|
     issue_task = Rake::Task['security:issue']
-    service = ReleaseTools::Services::SecurityPreparationService.new
 
-    service.next_versions.each do |version|
+    ReleaseTools::Versions.next_security_versions.each do |version|
       issue_task.execute(version: version)
     end
   end
@@ -40,6 +39,19 @@ namespace :security do
   desc 'Create a security QA issue'
   task :qa, [:from, :to] => :force_security do |_t, args|
     Rake::Task['release:qa'].invoke(*args)
+  end
+
+  desc "Check a security release's build status"
+  task status: :force_security do
+    status = ReleaseTools::BranchStatus.for_security_release
+
+    status.each_pair do |project, results|
+      results.each do |result|
+        ReleaseTools.logger.info(project, result.to_h)
+      end
+    end
+
+    ReleaseTools::Slack::ChatopsNotification.branch_status(status)
   end
 
   desc 'Tag a new security release'

@@ -41,6 +41,26 @@ module ReleaseTools
           attachments: result.slack_attachments
         )
       end
+
+      def self.branch_status(status)
+        return unless status.any?
+
+        fields = []
+
+        status.each_pair do |project, values|
+          text = ["*#{project}*"]
+
+          text << values.map do |result|
+            ":status_#{result.status}: <#{result.web_url}|#{result.ref}>"
+          end
+
+          fields << mrkdwn(text.join("\n"))
+        end
+
+        blocks = [{ type: 'section', fields: fields }]
+
+        fire_hook(channel: channel, blocks: blocks)
+      end
     end
   end
 end

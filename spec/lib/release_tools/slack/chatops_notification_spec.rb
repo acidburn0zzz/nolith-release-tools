@@ -107,4 +107,21 @@ describe ReleaseTools::Slack::ChatopsNotification do
       described_class.merged_security_merge_requests(result)
     end
   end
+
+  describe '.branch_status' do
+    it 'posts a block-based message' do
+      project = double(to_s: 'foo/bar')
+      result = double(status: 'success', web_url: 'https://example.com', ref: 'abcdefg')
+
+      expect(described_class)
+        .to receive(:fire_hook)
+        .with(a_hash_including(blocks: [
+          type: 'section', fields: [
+            { type: 'mrkdwn', text: "*foo/bar*\n:status_success: <https://example.com|abcdefg>" }
+          ]
+        ]))
+
+      described_class.branch_status(project => [result])
+    end
+  end
 end
