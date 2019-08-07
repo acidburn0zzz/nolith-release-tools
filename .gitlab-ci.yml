@@ -32,6 +32,8 @@ include:
 
 sast:
   <<: *except-automation
+  variables:
+    SAST_EXCLUDED_PATHS: 'vendor/**'
 
 code_quality:
   <<: *except-automation
