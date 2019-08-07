@@ -27,6 +27,12 @@ cache: &global-cache
 include:
   - template: Code-Quality.gitlab-ci.yml
   - template: Dependency-Scanning.gitlab-ci.yml
+  - template: SAST.gitlab-ci.yml
+
+sast:
+  <<: *except-automation
+  variables:
+    SAST_EXCLUDED_PATHS: 'vendor/**'
 
 code_quality:
   <<: *except-automation
