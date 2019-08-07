@@ -1,6 +1,5 @@
 image: "dev.gitlab.org:5005/gitlab/gitlab-build-images:release-tools"
 
-
 stages:
   - test
   - deploy
