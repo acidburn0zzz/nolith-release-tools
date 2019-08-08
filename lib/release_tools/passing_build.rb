@@ -105,7 +105,7 @@ module ReleaseTools
           ReleaseTools::GitlabClient
         end
 
-      client.create_tag(project, name, commit.id, message)
+      client.create_tag(client.project_path(project), name, commit.id, message)
     end
 
     def tag_deployer(name, message, ref)

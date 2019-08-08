@@ -170,7 +170,7 @@ describe ReleaseTools::PassingBuild do
       expect(fake_client)
         .to have_received(:create_tag)
         .with(
-          ReleaseTools::Project::OmnibusGitlab,
+          fake_client.project_path(project),
           tag_name,
           fake_commit.id,
           "Auto-deploy tag-name\n\nVERSION: 1.2.3"
