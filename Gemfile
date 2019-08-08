@@ -7,12 +7,13 @@ gem 'colorize'
 gem 'dotenv', '~> 2.2.0'
 gem 'gitlab', '~> 4.11'
 gem 'http', '~> 4.1.0'
+gem 'parallel', '~> 1.14'
 gem 'rake'
 gem 'rugged', '~> 0.28'
 gem 'semantic_logger', '~> 4.5.0'
 gem 'sentry-raven', '~> 2.9', require: false
+gem 'unleash', '~> 0.1.5'
 gem 'version_sorter', '~> 2.2.0'
-gem 'parallel', '~> 1.14'
 
 group :development, :test do
   gem 'byebug'

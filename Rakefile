@@ -6,8 +6,15 @@ require_relative 'lib/release_tools/support/tasks_helper'
 Dir.glob('lib/tasks/*.rake').each { |task| import(task) }
 
 namespace :auto_deploy do
+  task :check_enabled do
+    if ReleaseTools::Feature.disabled?(:auto_deploy)
+      ReleaseTools.logger.fatal("The `auto_deploy` feature flag is currently disabled.")
+      exit
+    end
+  end
+
   desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab-ee and omnibus-gitlab"
-  task :prepare do
+  task prepare: :check_enabled do
     results = ReleaseTools::Services::AutoDeployBranchService
       .new(ReleaseTools::AutoDeploy::Naming.branch)
       .create_branches!
@@ -29,7 +36,7 @@ namespace :auto_deploy do
   end
 
   desc 'Pick commits into the auto deploy branches'
-  task :pick do
+  task pick: :check_enabled do
     auto_deploy_branch = ENV.fetch('AUTO_DEPLOY_BRANCH') do |name|
       abort("`#{name}` must be set for this rake task".colorize(:red))
     end
@@ -60,6 +67,11 @@ namespace :auto_deploy do
 
       $stdout.puts pipeline.web_url.indent(4)
     end
+  end
+
+  desc "Tag the auto-deploy branches from the latest passing builds"
+  task tag: :check_enabled do
+    Rake::Task['passing_build:ee'].invoke(ENV['AUTO_DEPLOY_BRANCH'], true)
   end
 end
 

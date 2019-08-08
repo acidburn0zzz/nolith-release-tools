@@ -156,7 +156,7 @@ auto-deploy:trigger:
   <<: *with-bundle
   stage: automation
   script:
-    - bundle exec rake "passing_build:ee[$AUTO_DEPLOY_BRANCH,true]"
+    - bundle exec rake 'auto_deploy:tag'
   only:
     variables:
       - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
