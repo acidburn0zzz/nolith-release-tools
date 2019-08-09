@@ -126,16 +126,6 @@ namespace :release do
   task :tag, [:version] do |_t, args|
     version = get_version(args)
 
-    if skip?('ee')
-      $stdout.puts 'Skipping release for EE'.colorize(:red)
-    else
-      ee_version = version.to_ee
-
-      $stdout.puts 'EE release'.colorize(:blue)
-      ReleaseTools::Release::GitlabEeRelease.new(ee_version).execute
-      ReleaseTools::Slack::TagNotification.release(ee_version) unless dry_run?
-    end
-
     if skip?('ce')
       $stdout.puts 'Skipping release for CE'.colorize(:red)
     else
@@ -144,6 +134,16 @@ namespace :release do
       $stdout.puts 'CE release'.colorize(:blue)
       ReleaseTools::Release::GitlabCeRelease.new(ce_version).execute
       ReleaseTools::Slack::TagNotification.release(ce_version) unless dry_run?
+    end
+
+    if skip?('ee')
+      $stdout.puts 'Skipping release for EE'.colorize(:red)
+    else
+      ee_version = version.to_ee
+
+      $stdout.puts 'EE release'.colorize(:blue)
+      ReleaseTools::Release::GitlabEeRelease.new(ee_version).execute
+      ReleaseTools::Slack::TagNotification.release(ee_version) unless dry_run?
     end
   end
 
