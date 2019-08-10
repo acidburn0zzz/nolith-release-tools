@@ -82,4 +82,16 @@ describe ReleaseTools::OmnibusGitlabVersion do
       expect(version.to_ee.to_s).to eq '1.2.3+rc1.ee.0'
     end
   end
+
+  describe '#stable_branch' do
+    it 'returns separate branch for EE versions before single branch switch' do
+      version = version('12.1.5+ee.0')
+      expect(version.stable_branch).to eq('12-1-stable-ee')
+    end
+
+    it 'returns same branch for EE versions after single branch switch' do
+      version = version('12.3.5+ee.0')
+      expect(version.stable_branch).to eq('12-3-stable')
+    end
+  end
 end
