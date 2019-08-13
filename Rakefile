@@ -59,8 +59,8 @@ namespace :auto_deploy do
         ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
         'master',
         {
-          CE_BRANCH: auto_deploy_branch,
-          EE_BRANCH: auto_deploy_branch,
+          SOURCE_BRANCH: auto_deploy_branch,
+          TARGET_BRANCH: auto_deploy_branch,
           MERGE_MANUAL: '1'
         }
       )

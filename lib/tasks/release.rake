@@ -50,8 +50,8 @@ namespace :release do
         ReleaseTools::Project::MergeTrain,
         ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
         'master',
-        CE_BRANCH: ce_target.source_branch,
-        EE_BRANCH: ee_target.source_branch,
+        SOURCE_BRANCH: ce_target.source_branch,
+        TARGET_BRANCH: ee_target.source_branch,
         MERGE_MANUAL: '1'
       )
 
