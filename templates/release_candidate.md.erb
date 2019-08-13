@@ -49,14 +49,13 @@
   ```
 - [ ] Verify that packages appear on [`packages.gitlab.com`](https://packages.gitlab.com/gitlab/unstable)
 - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
-- [ ] Post a [tweet about] the `<%= version %>` release in the `#releases` channel:
+- [ ] In the `#releases` channel, mention `@contentteam` to tweet about the new release:
 
    ```
-   !tweet "GitLab <%= version %> is available: https://packages.gitlab.com/gitlab/unstable
+   "GitLab <%= version %> is available: https://packages.gitlab.com/gitlab/unstable
    This is a release candidate, we'll release <%= version.to_minor %> on the 22nd of this month."
    ```
 
-[tweet about]: https://gitlab.com/gitlab-org/takeoff#announce-that-the-deploy-is-done
 [Preparation MRs]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md
 [remaining merge requests]: https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests?scope=all&utf8=%E2%9C%93&state=merged&label_name[]=Pick%20into%20<%= version.to_minor %>
 [Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
