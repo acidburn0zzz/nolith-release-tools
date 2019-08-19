@@ -107,12 +107,12 @@ namespace :release do
   end
 
   desc 'Create stable branches for a new release'
-  task :stable_branch, [:version] do |_t, args|
+  task :stable_branch, [:version, :source] do |_t, args|
     version = get_version(args)
     return unless version.monthly?
 
     service = ReleaseTools::Services::MonthlyPreparationService.new(version)
-    service.create_stable_branches
+    service.create_stable_branches(source)
   end
 
   desc "Check a release's build status"

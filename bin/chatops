@@ -42,6 +42,10 @@ case $1 in
     require_version
     auth_rake "$1[$RELEASE_VERSION]"
     ;;
+  "release:stable_branch")
+    require_version
+    auth_rake "$1[$RELEASE_VERSION,$SOURCE_OF_STABLE_BRANCH]"
+    ;;
   "release:status")
     require_version
     # Runnable by any user
