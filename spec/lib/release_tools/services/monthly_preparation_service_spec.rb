@@ -87,8 +87,6 @@ describe ReleaseTools::Services::MonthlyPreparationService do
       end
 
       expect(internal_client).to have_received(:create_branch)
-        .with('12-1-stable-ee', 'master', ReleaseTools::Project::OmnibusGitlab)
-      expect(internal_client).to have_received(:create_branch)
         .with('12-1-stable', 'master', ReleaseTools::Project::OmnibusGitlab)
     end
 
