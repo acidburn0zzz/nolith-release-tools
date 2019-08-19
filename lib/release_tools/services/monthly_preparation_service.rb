@@ -26,7 +26,6 @@ module ReleaseTools
 
         create_branch_from_ref(Project::GitlabEe, ee_branch, 'master')
         create_branch_from_ref(Project::GitlabCe, ce_branch, 'master')
-        create_branch_from_ref(Project::OmnibusGitlab, ee_branch, 'master')
         create_branch_from_ref(Project::OmnibusGitlab, ce_branch, 'master')
         create_branch_from_ref(Project::CNGImage, ce_branch, 'master')
         create_branch_from_ref(Project::CNGImage, ee_branch, 'master')
