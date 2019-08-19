@@ -69,7 +69,6 @@ namespace :release do
       service = ReleaseTools::Services::MonthlyPreparationService.new(version)
 
       service.create_label
-      service.create_stable_branches
     else
       # Create preparation MR for CE
       version = version.to_ce
