@@ -2,10 +2,6 @@
 
 module ReleaseTools
   class PatchIssue < Issue
-    def omnibus_version
-      @omnibus_version ||= ReleaseTools::OmnibusGitlabVersion.new(version.to_omnibus(ee: version.ee?))
-    end
-
     def title
       "Release #{version.to_ce}"
     end
