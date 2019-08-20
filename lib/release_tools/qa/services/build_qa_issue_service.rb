@@ -62,26 +62,8 @@ module ReleaseTools
           ReleaseTools::GitlabClient.pipeline_job_by_name(Project::GitlabProvisioner, pipeline.id, 'gitlab-qa')
         end
 
-        def changesets
-          @changesets ||= projects.map do |project|
-            ReleaseTools::Qa::ProjectChangeset.new(
-              project: project,
-              from: from.for_project(project),
-              to: to.for_project(project),
-              default_client: default_client
-            )
-          end
-        end
-
         def merge_requests
-          merge_requests = changesets
-            .map(&:merge_requests)
-            .flatten
-            .uniq(&:id)
-
-          ReleaseTools::Qa::IssuableOmitterByLabels
-            .new(merge_requests)
-            .execute
+          MergeRequests.new(projects: projects, from: from, to: to).to_a
         end
 
         private
@@ -91,14 +73,6 @@ module ReleaseTools
             ReleaseTools::Qa::SecurityIssue
           else
             ReleaseTools::Qa::Issue
-          end
-        end
-
-        def default_client
-          if ReleaseTools::SharedStatus.security_release?
-            ReleaseTools::GitlabDevClient
-          else
-            ReleaseTools::GitlabClient
           end
         end
       end
