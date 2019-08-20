@@ -6,9 +6,9 @@ describe ReleaseTools::Security::MergeRequestsMerger do
   describe '#execute' do
     it 'merges valid merge requests' do
       merger = described_class.new
-      mr1 = double(:merge_request, target_branch: 'foo')
-      mr2 = double(:merge_request, target_branch: 'bar')
-      mr3 = double(:merge_request, target_branch: 'invalid')
+      mr1 = double(:merge_request, target_branch: 'foo', web_url: 'example.com')
+      mr2 = double(:merge_request, target_branch: 'bar', web_url: 'example.com')
+      mr3 = double(:merge_request, target_branch: 'invalid', web_url: 'example.com')
       result = double(:result)
 
       allow(merger)
@@ -34,7 +34,9 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         .to receive(:merged_security_merge_requests)
         .with(result)
 
-      merger.execute
+      without_dry_run do
+        merger.execute
+      end
     end
   end
 
@@ -79,7 +81,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
   describe '#merge' do
     it 'returns true when the merge request is merged' do
-      mr = double(:merge_request, project_id: 1, iid: 2)
+      mr = double(:merge_request, project_id: 1, iid: 2, web_url: 'example.com')
       merger = described_class.new
       response = double(:response, merge_commit_sha: '123')
 
@@ -88,11 +90,13 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         .with(1, 2)
         .and_return(response)
 
-      expect(merger.merge(mr)).to eq(true)
+      without_dry_run do
+        expect(merger.merge(mr)).to eq(true)
+      end
     end
 
     it 'reassigns the MR when the merge commit SHA is empty' do
-      mr = double(:merge_request, project_id: 1, iid: 2)
+      mr = double(:merge_request, project_id: 1, iid: 2, web_url: 'example.com')
       merger = described_class.new
       response = double(:response, merge_commit_sha: nil)
 
@@ -105,11 +109,13 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         .to receive(:reassign_merge_request)
         .with(mr)
 
-      expect(merger.merge(mr)).to eq(false)
+      without_dry_run do
+        expect(merger.merge(mr)).to eq(false)
+      end
     end
 
     it 'reassigns the MR when the merge commit SHA is missing' do
-      mr = double(:merge_request, project_id: 1, iid: 2)
+      mr = double(:merge_request, project_id: 1, iid: 2, web_url: 'example.com')
       merger = described_class.new
 
       allow(merger.client)
@@ -121,7 +127,9 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         .to receive(:reassign_merge_request)
         .with(mr)
 
-      expect(merger.merge(mr)).to eq(false)
+      without_dry_run do
+        expect(merger.merge(mr)).to eq(false)
+      end
     end
   end
 
@@ -132,7 +140,8 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         :merge_request,
         project_id: 1,
         iid: 2,
-        author: double(:author, id: 3, username: 'alice')
+        author: double(:author, id: 3, username: 'alice'),
+        web_url: 'example.com'
       )
 
       allow(merger.client)

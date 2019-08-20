@@ -4,6 +4,8 @@ module ReleaseTools
   module Security
     # Validating of multiple security merge requests across different projects.
     class MergeRequestsValidator
+      include ::SemanticLogger::Loggable
+
       PROJECTS_TO_VERIFY = %w[
         gitlab/gitlabhq
         gitlab/gitlab-ee
@@ -63,6 +65,8 @@ module ReleaseTools
         invalid = []
 
         PROJECTS_TO_VERIFY.each do |project|
+          logger.info('Verifying security MRs', project: project.to_s)
+
           merge_requests = @client.open_security_merge_requests(project)
 
           validated = Parallel
@@ -84,6 +88,8 @@ module ReleaseTools
 
       # @param [Gitlab::ObjectifiedHash] basic_mr
       def verify_merge_request(basic_mr)
+        logger.info(__method__, merge_request: basic_mr.web_url)
+
         # Merge requests retrieved using the MR list API do not include all data
         # we need, such as pipeline details. To work around this we must perform
         # an additional request for every merge request to get this data.
@@ -104,6 +110,10 @@ module ReleaseTools
       # @param [Gitlab::ObjectifiedHash] mr
       # @param [Array<String>] errors
       def reassign_with_errors(mr, errors)
+        logger.debug(__method__, merge_request: mr.web_url, errors: errors.count)
+
+        return if SharedStatus.dry_run?
+
         project_id = mr.project_id
         iid = mr.iid
 

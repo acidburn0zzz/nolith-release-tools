@@ -4,6 +4,8 @@ module ReleaseTools
   module Security
     # Merging of valid security merge requests across different projects.
     class MergeRequestsMerger
+      include ::SemanticLogger::Loggable
+
       attr_reader :client
 
       ERROR_TEMPLATE = <<~ERROR.strip
@@ -43,6 +45,8 @@ module ReleaseTools
           end
         end
 
+        return if SharedStatus.dry_run?
+
         merge_result = MergeResult
           .from_array(valid: tuples.flatten(1), invalid: invalid)
 
@@ -64,6 +68,10 @@ module ReleaseTools
 
       # @param [Gitlab::ObjectifiedHash] mr
       def merge(mr)
+        logger.debug(__method__, merge_request: mr.web_url)
+
+        return if SharedStatus.dry_run?
+
         merged_mr = client.accept_merge_request(mr.project_id, mr.iid)
 
         if merged_mr.respond_to?(:merge_commit_sha) && merged_mr.merge_commit_sha
