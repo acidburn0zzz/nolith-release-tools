@@ -226,8 +226,9 @@ This task will:
 
 1. Create the `X-Y-stable` branch off the current `master` using the
    `version` argument, if the branch doesn't yet exist.
-1. Runs the `bump_version` script in the `charts/gitlab` repo; passing the
-   `version`, and `gitlab_version` (if provided) for the branches above.
+1. Runs the `bump_version` script in the `gitlab-org/charts/gitlab` repo;
+   passing the `version`, and `gitlab_version` (if provided) for the branches
+   above.
 1. Create the `v[version]` tag, pointing to the respective branch created above.
    But only if the `gitlab_version` is not an RC. (we currently don't tag RC charts)  
 1. Push all newly-created branches and tags to all remotes.
@@ -237,7 +238,7 @@ This task will:
 1. Pushes the master branch to all remotes.
 
 Details on the chart version scheme can be found
-in the `charts/gitlab` repo's [release documentation](https://gitlab.com/charts/gitlab/blob/master/doc/development/release.md)
+in the `gitlab-org/charts/gitlab` repo's [release documentation](https://gitlab.com/gitlab-org/charts/gitlab/blob/master/doc/development/release.md)
 
 ### Arguments
 
