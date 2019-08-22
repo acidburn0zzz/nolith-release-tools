@@ -66,14 +66,15 @@ No new code can be added to the release that was not included in the final RC.
     ```
 
 - At 13:30 UTC:
+  - :warning: **Make sure that neither packages nor the blog post get published earlier than 13:30UTC
+    without approval by the
+    [messaging lead](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)
+    of the release post. Mind that you don't need their approval if you're on time** :warning:
   - [ ] Publish the packages via ChatOps:
     ```
     # In Slack:
     /chatops run publish <%= version.to_patch %>
     ```
-  - Make sure that neither packages nor the blog post get published earlier than
-  planned without approval by the [messaging lead](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)
-  of the release post. Mind that you don't need their approval if you're on time
   - If anything goes wrong and the release is delayed, ping the
   [release post manager](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)
   on Slack to make them aware of the issue. Cross-post the slack message to the #marketing channel to notify them too
