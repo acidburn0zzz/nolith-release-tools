@@ -93,6 +93,9 @@ module ReleaseTools
           intervention.  Please create a new MR targeting the source branch
           of #{target.pick_destination}, and assign to release managers.
 
+          Once that new MR is merged, please remove #{PickIntoLabel.reference(version)}
+          from this merge request.
+
         MSG
 
         create_merge_request_comment(pick_result.merge_request, comment)
