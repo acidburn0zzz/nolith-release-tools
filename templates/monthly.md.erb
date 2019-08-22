@@ -59,11 +59,12 @@ No new code can be added to the release that was not included in the final RC.
     ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
 - Before 12:00 UTC:
-  - [ ] [Deploy] `<%= version.to_patch %>` to the preprod VMs
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version.to_patch %>-ee.0 --pre
-    ```
+  - [ ] Ensure that `<%= version.to_patch %>` is deployed to the preprod environment - https://pre.gitlab.com/help
+    - If not, deploy manually with the following ChatOps command:
+      ```sh
+      # In Slack:
+      /chatops run deploy <%= version.to_patch %>-ee.0 --pre
+      ```
 
 - At 13:30 UTC:
   - [ ] Publish the packages via ChatOps:
