@@ -12,7 +12,7 @@ describe ReleaseTools::Qa::Issue do
       "author" => double("username" => "author"),
       "assignee" => double("username" => "assignee"),
       "labels" => [
-        "Platform",
+        "devops::create",
         "bug",
         "import",
         "project export",
@@ -62,7 +62,7 @@ describe ReleaseTools::Qa::Issue do
       end
 
       it "includes the Team label title" do
-        expect(content).to include('### Platform')
+        expect(content).to include('### devops::create')
       end
 
       it "includes the MR information" do

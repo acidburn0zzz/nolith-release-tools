@@ -4,11 +4,11 @@ require 'spec_helper'
 
 describe ReleaseTools::Qa::IssuableOmitterByLabels do
   let(:permitted) do
-    double("permitted mr", labels: %w[Create Documentation bug])
+    double("permitted mr", labels: %w[devops::create Documentation bug])
   end
 
   let(:unpermitted) do
-    double("unpermitted mr", labels: %w[Plan Quality])
+    double("unpermitted mr", labels: %w[devops::plan Quality])
   end
 
   let(:permitted_but_no_team_labels) do
