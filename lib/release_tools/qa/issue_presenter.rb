@@ -53,6 +53,12 @@ module ReleaseTools
           If the deadline has passed, please perform your task as soon as possible anyway (during your normal work hours). It's important that the testing is
           performed, even if deployment has proceeded to a later stage.
 
+          ## Testing changes requiring admin or console access
+
+          If testing changes requires admin or console access which you might be lacking on [staging.gitlab.com](https://staging.gitlab.com),
+          create a virtual machine locally or using one of the cloud service providers, and install the latest nightly
+          package from [packages.gitlab.com/gitlab/nightly-builds](https://packages.gitlab.com/gitlab/nightly-builds).
+
           ## Testing CE only changes
 
           When testing changes in CE specifically, use [dev.gitlab.org](https://dev.gitlab.org) as it is running a nightly version of GitLab CE.  If it is determined
