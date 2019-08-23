@@ -47,8 +47,7 @@ No new code can be added to the release that was not included in the final RC.
 - At 08:00 UTC, final release is ready for tagging (Including changes at this stage requires signoff from the [VP of Engineering][getting help]):
   - [ ] Ensure tests are green on [CE stable branch]
   - [ ] Ensure tests are green on [EE stable branch]
-  - [ ] Ensure tests are green on [Omnibus CE stable branch]
-  - [ ] Ensure tests are green on [Omnibus EE stable branch]
+  - [ ] Ensure tests are green on [Omnibus]
   - [ ] Ensure master and stable branches are synced
 
 - Before 10:00 UTC:
@@ -89,8 +88,7 @@ No new code can be added to the release that was not included in the final RC.
 
 [CE stable branch]: https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
 [EE stable branch]: https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-[Omnibus CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
-[Omnibus EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
+[Omnibus]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
 [Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [getting help]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/monthly.md#getting-help

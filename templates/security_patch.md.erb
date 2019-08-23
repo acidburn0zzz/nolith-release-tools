@@ -17,7 +17,6 @@
 ## Packaging
 
 - [ ] **Push `omnibus-gitlab/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
-- [ ] **Push `omnibus-gitlab/<%= version.stable_branch(ee: true) %>` to `dev` only: `git push dev <%= version.stable_branch(ee: true) %>`**
 - [ ] Ping the Security Engineers so they can get started with the blog post. The blog post should also be done on https://dev.gitlab.org/ in a **private snippet**: BLOG_POST_SNIPPET
 
 - [ ] Ensure [tests are green on CE]
@@ -73,7 +72,7 @@ is manually generated, you can do so as follows:
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
 - [ ] Push `ce/<%= version.stable_branch %>` to all remotes
 - [ ] Push `ee/<%= version.stable_branch(ee: true) %>` to all remotes
-- [ ] Push `omnibus/<%= version.stable_branch %>` and `omnibus/<%= version.stable_branch(ee: true) %>` to all remotes
+- [ ] Push `omnibus/<%= version.stable_branch %>` to all remotes
 - [ ] Push CE, EE and omnibus tags to all remotes
 - [ ] In the `#releases` channel, mention `@contentteam` to tweet about the new release:
   ```
@@ -93,16 +92,12 @@ is manually generated, you can do so as follows:
 For references:
 - https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-- https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 - https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
 [tests are green on CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
 [tests are green on EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-
-[Omnibus CE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-[Omnibus EE stable branch]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
