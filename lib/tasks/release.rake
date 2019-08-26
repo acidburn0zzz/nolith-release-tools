@@ -69,7 +69,6 @@ namespace :release do
       service = ReleaseTools::Services::MonthlyPreparationService.new(version)
 
       service.create_label
-      service.create_stable_branches
     else
       # Create preparation MR for CE
       version = version.to_ce
@@ -105,6 +104,15 @@ namespace :release do
         to `#{ENV['RELEASE_ENVIRONMENT']}`.
       MSG
     end
+  end
+
+  desc 'Create stable branches for a new release'
+  task :stable_branch, [:version, :source] do |_t, args|
+    version = get_version(args)
+    return unless version.monthly?
+
+    service = ReleaseTools::Services::MonthlyPreparationService.new(version)
+    service.create_stable_branches(source)
   end
 
   desc "Check a release's build status"
