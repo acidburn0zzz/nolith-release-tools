@@ -32,7 +32,7 @@ module ReleaseTools
         .sub(/\.git\Z/, '')
 
       new(
-        File.join('/tmp', repository_name),
+        File.join(Dir.tmpdir, repository_name),
         remotes,
         global_depth: global_depth,
         branch: branch
