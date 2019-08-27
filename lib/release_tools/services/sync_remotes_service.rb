@@ -22,26 +22,18 @@ module ReleaseTools
 
         sync_tags(Project::GitlabEe, @version.tag(ee: true))
         sync_tags(Project::GitlabCe, @version.tag(ee: false))
-        sync_tags(
-          Project::OmnibusGitlab,
-          @omnibus.to_ee.tag,
-          @omnibus.to_ce.tag
-        )
+        sync_tags(Project::OmnibusGitlab, @omnibus.to_ee.tag, @omnibus.to_ce.tag)
 
         sync_branches(Project::GitlabEe, @version.stable_branch(ee: true))
         sync_branches(Project::GitlabCe, @version.stable_branch(ee: false))
-        sync_branches(
-          Project::OmnibusGitlab,
-          @omnibus.to_ee.stable_branch,
-          @omnibus.to_ce.stable_branch
-        )
+        sync_branches(Project::OmnibusGitlab, *[
+          @omnibus.to_ee.stable_branch, @omnibus.to_ce.stable_branch
+        ].uniq) # Omnibus uses a single branch post-12.2
       end
 
       private
 
       def sync_tags(project, *tags)
-        tags.uniq!
-
         repository = RemoteRepository.get(project.remotes, global_depth: 1)
 
         tags.each do |tag|
@@ -58,8 +50,6 @@ module ReleaseTools
       end
 
       def sync_branches(project, *branches)
-        branches.uniq!
-
         branches.each do |branch|
           repository = RemoteRepository.get(
             project.remotes.slice(:gitlab, :dev), # Clone from production first
