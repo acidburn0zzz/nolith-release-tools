@@ -103,6 +103,10 @@ describe ReleaseTools::Qa::Issue do
         expect(content).to include('2018-09-11 14:40 UTC')
       end
 
+      it "includes the test endpoint" do
+        expect(content).to include("staging.gitlab.com")
+      end
+
       context 'for RC2' do
         let(:version) { ReleaseTools::Version.new('10.8.0-rc2') }
 
