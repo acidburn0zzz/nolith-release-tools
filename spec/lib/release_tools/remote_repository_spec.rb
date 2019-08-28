@@ -44,7 +44,8 @@ describe ReleaseTools::RemoteRepository do
     end
 
     it 'accepts a :global_depth option' do
-      expect(described_class).to receive(:new).with(anything, anything, global_depth: 100)
+      expect(described_class).to receive(:new)
+        .with(anything, anything, a_hash_including(global_depth: 100))
 
       described_class.get(remotes, global_depth: 100)
     end

@@ -15,7 +15,8 @@ module ReleaseTools
       instance_id: ENV['FEATURE_INSTANCE_ID'],
       disable_metrics: true,
       logger: logger,
-      log_level: :warn
+      log_level: :warn,
+      disable_client: !ENV['FEATURE_INSTANCE_ID']
     )
 
     def self.enabled?(feature)

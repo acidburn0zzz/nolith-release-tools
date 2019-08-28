@@ -118,7 +118,7 @@ namespace :helm do
   end
 end
 
-desc "Publish packages and CNG images for a specified version"
+desc "Publish packages, tags, stable branches, and CNG images for a specified version"
 task :publish, [:version] do |_t, args|
   version = get_version(args)
 
@@ -129,6 +129,14 @@ task :publish, [:version] do |_t, args|
   ReleaseTools::Services::CNGPublishService
     .new(version)
     .execute
+
+  # Ensure any exceptions raised by this new service don't fail the build, since
+  # all destructive behaviors are behind feature flags.
+  Raven.capture do
+    ReleaseTools::Services::SyncRemotesService
+      .new(version)
+      .execute
+  end
 
   # Tag the Helm chart
   begin
