@@ -46,7 +46,7 @@ module ReleaseTools
       end
 
       def auto_deploy_version?
-        version =~ /^\d+\.\d+\.\d+[+-][^ ]{7,}\.[^ ]{7,}$/
+        version =~ ReleaseTools::Qa::Ref::AUTO_DEPLOY_TAG_REGEX
       end
     end
   end
