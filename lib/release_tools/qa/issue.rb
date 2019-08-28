@@ -24,6 +24,12 @@ module ReleaseTools
         merge_requests.any?
       end
 
+      def gitlab_test_instance
+        # Patch releases are deployed to preprod
+        # Auto-deploy releases are deployed to staging
+        auto_deploy_version? ? 'https://staging.gitlab.com' : 'https://pre.gitlab.com'
+      end
+
       protected
 
       def template_path
@@ -37,6 +43,10 @@ module ReleaseTools
 
       def parent_issue
         ReleaseTools::PatchIssue.new(version: version)
+      end
+
+      def auto_deploy_version?
+        version =~ ReleaseTools::Qa::Ref::AUTO_DEPLOY_TAG_REGEX
       end
     end
   end

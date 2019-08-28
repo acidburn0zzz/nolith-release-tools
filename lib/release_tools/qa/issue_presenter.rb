@@ -47,7 +47,7 @@ module ReleaseTools
 
           ## Deadline
 
-          QA testing on [staging.gitlab.com](https://staging.gitlab.com/users/sign_in) for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
+          QA testing on #{issue.gitlab_test_instance}/users/sign_in for this issue should be completed by **#{due_date.strftime('%Y-%m-%d %H:%M')} UTC**.
           After this deadline has passed, the issue will be closed automatically.
 
           If the deadline has passed, please perform your task as soon as possible anyway (during your normal work hours). It's important that the testing is
@@ -55,7 +55,7 @@ module ReleaseTools
 
           ## Testing changes requiring admin or console access
 
-          If testing changes requires admin or console access which you might be lacking on [staging.gitlab.com](https://staging.gitlab.com),
+          If testing changes requires admin or console access which you might be lacking on #{issue.gitlab_test_instance},
           create a virtual machine locally or using one of the cloud service providers, and install the latest nightly
           package from [packages.gitlab.com/gitlab/nightly-builds](https://packages.gitlab.com/gitlab/nightly-builds).
 
@@ -79,7 +79,7 @@ module ReleaseTools
         <<~HEREDOC
           A QA job was automatically started: <#{issue.qa_job&.web_url}>
 
-          Also, if the #{version} security package has been deployed to staging,
+          Also, if the #{version} security package has been deployed to #{issue.gitlab_test_instance},
           you can just start a new [`Daily staging QA` pipeline] by clicking the
           "Play" button and wait for the pipeline to finish.
 
@@ -164,7 +164,7 @@ module ReleaseTools
               token under the `GitLab QA - Access tokens` 1Password items)
               * `$QA_IMAGE` the URL of the QA image
               * `$QA_ENV_URL` with the URL of the environment where the package has been
-                deployed (usually https://staging.gitlab.com for the current version, and
+                deployed (usually #{issue.gitlab_test_instance} for the current version, and
                 `http://IP_OF_THE_GCP_VM` for back-ported versions).
               * `$GITLAB_USERNAME` with `root`.
               * `$GITLAB_ADMIN_USERNAME` with `$GITLAB_USERNAME`.

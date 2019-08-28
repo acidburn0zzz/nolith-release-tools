@@ -63,6 +63,10 @@ describe ReleaseTools::Qa::SecurityIssue do
         expect(@content).to include('Import/Export (import) is broken due to the addition of a CI table')
         expect(@content).to include('https://dev.gitlab.org/gitlabhq/gitlabhq/merge_requests/612')
       end
+
+      it "includes the test endpoint" do
+        expect(@content).to include("pre.gitlab.com")
+      end
     end
   end
 

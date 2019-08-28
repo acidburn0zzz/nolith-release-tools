@@ -103,11 +103,23 @@ describe ReleaseTools::Qa::Issue do
         expect(content).to include('2018-09-11 14:40 UTC')
       end
 
+      it "includes the test endpoint for patch releases" do
+        expect(content).to include("pre.gitlab.com")
+      end
+
       context 'for RC2' do
         let(:version) { ReleaseTools::Version.new('10.8.0-rc2') }
 
         it 'the due date is 24h in the future' do
           expect(content).to include('2018-09-11 14:40 UTC')
+        end
+      end
+
+      context 'for auto-deploy releases' do
+        let(:version) { ReleaseTools::Version.new('12.3.201908250820-632c6a10c06.604eab1b429') }
+
+        it "includes the test endpoint for auto-deploy releases" do
+          expect(content).to include("staging.gitlab.com")
         end
       end
     end
