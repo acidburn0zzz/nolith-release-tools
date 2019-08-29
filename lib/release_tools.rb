@@ -145,4 +145,8 @@ unless ENV['TEST']
     git_user: ReleaseTools::SharedStatus.user,
     release_user: ENV['RELEASE_USER']
   )
+
+  if ENV['CI_JOB_URL']
+    Raven.extra_context(job_url: ENV['CI_JOB_URL'])
+  end
 end
