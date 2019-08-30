@@ -41,7 +41,11 @@ module ReleaseTools
       end
 
       def self.to_s
-        path
+        if SharedStatus.security_release?
+          dev_path
+        else
+          path
+        end
       end
 
       def self.extract_path_from_remote(remote_key)
