@@ -5,7 +5,7 @@ require 'spec_helper'
 describe ReleaseTools::Release::HelmGitlabRelease do
   include RuggedMatchers
 
-  let(:repo_path) { File.join('/tmp', HelmReleaseFixture.repository_name) }
+  let(:repo_path) { File.join(Dir.tmpdir, HelmReleaseFixture.repository_name) }
   let(:repository) { Rugged::Repository.new(repo_path) }
 
   before do
