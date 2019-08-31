@@ -13,9 +13,9 @@ describe ReleaseTools::Release::GitlabCeRelease do
   # So `https://gitlab.com/foo/bar/repository.git` gets checked out to
   # `/tmp/repository`, and `/this/project/spec/fixtures/repositories/release`
   # gets checked out to `/tmp/release`.
-  let(:repo_path)    { File.join('/tmp', ReleaseFixture.repository_name) }
-  let(:ob_repo_path) { File.join('/tmp', OmnibusReleaseFixture.repository_name) }
-  let(:cng_repo_path) { File.join('/tmp', CNGImageReleaseFixture.repository_name) }
+  let(:repo_path)    { File.join(Dir.tmpdir, ReleaseFixture.repository_name) }
+  let(:ob_repo_path) { File.join(Dir.tmpdir, OmnibusReleaseFixture.repository_name) }
+  let(:cng_repo_path) { File.join(Dir.tmpdir, CNGImageReleaseFixture.repository_name) }
 
   # These two Rugged repositories are used for _verifying the result_ of the
   # release run. Not to be confused with the fixture repositories.

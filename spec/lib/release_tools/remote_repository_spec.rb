@@ -6,7 +6,7 @@ describe ReleaseTools::RemoteRepository do
   include RuggedMatchers
 
   let(:fixture) { ReleaseFixture.new }
-  let(:repo_path) { File.join('/tmp', fixture.class.repository_name) }
+  let(:repo_path) { File.join(Dir.tmpdir, fixture.class.repository_name) }
   let(:rugged_repo) { Rugged::Repository.new(repo_path) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
   let(:repo_remotes) do
@@ -26,13 +26,13 @@ describe ReleaseTools::RemoteRepository do
     end
 
     it 'generates a name from the first remote' do
-      expect(described_class).to receive(:new).with('/tmp/dev', anything, anything)
+      expect(described_class).to receive(:new).with("#{Dir.tmpdir}/dev", anything, anything)
 
       described_class.get(remotes)
     end
 
     it 'accepts a repository name' do
-      expect(described_class).to receive(:new).with('/tmp/foo', anything, anything)
+      expect(described_class).to receive(:new).with("#{Dir.tmpdir}/foo", anything, anything)
 
       described_class.get(remotes, 'foo')
     end

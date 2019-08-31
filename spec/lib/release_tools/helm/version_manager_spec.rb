@@ -5,7 +5,7 @@ require 'spec_helper'
 describe ReleaseTools::Helm::VersionManager do
   include RuggedMatchers
 
-  let(:repo_path) { File.join('/tmp', HelmReleaseFixture.repository_name) }
+  let(:repo_path) { File.join(Dir.tmpdir, HelmReleaseFixture.repository_name) }
   let(:repository) { Rugged::Repository.new(repo_path) }
   let(:version_manager) { ReleaseTools::Release::HelmGitlabRelease.new(nil, '11.5.4').version_manager }
   let(:messages) do
