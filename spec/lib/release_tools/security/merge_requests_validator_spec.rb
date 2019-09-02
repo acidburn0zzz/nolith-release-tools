@@ -14,8 +14,8 @@ describe ReleaseTools::Security::MergeRequestsValidator do
 
   describe '#execute' do
     it 'returns the valid merge requests' do
-      merge_request1 = double(:merge_request)
-      merge_request2 = double(:merge_request)
+      merge_request1 = double(:merge_request, web_url: 'example.com')
+      merge_request2 = double(:merge_request, web_url: 'example.com')
 
       allow(client)
         .to receive(:open_security_merge_requests)
@@ -50,10 +50,10 @@ describe ReleaseTools::Security::MergeRequestsValidator do
 
   describe '#verify_merge_request' do
     let(:basic_merge_request) do
-      double(:basic_merge_request, project_id: 1, iid: 2)
+      double(:basic_merge_request, project_id: 1, iid: 2, web_url: 'example.com')
     end
 
-    let(:detailed_merge_request) { double(:detailed_merge_request) }
+    let(:detailed_merge_request) { double(:detailed_merge_request, web_url: 'example.com') }
 
     context 'when the merge request is valid' do
       it 'returns the merge request' do
@@ -123,10 +123,13 @@ describe ReleaseTools::Security::MergeRequestsValidator do
         :merge_request,
         author: double(:author, id: 3, username: 'alice'),
         project_id: 1,
-        iid: 2
+        iid: 2,
+        web_url: 'example.com'
       )
 
-      validator.reassign_with_errors(merge_request, ['foo'])
+      without_dry_run do
+        validator.reassign_with_errors(merge_request, ['foo'])
+      end
 
       expect(client).to have_received(:create_merge_request_discussion)
       expect(client).to have_received(:update_merge_request)
