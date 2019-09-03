@@ -65,7 +65,7 @@ module ReleaseTools
         tag(commit)
       elsif omnibus_changes?
         commit = ReleaseTools::Commits
-          .new(ReleaseTools::Project::OmnibusGitlab, ref)
+          .new(ReleaseTools::Project::OmnibusGitlab, ref: ref)
           .latest
 
         tag(commit)
