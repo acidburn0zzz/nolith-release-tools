@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'semantic_logger'
+require 'release_tools/shared_status'
 
 module ReleaseTools
   include ::SemanticLogger::Loggable
@@ -58,5 +59,22 @@ else
       read_timeout: 5.0,
       continue_timeout: 5.0
     )
+  end
+
+  if ENV['SENTRY_DSN']
+    require 'sentry-raven'
+
+    Raven.user_context(
+      git_user: ReleaseTools::SharedStatus.user,
+      release_user: ENV['RELEASE_USER']
+    )
+
+    if ENV['CI_JOB_URL']
+      Raven.extra_context(job_url: ENV['CI_JOB_URL'])
+    end
+
+    if ReleaseTools::Feature.enabled?(:log_sentry)
+      SemanticLogger.add_appender(appender: :sentry, level: :fatal)
+    end
   end
 end
