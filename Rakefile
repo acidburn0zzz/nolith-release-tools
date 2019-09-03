@@ -8,7 +8,7 @@ Dir.glob('lib/tasks/*.rake').each { |task| import(task) }
 namespace :auto_deploy do
   task :check_enabled do
     if ReleaseTools::Feature.disabled?(:auto_deploy)
-      ReleaseTools.logger.fatal("The `auto_deploy` feature flag is currently disabled.")
+      ReleaseTools.logger.warn("The `auto_deploy` feature flag is currently disabled.")
       exit
     end
   end
