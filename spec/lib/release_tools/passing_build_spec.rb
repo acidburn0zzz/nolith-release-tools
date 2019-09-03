@@ -102,6 +102,8 @@ describe ReleaseTools::PassingBuild do
 
         it 'tags' do
           stub_const('ReleaseTools::Commits', spy(latest: fake_commit))
+          expect(ReleaseTools::Commits)
+            .to receive(:new).with(ReleaseTools::Project::OmnibusGitlab, ref: '11-10-auto-deploy-1234')
 
           expect(service).to receive(:tag).with(fake_commit)
 
