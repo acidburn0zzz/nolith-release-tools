@@ -137,16 +137,3 @@ require 'release_tools/security/merge_requests_merger'
 require 'release_tools/security/merge_result'
 require 'release_tools/version_client'
 require 'release_tools/versions'
-
-unless ENV['TEST']
-  require 'sentry-raven'
-
-  Raven.user_context(
-    git_user: ReleaseTools::SharedStatus.user,
-    release_user: ENV['RELEASE_USER']
-  )
-
-  if ENV['CI_JOB_URL']
-    Raven.extra_context(job_url: ENV['CI_JOB_URL'])
-  end
-end
