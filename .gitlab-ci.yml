@@ -84,7 +84,6 @@ release-managers:
   stage: automation
   script:
     - source scripts/setup_ssh.sh
-    - echo "$RELEASE_BOT_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - export GITLAB_API_PRIVATE_TOKEN="$RELEASE_BOT_PRODUCTION_TOKEN"
     - export DEV_API_PRIVATE_TOKEN="$RELEASE_BOT_DEV_TOKEN"
     - export OPS_API_PRIVATE_TOKEN="$RELEASE_BOT_OPS_TOKEN"
@@ -160,6 +159,23 @@ auto-deploy:trigger:
     variables:
       - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
 
+notify-deployments:
+  stage: automation
+  <<: *with-bundle
+  before_script:
+    - source scripts/setup_ssh.sh
+    - source scripts/setup_git.sh
+  script:
+    - bundle exec rake "release:record_deploy[$RELEASE_VERSION]"
+  only:
+    refs:
+      - triggers
+    variables:
+      - $NOTIFY_DEPLOYMENTS
+  cache:
+    <<: *global-cache
+    policy: pull
+
 # chatops ---------------------------------------------------------------------
 
 chatops:
@@ -167,9 +183,7 @@ chatops:
   stage: chatops
   script:
     - source scripts/setup_ssh.sh
-    - echo "$RELEASE_BOT_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - git config --global user.email "delivery-team+release-tools@gitlab.com"
-    - git config --global user.name "GitLab Release Tools Bot"
+    - source scripts/setup_git.sh
     - ./bin/chatops $TASK
   only:
     - triggers
