@@ -160,8 +160,8 @@ auto-deploy:trigger:
       - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
 
 notify-deployments:
+  extends: .with-bundle
   stage: automation
-  <<: *with-bundle
   before_script:
     - source scripts/setup_ssh.sh
     - source scripts/setup_git.sh
