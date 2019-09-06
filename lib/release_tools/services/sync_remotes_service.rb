@@ -31,8 +31,6 @@ module ReleaseTools
         ].uniq) # Omnibus uses a single branch post-12.2
       end
 
-      private
-
       def sync_tags(project, *tags)
         repository = RemoteRepository.get(project.remotes, global_depth: 1)
 
