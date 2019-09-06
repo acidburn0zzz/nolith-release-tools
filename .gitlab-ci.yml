@@ -160,12 +160,11 @@ auto-deploy:trigger:
       - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
 
 notify-deployments:
-  extends: .with-bundle
+  <<: *with-bundle
   stage: automation
-  before_script:
+  script:
     - source scripts/setup_ssh.sh
     - source scripts/setup_git.sh
-  script:
     - bundle exec rake "release:record_deploy[$RELEASE_VERSION]"
   only:
     refs:
