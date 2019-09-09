@@ -20,7 +20,7 @@ module ReleaseTools
           .chomp
       end
 
-      logger.debug({ project: project }.merge(versions))
+      logger.debug({ project: project.to_s }.merge(versions))
 
       versions
     end
