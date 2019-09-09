@@ -70,7 +70,7 @@ module ReleaseTools
 
         tag(commit)
       else
-        logger.warn 'No changes to component versions or Omnibus, nothing to tag'
+        logger.warn('No changes to component versions or Omnibus, nothing to tag')
       end
     end
 
@@ -88,7 +88,7 @@ module ReleaseTools
       commit = ReleaseTools::ComponentVersions.update_omnibus(ref, @version_map)
 
       url = commit_url(ReleaseTools::Project::OmnibusGitlab, commit.id)
-      logger.info "Updated Omnibus versions at #{url}"
+      logger.info('Updated Omnibus versions', commit_url: url)
 
       commit
     end
@@ -96,7 +96,7 @@ module ReleaseTools
     def tag_omnibus(name, message, commit)
       project = ReleaseTools::Project::OmnibusGitlab
 
-      logger.info "Creating `#{project}` tag `#{name}`"
+      logger.info('Creating project tag', project: project.to_s, tag: name)
 
       client =
         if SharedStatus.security_release?
@@ -111,7 +111,7 @@ module ReleaseTools
     def tag_deployer(name, message, ref)
       project = ReleaseTools::Project::Deployer
 
-      logger.info "Creating `#{project}` tag `#{name}`"
+      logger.info('Creating project tag', project: project.to_s, tag: name)
 
       ReleaseTools::GitlabOpsClient
         .create_tag(project, name, ref, message)
@@ -121,7 +121,7 @@ module ReleaseTools
       pipeline_id = ENV.fetch('CI_PIPELINE_ID', 'pipeline_id_unset')
       branch_name = "#{ref}-#{pipeline_id}"
 
-      logger.info "Creating `#{project}` branch `#{branch_name}`"
+      logger.info('Creating project branch', project: project.to_s, branch: branch_name)
       ReleaseTools::GitlabDevClient.create_branch(branch_name, ref, project)
 
       # NOTE: `trigger` always happens on dev here
@@ -131,7 +131,7 @@ module ReleaseTools
         @version_map
       ).trigger
 
-      logger.info "Deleting `#{project}` branch `#{branch_name}`"
+      logger.info('Deleting project branch', project: project.to_s, branch: branch_name)
       ReleaseTools::GitlabDevClient.delete_branch(branch_name, project)
     end
 
