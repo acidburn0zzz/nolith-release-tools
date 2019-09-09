@@ -37,6 +37,12 @@ module ReleaseTools
           # Hit the dev API with the specified commit to see if it even exists
           ReleaseTools::GitlabDevClient.commit(project, ref: commit.id)
         rescue Gitlab::Error::Error
+          logger.debug(
+            'Commit passed on production, missing on dev',
+            project: project.to_s,
+            commit: commit.id
+          )
+
           false
         end
       end
