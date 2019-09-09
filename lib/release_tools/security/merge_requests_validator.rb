@@ -88,7 +88,7 @@ module ReleaseTools
 
       # @param [Gitlab::ObjectifiedHash] basic_mr
       def verify_merge_request(basic_mr)
-        logger.info(__method__, merge_request: basic_mr.web_url)
+        logger.debug(__method__, merge_request: basic_mr.web_url)
 
         # Merge requests retrieved using the MR list API do not include all data
         # we need, such as pipeline details. To work around this we must perform
