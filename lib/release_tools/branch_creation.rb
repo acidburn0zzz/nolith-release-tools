@@ -31,9 +31,5 @@ module ReleaseTools
         Result.new(project, branch, client.create_branch(branch, ref, project))
       end
     end
-
-    def latest_successful_ref(project, client = gitlab_client)
-      ReleaseTools::Commits.new(project, client: client).latest_successful.id
-    end
   end
 end

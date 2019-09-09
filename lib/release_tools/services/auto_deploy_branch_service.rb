@@ -35,6 +35,10 @@ module ReleaseTools
         @version ||= gitlab_client.current_milestone.title.tr('.', '-')
       end
 
+      def latest_successful_ref(project, client = gitlab_client)
+        ReleaseTools::Commits.new(project, client: client).latest_successful.id
+      end
+
       def update_auto_deploy_ci
         gitlab_client.update_variable(Project::ReleaseTools.path, CI_VAR_AUTO_DEPLOY, branch_name)
       rescue Gitlab::Error::NotFound
