@@ -2,6 +2,8 @@
 
 module ReleaseTools
   class Commits
+    include ::SemanticLogger::Loggable
+
     MAX_COMMITS_TO_CHECK = 100
 
     attr_reader :project
