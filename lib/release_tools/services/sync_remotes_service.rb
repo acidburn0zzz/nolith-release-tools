@@ -31,8 +31,6 @@ module ReleaseTools
         ].uniq) # Omnibus uses a single branch post-12.2
       end
 
-      private
-
       def sync_tags(project, *tags)
         repository = RemoteRepository.get(project.remotes, global_depth: 1)
 
@@ -61,20 +59,14 @@ module ReleaseTools
 
           result = repository.merge("dev/#{branch}", branch, no_ff: true)
 
-          logger.debug(
-            __method__,
-            branch: branch,
-            result: {
-              status: result.status.exitstatus,
-              output: result.output
-            }
-          )
+          if result.status.success?
+            if Feature.enabled?(:publish_git_push)
+              logger.info('Pushing to all remotes', branch: branch)
 
-          if Feature.enabled?(:publish_git_push) # rubocop:disable Style/Next
-            # TODO (rspeicher): Check `result` status
-            # TODO (rspeicher): Handle merge conflicts (message? fail?)
-
-            repository.push_to_all_remotes(branch)
+              repository.push_to_all_remotes(branch)
+            end
+          else
+            logger.fatal('Failed to sync branch', branch: branch, output: result.output)
           end
         end
       end
