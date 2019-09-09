@@ -88,7 +88,7 @@ module ReleaseTools
 
       # @param [Gitlab::ObjectifiedHash] basic_mr
       def verify_merge_request(basic_mr)
-        logger.debug(__method__, merge_request: basic_mr.web_url)
+        logger.trace(__method__, merge_request: basic_mr.web_url)
 
         # Merge requests retrieved using the MR list API do not include all data
         # we need, such as pipeline details. To work around this we must perform
@@ -110,7 +110,7 @@ module ReleaseTools
       # @param [Gitlab::ObjectifiedHash] mr
       # @param [Array<String>] errors
       def reassign_with_errors(mr, errors)
-        logger.debug(__method__, merge_request: mr.web_url, errors: errors.count)
+        logger.trace(__method__, merge_request: mr.web_url, errors: errors.count)
 
         return if SharedStatus.dry_run?
 
