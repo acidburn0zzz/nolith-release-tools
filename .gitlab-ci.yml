@@ -52,7 +52,6 @@ specs:
   <<: *with-bundle
   stage: test
   script:
-    - cp .env.example .env
     - git config --global user.email "you@example.com"
     - git config --global user.name "Your Name"
     - bundle exec rspec

@@ -4,7 +4,6 @@ source "https://rubygems.org"
 
 gem 'activesupport', '~> 5.1.0'
 gem 'colorize'
-gem 'dotenv', '~> 2.2.0'
 gem 'gitlab', '~> 4.11'
 gem 'http', '~> 4.1.0'
 gem 'parallel', '~> 1.14'

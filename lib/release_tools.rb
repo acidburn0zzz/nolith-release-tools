@@ -11,7 +11,6 @@ require 'active_support/inflector'
 require 'cgi'
 require 'colorize'
 require 'date'
-require 'dotenv'
 require 'erb'
 require 'etc'
 require 'fileutils'
@@ -29,8 +28,6 @@ require 'stringio'
 require 'time'
 require 'uri'
 require 'yaml'
-
-Dotenv.load
 
 $LOAD_PATH.unshift(__dir__)
 

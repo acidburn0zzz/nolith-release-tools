@@ -14,35 +14,9 @@ need to be run directly.
     bundle install
     ```
 
-1. Several of the tasks require API access to a GitLab instance. We store the
-   endpoint and private token data in the `.env` file which is not added to
-   source control. Copy the `.env.example` file:
-
-    ```sh
-    cp .env.example .env
-    ```
-
-1. Edit `.env` to add your personal API access token [(**Profile
-   Settings** > **Access Tokens**)](https://gitlab.com/profile/personal_access_tokens).
-
-   1. We recommend you to create a new access token for the Release Manager process, in gitlab.com:
-        ```
-        Name: Release Manager Token
-        Expires at: one month after the release on which you are RM
-        Scopes: [x] api
-        ```
-
-   1. Add the access token to `.env`:
-       ```
-        GITLAB_API_PRIVATE_TOKEN=YOUR_TOKEN
-       ```
-
-1. Edit `.env` to add the Slack URL. The value should be in the Team vault in 'release-tools'
-    ```
-    # - Search 'release-tools' in the Team vault and copy the value
-    # - Update SLACK_TAG_URL with the value:
-    SLACK_TAG_URL="https://hooks.slack.com/services/foo/bar/baz"
-    ```
+1. Several of the tasks require API access to a GitLab instance. These tokens
+   should be provided at runtime via environment variables. See
+   [`variables.md`](./variables.md) for a list of recognized variables.
 
 ## `release` tasks
 
