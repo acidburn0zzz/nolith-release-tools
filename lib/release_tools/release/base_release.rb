@@ -51,7 +51,7 @@ module ReleaseTools
 
       def execute_release
         if repository.tags.include?(tag)
-          logger.warn('Tag already exists, skipping', tag: tag)
+          logger.warn('Tag already exists, skipping', name: tag)
           return
         end
 
@@ -97,13 +97,13 @@ module ReleaseTools
       end
 
       def create_tag(tag, message: nil)
-        logger.info('Creating tag', tag: tag)
+        logger.info('Creating tag', name: tag)
 
         repository.create_tag(tag, message: message)
       end
 
       def push_ref(_ref_type, ref)
-        logger.info('Pushing ref to all remotes', ref: ref)
+        logger.info('Pushing ref to all remotes', name: ref)
 
         repository.push_to_all_remotes(ref)
       end

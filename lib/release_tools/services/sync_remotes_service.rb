@@ -35,12 +35,12 @@ module ReleaseTools
         repository = RemoteRepository.get(project.remotes, global_depth: 1)
 
         tags.each do |tag|
-          logger.info('Fetching tag', tag: tag)
+          logger.info('Fetching tag', name: tag)
 
           repository.fetch("refs/tags/#{tag}", remote: :dev)
 
           if Feature.enabled?(:publish_git_push) # rubocop:disable Style/Next
-            logger.info('Pushing to all remotes', tag: tag)
+            logger.info('Pushing tag to all remotes', name: tag)
 
             repository.push_to_all_remotes(tag)
           end
@@ -61,12 +61,12 @@ module ReleaseTools
 
           if result.status.success?
             if Feature.enabled?(:publish_git_push)
-              logger.info('Pushing to all remotes', branch: branch)
+              logger.info('Pushing branch to all remotes', name: branch)
 
               repository.push_to_all_remotes(branch)
             end
           else
-            logger.fatal('Failed to sync branch', branch: branch, output: result.output)
+            logger.fatal('Failed to sync branch', name: branch, output: result.output)
           end
         end
       end
