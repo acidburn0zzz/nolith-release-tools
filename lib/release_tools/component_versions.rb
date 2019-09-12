@@ -20,7 +20,7 @@ module ReleaseTools
           .chomp
       end
 
-      logger.info({ project: project.to_s }.merge(versions))
+      logger.info({ project: project }.merge(versions))
 
       versions
     end

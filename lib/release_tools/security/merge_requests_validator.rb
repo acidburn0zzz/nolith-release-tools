@@ -65,7 +65,7 @@ module ReleaseTools
         invalid = []
 
         PROJECTS_TO_VERIFY.each do |project|
-          logger.info('Verifying security MRs', project: project.to_s)
+          logger.info('Verifying security MRs', project: project)
 
           merge_requests = @client.open_security_merge_requests(project)
 
