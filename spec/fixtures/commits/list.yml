@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits?per_page=5&ref_name=master
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits?per_page=5&ref_name=master
     body:
       encoding: US-ASCII
       string: ''
@@ -33,9 +33,9 @@ http_interactions:
       Etag:
       - W/"c35d3512dd5c1fdb679f257dae964843"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits?id=gitlab-org%2Fgitlab-ce&page=2&per_page=5&ref_name=master>;
-        rel="next", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits?id=gitlab-org%2Fgitlab-ce&page=1&per_page=5&ref_name=master>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits?id=gitlab-org%2Fgitlab-ce&page=18464&per_page=5&ref_name=master>;
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits?id=gitlab-org%2Fgitlab-foss&page=2&per_page=5&ref_name=master>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits?id=gitlab-org%2Fgitlab-foss&page=1&per_page=5&ref_name=master>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits?id=gitlab-org%2Fgitlab-foss&page=18464&per_page=5&ref_name=master>;
         rel="last"
       Vary:
       - Origin
@@ -81,7 +81,7 @@ http_interactions:
   recorded_at: Mon, 15 Apr 2019 10:59:19 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/c32b2d3d2b7d4e2ce8b58eee12b31f1f907e57ed
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/c32b2d3d2b7d4e2ce8b58eee12b31f1f907e57ed
     body:
       encoding: US-ASCII
       string: ''
@@ -143,7 +143,7 @@ http_interactions:
   recorded_at: Mon, 15 Apr 2019 10:59:19 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/93a44e135b0d09ed0fd31dce5d81841a96ef8d67
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/93a44e135b0d09ed0fd31dce5d81841a96ef8d67
     body:
       encoding: US-ASCII
       string: ''
@@ -205,7 +205,7 @@ http_interactions:
   recorded_at: Mon, 15 Apr 2019 10:59:20 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/d5e3677e0c5f4565cf45c1da666a4fca45d930f5
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/d5e3677e0c5f4565cf45c1da666a4fca45d930f5
     body:
       encoding: US-ASCII
       string: ''
@@ -264,13 +264,13 @@ http_interactions:
       string: '{"id":"d5e3677e0c5f4565cf45c1da666a4fca45d930f5","short_id":"d5e3677e","created_at":"2019-04-15T10:05:09.000Z","parent_ids":["a5f13e591f617931434d66263418a2f26abe3abe","b13ecdd6cc0d972a4563e1509d499969676f1488"],"title":"Merge
         branch ''image-comment-reviews-ce'' into ''master''","message":"Merge branch
         ''image-comment-reviews-ce'' into ''master''\n\nCE backport of image-comment-reviews\n\nSee
-        merge request gitlab-org/gitlab-ce!27271","author_name":"Filipa Lacerda","author_email":"filipa@gitlab.com","authored_date":"2019-04-15T10:05:09.000Z","committer_name":"Filipa
-        Lacerda","committer_email":"filipa@gitlab.com","committed_date":"2019-04-15T10:05:09.000Z","stats":{"additions":39,"deletions":11,"total":50},"status":"running","last_pipeline":{"id":56832777,"sha":"d5e3677e0c5f4565cf45c1da666a4fca45d930f5","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/56832777"},"project_id":13083}'
+        merge request gitlab-org/gitlab-foss!27271","author_name":"Filipa Lacerda","author_email":"filipa@gitlab.com","authored_date":"2019-04-15T10:05:09.000Z","committer_name":"Filipa
+        Lacerda","committer_email":"filipa@gitlab.com","committed_date":"2019-04-15T10:05:09.000Z","stats":{"additions":39,"deletions":11,"total":50},"status":"running","last_pipeline":{"id":56832777,"sha":"d5e3677e0c5f4565cf45c1da666a4fca45d930f5","ref":"master","status":"running","web_url":"https://gitlab.com/gitlab-org/gitlab-foss/pipelines/56832777"},"project_id":13083}'
     http_version: 
   recorded_at: Mon, 15 Apr 2019 10:59:21 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/a5f13e591f617931434d66263418a2f26abe3abe
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/a5f13e591f617931434d66263418a2f26abe3abe
     body:
       encoding: US-ASCII
       string: ''
@@ -329,14 +329,14 @@ http_interactions:
       string: '{"id":"a5f13e591f617931434d66263418a2f26abe3abe","short_id":"a5f13e59","created_at":"2019-04-15T09:58:31.000Z","parent_ids":["d83eb63beef28a6229b4bf851ee34c51938e29c7","b5ab1d91e377787e0711effebce073af76becc56"],"title":"Merge
         branch ''10921-display-scoped-labels-ce'' into ''master''","message":"Merge
         branch ''10921-display-scoped-labels-ce'' into ''master''\n\nDisplay scoped
-        labels in Issue Boards\n\nSee merge request gitlab-org/gitlab-ce!27164","author_name":"Kushal
+        labels in Issue Boards\n\nSee merge request gitlab-org/gitlab-foss!27164","author_name":"Kushal
         Pandya","author_email":"kushalspandya@gmail.com","authored_date":"2019-04-15T09:58:31.000Z","committer_name":"Kushal
-        Pandya","committer_email":"kushalspandya@gmail.com","committed_date":"2019-04-15T09:58:31.000Z","stats":{"additions":181,"deletions":24,"total":205},"status":"success","last_pipeline":{"id":56824583,"sha":"a5f13e591f617931434d66263418a2f26abe3abe","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-ce/pipelines/56824583"},"project_id":13083}'
+        Pandya","committer_email":"kushalspandya@gmail.com","committed_date":"2019-04-15T09:58:31.000Z","stats":{"additions":181,"deletions":24,"total":205},"status":"success","last_pipeline":{"id":56824583,"sha":"a5f13e591f617931434d66263418a2f26abe3abe","ref":"master","status":"success","web_url":"https://gitlab.com/gitlab-org/gitlab-foss/pipelines/56824583"},"project_id":13083}'
     http_version: 
   recorded_at: Mon, 15 Apr 2019 10:59:21 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/b5ab1d91e377787e0711effebce073af76becc56
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/b5ab1d91e377787e0711effebce073af76becc56
     body:
       encoding: US-ASCII
       string: ''

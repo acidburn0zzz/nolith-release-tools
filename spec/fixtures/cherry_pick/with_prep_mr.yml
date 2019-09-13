@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests?labels=Delivery&state=opened
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests?labels=Delivery&state=opened
     body:
       encoding: US-ASCII
       string: ''
@@ -33,8 +33,8 @@ http_interactions:
       Etag:
       - W/"3f56d79281214e6f17412d98883a330e"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-ce&labels=Delivery&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-ce&labels=Delivery&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-foss&labels=Delivery&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/merge_requests?id=gitlab-org%2Fgitlab-foss&labels=Delivery&order_by=created_at&page=1&per_page=20&sort=desc&state=opened>;
         rel="last"
       Vary:
       - Origin
@@ -77,8 +77,8 @@ http_interactions:
         Summary\n\nThis MR prepares `11-4-stable` for %\"11.4\" (`RC8`) by merging
         `11-4-stable-prepare-rc8` into `11-4-stable`.\n\n### Before the 7th\n\nMerge
         master into the preparation branch\n\n### After the 7th\n\n#### MR Filter
-        for ~\"Pick into 11.4\" MRs\n\nhttps://gitlab.com/gitlab-org/gitlab-ce/merge_requests?label_name%5B%5D=Pick+into+11.4\u0026scope=all\u0026state=merged\n\n####
-        Note to leave in MRs\n\n```\nPicked into https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/MERGE_REQUEST_ID,
+        for ~\"Pick into 11.4\" MRs\n\nhttps://gitlab.com/gitlab-org/gitlab-foss/merge_requests?label_name%5B%5D=Pick+into+11.4\u0026scope=all\u0026state=merged\n\n####
+        Note to leave in MRs\n\n```\nPicked into https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/MERGE_REQUEST_ID,
         will merge into `11-4-stable` ready for `11.4 RC8`\n\n/unlabel ~\"Pick into
         11.4\"\n```\n\n### Steps\n\n1. Cherry-pick commits into this MR using the
         link for ~\"Pick into 11.4\" above.\n    - This can be done by checking out
@@ -102,7 +102,7 @@ http_interactions:
         while this MR was in progress. If there are, ensure these are merged into
         EE and check for a green pipeline after merging this MR.","state":"opened","created_at":"2018-10-17T19:54:06.769Z","updated_at":"2018-10-17T19:54:14.003Z","target_branch":"11-4-stable","source_branch":"11-4-stable-prepare-rc8","upvotes":0,"downvotes":0,"author":{"id":15139,"name":"Robert
         Speicher","username":"rspeicher","state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/rspeicher"},"assignee":{"id":15139,"name":"Robert
-        Speicher","username":"rspeicher","state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/rspeicher"},"source_project_id":13083,"target_project_id":13083,"labels":["Release"],"work_in_progress":true,"milestone":{"id":567670,"iid":19,"group_id":9970,"title":"11.4","description":"","state":"active","created_at":"2018-06-14T17:31:41.249Z","updated_at":"2018-06-14T17:31:41.249Z","due_date":"2018-10-22","start_date":"2018-09-08","web_url":"https://gitlab.com/groups/gitlab-org/-/milestones/19"},"merge_when_pipeline_succeeds":false,"merge_status":"cannot_be_merged","sha":"59613191221eef91cd7fb2fe055c7bf1cc9982dc","merge_commit_sha":null,"user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":true,"web_url":"https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/22431","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null},{"id":17083558,"iid":21975,"project_id":13083,"title":"Remove
+        Speicher","username":"rspeicher","state":"active","avatar_url":"https://secure.gravatar.com/avatar/19c928bc60c7b0d10e708c429e389523?s=80\u0026d=identicon","web_url":"https://gitlab.com/rspeicher"},"source_project_id":13083,"target_project_id":13083,"labels":["Release"],"work_in_progress":true,"milestone":{"id":567670,"iid":19,"group_id":9970,"title":"11.4","description":"","state":"active","created_at":"2018-06-14T17:31:41.249Z","updated_at":"2018-06-14T17:31:41.249Z","due_date":"2018-10-22","start_date":"2018-09-08","web_url":"https://gitlab.com/groups/gitlab-org/-/milestones/19"},"merge_when_pipeline_succeeds":false,"merge_status":"cannot_be_merged","sha":"59613191221eef91cd7fb2fe055c7bf1cc9982dc","merge_commit_sha":null,"user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":true,"web_url":"https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/22431","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null},{"id":17083558,"iid":21975,"project_id":13083,"title":"Remove
         duplicate primary button from environments empty state","description":"##
         What does this MR do?\r\n\r\nRemoves duplicate primary button from environments
         empty state\r\n\r\n## Screenshots\r\n\r\n| Before | After |\r\n| --------
@@ -114,11 +114,11 @@ http_interactions:
         [ ] [Tests added for this feature/bug](https://docs.gitlab.com/ee/development/testing_guide/index.html)\r\n-
         [X] Conforms to the [code review guidelines](https://docs.gitlab.com/ee/development/code_review.html)\r\n-
         [X] Conforms to the [merge request performance guidelines](https://docs.gitlab.com/ee/development/merge_request_performance_guidelines.html)\r\n-
-        [X] Conforms to the [style guides](https://gitlab.com/gitlab-org/gitlab-ee/blob/master/CONTRIBUTING.md#style-guides)\r\n-
+        [X] Conforms to the [style guides](https://gitlab.com/gitlab-org/gitlab/blob/master/CONTRIBUTING.md#style-guides)\r\n-
         [ ] Conforms to the [database guides](https://docs.gitlab.com/ee/development/README.html#databases-guides)","state":"opened","created_at":"2018-09-27T21:33:11.798Z","updated_at":"2018-10-17T10:33:05.963Z","target_branch":"master","source_branch":"update-environments-empty-state","upvotes":0,"downvotes":0,"author":{"id":1474048,"name":"George
         Tsiolis","username":"gtsiolis","state":"active","avatar_url":"https://secure.gravatar.com/avatar/fde4d3b543cdd1b26fe63c1938773d70?s=80\u0026d=identicon","web_url":"https://gitlab.com/gtsiolis"},"assignee":{"id":1474048,"name":"George
         Tsiolis","username":"gtsiolis","state":"active","avatar_url":"https://secure.gravatar.com/avatar/fde4d3b543cdd1b26fe63c1938773d70?s=80\u0026d=identicon","web_url":"https://gitlab.com/gtsiolis"},"source_project_id":4581232,"target_project_id":13083,"labels":["CI/CD","Community
-        contribution","Hackathon","Release","UX","bug","devops:release","frontend"],"work_in_progress":false,"milestone":{"id":567670,"iid":19,"group_id":9970,"title":"11.4","description":"","state":"active","created_at":"2018-06-14T17:31:41.249Z","updated_at":"2018-06-14T17:31:41.249Z","due_date":"2018-10-22","start_date":"2018-09-08","web_url":"https://gitlab.com/groups/gitlab-org/-/milestones/19"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"0ab0f0bcf72cbb5a73d111fc0a97e2b239bd4690","merge_commit_sha":null,"user_notes_count":37,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"allow_collaboration":false,"allow_maintainer_to_push":false,"web_url":"https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/21975","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
+        contribution","Hackathon","Release","UX","bug","devops:release","frontend"],"work_in_progress":false,"milestone":{"id":567670,"iid":19,"group_id":9970,"title":"11.4","description":"","state":"active","created_at":"2018-06-14T17:31:41.249Z","updated_at":"2018-06-14T17:31:41.249Z","due_date":"2018-10-22","start_date":"2018-09-08","web_url":"https://gitlab.com/groups/gitlab-org/-/milestones/19"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"0ab0f0bcf72cbb5a73d111fc0a97e2b239bd4690","merge_commit_sha":null,"user_notes_count":37,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"allow_collaboration":false,"allow_maintainer_to_push":false,"web_url":"https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/21975","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
     http_version:
   recorded_at: Wed, 17 Oct 2018 19:54:17 GMT
 recorded_with: VCR 2.9.3

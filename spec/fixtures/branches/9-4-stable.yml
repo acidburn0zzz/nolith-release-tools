@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/branches/9-4-stable"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/branches/9-4-stable"
     body:
       encoding: US-ASCII
       string: ''

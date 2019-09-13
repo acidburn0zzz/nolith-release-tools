@@ -20,7 +20,7 @@ describe ReleaseTools::Qa::Issue do
       ],
       "sha" => "4f04aeec80bbfcb025e321693e6ca99b01244bb4",
       "merge_commit_sha" => "0065c449ff95cf6e0643bab17ed236c23207b537",
-      "web_url" => "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/18745",
+      "web_url" => "https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/18745",
       "merged_by" => double("username" => "merger")
     )
   end
@@ -67,7 +67,7 @@ describe ReleaseTools::Qa::Issue do
 
       it "includes the MR information" do
         expect(content).to include('Import/Export (import) is broken due to the addition of a CI table')
-        expect(content).to include('gitlab-org/gitlab-ce!18745')
+        expect(content).to include('gitlab-org/gitlab-foss!18745')
       end
 
       it "includes the MR author" do

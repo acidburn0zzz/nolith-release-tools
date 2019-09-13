@@ -207,7 +207,7 @@ module ReleaseTools
       path = client.url_encode(project_path(issue.project))
 
       # NOTE: `target_project_id` parameter doesn't support encoded values
-      #   See https://gitlab.com/gitlab-org/gitlab-ee/issues/9143
+      #   See https://gitlab.com/gitlab-org/gitlab/issues/9143
       client.post(
         "/projects/#{path}/issues/#{issue.iid}/links", query: {
           target_project_id: project_path(target.project),

@@ -7,7 +7,7 @@ describe ReleaseTools::Project::GitlabCe do
   it_behaves_like 'project #to_s'
 
   describe '.path' do
-    it { expect(described_class.path).to eq 'gitlab-org/gitlab-ce' }
+    it { expect(described_class.path).to eq 'gitlab-org/gitlab-foss' }
   end
 
   describe '.dev_path' do

@@ -47,7 +47,7 @@ http_interactions:
   recorded_at: Thu, 03 Aug 2017 21:26:42 GMT
 - request:
     method: get
-    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/milestones"
     body:
       encoding: US-ASCII
       string: ''
@@ -76,9 +76,9 @@ http_interactions:
       Etag:
       - W/"a7ac59028d3f8a387665e28aff26d569"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=2&per_page=20&state=all>;
-        rel="next", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&state=all>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/milestones?id=gitlab-org%2Fgitlab-ce&page=3&per_page=20&state=all>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/milestones?id=gitlab-org%2Fgitlab-foss&page=2&per_page=20&state=all>;
+        rel="next", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/milestones?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/milestones?id=gitlab-org%2Fgitlab-foss&page=3&per_page=20&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -311,7 +311,7 @@ http_interactions:
   recorded_at: Thu, 03 Aug 2017 21:26:43 GMT
 - request:
     method: post
-    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests"
+    uri: "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests"
     body:
       encoding: UTF-8
       string: title=WIP%3A%20Testing%20release-tools&description=&assignee_id=654619&labels=&source_branch=testing-release-tools&target_branch=master&milestone_id=272462
@@ -354,7 +354,7 @@ http_interactions:
       string: '{"id":4549924,"iid":13294,"project_id":13083,"title":"WIP: Testing
         release-tools","description":"","state":"opened","created_at":"2017-08-03T21:26:42.337Z","updated_at":"2017-08-03T21:26:42.337Z","target_branch":"master","source_branch":"testing-release-tools","upvotes":0,"downvotes":0,"author":{"name":"James
         Edwards-Jones","gitlabname":"jamedjo","id":654619,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/gitlab/avatar/654619/avatar.png","web_url":"https://gitlab.com/jamedjo"},"assignee":{"name":"James
-        Edwards-Jones","gitlabname":"jamedjo","id":654619,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/gitlab/avatar/654619/avatar.png","web_url":"https://gitlab.com/jamedjo"},"source_project_id":13083,"target_project_id":13083,"labels":[],"work_in_progress":true,"milestone":{"id":272462,"iid":37,"project_id":13083,"group_id":null,"title":"9.4","description":"","state":"active","created_at":"2017-02-24T13:49:25.412Z","updated_at":"2017-04-07T14:52:33.376Z","due_date":"2017-07-21","start_date":"2017-06-08"},"merge_when_pipeline_succeeds":false,"merge_status":"unchecked","sha":null,"merge_commit_sha":null,"gitlab_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/13294","subscribed":true}'
+        Edwards-Jones","gitlabname":"jamedjo","id":654619,"state":"active","avatar_url":"https://gitlab.com/uploads/-/system/gitlab/avatar/654619/avatar.png","web_url":"https://gitlab.com/jamedjo"},"source_project_id":13083,"target_project_id":13083,"labels":[],"work_in_progress":true,"milestone":{"id":272462,"iid":37,"project_id":13083,"group_id":null,"title":"9.4","description":"","state":"active","created_at":"2017-02-24T13:49:25.412Z","updated_at":"2017-04-07T14:52:33.376Z","due_date":"2017-07-21","start_date":"2017-06-08"},"merge_when_pipeline_succeeds":false,"merge_status":"unchecked","sha":null,"merge_commit_sha":null,"gitlab_notes_count":0,"approvals_before_merge":null,"should_remove_source_branch":null,"force_remove_source_branch":null,"squash":false,"web_url":"https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/13294","subscribed":true}'
     http_version: 
   recorded_at: Thu, 03 Aug 2017 21:27:40 GMT
 - request:

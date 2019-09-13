@@ -24,7 +24,7 @@ module ReleaseTools
       end
 
       # @param [String] project The full project path, such as
-      # `gitlab-org/gitlab-ce`.
+      # `gitlab-org/gitlab-foss`.
       def open_security_merge_requests(project)
         # We use a `per_page` of 100 so we get as many merge requests as
         # posibble in a single request.

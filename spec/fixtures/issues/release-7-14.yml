@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?labels=Release&milestone=7.14
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/issues?labels=Release&milestone=7.14
     body:
       encoding: US-ASCII
       string: ''
@@ -29,8 +29,8 @@ http_interactions:
       Etag:
       - W/"d751713988987e9331980363e24189ce"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=7.14&page=1&per_page=20>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=7.14&page=0&per_page=20>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/issues?id=gitlab-org%2Fgitlab-foss&labels=Release&milestone=7.14&page=1&per_page=20>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/issues?id=gitlab-org%2Fgitlab-foss&labels=Release&milestone=7.14&page=0&per_page=20>;
         rel="last"
       Status:
       - 200 OK
@@ -59,7 +59,7 @@ http_interactions:
   recorded_at: Thu, 21 Apr 2016 08:28:31 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?labels=Release&milestone=7.14&search=Release%207.14
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/issues?labels=Release&milestone=7.14&search=Release%207.14
     body:
       encoding: US-ASCII
       string: ''
@@ -88,8 +88,8 @@ http_interactions:
       Etag:
       - W/"d751713988987e9331980363e24189ce"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=7.14&order_by=created_at&page=1&per_page=20&search=Release+7.14&sort=desc&state=all>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/issues?id=gitlab-org%2Fgitlab-ce&labels=Release&milestone=7.14&order_by=created_at&page=1&per_page=20&search=Release+7.14&sort=desc&state=all>;
+      - <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/issues?id=gitlab-org%2Fgitlab-foss&labels=Release&milestone=7.14&order_by=created_at&page=1&per_page=20&search=Release+7.14&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/issues?id=gitlab-org%2Fgitlab-foss&labels=Release&milestone=7.14&order_by=created_at&page=1&per_page=20&search=Release+7.14&sort=desc&state=all>;
         rel="last"
       Vary:
       - Origin

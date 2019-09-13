@@ -25,7 +25,7 @@ module ReleaseTools
         [Release Tools][release-tools] project.
 
         [release-tools]: https://gitlab.com/gitlab-org/release-tools/
-        [commits]: https://gitlab.com/gitlab-org/gitlab-ee/compare/%<from_ref>s...%<to_ref>s
+        [commits]: https://gitlab.com/gitlab-org/gitlab/compare/%<from_ref>s...%<to_ref>s
 
         /label ~"%<environment_label>s"
       COMMENT

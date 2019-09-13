@@ -15,7 +15,7 @@ describe ReleaseTools::Qa::Formatters::MergeRequestsFormatter do
       "uncategorized" => [mr3]
     }
   end
-  let(:project_path) { 'gitlab-org/gitlab-ce' }
+  let(:project_path) { 'gitlab-org/gitlab-foss' }
 
   subject { described_class.new(merge_requests: merge_requests, project_path: project_path) }
 
@@ -75,7 +75,7 @@ describe ReleaseTools::Qa::Formatters::MergeRequestsFormatter do
       "assignee" => double("username" => "#{identifier}_assignee"),
       "sha" => "#{identifier}_sha",
       "merge_commit_sha" => "#{identifier}_merge_commit_sha",
-      "web_url" => "https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/#{iid}",
+      "web_url" => "https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/#{iid}",
       "merged_by" => double("username": "#{identifier}_merged_by")
     )
   end

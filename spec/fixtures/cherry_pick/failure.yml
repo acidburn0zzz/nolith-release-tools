@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/396d205e5a503f9f48c223804087a80f7acc6d06/cherry_pick?branch=11-4-stable
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/396d205e5a503f9f48c223804087a80f7acc6d06/cherry_pick?branch=11-4-stable
     body:
       encoding: UTF-8
       string: ''
