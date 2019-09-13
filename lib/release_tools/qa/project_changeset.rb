@@ -45,9 +45,15 @@ module ReleaseTools
       end
 
       def retrieve_merge_request(path, iid)
-        default_client.merge_request(OpenStruct.new(path: path, dev_path: path), iid: iid)
+        dev_path = path.dup
+
+        # HACK (rspeicher): Handle MRs merged into renamed EE project
+        # TODO (rspeicher): We should be able to safely remove this sometime around December 2019
+        path.gsub!(/-ee$/, '')
+
+        default_client.merge_request(OpenStruct.new(path: path, dev_path: dev_path), iid: iid)
       rescue Gitlab::Error::NotFound
-        alternate_client.merge_request(OpenStruct.new(path: path, dev_path: path), iid: iid)
+        alternate_client.merge_request(OpenStruct.new(path: path, dev_path: dev_path), iid: iid)
       end
 
       def verify_refs!(*refs)
