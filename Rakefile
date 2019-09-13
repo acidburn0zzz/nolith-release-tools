@@ -13,7 +13,7 @@ namespace :auto_deploy do
     end
   end
 
-  desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab-ee and omnibus-gitlab"
+  desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab and omnibus-gitlab"
   task prepare: :check_enabled do
     results = ReleaseTools::Services::AutoDeployBranchService
       .new(ReleaseTools::AutoDeploy::Naming.branch)
@@ -160,7 +160,7 @@ task :freeze do
 
     The feature freeze is now active. This means that no new features will be merged into the stable branches for this month's release.
 
-    For more information, refer to <https://gitlab.com/gitlab-org/gitlab-ce/blob/master/PROCESS.md#after-the-7th|"After the 7th">.
+    For more information, refer to <https://gitlab.com/gitlab-org/gitlab/blob/master/PROCESS.md#after-the-7th|"After the 7th">.
   MESSAGE
 
   HTTP.post(webhook_url, json: { text: message })

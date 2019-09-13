@@ -33,7 +33,7 @@ describe ReleaseTools::Slack::AutoDeployNotification do
         .with(a_hash_including(text: "New auto-deploy branch: `branch-name`"))
 
       described_class.on_create([
-        double(branch: 'branch-name', project: 'gitlab-ce')
+        double(branch: 'branch-name', project: 'gitlab-foss')
       ])
     end
   end

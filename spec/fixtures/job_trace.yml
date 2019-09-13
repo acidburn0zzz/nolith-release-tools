@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/jobs/189985934/trace
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/jobs/189985934/trace
     body:
       encoding: US-ASCII
       string: ''

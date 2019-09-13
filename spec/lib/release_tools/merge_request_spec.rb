@@ -34,7 +34,7 @@ describe ReleaseTools::MergeRequest do
       merge_request = described_class.new
       allow(merge_request).to receive(:iid).and_return(1234)
 
-      expect(merge_request.to_reference).to eq('gitlab-org/gitlab-ce!1234')
+      expect(merge_request.to_reference).to eq('gitlab-org/gitlab-foss!1234')
     end
   end
 

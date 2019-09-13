@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/branches?branch=test-branch-from-release-tools&ref=master
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/branches?branch=test-branch-from-release-tools&ref=master
     body:
       encoding: UTF-8
       string: ''

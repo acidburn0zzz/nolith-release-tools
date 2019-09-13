@@ -40,9 +40,9 @@ describe ReleaseTools::GitlabClient do
     it 'cancels only redundant pipelines' do
       # Cancel redundant
       expect(described_class).to receive(:cancel_pipeline)
-        .with('gitlab-org/gitlab-ce', 64_179_668)
+        .with('gitlab-org/gitlab-foss', 64_179_668)
       expect(described_class).to receive(:cancel_pipeline)
-        .with('gitlab-org/gitlab-ce', 64_181_884)
+        .with('gitlab-org/gitlab-foss', 64_181_884)
 
       # Don't cancel latest running
       expect(described_class).not_to receive(:cancel_pipeline)
@@ -135,7 +135,7 @@ describe ReleaseTools::GitlabClient do
 
     context 'when the milestone does not exist' do
       it 'raises an exception' do
-        expect { described_class.milestone(title: 'not-existent') }.to raise_error('Milestone not-existent not found for project gitlab-org/gitlab-ce!')
+        expect { described_class.milestone(title: 'not-existent') }.to raise_error('Milestone not-existent not found for project gitlab-org/gitlab-foss!')
       end
     end
   end
@@ -147,7 +147,7 @@ describe ReleaseTools::GitlabClient do
 
     let(:merge_request) do
       double(
-        project: double(path: 'gitlab-org/gitlab-ce'),
+        project: double(path: 'gitlab-org/gitlab-foss'),
         title: 'Upstream MR',
         iid: '12345',
         description: 'Hello world',
@@ -197,7 +197,7 @@ describe ReleaseTools::GitlabClient do
 
     let(:merge_request) do
       double(
-        project: double(path: 'gitlab-org/gitlab-ce'),
+        project: double(path: 'gitlab-org/gitlab-foss'),
         title: 'Upstream MR',
         description: 'Hello world',
         labels: 'CE upstream',
@@ -342,11 +342,11 @@ describe ReleaseTools::GitlabClient do
       )
 
       allow(internal_client).to receive(:url_encode)
-        .with('gitlab-org/gitlab-ce')
-        .and_return('gitlab-org%2Fgitlab-ce')
+        .with('gitlab-org/gitlab-foss')
+        .and_return('gitlab-org%2Fgitlab-foss')
       expect(internal_client).to receive(:post).with(
-        '/projects/gitlab-org%2Fgitlab-ce/issues/1/links',
-        query: { target_project_id: 'gitlab-org/gitlab-ee', target_issue_iid: 2 }
+        '/projects/gitlab-org%2Fgitlab-foss/issues/1/links',
+        query: { target_project_id: 'gitlab-org/gitlab', target_issue_iid: 2 }
       )
 
       described_class.link_issues(issue, target)

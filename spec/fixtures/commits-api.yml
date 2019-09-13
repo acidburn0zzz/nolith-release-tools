@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/invalid
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/invalid
     body:
       encoding: US-ASCII
       string: ''
@@ -57,7 +57,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/v10.8.0-rc1
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/v10.8.0-rc1
     body:
       encoding: US-ASCII
       string: ''
@@ -119,7 +119,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/v10.8.0-rc2
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/v10.8.0-rc2
     body:
       encoding: US-ASCII
       string: ''
@@ -181,7 +181,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/repository/commits/v10.8.0-rc1-ee
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/commits/v10.8.0-rc1-ee
     body:
       encoding: US-ASCII
       string: ''
@@ -243,7 +243,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/repository/commits/v10.8.0-rc2-ee
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/commits/v10.8.0-rc2-ee
     body:
       encoding: US-ASCII
       string: ''

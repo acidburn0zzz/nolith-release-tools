@@ -2,8 +2,8 @@
 
 - Preparation MR's should already be created
 - [ ] [Ensure any backports targeting] <%= version %> are merged to their stable counter part
-  - [ ] [CE Backports](https://gitlab.com/gitlab-org/gitlab-ce/merge_requests?scope=all&utf8=%E2%9C%93&state=opened&target_branch=<%= version.stable_branch %>)
-  - [ ] [EE Backports](https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?scope=all&utf8=%E2%9C%93&state=opened&target_branch=<%= version.stable_branch(ee: true) %>)
+  - [ ] [CE Backports](https://gitlab.com/gitlab-org/gitlab-foss/merge_requests?scope=all&utf8=%E2%9C%93&state=opened&target_branch=<%= version.stable_branch %>)
+  - [ ] [EE Backports](https://gitlab.com/gitlab-org/gitlab/merge_requests?scope=all&utf8=%E2%9C%93&state=opened&target_branch=<%= version.stable_branch(ee: true) %>)
   - [ ] [Omnibus CE](https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests?scope=all&utf8=%E2%9C%93&state=opened&target_branch=<%= version.stable_branch %>)
   - [ ] [Omnibus EE](https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests?scope=all&utf8=%E2%9C%93&state=opened&target_branch=<%= version.stable_branch(ee: true) %>)
 - [ ] Perform automated merging into the preparation branches:
@@ -88,8 +88,8 @@ manually generate the QA task, you can do so as follows:
 
 ### gitlab.com
 
-- https://gitlab.com/gitlab-org/gitlab-ce/commits/<%= version.stable_branch %>
-- https://gitlab.com/gitlab-org/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
+- https://gitlab.com/gitlab-org/gitlab-foss/commits/<%= version.stable_branch %>
+- https://gitlab.com/gitlab-org/gitlab/commits/<%= version.stable_branch(ee: true) %>
 - https://gitlab.com/gitlab-org/omnibus-gitlab/commits/<%= version.stable_branch %>
 
 ### dev.gitlab.org

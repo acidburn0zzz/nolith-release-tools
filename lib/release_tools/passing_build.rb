@@ -135,7 +135,7 @@ module ReleaseTools
       ReleaseTools::GitlabDevClient.delete_branch(branch_name, project)
     end
 
-    # See https://gitlab.com/gitlab-org/gitlab-ce/issues/25392
+    # See https://gitlab.com/gitlab-org/gitlab-foss/issues/25392
     def commit_url(project, id)
       if SharedStatus.security_release?
         "https://dev.gitlab.org/#{project}/commit/#{id}"

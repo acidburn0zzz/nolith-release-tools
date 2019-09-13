@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/compare?from=v10.8.0-rc1&to=v10.8.0-rc2
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/compare?from=v10.8.0-rc1&to=v10.8.0-rc2
     body:
       encoding: US-ASCII
       string: ''
@@ -64,12 +64,12 @@ http_interactions:
         into ''master''","created_at":"2018-05-04T16:09:51.000Z","parent_ids":["d36753ca4448983a4113f8e6fccdbe58d3452ecd"],"message":"Merge
         branch ''46049-import-export-import-is-broken-due-to-the-addition-of-a-ci-table''
         into ''master''\n\nResolve \"Import/Export (import) is broken due to the addition
-        of a CI table\"\n\nCloses #46049\n\nSee merge request gitlab-org/gitlab-ce!18745\n","author_name":"Douwe
+        of a CI table\"\n\nCloses #46049\n\nSee merge request gitlab-org/gitlab-foss!18745\n","author_name":"Douwe
         Maan","author_email":"douwe@gitlab.com","authored_date":"2018-05-04T16:00:39.000Z","committer_name":"Mayra
         Cabrera","committer_email":"mcabrera@gitlab.com","committed_date":"2018-05-04T16:09:51.000Z"},{"id":"fb38c4e6457ae93794879f29ce0bf62dffc2d407","short_id":"fb38c4e6","title":"Merge
         branch ''10-8-stable-prepare-rc2'' into ''10-8-stable''","created_at":"2018-05-04T17:25:15.000Z","parent_ids":["d36753ca4448983a4113f8e6fccdbe58d3452ecd","c8f70158e57213e4a813aef1e3b0ad9aa22441b0"],"message":"Merge
         branch ''10-8-stable-prepare-rc2'' into ''10-8-stable''\n\nPrepare 10.8 RC2
-        release\n\nSee merge request gitlab-org/gitlab-ce!18744","author_name":"Mayra
+        release\n\nSee merge request gitlab-org/gitlab-foss!18744","author_name":"Mayra
         Cabrera","author_email":"mcabrera@gitlab.com","authored_date":"2018-05-04T17:25:15.000Z","committer_name":"Mayra
         Cabrera","committer_email":"mcabrera@gitlab.com","committed_date":"2018-05-04T17:25:15.000Z"},{"id":"7f7153301ad59d864791cb85d8abd1135962e954","short_id":"7f715330","title":"Update
         VERSION to 10.8.0-rc2","created_at":"2018-05-04T18:02:47.000Z","parent_ids":["fb38c4e6457ae93794879f29ce0bf62dffc2d407"],"message":"Update
@@ -98,7 +98,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/v10.8.0-rc1
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/v10.8.0-rc1
     body:
       encoding: US-ASCII
       string: ''
@@ -160,7 +160,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/v10.8.0-rc2
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/v10.8.0-rc2
     body:
       encoding: US-ASCII
       string: ''
@@ -222,7 +222,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/repository/commits/v10.8.0-rc1-ee
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/commits/v10.8.0-rc1-ee
     body:
       encoding: US-ASCII
       string: ''
@@ -284,7 +284,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ee/repository/commits/v10.8.0-rc2-ee
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/commits/v10.8.0-rc2-ee
     body:
       encoding: US-ASCII
       string: ''
@@ -346,7 +346,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/c8f70158e57213e4a813aef1e3b0ad9aa22441b0/merge_requests
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/c8f70158e57213e4a813aef1e3b0ad9aa22441b0/merge_requests
     body:
       encoding: US-ASCII
       string: ''
@@ -377,8 +377,8 @@ http_interactions:
       Etag:
       - W/"be75d5eb58190042c0a5463df6091241"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/c8f70158e57213e4a813aef1e3b0ad9aa22441b0/merge_requests?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&sha=c8f70158e57213e4a813aef1e3b0ad9aa22441b0>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/c8f70158e57213e4a813aef1e3b0ad9aa22441b0/merge_requests?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&sha=c8f70158e57213e4a813aef1e3b0ad9aa22441b0>;
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/c8f70158e57213e4a813aef1e3b0ad9aa22441b0/merge_requests?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&sha=c8f70158e57213e4a813aef1e3b0ad9aa22441b0>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/c8f70158e57213e4a813aef1e3b0ad9aa22441b0/merge_requests?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&sha=c8f70158e57213e4a813aef1e3b0ad9aa22441b0>;
         rel="last"
       Vary:
       - Origin
@@ -417,12 +417,12 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"id":9636918,"iid":18744,"project_id":13083,"title":"Prepare 10.8
-        RC2 release","description":"Main release issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/45897\n\n###
+        RC2 release","description":"Main release issue: https://gitlab.com/gitlab-org/gitlab-foss/issues/45897\n\n###
         Summary\n\nThis MR prepares `10-8-stable` for %\"10.8\" (`RC2`) by merging
         `10-8-stable-prepare-rc2` into `10-8-stable`.\n\n### Note to leave in MRs\n\n```\nPicked
-        into https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/18744, will merge
+        into https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/18744, will merge
         into `10-8-stable` ready for `10.8 RC2`\n\n/unlabel ~\"Pick into 10.8\"\n```\n\n###
-        Steps\n\n1. Cherry-pick the fix for https://gitlab.com/gitlab-org/gitlab-ce/issues/46049\n1.
+        Steps\n\n1. Cherry-pick the fix for https://gitlab.com/gitlab-org/gitlab-foss/issues/46049\n1.
         Merge CE-to-EE using one of the workflows described in the [Merge CE stable
         changes to EE docs](https://gitlab.com/gitlab-org/release-tools/blob/master/doc/picking-into-merge-requests.md#merge-ce-stable-changes-to-ee)\n  -
         *Note: Often, after a release has been tagged, the `VERSION` file in `ee`
@@ -434,12 +434,12 @@ http_interactions:
         MR was in progress. If there are, ensure these are merged into EE and check
         for a green pipeline after merging this MR.","state":"merged","created_at":"2018-05-04T11:39:23.821Z","updated_at":"2018-05-04T17:26:00.716Z","target_branch":"10-8-stable","source_branch":"10-8-stable-prepare-rc2","upvotes":0,"downvotes":0,"author":{"id":482476,"name":"Filipa
         Lacerda","username":"filipa","state":"active","avatar_url":"https://assets.gitlab-static.net/uploads/-/system/user/avatar/482476/avatar.png","web_url":"https://gitlab.com/filipa"},"assignee":{"id":33100,"name":"Mayra
-        Cabrera","username":"mayra-cabrera","state":"active","avatar_url":"https://assets.gitlab-static.net/uploads/-/system/user/avatar/33100/avatar.png","web_url":"https://gitlab.com/mayra-cabrera"},"source_project_id":13083,"target_project_id":13083,"labels":["Release"],"work_in_progress":false,"milestone":{"id":445863,"iid":12,"group_id":9970,"title":"10.8","description":"","state":"active","created_at":"2018-01-16T17:05:23.570Z","updated_at":"2018-01-16T17:05:23.570Z","due_date":"2018-05-22","start_date":"2018-04-08"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"c8f70158e57213e4a813aef1e3b0ad9aa22441b0","merge_commit_sha":"fb38c4e6457ae93794879f29ce0bf62dffc2d407","user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":true,"web_url":"https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/18744","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"approvals_before_merge":null,"squash":false}]'
+        Cabrera","username":"mayra-cabrera","state":"active","avatar_url":"https://assets.gitlab-static.net/uploads/-/system/user/avatar/33100/avatar.png","web_url":"https://gitlab.com/mayra-cabrera"},"source_project_id":13083,"target_project_id":13083,"labels":["Release"],"work_in_progress":false,"milestone":{"id":445863,"iid":12,"group_id":9970,"title":"10.8","description":"","state":"active","created_at":"2018-01-16T17:05:23.570Z","updated_at":"2018-01-16T17:05:23.570Z","due_date":"2018-05-22","start_date":"2018-04-08"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"c8f70158e57213e4a813aef1e3b0ad9aa22441b0","merge_commit_sha":"fb38c4e6457ae93794879f29ce0bf62dffc2d407","user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":true,"web_url":"https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/18744","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"approvals_before_merge":null,"squash":false}]'
     http_version: 
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/fb38c4e6457ae93794879f29ce0bf62dffc2d407/merge_requests
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/fb38c4e6457ae93794879f29ce0bf62dffc2d407/merge_requests
     body:
       encoding: US-ASCII
       string: ''
@@ -470,8 +470,8 @@ http_interactions:
       Etag:
       - W/"d751713988987e9331980363e24189ce"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/fb38c4e6457ae93794879f29ce0bf62dffc2d407/merge_requests?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&sha=fb38c4e6457ae93794879f29ce0bf62dffc2d407>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/fb38c4e6457ae93794879f29ce0bf62dffc2d407/merge_requests?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&sha=fb38c4e6457ae93794879f29ce0bf62dffc2d407>;
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/fb38c4e6457ae93794879f29ce0bf62dffc2d407/merge_requests?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&sha=fb38c4e6457ae93794879f29ce0bf62dffc2d407>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/fb38c4e6457ae93794879f29ce0bf62dffc2d407/merge_requests?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&sha=fb38c4e6457ae93794879f29ce0bf62dffc2d407>;
         rel="last"
       Vary:
       - Origin
@@ -514,7 +514,7 @@ http_interactions:
   recorded_at: Tue, 22 May 2018 00:00:00 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/repository/commits/7f7153301ad59d864791cb85d8abd1135962e954/merge_requests
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/commits/7f7153301ad59d864791cb85d8abd1135962e954/merge_requests
     body:
       encoding: US-ASCII
       string: ''
@@ -545,8 +545,8 @@ http_interactions:
       Etag:
       - W/"d751713988987e9331980363e24189ce"
       Link:
-      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/7f7153301ad59d864791cb85d8abd1135962e954/merge_requests?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&sha=7f7153301ad59d864791cb85d8abd1135962e954>;
-        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/7f7153301ad59d864791cb85d8abd1135962e954/merge_requests?id=gitlab-org%2Fgitlab-ce&page=1&per_page=20&sha=7f7153301ad59d864791cb85d8abd1135962e954>;
+      - <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/7f7153301ad59d864791cb85d8abd1135962e954/merge_requests?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&sha=7f7153301ad59d864791cb85d8abd1135962e954>;
+        rel="first", <https://gitlab.com/api/v4/projects/gitlab%2Dorg%2Fgitlab%2Dce/repository/commits/7f7153301ad59d864791cb85d8abd1135962e954/merge_requests?id=gitlab-org%2Fgitlab-foss&page=1&per_page=20&sha=7f7153301ad59d864791cb85d8abd1135962e954>;
         rel="last"
       Vary:
       - Origin

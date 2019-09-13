@@ -97,7 +97,7 @@ http_interactions:
         the CHANGELOG will be automatically updated on master during tagging\n- [
         ] If needed, sync tags for dependencies (`gitlab-shell`, `gitlab-workhorse`,
         `gitlab-pages`, `gitaly`) to `dev` (when applicable. Builds should fail if
-        this is needed.)\n\n[CE to EE]: https://gitlab.com/gitlab-org/gitlab-ee/merge_requests?label_name[]=CE+upstream\u0026scope=all\u0026state=opened\n[Merging
+        this is needed.)\n\n[CE to EE]: https://gitlab.com/gitlab-org/gitlab/merge_requests?label_name[]=CE+upstream\u0026scope=all\u0026state=opened\n[Merging
         a CE stable branch into its EE counterpart]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/merge-ce-into-ee.md#merging-a-ce-stable-branch-into-its-ee-counterpart\n\n##
         RC1\n\n- Follow the [Creating RC1] guide:\n  - [x] Create an MR on **CE**
         master updating the \"Installation from Source\" guide, creating the \"Update\"
@@ -159,10 +159,10 @@ http_interactions:
         manager](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)\n  on
         Slack to make them aware of the issue. Cross-post the slack message to the
         #marketing channel to notify them too\n- At 14:10 UTC:\n  - [ ] Verify that
-        packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=11.7.0)
-        / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=11.7.0)\n  -
-        [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags)
-        / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)\n  - [ ] Create the
+        packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab/search?q=11.7.0)
+        / [CE](https://packages.gitlab.com/app/gitlab/gitlab-foss/search?q=11.7.0)\n  -
+        [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab/tags)
+        / [CE](https://hub.docker.com/r/gitlab/gitlab-foss/tags)\n  - [ ] Create the
         `11.7.0` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=11.7.0)\n  -
         [ ] Once all packages are available publicly and GitLab.com is up and running
         on the release version,\n  ping the [release post manager](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)\n  on
@@ -170,8 +170,8 @@ http_interactions:
         at ~14:20 UTC, so that it will be live at 15:00 UTC\n  - [ ] Make sure the
         release post manager will tweet about the `11.7.0` release.\n  If they don''t
         respond, ensure someone else tweets from the `#releases` channel\n\n[CE stable
-        branch]: https://gitlab.com/gitlab-org/gitlab-ce/commits/11-7-stable\n[EE
-        stable branch]: https://gitlab.com/gitlab-org/gitlab-ee/commits/11-7-stable-ee\n[Omnibus
+        branch]: https://gitlab.com/gitlab-org/gitlab-foss/commits/11-7-stable\n[EE
+        stable branch]: https://gitlab.com/gitlab-org/gitlab/commits/11-7-stable-ee\n[Omnibus
         CE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/11-7-stable\n[Omnibus
         EE stable branch]: https://gitlab.com/gitlab-org/omnibus-gitlab/commits/11-7-stable-ee\n[announce
         the deployment]: https://gitlab.com/gitlab-org/takeoff/blob/master/doc/announce-a-deployment.md\n[`release`
