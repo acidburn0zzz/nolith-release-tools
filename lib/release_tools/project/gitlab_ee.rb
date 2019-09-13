@@ -5,7 +5,7 @@ module ReleaseTools
     class GitlabEe < BaseProject
       REMOTES = {
         dev: 'git@dev.gitlab.org:gitlab/gitlab-ee.git',
-        gitlab: 'git@gitlab.com:gitlab-org/gitlab-ee.git'
+        gitlab: 'git@gitlab.com:gitlab-org/gitlab.git'
       }.freeze
     end
   end
