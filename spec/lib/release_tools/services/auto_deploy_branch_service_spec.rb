@@ -18,12 +18,7 @@ describe ReleaseTools::Services::AutoDeployBranchService do
     it 'creates auto-deploy branches' do
       branch_name = 'branch-name'
 
-      expect(service).to receive(:latest_successful_ref).and_return(branch_commit).exactly(3).times
-      expect(internal_client).to receive(:create_branch).with(
-        branch_name,
-        branch_commit,
-        ReleaseTools::Project::GitlabCe
-      )
+      expect(service).to receive(:latest_successful_ref).and_return(branch_commit).twice
       expect(internal_client).to receive(:create_branch).with(
         branch_name,
         branch_commit,
