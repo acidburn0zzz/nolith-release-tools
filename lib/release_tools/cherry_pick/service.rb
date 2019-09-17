@@ -13,6 +13,8 @@ module ReleaseTools
     # and a final summary message with the list of picked and unpicked merge
     # requests for the release managers to perform any further manual actions.
     class Service
+      include ::SemanticLogger::Loggable
+
       REMOTE = :gitlab
 
       attr_reader :project
@@ -108,7 +110,22 @@ module ReleaseTools
 
       def record_result(result)
         @results << result
+        log_result(result)
         notifier.comment(result)
+      end
+
+      def log_result(result)
+        payload = {
+          project: project,
+          target: target.branch_name,
+          merge_request: result.url
+        }
+
+        if result.success?
+          logger.info('Cherry-pick merged', payload)
+        else
+          logger.warn('Cherry-pick failed', payload)
+        end
       end
 
       def pickable_mrs
