@@ -68,7 +68,7 @@ module ReleaseTools
 
       # @param [Gitlab::ObjectifiedHash] mr
       def merge(mr)
-        logger.debug(__method__, merge_request: mr.web_url)
+        logger.trace(__method__, merge_request: mr.web_url)
 
         return if SharedStatus.dry_run?
 

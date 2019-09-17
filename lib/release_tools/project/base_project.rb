@@ -48,6 +48,10 @@ module ReleaseTools
         end
       end
 
+      def self.inspect
+        to_s
+      end
+
       def self.extract_path_from_remote(remote_key)
         raise "Invalid remote: #{remote_key}" unless self::REMOTES.key?(remote_key)
 
