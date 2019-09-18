@@ -59,12 +59,12 @@ describe ReleaseTools::CherryPick::Service do
       let(:picks) do
         Gitlab::PaginatedResponse.new(
           [
-            double(iid: 1, project_id: 13_083, merge_commit_sha: 'success-a'),
-            double(iid: 2, project_id: 13_083, merge_commit_sha: 'success-b'),
+            double(iid: 1, project_id: 13_083, merge_commit_sha: 'success-a').as_null_object,
+            double(iid: 2, project_id: 13_083, merge_commit_sha: 'success-b').as_null_object,
 
-            double(iid: 3, project_id: 13_083, merge_commit_sha: 'failure-a'),
-            double(iid: 4, project_id: 13_083, merge_commit_sha: 'failure-b'),
-            double(iid: 5, project_id: 13_083, merge_commit_sha: 'failure-c'),
+            double(iid: 3, project_id: 13_083, merge_commit_sha: 'failure-a').as_null_object,
+            double(iid: 4, project_id: 13_083, merge_commit_sha: 'failure-b').as_null_object,
+            double(iid: 5, project_id: 13_083, merge_commit_sha: 'failure-c').as_null_object,
           ]
         )
       end
