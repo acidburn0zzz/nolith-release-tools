@@ -5,7 +5,7 @@ module ReleaseTools
     extend self
 
     def dry_run?
-      ENV['TEST'].present?
+      ENV['TEST'].present? || Feature.enabled?(:force_dry_run)
     end
 
     def security_release?
