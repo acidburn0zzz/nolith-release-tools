@@ -7,6 +7,10 @@ module ReleaseTools
         canonical: 'git@gitlab.com:gitlab-org/gitaly.git',
         dev:       'git@dev.gitlab.org:gitlab/gitaly.git'
       }.freeze
+
+      def self.version_file
+        'GITALY_SERVER_VERSION'
+      end
     end
   end
 end

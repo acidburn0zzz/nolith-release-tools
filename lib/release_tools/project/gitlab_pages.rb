@@ -4,9 +4,13 @@ module ReleaseTools
   module Project
     class GitlabPages < BaseProject
       REMOTES = {
-        dev: 'git@dev.gitlab.org:gitlab/gitlab-pages.git',
-        gitlab: 'git@gitlab.com:gitlab-org/gitlab-pages.git'
+        canonical: 'git@gitlab.com:gitlab-org/gitlab-pages.git',
+        dev: 'git@dev.gitlab.org:gitlab/gitlab-pages.git'
       }.freeze
+
+      def self.version_file
+        'GITLAB_PAGES_VERSION'
+      end
     end
   end
 end

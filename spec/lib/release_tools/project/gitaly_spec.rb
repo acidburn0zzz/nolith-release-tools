@@ -21,4 +21,8 @@ describe ReleaseTools::Project::Gitaly do
   describe '.dev_group' do
     it { expect(described_class.dev_group).to eq 'gitlab' }
   end
+
+  describe '.version_file' do
+    it { expect(described_class.version_file).to eq 'GITALY_SERVER_VERSION' }
+  end
 end
