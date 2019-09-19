@@ -128,21 +128,21 @@ namespace :release do
     version = get_version(args)
 
     if skip?('ce')
-      $stdout.puts 'Skipping release for CE'.colorize(:red)
+      ReleaseTools.logger.warn('Skipping release for CE')
     else
       ce_version = version.to_ce
 
-      $stdout.puts 'CE release'.colorize(:blue)
+      ReleaseTools.logger.info('Starting CE release')
       ReleaseTools::Release::GitlabCeRelease.new(ce_version).execute
       ReleaseTools::Slack::TagNotification.release(ce_version) unless dry_run?
     end
 
     if skip?('ee')
-      $stdout.puts 'Skipping release for EE'.colorize(:red)
+      ReleaseTools.logger.warn('Skipping release for EE')
     else
       ee_version = version.to_ee
 
-      $stdout.puts 'EE release'.colorize(:blue)
+      ReleaseTools.logger.info('Starting EE release')
       ReleaseTools::Release::GitlabEeRelease.new(ee_version).execute
       ReleaseTools::Slack::TagNotification.release(ee_version) unless dry_run?
     end
