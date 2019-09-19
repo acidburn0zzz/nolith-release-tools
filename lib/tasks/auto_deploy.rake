@@ -40,29 +40,9 @@ namespace :auto_deploy do
       .from_branch(auto_deploy_branch)
       .to_ee
 
-    ee_results = auto_deploy_pick(ReleaseTools::Project::GitlabEe, version)
-    ce_results = auto_deploy_pick(ReleaseTools::Project::GitlabCe, version.to_ce)
-    _ob_results = auto_deploy_pick(ReleaseTools::Project::OmnibusGitlab, version)
-
-    exit if ReleaseTools::SharedStatus.dry_run?
-
-    if ee_results.any?(&:success?) || ce_results.any?(&:success?)
-      ReleaseTools.logger.info(
-        'Triggering merge train for auto-deploy branch',
-        name: auto_deploy_branch
-      )
-
-      pipeline = ReleaseTools::GitlabOpsClient.run_trigger(
-        ReleaseTools::Project::MergeTrain,
-        ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
-        'master',
-        SOURCE_BRANCH: auto_deploy_branch,
-        TARGET_BRANCH: auto_deploy_branch,
-        MERGE_MANUAL: '1'
-      )
-
-      ReleaseTools.logger.info('Merge-train triggered', url: pipeline.web_url)
-    end
+    auto_deploy_pick(ReleaseTools::Project::GitlabEe, version)
+    auto_deploy_pick(ReleaseTools::Project::GitlabCe, version.to_ce)
+    auto_deploy_pick(ReleaseTools::Project::OmnibusGitlab, version)
   end
 
   desc "Tag the auto-deploy branches from the latest passing builds"
