@@ -39,24 +39,6 @@ namespace :release do
     ee_results.each do |result|
       $stdout.puts cherry_pick_result(result).indent(4)
     end
-
-    exit if ReleaseTools::SharedStatus.dry_run?
-
-    # If we picked anything in CE, we need to merge into EE via MergeTrain
-    if ce_results.any?(&:success?)
-      $stdout.puts "--> Triggering merge train for `#{ce_target.source_branch}`"
-
-      pipeline = ReleaseTools::GitlabOpsClient.run_trigger(
-        ReleaseTools::Project::MergeTrain,
-        ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
-        'master',
-        SOURCE_BRANCH: ce_target.source_branch,
-        TARGET_BRANCH: ee_target.source_branch,
-        MERGE_MANUAL: '1'
-      )
-
-      $stdout.puts pipeline.web_url.indent(4)
-    end
   end
 
   desc 'Prepare for a new release'
