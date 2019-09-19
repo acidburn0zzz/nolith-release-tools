@@ -18,27 +18,29 @@ namespace :release do
     ce_version = get_version(args).to_ce
     ce_target = ReleaseTools::PreparationMergeRequest.new(version: ce_version)
 
-    $stdout.puts "--> Picking for #{ce_version}..."
-    ce_results = ReleaseTools::CherryPick::Service
+    ReleaseTools.logger.info(
+      'Picking into preparation merge requests',
+      version: ce_version,
+      target: ce_target.branch_name
+    )
+
+    ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabCe, ce_version, ce_target)
       .execute
-
-    ce_results.each do |result|
-      $stdout.puts cherry_pick_result(result).indent(4)
-    end
 
     # EE
     ee_version = ce_version.to_ee
     ee_target = ReleaseTools::PreparationMergeRequest.new(version: ee_version)
 
-    $stdout.puts "--> Picking for #{ee_version}..."
-    ee_results = ReleaseTools::CherryPick::Service
+    ReleaseTools.logger.info(
+      'Picking into preparation merge requests',
+      version: ee_version,
+      target: ee_target.branch_name
+    )
+
+    ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, ee_version, ee_target)
       .execute
-
-    ee_results.each do |result|
-      $stdout.puts cherry_pick_result(result).indent(4)
-    end
   end
 
   desc 'Prepare for a new release'
