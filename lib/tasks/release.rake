@@ -18,45 +18,29 @@ namespace :release do
     ce_version = get_version(args).to_ce
     ce_target = ReleaseTools::PreparationMergeRequest.new(version: ce_version)
 
-    $stdout.puts "--> Picking for #{ce_version}..."
-    ce_results = ReleaseTools::CherryPick::Service
+    ReleaseTools.logger.info(
+      'Picking into preparation merge requests',
+      version: ce_version,
+      target: ce_target.branch_name
+    )
+
+    ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabCe, ce_version, ce_target)
       .execute
-
-    ce_results.each do |result|
-      $stdout.puts cherry_pick_result(result).indent(4)
-    end
 
     # EE
     ee_version = ce_version.to_ee
     ee_target = ReleaseTools::PreparationMergeRequest.new(version: ee_version)
 
-    $stdout.puts "--> Picking for #{ee_version}..."
-    ee_results = ReleaseTools::CherryPick::Service
+    ReleaseTools.logger.info(
+      'Picking into preparation merge requests',
+      version: ee_version,
+      target: ee_target.branch_name
+    )
+
+    ReleaseTools::CherryPick::Service
       .new(ReleaseTools::Project::GitlabEe, ee_version, ee_target)
       .execute
-
-    ee_results.each do |result|
-      $stdout.puts cherry_pick_result(result).indent(4)
-    end
-
-    exit if ReleaseTools::SharedStatus.dry_run?
-
-    # If we picked anything in CE, we need to merge into EE via MergeTrain
-    if ce_results.any?(&:success?)
-      $stdout.puts "--> Triggering merge train for `#{ce_target.source_branch}`"
-
-      pipeline = ReleaseTools::GitlabOpsClient.run_trigger(
-        ReleaseTools::Project::MergeTrain,
-        ENV.fetch('MERGE_TRAIN_TRIGGER_TOKEN'),
-        'master',
-        SOURCE_BRANCH: ce_target.source_branch,
-        TARGET_BRANCH: ee_target.source_branch,
-        MERGE_MANUAL: '1'
-      )
-
-      $stdout.puts pipeline.web_url.indent(4)
-    end
   end
 
   desc 'Prepare for a new release'
@@ -144,21 +128,21 @@ namespace :release do
     version = get_version(args)
 
     if skip?('ce')
-      $stdout.puts 'Skipping release for CE'.colorize(:red)
+      ReleaseTools.logger.warn('Skipping release for CE')
     else
       ce_version = version.to_ce
 
-      $stdout.puts 'CE release'.colorize(:blue)
+      ReleaseTools.logger.info('Starting CE release')
       ReleaseTools::Release::GitlabCeRelease.new(ce_version).execute
       ReleaseTools::Slack::TagNotification.release(ce_version) unless dry_run?
     end
 
     if skip?('ee')
-      $stdout.puts 'Skipping release for EE'.colorize(:red)
+      ReleaseTools.logger.warn('Skipping release for EE')
     else
       ee_version = version.to_ee
 
-      $stdout.puts 'EE release'.colorize(:blue)
+      ReleaseTools.logger.info('Starting EE release')
       ReleaseTools::Release::GitlabEeRelease.new(ee_version).execute
       ReleaseTools::Slack::TagNotification.release(ee_version) unless dry_run?
     end

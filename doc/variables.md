@@ -35,8 +35,6 @@ authenticating over HTTPS with an access token.
 
 - `AUTO_DEPLOY_BRANCH` -- The current auto-deploy branch. Gets updated via API
   by auto-deploy jobs and **should not be changed manually.**
-- `MERGE_TRAIN_TRIGGER_TOKEN` -- Used to trigger the merge train job after
-  cherry-picking.
 - `OMNIBUS_BUILD_TRIGGER_TOKEN` -- Used to trigger an Omnibus build.
 
 ## Miscellany
