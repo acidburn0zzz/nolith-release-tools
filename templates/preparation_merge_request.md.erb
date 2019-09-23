@@ -7,20 +7,9 @@ This MR prepares `<%= stable_branch %>` for `<%= version %>`.
 ### Automated cherry-picking
 
 Merge requests labeled <%= PickIntoLabel.reference(version) %> should be
-automatically picked into both the CE and EE prepration MRs using the following
-ChatOps command:
+automatically picked into this MR using the following ChatOps command:
 
 ```sh
 # In Slack
 /chatops run release merge <%= version.to_ce %>
 ```
-
-<% if ee? -%>
-Once automated cherry-picking has completed, the CE merge request still needs to
-be merged into this merge request in order to bring in changes that are not
-EE-specific.
-
-Refer to [the documentation][ce-to-ee] for more information.
-
-[ce-to-ee]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/picking-into-merge-requests.md#to-merge-ce-into-the-ee-mr
-<% end -%>
