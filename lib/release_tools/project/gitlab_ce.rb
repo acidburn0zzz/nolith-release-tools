@@ -4,8 +4,8 @@ module ReleaseTools
   module Project
     class GitlabCe < BaseProject
       REMOTES = {
-        dev: 'git@dev.gitlab.org:gitlab/gitlabhq.git',
-        gitlab: 'git@gitlab.com:gitlab-org/gitlab-foss.git'
+        canonical: 'git@gitlab.com:gitlab-org/gitlab-foss.git',
+        dev:       'git@dev.gitlab.org:gitlab/gitlabhq.git'
       }.freeze
     end
   end

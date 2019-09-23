@@ -11,10 +11,8 @@ module ReleaseTools
         \.git\z
       }x.freeze
 
-      # The default remote should be set
-      # to the source of repository
-      # mirroring
-      DEFAULT_REMOTE = :gitlab
+      # The default remote should be set to the source of repository mirroring
+      DEFAULT_REMOTE = :canonical
 
       def self.remotes
         if SharedStatus.security_release?
