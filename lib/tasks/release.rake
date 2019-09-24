@@ -14,22 +14,7 @@ namespace :release do
 
   desc 'Merges valid merge requests into preparation branches'
   task :merge, [:version] do |_t, args|
-    # CE
-    ce_version = get_version(args).to_ce
-    ce_target = ReleaseTools::PreparationMergeRequest.new(version: ce_version)
-
-    ReleaseTools.logger.info(
-      'Picking into preparation merge requests',
-      version: ce_version,
-      target: ce_target.branch_name
-    )
-
-    ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabCe, ce_version, ce_target)
-      .execute
-
-    # EE
-    ee_version = ce_version.to_ee
+    ee_version = get_version(args).to_ee
     ee_target = ReleaseTools::PreparationMergeRequest.new(version: ee_version)
 
     ReleaseTools.logger.info(
@@ -54,13 +39,6 @@ namespace :release do
 
       service.create_label
     else
-      # Create preparation MR for CE
-      version = version.to_ce
-      merge_request = ReleaseTools::PreparationMergeRequest.new(version: version)
-      merge_request.create_branch!
-      create_or_show_merge_request(merge_request)
-
-      # Create preparation MR for EE
       version = version.to_ee
       merge_request = ReleaseTools::PreparationMergeRequest.new(version: version)
       merge_request.create_branch!
