@@ -74,7 +74,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
         let(:version)        { "9.1.24#{suffix}" }
         let(:ob_version)     { "9.1.24+#{edition}.0" }
-        let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
         let(:branch)         { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -121,7 +120,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
       context "with a new 10-1-stable#{suffix} stable branch, releasing an RC" do
         let(:version)        { "10.1.0-rc13#{suffix}" }
         let(:ob_version)     { "10.1.0+rc13.#{edition}.0" }
-        let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
         let(:branch)         { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -155,7 +153,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
       context "with a new 10-1-stable#{suffix} stable branch, releasing a stable .0" do
         let(:version)        { "10.1.0#{suffix}" }
         let(:ob_version)     { "10.1.0+#{edition}.0" }
-        let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
         let(:branch)         { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -200,7 +197,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
     context "with a version < 8.5.0" do
       let(:version)        { "1.9.24-ee" }
       let(:ob_version)     { "1.9.24+ee.0" }
-      let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
       let(:branch)         { "1-9-stable-ee" }
 
       describe "release GitLab-EE" do
