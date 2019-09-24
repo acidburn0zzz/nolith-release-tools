@@ -10,6 +10,8 @@ module FeatureStub
   end
 
   def enable_feature(*args)
+    allow(ReleaseTools::Feature).to receive(:enabled?).and_call_original
+
     args.each do |arg|
       allow(ReleaseTools::Feature)
         .to receive(:enabled?).with(arg.to_s).and_return(true)
@@ -19,6 +21,8 @@ module FeatureStub
   end
 
   def disable_feature(*args)
+    allow(ReleaseTools::Feature).to receive(:enabled?).and_call_original
+
     args.each do |arg|
       allow(ReleaseTools::Feature)
         .to receive(:enabled?).with(arg.to_s).and_return(false)
