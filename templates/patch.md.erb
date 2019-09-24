@@ -48,13 +48,13 @@ For patch releases, the only available environment for deploys is `pre.gitlab.co
 
 ### pre.gitlab.com
 
+Deployments to pre.gitlab.com are performed automatically. If you need to
+manually run a deployment, you can do so as follows:
 
-- [ ] [Deploy] `<%= version %>` to **pre.gitlab.com**. Note that starting in release **11.6** staging deploys are automatically triggered from the  [EE omnibus pipeline](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) `gitlab_com:upload_deploy` stage.
-    ```sh
-    # In Slack:
-    /chatops run deploy <%= version %>-ee.0 --pre
-    ```
-- [ ] Link to deployment job (even failed attempts) =>
+```sh
+# In Slack:
+/chatops run deploy <%= version %>-ee.0 --pre
+```
 
 #### QA
 
