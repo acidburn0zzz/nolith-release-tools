@@ -45,9 +45,9 @@ module ReleaseTools
           if triggers.any?
             triggers.each do |job|
               if SharedStatus.dry_run?
-                logger.warn('Would play job', job: job.name, url: job.web_url)
+                logger.warn('Would play job', name: job.name, url: job.web_url)
               else
-                logger.info('Play job', job: job.name, url: job.web_url)
+                logger.info('Play job', name: job.name, url: job.web_url)
                 client.job_play(project_path, job.id)
               end
             end
