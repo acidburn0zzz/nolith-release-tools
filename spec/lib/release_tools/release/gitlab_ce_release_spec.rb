@@ -193,58 +193,5 @@ describe ReleaseTools::Release::GitlabCeRelease do
         end
       end
     end
-
-    context "with a version < 8.5.0" do
-      let(:version)        { "1.9.24-ee" }
-      let(:ob_version)     { "1.9.24+ee.0" }
-      let(:branch)         { "1-9-stable-ee" }
-
-      describe "release GitLab-EE" do
-        before do
-          execute(version, branch)
-        end
-
-        it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
-          aggregate_failures do
-            # GitLab expectations
-            expect(repository.head.name).to eq "refs/heads/#{branch}"
-            expect(repository).to have_version.at(version)
-
-            # Omnibus-GitLab expectations
-            expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
-            expect(ob_repository.tags[ob_version]).not_to be_nil
-            expect(ob_repository).to have_version.at(version)
-            expect(ob_repository).to have_version('shell').at('2.2.2')
-            expect(ob_repository).to have_version('workhorse').at('3.3.3')
-            expect(ob_repository).not_to have_version('pages')
-            expect(ob_repository).to have_version('gitaly').at('5.5.5')
-          end
-        end
-      end
-    end
-
-    context 'with a version >= 9' do
-      let(:version)    { '9.0.0' }
-      let(:ob_version) { '9.0.0+ce.0' }
-      let(:branch)     { '9-0-stable' }
-
-      describe 'release GitLab-CE' do
-        before do
-          execute(version, branch)
-        end
-
-        it 'creates a new branch and updates the version in GITALY_SERVER_VERSION in the omnibus-gitlab repo' do
-          aggregate_failures do
-            # GitLab expectations
-            expect(repository.head.name).to eq "refs/heads/#{branch}"
-            expect(repository).to have_version.at(version)
-
-            # Omnibus-GitLab expectations
-            expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
-            expect(ob_repository).to have_version('gitaly').at('5.6.0')
-          end
-        end
-      end
-    end
   end
 end
