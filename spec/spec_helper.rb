@@ -32,4 +32,12 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
+
+  config.around do |ex|
+    # HACK (rspeicher): Work around a transient timing failure when the user has
+    # a Git template dir (such as ~/.git_template)
+    ClimateControl.modify(GIT_TEMPLATE_DIR: '') do
+      ex.run
+    end
+  end
 end
