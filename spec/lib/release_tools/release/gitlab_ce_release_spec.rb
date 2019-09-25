@@ -21,9 +21,16 @@ describe ReleaseTools::Release::GitlabCeRelease do
   let(:repository)    { Rugged::Repository.new(repo_path) }
   let(:ob_repository) { Rugged::Repository.new(ob_repo_path) }
 
+  # When enabled, operate as a security release
+  let(:security_release) { false }
+
   before do
     fixture    = ReleaseFixture.new
     ob_fixture = OmnibusReleaseFixture.new
+
+    enable_feature(:security_remote)
+    allow(ReleaseTools::SharedStatus).to receive(:security_release?)
+      .and_return(security_release)
 
     fixture.rebuild_fixture!
     ob_fixture.rebuild_fixture!
@@ -35,10 +42,10 @@ describe ReleaseTools::Release::GitlabCeRelease do
 
     # Override the actual remotes with our local fixture repositories
     allow_any_instance_of(described_class).to receive(:remotes)
-      .and_return({ gitlab: "file://#{fixture.fixture_path}" })
+      .and_return({ canonical: "file://#{fixture.fixture_path}" })
 
     allow_any_instance_of(ReleaseTools::Release::OmnibusGitlabRelease).to receive(:remotes)
-      .and_return({ gitlab: "file://#{ob_fixture.fixture_path}" })
+      .and_return({ canonical: "file://#{ob_fixture.fixture_path}" })
   end
 
   after do
@@ -69,10 +76,36 @@ describe ReleaseTools::Release::GitlabCeRelease do
     end
 
     { ce: '', ee: '-ee' }.each do |edition, suffix|
+      context 'with a security release' do
+        let(:security_release) { true }
+        let(:version) { "9.1.24#{suffix}" }
+        let(:ob_version) { "9.1.24+#{edition}.0" }
+
+        it "prefixes all branches" do
+          branch = "security/9-1-stable#{suffix}"
+
+          execute(version, branch)
+
+          aggregate_failures do
+            expect(repository.branches.collect(&:name))
+              .not_to include('master', branch.sub('security/', ''))
+            expect(repository.head.name).to eq "refs/heads/#{branch}"
+            expect(repository.branches['security/master']).not_to be_nil
+            expect(repository.tags["v#{version}"]).not_to be_nil
+
+            expect(ob_repository.branches.collect(&:name))
+              .not_to include('master', branch.sub('security/', ''))
+            expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
+            expect(ob_repository.branches['security/master']).not_to be_nil
+            expect(ob_repository.tags[ob_version]).not_to be_nil
+          end
+        end
+      end
+
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
-        let(:version)        { "9.1.24#{suffix}" }
-        let(:ob_version)     { "9.1.24+#{edition}.0" }
-        let(:branch)         { "9-1-stable#{suffix}" }
+        let(:version) { "9.1.24#{suffix}" }
+        let(:ob_version) { "9.1.24+#{edition}.0" }
+        let(:branch) { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
@@ -116,9 +149,9 @@ describe ReleaseTools::Release::GitlabCeRelease do
       end
 
       context "with a new 10-1-stable#{suffix} stable branch, releasing an RC" do
-        let(:version)        { "10.1.0-rc13#{suffix}" }
-        let(:ob_version)     { "10.1.0+rc13.#{edition}.0" }
-        let(:branch)         { "10-1-stable#{suffix}" }
+        let(:version) { "10.1.0-rc13#{suffix}" }
+        let(:ob_version) { "10.1.0+rc13.#{edition}.0" }
+        let(:branch) { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           it 'does not perform changelog compilation' do
@@ -149,9 +182,9 @@ describe ReleaseTools::Release::GitlabCeRelease do
       end
 
       context "with a new 10-1-stable#{suffix} stable branch, releasing a stable .0" do
-        let(:version)        { "10.1.0#{suffix}" }
-        let(:ob_version)     { "10.1.0+#{edition}.0" }
-        let(:branch)         { "10-1-stable#{suffix}" }
+        let(:version) { "10.1.0#{suffix}" }
+        let(:ob_version) { "10.1.0+#{edition}.0" }
+        let(:branch) { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
           it 'performs changelog compilation' do
