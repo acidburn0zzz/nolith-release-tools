@@ -22,10 +22,11 @@ module ReleaseTools
         ).execute
 
         begin
-          Release::CNGImageRelease.new(version, options.merge(gitlab_repo_path: repository.path)).execute
+          Release::CNGImageRelease
+            .new(version, options.merge(gitlab_repo_path: repository.path))
+            .execute
         rescue StandardError => ex
-          logger.error('CNG image release failed', error: ex.message)
-          Raven.capture_exception(ex)
+          logger.fatal('CNG image release failed', error: ex.message)
         end
       end
 

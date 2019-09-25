@@ -51,24 +51,14 @@ module ReleaseTools
       end
 
       def version_files
-        files = %w[GITLAB_SHELL_VERSION GITLAB_WORKHORSE_VERSION]
-        files << 'GITLAB_PAGES_VERSION' if expect_pages_version_file?
-        files << 'GITALY_SERVER_VERSION' if expect_gitaly_version_file?
+        files = %w[
+          GITALY_SERVER_VERSION
+          GITLAB_PAGES_VERSION
+          GITLAB_SHELL_VERSION
+          GITLAB_WORKHORSE_VERSION
+        ]
+
         files << 'VERSION' # Always update VERSION last
-        files
-      end
-
-      # GitLab pages was released in EE 8.3, and CE 8.17
-      def expect_pages_version_file?
-        if version.ee?
-          version.major > 8 || version.major == 8 && version.minor > 4
-        else
-          version.major > 8 || version.major == 8 && version.minor > 16
-        end
-      end
-
-      def expect_gitaly_version_file?
-        version.major >= 9
       end
 
       def version_from_gitlab_repo(file_name)

@@ -15,22 +15,18 @@ describe ReleaseTools::Release::GitlabCeRelease do
   # gets checked out to `/tmp/release`.
   let(:repo_path)    { File.join(Dir.tmpdir, ReleaseFixture.repository_name) }
   let(:ob_repo_path) { File.join(Dir.tmpdir, OmnibusReleaseFixture.repository_name) }
-  let(:cng_repo_path) { File.join(Dir.tmpdir, CNGImageReleaseFixture.repository_name) }
 
   # These two Rugged repositories are used for _verifying the result_ of the
   # release run. Not to be confused with the fixture repositories.
   let(:repository)    { Rugged::Repository.new(repo_path) }
   let(:ob_repository) { Rugged::Repository.new(ob_repo_path) }
-  let(:cng_repository) { Rugged::Repository.new(cng_repo_path) }
 
   before do
     fixture    = ReleaseFixture.new
     ob_fixture = OmnibusReleaseFixture.new
-    cng_fixture = CNGImageReleaseFixture.new
 
     fixture.rebuild_fixture!
     ob_fixture.rebuild_fixture!
-    cng_fixture.rebuild_fixture!
 
     # Disable cleanup so that we can see what's the state of the temp Git repos
     allow_any_instance_of(ReleaseTools::RemoteRepository)
@@ -43,20 +39,22 @@ describe ReleaseTools::Release::GitlabCeRelease do
 
     allow_any_instance_of(ReleaseTools::Release::OmnibusGitlabRelease).to receive(:remotes)
       .and_return({ gitlab: "file://#{ob_fixture.fixture_path}" })
-
-    allow_any_instance_of(ReleaseTools::Release::CNGImageRelease).to receive(:remotes)
-      .and_return({ gitlab: "file://#{cng_fixture.fixture_path}" })
   end
 
   after do
     # Manually perform the cleanup we disabled in the `before` block
     FileUtils.rm_rf(repo_path,    secure: true) if File.exist?(repo_path)
     FileUtils.rm_rf(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
-    FileUtils.rm_rf(cng_repo_path, secure: true) if File.exist?(cng_repo_path)
   end
 
   def execute(version, branch)
+    cng_spy = spy
+    stub_const('ReleaseTools::Release::CNGImageRelease', cng_spy)
+
     described_class.new(version).execute
+
+    expect(cng_spy).to have_received(:execute)
+
     repository.checkout(branch)
     ob_repository.checkout(branch)
   end
@@ -74,7 +72,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
       context "with an existing 9-1-stable#{suffix} stable branch, releasing a patch" do
         let(:version)        { "9.1.24#{suffix}" }
         let(:ob_version)     { "9.1.24+#{edition}.0" }
-        let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
         let(:branch)         { "9-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -121,7 +118,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
       context "with a new 10-1-stable#{suffix} stable branch, releasing an RC" do
         let(:version)        { "10.1.0-rc13#{suffix}" }
         let(:ob_version)     { "10.1.0+rc13.#{edition}.0" }
-        let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
         let(:branch)         { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -155,7 +151,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
       context "with a new 10-1-stable#{suffix} stable branch, releasing a stable .0" do
         let(:version)        { "10.1.0#{suffix}" }
         let(:ob_version)     { "10.1.0+#{edition}.0" }
-        let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
         let(:branch)         { "10-1-stable#{suffix}" }
 
         describe "release GitLab#{suffix.upcase}" do
@@ -192,60 +187,6 @@ describe ReleaseTools::Release::GitlabCeRelease do
               expect(ob_repository).to have_version('pages').at('4.5.0')
               expect(ob_repository).to have_version('gitaly').at('5.6.0')
             end
-          end
-        end
-      end
-    end
-
-    context "with a version < 8.5.0" do
-      let(:version)        { "1.9.24-ee" }
-      let(:ob_version)     { "1.9.24+ee.0" }
-      let(:docker_version) { "gitlab/gitlab-foss:#{ob_version.tr('+', '-')}" }
-      let(:branch)         { "1-9-stable-ee" }
-
-      describe "release GitLab-EE" do
-        before do
-          execute(version, branch)
-        end
-
-        it 'creates a new branch and updates the version in VERSION, and creates a new branch, a new tag and updates the version files in the omnibus-gitlab repo' do
-          aggregate_failures do
-            # GitLab expectations
-            expect(repository.head.name).to eq "refs/heads/#{branch}"
-            expect(repository).to have_version.at(version)
-
-            # Omnibus-GitLab expectations
-            expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
-            expect(ob_repository.tags[ob_version]).not_to be_nil
-            expect(ob_repository).to have_version.at(version)
-            expect(ob_repository).to have_version('shell').at('2.2.2')
-            expect(ob_repository).to have_version('workhorse').at('3.3.3')
-            expect(ob_repository).not_to have_version('pages')
-            expect(ob_repository).to have_version('gitaly').at('5.5.5')
-          end
-        end
-      end
-    end
-
-    context 'with a version >= 9' do
-      let(:version)    { '9.0.0' }
-      let(:ob_version) { '9.0.0+ce.0' }
-      let(:branch)     { '9-0-stable' }
-
-      describe 'release GitLab-CE' do
-        before do
-          execute(version, branch)
-        end
-
-        it 'creates a new branch and updates the version in GITALY_SERVER_VERSION in the omnibus-gitlab repo' do
-          aggregate_failures do
-            # GitLab expectations
-            expect(repository.head.name).to eq "refs/heads/#{branch}"
-            expect(repository).to have_version.at(version)
-
-            # Omnibus-GitLab expectations
-            expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
-            expect(ob_repository).to have_version('gitaly').at('5.6.0')
           end
         end
       end

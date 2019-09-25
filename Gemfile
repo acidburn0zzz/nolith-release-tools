@@ -17,6 +17,7 @@ gem 'version_sorter', '~> 2.2.0'
 group :development, :test do
   gem 'byebug'
   gem 'climate_control', '~> 0.2.0'
+  gem 'fuubar', require: false
   gem 'pry'
   gem 'rspec', '~> 3.8'
   gem 'rubocop', '~> 0.71.0'
