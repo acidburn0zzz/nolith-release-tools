@@ -14,9 +14,9 @@ module ReleaseTools
 
       def after_release
         repository.ensure_branch_exists(stable_branch)
-        repository.ensure_branch_exists('master')
+        repository.ensure_branch_exists(master_branch)
         push_ref('branch', stable_branch)
-        push_ref('branch', 'master')
+        push_ref('branch', master_branch)
 
         super
       end

@@ -28,7 +28,7 @@ module ReleaseTools
       def prepare_release
         logger.info("Preparing repository...")
 
-        repository.pull_from_all_remotes('master')
+        repository.pull_from_all_remotes(master_branch)
         @version ||= version_manager.next_version(gitlab_version)
         repository.ensure_branch_exists(stable_branch)
         repository.pull_from_all_remotes(stable_branch)
@@ -47,7 +47,7 @@ module ReleaseTools
         bump_versions
 
         push_ref('branch', stable_branch)
-        push_ref('branch', 'master')
+        push_ref('branch', master_branch)
 
         # Do not tag when passed a RC gitlab version
         unless version_manager.parse_chart_file.app_version.rc?
@@ -102,11 +102,11 @@ module ReleaseTools
       def commit_master_versions
         return unless version_manager.parse_chart_file.app_version.release?
 
-        repository.ensure_branch_exists('master')
-        repository.pull_from_all_remotes('master')
+        repository.ensure_branch_exists(master_branch)
+        repository.pull_from_all_remotes(master_branch)
 
         bump_versions
-        push_ref('branch', 'master')
+        push_ref('branch', master_branch)
       end
 
       def run_update_version(args)

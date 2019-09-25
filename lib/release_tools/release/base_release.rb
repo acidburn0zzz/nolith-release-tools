@@ -10,7 +10,6 @@ module ReleaseTools
       attr_reader :version, :options
 
       def_delegator :version, :tag
-      def_delegator :version, :stable_branch
 
       def initialize(version, opts = {})
         @version = version_class.new(version)
@@ -39,7 +38,7 @@ module ReleaseTools
       def prepare_release
         logger.info("Preparing repository...")
 
-        repository.pull_from_all_remotes('master')
+        repository.pull_from_all_remotes(master_branch)
         repository.ensure_branch_exists(stable_branch)
         repository.pull_from_all_remotes(stable_branch)
       end
@@ -61,10 +60,26 @@ module ReleaseTools
         bump_versions
 
         push_ref('branch', stable_branch)
-        push_ref('branch', 'master')
+        push_ref('branch', master_branch)
 
         create_tag(tag)
         push_ref('tag', tag)
+      end
+
+      def master_branch
+        if SharedStatus.security_release? && Feature.enabled?(:security_remote)
+          'security/master'
+        else
+          'master'
+        end
+      end
+
+      def stable_branch
+        if SharedStatus.security_release? && Feature.enabled?(:security_remote)
+          "security/#{version.stable_branch}"
+        else
+          version.stable_branch
+        end
       end
 
       # Overridable
