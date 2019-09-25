@@ -6,6 +6,9 @@ module ReleaseTools
       # On dev.gitlab.org certain jobs will fail, such as EE specific line
       # checking jobs. For security MRs we allow these jobs to fail, at least
       # while we still use dev.gitlab.org for the security workflow.
+      #
+      # SAST should be removed when we are no longer backporting to 12.2:
+      #   https://gitlab.com/gitlab-org/release-tools/issues/319
       ALLOWED_FAILURES = %w[
         code_quality
         downtime_check
@@ -13,6 +16,7 @@ module ReleaseTools
         ee-specific-lines-check
         ee_compat_check
         review-build-cng
+        sast
       ].freeze
 
       FINISHED_STATES = %w[success failed].to_set
