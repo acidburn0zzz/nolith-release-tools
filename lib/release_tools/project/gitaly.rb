@@ -4,8 +4,8 @@ module ReleaseTools
   module Project
     class Gitaly < BaseProject
       REMOTES = {
-        dev: 'git@dev.gitlab.org:gitlab/gitaly.git',
-        gitlab: 'git@gitlab.com:gitlab-org/gitaly.git'
+        canonical: 'git@gitlab.com:gitlab-org/gitaly.git',
+        dev:       'git@dev.gitlab.org:gitlab/gitaly.git'
       }.freeze
     end
   end

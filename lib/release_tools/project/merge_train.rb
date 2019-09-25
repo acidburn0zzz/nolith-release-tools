@@ -4,7 +4,7 @@ module ReleaseTools
   module Project
     class MergeTrain < BaseProject
       REMOTES = {
-        gitlab: 'git@ops.gitlab.net:gitlab-org/merge-train.git'
+        canonical: 'git@ops.gitlab.net:gitlab-org/merge-train.git'
       }.freeze
     end
   end

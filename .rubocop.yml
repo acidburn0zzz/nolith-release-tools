@@ -13,9 +13,14 @@ AllCops:
 
 # Gems in consecutive lines should be alphabetically sorted
 Bundler/OrderedGems:
-  Enabled: false
+  Enabled: true
 
 # Layout ######################################################################
+
+Layout/AlignHash:
+  Exclude:
+    - 'lib/release_tools/project/**'
+    - 'spec/**/*'
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
