@@ -87,14 +87,16 @@ namespace :release do
   end
 
   desc "Check a release's build status"
-  task :status, [:version] do |_t, args|
+  task :status, [:version] do |t, args|
     version = get_version(args)
 
     status = ReleaseTools::BranchStatus.for([version])
 
     status.each_pair do |project, results|
       results.each do |result|
-        ReleaseTools.logger.info(project, result.to_h)
+        ReleaseTools.logger.tagged(t.name) do
+          ReleaseTools.logger.info(project, result.to_h)
+        end
       end
     end
 
