@@ -29,8 +29,8 @@ module ReleaseTools
     end
 
     private_class_method def self.project_pipeline(project, version)
-      # For simplicity's sake, Omnibus will only check the EE branch
-      ref = version.stable_branch(ee: !project.to_s.include?('ce'))
+      # For simplicity's sake, Omnibus will only check the CE branch
+      ref = version.stable_branch(ee: project == Project::GitlabEe)
 
       logger.trace(__method__, project: project, ref: ref)
 

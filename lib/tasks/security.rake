@@ -42,12 +42,14 @@ namespace :security do
   end
 
   desc "Check a security release's build status"
-  task status: :force_security do
+  task status: :force_security do |t, _args|
     status = ReleaseTools::BranchStatus.for_security_release
 
     status.each_pair do |project, results|
       results.each do |result|
-        ReleaseTools.logger.info(project, result.to_h)
+        ReleaseTools.logger.tagged(t.name) do
+          ReleaseTools.logger.info(project, result.to_h)
+        end
       end
     end
 
