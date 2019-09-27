@@ -5,7 +5,12 @@ module ReleaseTools
     class ComponentUpdateService
       include ::SemanticLogger::Loggable
 
-      COMPONENTS = [Project::GitlabPages].freeze
+      COMPONENTS = [
+        Project::GitlabPages,
+        Project::GitlabWorkhorse,
+        Project::Gitaly,
+        Project::GitlabShell
+      ].freeze
 
       attr_reader :target_branch
 

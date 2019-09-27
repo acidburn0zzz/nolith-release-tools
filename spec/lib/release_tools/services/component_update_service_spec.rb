@@ -4,9 +4,19 @@ require 'spec_helper'
 
 describe ReleaseTools::Services::ComponentUpdateService do
   let(:internal_client) { double('ReleaseTools::GitlabClient') }
-  let(:last_pages_commit) { 'abc123f' }
+  let(:last_pages_commit)     { 'abc123f' }
+  let(:last_workhorse_commit) { 'bbc123f' }
+  let(:last_shell_commit)     { 'cbc123f' }
+  let(:last_gitaly_commit)    { 'dbc123f' }
   let(:target_branch) { 'test-auto-deploy-001' }
-  let(:component_versions) { { 'GITLAB_PAGES_VERSION' => 'v1' } }
+  let(:component_versions) do
+    {
+      'GITLAB_PAGES_VERSION' => 'v1',
+      'GITLAB_WORKHORSE_VERSION' => 'v2',
+      'GITLAB_SHELL_VERSION' => 'v3',
+      'GITALY_SERVER_VERSION' => 'v4'
+    }
+  end
 
   subject(:service) { described_class.new(target_branch) }
 
@@ -23,6 +33,18 @@ describe ReleaseTools::Services::ComponentUpdateService do
                            .with(ReleaseTools::Project::GitlabPages)
                            .and_return(last_pages_commit)
                            .once
+      expect(service).to receive(:latest_successful_ref)
+                           .with(ReleaseTools::Project::GitlabShell)
+                           .and_return(last_shell_commit)
+                           .once
+      expect(service).to receive(:latest_successful_ref)
+                           .with(ReleaseTools::Project::Gitaly)
+                           .and_return(last_gitaly_commit)
+                           .once
+      expect(service).to receive(:latest_successful_ref)
+                           .with(ReleaseTools::Project::GitlabWorkhorse)
+                           .and_return(last_workhorse_commit)
+                           .once
       expect(internal_client).to receive(:project_path)
                                    .with(ReleaseTools::Project::GitlabEe)
                                    .and_return('a project path')
@@ -31,7 +53,10 @@ describe ReleaseTools::Services::ComponentUpdateService do
         target_branch,
         'Update component versions',
         [
-          { action: 'update', file_path: '/GITLAB_PAGES_VERSION', content: "#{last_pages_commit}\n" }
+          { action: 'update', file_path: '/GITLAB_PAGES_VERSION', content: "#{last_pages_commit}\n" },
+          { action: 'update', file_path: '/GITLAB_WORKHORSE_VERSION', content: "#{last_workhorse_commit}\n" },
+          { action: 'update', file_path: '/GITALY_SERVER_VERSION', content: "#{last_gitaly_commit}\n" },
+          { action: 'update', file_path: '/GITLAB_SHELL_VERSION', content: "#{last_shell_commit}\n" }
         ]
       )
 
@@ -45,6 +70,18 @@ describe ReleaseTools::Services::ComponentUpdateService do
         expect(service).to receive(:latest_successful_ref)
                              .with(ReleaseTools::Project::GitlabPages)
                              .and_return(component_versions['GITLAB_PAGES_VERSION'])
+                             .once
+        expect(service).to receive(:latest_successful_ref)
+                             .with(ReleaseTools::Project::GitlabWorkhorse)
+                             .and_return(component_versions['GITLAB_WORKHORSE_VERSION'])
+                             .once
+        expect(service).to receive(:latest_successful_ref)
+                             .with(ReleaseTools::Project::Gitaly)
+                             .and_return(component_versions['GITALY_SERVER_VERSION'])
+                             .once
+        expect(service).to receive(:latest_successful_ref)
+                             .with(ReleaseTools::Project::GitlabShell)
+                             .and_return(component_versions['GITLAB_SHELL_VERSION'])
                              .once
         expect(internal_client).not_to receive(:create_commit)
 
