@@ -19,14 +19,7 @@ class ReleaseFixture
       message: 'Add empty README.md'
     )
 
-    if ReleaseTools::SharedStatus.security_release?
-      prefix = 'security/'
-
-      # The first commit will default to `master`, so branch off that
-      repository.create_branch("#{prefix}master", 'HEAD')
-      repository.checkout("#{prefix}master")
-      repository.branches.delete('master')
-    end
+    create_prefixed_master
 
     commit_blobs(
       'GITLAB_SHELL_VERSION'     => "2.2.2\n",
@@ -35,14 +28,14 @@ class ReleaseFixture
       'VERSION'                  => "1.1.1\n"
     )
 
-    repository.checkout("#{prefix}master")
+    repository.checkout("#{branch_prefix}master")
 
     # Create a basic branch
-    repository.branches.create("#{prefix}branch-1", 'HEAD')
+    repository.branches.create("#{branch_prefix}branch-1", 'HEAD')
 
     # Create old stable branches
-    repository.branches.create("#{prefix}1-9-stable",    'HEAD')
-    repository.branches.create("#{prefix}1-9-stable-ee", 'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable-ee", 'HEAD')
 
     repository.tags.create('v1.9.0', 'HEAD', message: 'GitLab Version 1.9.0')
 
@@ -50,8 +43,8 @@ class ReleaseFixture
     commit_blobs('GITLAB_PAGES_VERSION' => "4.4.4\n")
 
     # Create new stable branches
-    repository.branches.create("#{prefix}9-1-stable",    'HEAD')
-    repository.branches.create("#{prefix}9-1-stable-ee", 'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable-ee", 'HEAD')
 
     repository.tags.create('v9.1.0', 'HEAD', message: 'GitLab Version 9.1.0')
 
@@ -64,7 +57,7 @@ class ReleaseFixture
       'VERSION'                  => "1.2.0\n"
     )
 
-    repository.checkout("#{prefix}master")
+    repository.checkout("#{branch_prefix}master")
   end
 end
 
@@ -84,17 +77,10 @@ class OmnibusReleaseFixture
       'VERSION'                  => "1.9.24\n"
     )
 
-    if ReleaseTools::SharedStatus.security_release?
-      prefix = 'security/'
+    create_prefixed_master
 
-      # The first commit will default to `master`, so branch off that
-      repository.create_branch("#{prefix}master", 'HEAD')
-      repository.checkout("#{prefix}master")
-      repository.branches.delete('master')
-    end
-
-    repository.branches.create("#{prefix}1-9-stable",    'HEAD')
-    repository.branches.create("#{prefix}1-9-stable-ee", 'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable-ee", 'HEAD')
 
     commit_blobs(
       'GITLAB_PAGES_VERSION'     => "master\n",
@@ -103,8 +89,8 @@ class OmnibusReleaseFixture
       'VERSION'                  => "1.9.24\n"
     )
 
-    repository.branches.create("#{prefix}9-1-stable",    'HEAD')
-    repository.branches.create("#{prefix}9-1-stable-ee", 'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable-ee", 'HEAD')
 
     # Bump the versions in master
     commit_blobs(

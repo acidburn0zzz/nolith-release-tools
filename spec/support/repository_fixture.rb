@@ -29,6 +29,15 @@ module RepositoryFixture
     @repository ||= Rugged::Repository.init_at(fixture_path)
   end
 
+  def branch_prefix
+    @branch_prefix ||=
+      if ReleaseTools::SharedStatus.security_release? && ReleaseTools::Feature.enabled?(:security_remote)
+        'security/'
+      else
+        ''
+      end
+  end
+
   private
 
   # Commit multiple files at once
@@ -63,6 +72,18 @@ module RepositoryFixture
 
   def commit_blob(path:, content:, message:, author: nil)
     commit_blobs({ path => content }, message: message, author: author)
+  end
+
+  # Create a `master` branch prefixed with `branch_prefix`
+  #
+  # The first `commit_blob` call on an empty repository will create a default
+  # `master` branch, so we branch off of that, then delete the original.
+  def create_prefixed_master
+    return unless branch_prefix.present?
+
+    repository.create_branch("#{branch_prefix}master", 'master')
+    repository.checkout("#{branch_prefix}master")
+    repository.branches.delete('master')
   end
 
   def default_fixture_path
