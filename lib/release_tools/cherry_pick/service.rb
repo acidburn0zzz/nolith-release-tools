@@ -15,8 +15,6 @@ module ReleaseTools
     class Service
       include ::SemanticLogger::Loggable
 
-      REMOTE = :gitlab
-
       attr_reader :project
       attr_reader :version
       attr_reader :target

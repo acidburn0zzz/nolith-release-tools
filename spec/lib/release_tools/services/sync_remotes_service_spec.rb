@@ -85,6 +85,18 @@ describe ReleaseTools::Services::SyncRemotesService do
       enable_feature(:publish_git, :publish_git_push)
     end
 
+    context 'with invalid remotes' do
+      it 'logs an error and returns' do
+        service = described_class.new(version)
+
+        allow(project).to receive(:remotes).and_return({})
+        expect(service.logger).to receive(:fatal).once.and_call_original
+        expect(ReleaseTools::RemoteRepository).not_to receive(:get)
+
+        service.sync_branches(project, 'branch')
+      end
+    end
+
     context 'with a succesful merge' do
       it 'merges branch and pushes' do
         branch = '1-2-stable-ee'
@@ -92,8 +104,10 @@ describe ReleaseTools::Services::SyncRemotesService do
         successful_merge = double(status: double(success?: true))
 
         expect(ReleaseTools::RemoteRepository).to receive(:get)
-          .with(anything, a_hash_including(branch: branch))
-          .and_return(fake_repo)
+          .with(
+            a_hash_including(canonical: project.remotes.fetch(:canonical)),
+            a_hash_including(branch: branch)
+          ).and_return(fake_repo)
 
         expect(fake_repo).to receive(:merge)
           .with("dev/#{branch}", branch, no_ff: true)

@@ -48,12 +48,16 @@ module ReleaseTools
       end
 
       def sync_branches(project, *branches)
+        # Clone from canonical first
+        remotes = project.remotes.slice(:canonical, :dev)
+
+        if remotes.size < 2
+          logger.fatal("Expected 2 remotes, got #{remotes.size}", project: project, remotes: remotes)
+          return
+        end
+
         branches.each do |branch|
-          repository = RemoteRepository.get(
-            project.remotes.slice(:gitlab, :dev), # Clone from production first
-            global_depth: 50,
-            branch: branch
-          )
+          repository = RemoteRepository.get(remotes, global_depth: 50, branch: branch)
 
           repository.fetch(branch, remote: :dev)
 
