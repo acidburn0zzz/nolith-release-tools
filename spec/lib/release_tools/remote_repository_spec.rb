@@ -10,7 +10,7 @@ describe ReleaseTools::RemoteRepository do
   let(:rugged_repo) { Rugged::Repository.new(repo_path) }
   let(:repo_url) { "file://#{fixture.fixture_path}" }
   let(:repo_remotes) do
-    { gitlab: repo_url, foo: 'https://example.com/foo/bar/baz.git' }
+    { canonical: repo_url, foo: 'https://example.com/foo/bar/baz.git' }
   end
 
   before do
@@ -21,7 +21,7 @@ describe ReleaseTools::RemoteRepository do
     let(:remotes) do
       {
         dev:    'https://example.com/foo/bar/dev.git',
-        origin: 'https://gitlab.com/gitlab-org/foo/gitlab.git'
+        canonical: 'https://gitlab.com/gitlab-org/foo/gitlab.git'
       }
     end
 
@@ -82,16 +82,16 @@ describe ReleaseTools::RemoteRepository do
 
   describe '#remotes=' do
     it 'assigns the canonical remote' do
-      remotes = { origin: repo_url }
+      remotes = { canonical: repo_url }
 
       repository = described_class.new(repo_path, remotes)
 
-      expect(repository.canonical_remote.name).to eq(:origin)
+      expect(repository.canonical_remote.name).to eq(:canonical)
       expect(repository.canonical_remote.url).to eq(repo_url)
     end
 
     it 'assigns remotes' do
-      remotes = { origin: repo_url }
+      remotes = { canonical: repo_url }
 
       repository = described_class.new(repo_path, remotes)
 
@@ -100,7 +100,7 @@ describe ReleaseTools::RemoteRepository do
 
     it 'adds remotes to the repository', :aggregate_failures do
       remotes = {
-        origin: repo_url,
+        canonical: repo_url,
         foo: '/foo/bar/baz.git'
       }
 
@@ -108,7 +108,7 @@ describe ReleaseTools::RemoteRepository do
       rugged = Rugged::Repository.new(repository.path)
 
       expect(rugged.remotes.count).to eq(2)
-      expect(rugged.remotes['origin'].url).to eq(repo_url)
+      expect(rugged.remotes['canonical'].url).to eq(repo_url)
       expect(rugged.remotes['foo'].url).to eq('/foo/bar/baz.git')
     end
   end
@@ -484,7 +484,7 @@ describe ReleaseTools::RemoteRepository do
 
   describe '#verify_sync!' do
     it 'does nothing with only one remote' do
-      repo = described_class.get(repo_remotes.slice(:gitlab))
+      repo = described_class.get(repo_remotes.slice(:canonical))
 
       expect(repo).not_to receive(:ls_remotes)
 
@@ -495,7 +495,7 @@ describe ReleaseTools::RemoteRepository do
       repo = described_class.get(repo_remotes)
 
       expect(repo).to receive(:ls_remotes).with('foo')
-        .and_return(gitlab: 'a', security: 'a')
+        .and_return(canonical: 'a', security: 'a')
 
       expect { repo.verify_sync!('foo') }
         .not_to raise_error
@@ -505,7 +505,7 @@ describe ReleaseTools::RemoteRepository do
       repo = described_class.get(repo_remotes)
 
       expect(repo).to receive(:ls_remotes).with('foo')
-        .and_return(gitlab: 'a', security: 'b')
+        .and_return(canonical: 'a', security: 'b')
 
       expect { repo.verify_sync!('foo') }
         .to raise_error(described_class::OutOfSyncError)
