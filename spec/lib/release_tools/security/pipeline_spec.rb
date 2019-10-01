@@ -190,25 +190,4 @@ describe ReleaseTools::Security::Pipeline do
       expect(latest).to contain_exactly(job2, job3)
     end
   end
-
-  describe 'ALLOWED_FAILURES' do
-    it 'can only be used for dev.gitlab.org' do
-      endpoint = ReleaseTools::Security::Client::API_ENDPOINT
-
-      # This check is put in place so we can prevent builds from being silently
-      # allowed to fail when we switch to GitLab.com, without having to perform
-      # this check at runtime every time.
-      unless endpoint.include?('dev.gitlab.org')
-        raise <<~ERROR
-          The ALLOWED_FAILURES constant is meant to be used for dev.gitlab.org
-          _only_ as some builds will fail when executed on dev.gitlab.org. If
-          you are changing the code to use GitLab.com instead, you should also
-          make the following changes:
-
-          1. Remove this test
-          2. Remove the ALLOWED_FAILURES constant and any code that uses it
-        ERROR
-      end
-    end
-  end
 end
