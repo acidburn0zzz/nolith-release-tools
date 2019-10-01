@@ -23,9 +23,19 @@ namespace :release do
       target: ee_target.branch_name
     )
 
+    project = ReleaseTools::Project::GitlabEe
+
     ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, ee_version, ee_target)
+      .new(project, ee_version, ee_target)
       .execute
+
+    if ReleaseTools::Feature.enabled?(:cancel_redundant_pipelines)
+      # Give it some time to create pipelines
+      sleep 10
+
+      ReleaseTools::GitlabClient
+        .cancel_redundant_pipelines(project, ref: ee_target.branch_name)
+    end
   end
 
   desc 'Prepare for a new release'
