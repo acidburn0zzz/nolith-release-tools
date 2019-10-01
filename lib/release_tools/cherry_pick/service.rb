@@ -43,8 +43,6 @@ module ReleaseTools
           cherry_pick(merge_request)
         end
 
-        cancel_redundant_pipelines
-
         notifier.summary(
           @results.select(&:success?),
           @results.select(&:failure?)
@@ -69,13 +67,6 @@ module ReleaseTools
 
       def client
         ReleaseTools::GitlabClient
-      end
-
-      def cancel_redundant_pipelines
-        return unless ENV['FEATURE_CANCEL_REDUNDANT']
-        return if SharedStatus.dry_run?
-
-        client.cancel_redundant_pipelines(project, ref: @target_branch)
       end
 
       def notifier

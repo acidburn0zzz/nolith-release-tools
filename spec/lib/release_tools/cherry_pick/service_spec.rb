@@ -107,18 +107,6 @@ describe ReleaseTools::CherryPick::Service do
 
         expect(notifier).to have_received(:blog_post_summary)
       end
-
-      it 'cancels redundant pipelines' do
-        ClimateControl.modify(FEATURE_CANCEL_REDUNDANT: 'true') do
-          without_dry_run do
-            subject.execute
-          end
-        end
-
-        expect(internal_client)
-          .to have_received(:cancel_redundant_pipelines)
-          .with(target.project, ref: target.branch_name)
-      end
     end
   end
 end
