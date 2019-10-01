@@ -50,7 +50,7 @@ module ReleaseTools
 
     # Given a ref, cancel all running or pending pipelines but the most recent
     def self.cancel_redundant_pipelines(project = Project::GitlabCe, ref:)
-      statuses = %w[running pending]
+      statuses = %w[created running pending]
 
       cancelable = pipelines(project, ref: ref, per_page: 50)
         .select { |pipeline| statuses.include?(pipeline.status) }
