@@ -33,9 +33,6 @@ sast:
   variables:
     SAST_EXCLUDED_PATHS: 'vendor/**'
 
-code_quality:
-  <<: *except-automation
-
 dependency_scanning:
   <<: *except-automation
 
