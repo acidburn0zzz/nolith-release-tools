@@ -49,10 +49,10 @@ module ReleaseTools
       def tag_next_minor_pre_version
         return unless version.release? && version.patch.zero?
 
-        repository.ensure_branch_exists('master')
-        repository.pull_from_all_remotes('master')
+        repository.ensure_branch_exists(master_branch)
+        repository.pull_from_all_remotes(master_branch)
         bump_version('VERSION', "#{version.next_minor}-pre")
-        push_ref('branch', 'master')
+        push_ref('branch', master_branch)
 
         next_minor_pre_tag = "v#{version.next_minor}.pre"
         create_tag(next_minor_pre_tag)

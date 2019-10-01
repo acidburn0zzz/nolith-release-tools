@@ -18,6 +18,9 @@ class ReleaseFixture
       content: 'Sample README.md',
       message: 'Add empty README.md'
     )
+
+    create_prefixed_master
+
     commit_blobs(
       'GITLAB_SHELL_VERSION'     => "2.2.2\n",
       'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
@@ -25,14 +28,14 @@ class ReleaseFixture
       'VERSION'                  => "1.1.1\n"
     )
 
-    repository.checkout('master')
+    repository.checkout("#{branch_prefix}master")
 
     # Create a basic branch
-    repository.branches.create('branch-1', 'HEAD')
+    repository.branches.create("#{branch_prefix}branch-1", 'HEAD')
 
     # Create old stable branches
-    repository.branches.create('1-9-stable',    'HEAD')
-    repository.branches.create('1-9-stable-ee', 'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable-ee", 'HEAD')
 
     repository.tags.create('v1.9.0', 'HEAD', message: 'GitLab Version 1.9.0')
 
@@ -40,8 +43,8 @@ class ReleaseFixture
     commit_blobs('GITLAB_PAGES_VERSION' => "4.4.4\n")
 
     # Create new stable branches
-    repository.branches.create('9-1-stable',    'HEAD')
-    repository.branches.create('9-1-stable-ee', 'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable-ee", 'HEAD')
 
     repository.tags.create('v9.1.0', 'HEAD', message: 'GitLab Version 9.1.0')
 
@@ -54,7 +57,7 @@ class ReleaseFixture
       'VERSION'                  => "1.2.0\n"
     )
 
-    repository.checkout('master')
+    repository.checkout("#{branch_prefix}master")
   end
 end
 
@@ -74,8 +77,10 @@ class OmnibusReleaseFixture
       'VERSION'                  => "1.9.24\n"
     )
 
-    repository.branches.create('1-9-stable',    'HEAD')
-    repository.branches.create('1-9-stable-ee', 'HEAD')
+    create_prefixed_master
+
+    repository.branches.create("#{branch_prefix}1-9-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}1-9-stable-ee", 'HEAD')
 
     commit_blobs(
       'GITLAB_PAGES_VERSION'     => "master\n",
@@ -84,8 +89,8 @@ class OmnibusReleaseFixture
       'VERSION'                  => "1.9.24\n"
     )
 
-    repository.branches.create('9-1-stable',    'HEAD')
-    repository.branches.create('9-1-stable-ee', 'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable",    'HEAD')
+    repository.branches.create("#{branch_prefix}9-1-stable-ee", 'HEAD')
 
     # Bump the versions in master
     commit_blobs(

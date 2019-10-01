@@ -14,9 +14,9 @@ module ReleaseTools
 
       def after_release
         repository.ensure_branch_exists(stable_branch)
-        repository.ensure_branch_exists('master')
+        repository.ensure_branch_exists(master_branch)
         push_ref('branch', stable_branch)
-        push_ref('branch', 'master')
+        push_ref('branch', master_branch)
 
         super
       end
@@ -63,6 +63,7 @@ module ReleaseTools
 
       def version_from_gitlab_repo(file_name)
         file_path = File.join(repository.path, file_name)
+
         unless File.exist?(file_path)
           raise VersionFileDoesNotExistError.new(file_path)
         end
@@ -72,6 +73,7 @@ module ReleaseTools
 
       def read_file_from_gitlab_repo(file_name)
         gitlab_file_path = File.join(options[:gitlab_repo_path], file_name)
+
         unless File.exist?(gitlab_file_path)
           raise VersionFileDoesNotExistError.new(gitlab_file_path)
         end
