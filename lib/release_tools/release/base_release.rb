@@ -118,7 +118,7 @@ module ReleaseTools
       end
 
       def push_ref(_ref_type, ref)
-        logger.info('Pushing ref to all remotes', name: ref)
+        logger.info('Pushing ref to remotes', name: ref, remotes: remotes.keys)
 
         repository.push_to_all_remotes(ref)
       end

@@ -34,7 +34,7 @@ module ReleaseTools
           logger.info('Fetching tag', project: project, name: tag)
           repository.fetch("refs/tags/#{tag}", remote: :dev)
 
-          logger.info('Pushing tag to all remotes', project: project, name: tag)
+          logger.info('Pushing tag to remotes', project: project, name: tag, remotes: project.remotes.keys)
           repository.push_to_all_remotes(tag)
         end
       end
@@ -44,7 +44,7 @@ module ReleaseTools
         remotes = project.remotes.slice(:canonical, :dev)
 
         if remotes.size < 2
-          logger.fatal("Expected 2 remotes, got #{remotes.size}", project: project, remotes: remotes)
+          logger.fatal("Expected at least 2 remotes, got #{remotes.size}", project: project, remotes: remotes)
           return
         end
 
@@ -56,7 +56,7 @@ module ReleaseTools
           result = repository.merge("dev/#{branch}", branch, no_ff: true)
 
           if result.status.success?
-            logger.info('Pushing branch to all remotes', project: project, name: branch)
+            logger.info('Pushing branch to remotes', project: project, name: branch, remotes: remotes.keys)
             repository.push_to_all_remotes(branch)
           else
             logger.fatal('Failed to sync branch', project: project, name: branch, output: result.output)
