@@ -6,13 +6,24 @@ module ReleaseTools
     class MergeRequestsValidator
       include ::SemanticLogger::Loggable
 
-      PROJECTS_TO_VERIFY = %w[
-        gitlab/gitlabhq
-        gitlab/gitlab-ee
-        gitlab/gitaly
-        gitlab/gitlab-workhorse
-        gitlab/omnibus-gitlab
-      ].freeze
+      PROJECTS_TO_VERIFY =
+        if ReleaseTools::Feature.enabled?(:security_remote)
+          %w[
+            gitlab-org/security/gitlab
+            gitlab-org/security/gitlab-foss
+            gitlab-org/security/gitaly
+            gitlab-org/security/gitlab-workhorse
+            gitlab-org/security/omnibus-gitlab
+          ]
+        else
+          %w[
+            gitlab/gitlabhq
+            gitlab/gitlab-ee
+            gitlab/gitaly
+            gitlab/gitlab-workhorse
+            gitlab/omnibus-gitlab
+          ]
+        end
 
       ERROR_FOOTNOTE = <<~FOOTNOTE.strip
         <hr>
