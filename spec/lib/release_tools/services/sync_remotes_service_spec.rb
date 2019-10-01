@@ -62,7 +62,7 @@ describe ReleaseTools::Services::SyncRemotesService do
     let(:fake_repo) { instance_double(ReleaseTools::RemoteRepository) }
 
     before do
-      enable_feature(:publish_git, :publish_git_push)
+      enable_feature(:publish_git)
     end
 
     it 'fetches tags and pushes' do
@@ -82,7 +82,7 @@ describe ReleaseTools::Services::SyncRemotesService do
     let(:project) { ReleaseTools::Project::GitlabEe }
 
     before do
-      enable_feature(:publish_git, :publish_git_push)
+      enable_feature(:publish_git)
     end
 
     context 'with invalid remotes' do

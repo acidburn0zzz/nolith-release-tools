@@ -16,10 +16,6 @@ module ReleaseTools
           return
         end
 
-        if Feature.disabled?(:publish_git_push)
-          logger.info('The `publish_git_push` feature is disabled. Nothing will be pushed.')
-        end
-
         sync_tags(Project::GitlabEe, @version.tag(ee: true))
         sync_tags(Project::GitlabCe, @version.tag(ee: false))
         sync_tags(Project::OmnibusGitlab, @omnibus.to_ee.tag, @omnibus.to_ce.tag)
@@ -36,14 +32,10 @@ module ReleaseTools
 
         tags.each do |tag|
           logger.info('Fetching tag', project: project, name: tag)
-
           repository.fetch("refs/tags/#{tag}", remote: :dev)
 
-          if Feature.enabled?(:publish_git_push) # rubocop:disable Style/Next
-            logger.info('Pushing tag to all remotes', project: project, name: tag)
-
-            repository.push_to_all_remotes(tag)
-          end
+          logger.info('Pushing tag to all remotes', project: project, name: tag)
+          repository.push_to_all_remotes(tag)
         end
       end
 
@@ -64,11 +56,8 @@ module ReleaseTools
           result = repository.merge("dev/#{branch}", branch, no_ff: true)
 
           if result.status.success?
-            if Feature.enabled?(:publish_git_push)
-              logger.info('Pushing branch to all remotes', project: project, name: branch)
-
-              repository.push_to_all_remotes(branch)
-            end
+            logger.info('Pushing branch to all remotes', project: project, name: branch)
+            repository.push_to_all_remotes(branch)
           else
             logger.fatal('Failed to sync branch', project: project, name: branch, output: result.output)
           end
