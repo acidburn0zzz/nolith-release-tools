@@ -90,12 +90,14 @@ module ReleaseTools
         comment = <<~MSG
           @#{author} This merge request could not automatically be picked into
           `#{version.stable_branch}` for `#{version}` and will need manual
-          intervention.  Please create a new MR targeting the source branch
-          of #{target.pick_destination}, and assign to release managers.
+          intervention. You can either:
 
-          Once that new MR is merged, please remove #{PickIntoLabel.reference(version)}
-          from this merge request.
+          * Create a new MR targeting the source branch of #{target.pick_destination},
+            and assign to release managers, or
+          * Solve the conflicts against #{target.pick_destination}, and reassign
+            the #{PickIntoLabel.reference(version)} label to this merge request.
 
+          /unlabel #{PickIntoLabel.reference(version)}
         MSG
 
         create_merge_request_comment(pick_result.merge_request, comment)
