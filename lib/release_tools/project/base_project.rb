@@ -13,9 +13,15 @@ module ReleaseTools
 
       def self.remotes
         if SharedStatus.security_release?
-          self::REMOTES.slice(:dev)
-        else
+          if Feature.enabled?(:security_remote)
+            self::REMOTES.slice(:security)
+          else
+            self::REMOTES.slice(:dev)
+          end
+        elsif Feature.enabled?(:security_remote)
           self::REMOTES
+        else
+          self::REMOTES.except(:security)
         end
       end
 
@@ -27,6 +33,14 @@ module ReleaseTools
         extract_path_from_remote(:dev).captures.join('/')
       end
 
+      def self.security_path
+        if Feature.enabled?(:security_remote)
+          extract_path_from_remote(:security).captures.join('/')
+        else
+          dev_path
+        end
+      end
+
       def self.group
         extract_path_from_remote(:canonical)[:group]
       end
@@ -35,9 +49,17 @@ module ReleaseTools
         extract_path_from_remote(:dev)[:group]
       end
 
+      def self.security_group
+        if Feature.enabled?(:security_remote)
+          extract_path_from_remote(:security)[:group]
+        else
+          dev_group
+        end
+      end
+
       def self.to_s
         if SharedStatus.security_release?
-          dev_path
+          security_path
         else
           path
         end
