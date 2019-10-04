@@ -244,7 +244,10 @@ describe ReleaseTools::RemoteRepository do
             amend: true)
         ).to be(true)
 
-        expect(rugged_repo).to have_commit_title('Add GITLAB_SHELL_VERSION, GITLAB_WORKHORSE_VERSION, GITALY_SERVER_VERSION, VERSION')
+        expect(rugged_repo).to have_commit_title(
+          'Add GITLAB_SHELL_VERSION, GITLAB_WORKHORSE_VERSION, GITALY_SERVER_VERSION, GITLAB_ELASTICSEARCH_INDEXER_VERSION, VERSION'
+        )
+
         expect(rugged_repo).to have_blob('README.md').with('Cool')
         expect(rugged_repo).to have_blob('CONTRIBUTING.md').with('Be nice!')
       end
