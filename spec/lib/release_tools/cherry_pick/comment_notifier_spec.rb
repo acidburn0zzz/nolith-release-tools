@@ -164,7 +164,8 @@ class FailureMessageArgument
   def ===(other)
     other.include?("@#{@author.username}") &&
       other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
-      other.include?("for `#{@version}`")
+      other.include?("for `#{@version}`") &&
+      other.include?("/unlabel #{ReleaseTools::PickIntoLabel.reference(@version)}")
   end
 end
 
