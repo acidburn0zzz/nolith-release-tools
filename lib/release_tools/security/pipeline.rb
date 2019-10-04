@@ -3,21 +3,27 @@
 module ReleaseTools
   module Security
     class Pipeline
-      # On dev.gitlab.org certain jobs will fail, such as EE specific line
-      # checking jobs. For security MRs we allow these jobs to fail, at least
-      # while we still use dev.gitlab.org for the security workflow.
-      #
-      # SAST should be removed when we are no longer backporting to 12.2:
-      #   https://gitlab.com/gitlab-org/release-tools/issues/319
-      ALLOWED_FAILURES = %w[
-        code_quality
-        downtime_check
-        ee-files-location-check
-        ee-specific-lines-check
-        ee_compat_check
-        review-build-cng
-        sast
-      ].freeze
+      ALLOWED_FAILURES =
+        if ReleaseTools::Feature.enabled?(:security_remote)
+          # Nothing is allowed to fail for security projects on gitlab.com
+          %w[].freeze
+        else
+          # On dev.gitlab.org certain jobs will fail, such as EE specific line
+          # checking jobs. For security MRs we allow these jobs to fail, at
+          # least while we still use dev.gitlab.org for the security workflow.
+          #
+          # SAST should be removed when we are no longer backporting to 12.2:
+          #   https://gitlab.com/gitlab-org/release-tools/issues/319
+          %w[
+            code_quality
+            downtime_check
+            ee-files-location-check
+            ee-specific-lines-check
+            ee_compat_check
+            review-build-cng
+            sast
+          ].freeze
+        end
 
       FINISHED_STATES = %w[success failed].to_set
 
@@ -75,11 +81,7 @@ module ReleaseTools
         # means we need to perform an additional API call to determine which
         # builds are allowed to fail.
         @client
-          .commit_status(
-            @project_id,
-            @raw_pipeline.sha,
-            per_page: 100
-          )
+          .commit_status(@project_id, @raw_pipeline.sha, per_page: 100)
           .auto_paginate
           .select(&:allow_failure)
           .map(&:name)

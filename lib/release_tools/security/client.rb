@@ -4,12 +4,6 @@ module ReleaseTools
   module Security
     # A GitLab API client to use when validating security merge requests.
     class Client
-      # The API endpoint to use for validating merge requests.
-      #
-      # This uses dev.gitlab.org opposed to gitlab.com, as security merge
-      # requests are submitted on dev.gitlab.org.
-      API_ENDPOINT = 'https://dev.gitlab.org/api/v4'
-
       # The username of the release tools bot that is responsible for verifying
       # security merge requests.
       RELEASE_TOOLS_BOT_USERNAME = 'gitlab-release-tools-bot'
@@ -17,10 +11,12 @@ module ReleaseTools
       attr_reader :gitlab_client
 
       def initialize
-        @gitlab_client = ::Gitlab.client(
-          endpoint: API_ENDPOINT,
-          private_token: ENV.fetch('RELEASE_BOT_DEV_TOKEN')
-        )
+        @gitlab_client =
+          if ReleaseTools::Feature.enabled?(:security_remote)
+            ReleaseTools::GitlabClient.client
+          else
+            ReleaseTools::GitlabDevClient.client
+          end
       end
 
       # @param [String] project The full project path, such as

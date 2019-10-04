@@ -340,7 +340,6 @@ module ReleaseTools
         private_token: ENV['GITLAB_API_PRIVATE_TOKEN']
       )
     end
-    private_class_method :client
 
     # Overriden by GitLabDevClient
     def self.project_path(project)
