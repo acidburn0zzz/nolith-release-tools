@@ -81,7 +81,7 @@ module ReleaseTools
         args = ['--include-subcharts']
         args << "--chart-version #{chart_version}"
         args << "--app-version=#{app_version}" if app_version && app_version.valid?
-        args << "--gitlab-repo=#{Project::GitlabEe.dev_path}"
+        args << "--gitlab-repo=#{Project::GitlabEe.dev_path}" if ENV['FETCH_DEV_ARTIFACTS_PAT']
 
         logger.info('Update Chart version', chart_version: chart_version)
         message = ["Update Chart Version to #{chart_version}"]
