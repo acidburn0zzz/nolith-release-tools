@@ -4,11 +4,11 @@ module ReleaseTools
   class ComponentVersions
     include ::SemanticLogger::Loggable
 
-    FILES = %w[
-      GITALY_SERVER_VERSION
-      GITLAB_PAGES_VERSION
-      GITLAB_SHELL_VERSION
-      GITLAB_WORKHORSE_VERSION
+    FILES = [
+      Project::Gitaly.version_file,
+      Project::GitlabPages.version_file,
+      'GITLAB_SHELL_VERSION',
+      'GITLAB_WORKHORSE_VERSION'
     ].freeze
 
     def self.get(project, commit_id)

@@ -10,9 +10,12 @@ namespace :auto_deploy do
 
   desc "Prepare for auto-deploy by creating branches from the latest green commit on gitlab and omnibus-gitlab"
   task prepare: :check_enabled do
+    auto_deploy_branch = ReleaseTools::AutoDeploy::Naming.branch
     results = ReleaseTools::Services::AutoDeployBranchService
-      .new(ReleaseTools::AutoDeploy::Naming.branch)
+      .new(auto_deploy_branch)
       .create_branches!
+
+    ReleaseTools::Services::ComponentUpdateService.new(auto_deploy_branch).execute if ReleaseTools::Feature.enabled?(:auto_deploy_components)
 
     ReleaseTools::Slack::AutoDeployNotification
       .on_create(results)
@@ -43,6 +46,8 @@ namespace :auto_deploy do
     auto_deploy_pick(ReleaseTools::Project::GitlabEe, version)
     auto_deploy_pick(ReleaseTools::Project::GitlabCe, version.to_ce)
     auto_deploy_pick(ReleaseTools::Project::OmnibusGitlab, version)
+
+    ReleaseTools::Services::ComponentUpdateService.new(auto_deploy_branch).execute if ReleaseTools::Feature.enabled?(:auto_deploy_components)
   end
 
   desc "Tag the auto-deploy branches from the latest passing builds"

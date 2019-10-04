@@ -2,16 +2,16 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Project::Gitaly do
+describe ReleaseTools::Project::GitlabPages do
   it_behaves_like 'project #remotes'
   it_behaves_like 'project #to_s'
 
   describe '.path' do
-    it { expect(described_class.path).to eq 'gitlab-org/gitaly' }
+    it { expect(described_class.path).to eq 'gitlab-org/gitlab-pages' }
   end
 
   describe '.dev_path' do
-    it { expect(described_class.dev_path).to eq 'gitlab/gitaly' }
+    it { expect(described_class.dev_path).to eq 'gitlab/gitlab-pages' }
   end
 
   describe '.group' do
@@ -23,6 +23,6 @@ describe ReleaseTools::Project::Gitaly do
   end
 
   describe '.version_file' do
-    it { expect(described_class.version_file).to eq 'GITALY_SERVER_VERSION' }
+    it { expect(described_class.version_file).to eq 'GITLAB_PAGES_VERSION' }
   end
 end
