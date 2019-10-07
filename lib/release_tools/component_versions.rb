@@ -6,6 +6,7 @@ module ReleaseTools
 
     FILES = [
       Project::Gitaly.version_file,
+      Project::GitlabElasticsearchIndexer.version_file,
       Project::GitlabPages.version_file,
       Project::GitlabShell.version_file,
       Project::GitlabWorkhorse.version_file
