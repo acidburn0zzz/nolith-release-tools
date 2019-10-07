@@ -14,34 +14,20 @@ module ReleaseTools
         target_file = File.join(repository.path, 'ci_files/variables.yml')
 
         yaml_contents = YAML.load_file(target_file)
-        yaml_contents['variables'].merge!(component_versions)
+        yaml_contents['variables'].merge!(
+          'GITLAB_VERSION' => version_string(version),
+          'GITALY_VERSION' => version_string_from_file('GITALY_SERVER_VERSION'),
+          'GITLAB_SHELL_VERSION' => version_string_from_file('GITLAB_SHELL_VERSION'),
+          'GITLAB_WORKHORSE_VERSION' => version_string_from_file('GITLAB_WORKHORSE_VERSION'),
+          'GITLAB_REF_SLUG' => version_string(version),
+          'GITLAB_ASSETS_TAG' => version_string(version)
+        )
 
         File.open(target_file, 'w') do |f|
           f.write(YAML.dump(yaml_contents))
         end
 
         repository.commit(target_file, message: "Update #{target_file} for #{version}")
-      end
-
-      def component_versions
-        components = {}
-
-        # These components always track the GitLab release version
-        %w[
-          GITLAB_VERSION
-          GITLAB_REF_SLUG
-          GITLAB_ASSETS_TAG
-        ].each { |key| components[key] = version_string(version) }
-
-        # These components specify their versions independently
-        %w[
-          GITALY_VERSION
-          GITLAB_SHELL_VERSION
-          GITLAB_WORKHORSE_VERSION
-          GITLAB_ELASTICSEARCH_INDEXER_VERSION
-        ].each { |key| components[key] = version_string_from_file(key) }
-
-        result
       end
 
       def version_string(version)

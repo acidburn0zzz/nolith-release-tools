@@ -56,7 +56,6 @@ module ReleaseTools
           GITLAB_PAGES_VERSION
           GITLAB_SHELL_VERSION
           GITLAB_WORKHORSE_VERSION
-          GITLAB_ELASTICSEARCH_INDEXER_VERSION
         ]
 
         files << 'VERSION' # Always update VERSION last

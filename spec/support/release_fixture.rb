@@ -22,11 +22,10 @@ class ReleaseFixture
     create_prefixed_master
 
     commit_blobs(
-      'GITLAB_SHELL_VERSION'                 => "2.2.2\n",
-      'GITLAB_WORKHORSE_VERSION'             => "3.3.3\n",
-      'GITALY_SERVER_VERSION'                => "5.5.5\n",
-      'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => "6.6.6\n",
-      'VERSION'                              => "1.1.1\n"
+      'GITLAB_SHELL_VERSION'     => "2.2.2\n",
+      'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
+      'GITALY_SERVER_VERSION'    => "5.5.5\n",
+      'VERSION'                  => "1.1.1\n"
     )
 
     repository.checkout("#{branch_prefix}master")
@@ -51,12 +50,11 @@ class ReleaseFixture
 
     # Bump the versions in master
     commit_blobs(
-      'GITALY_SERVER_VERSION'                => "5.6.0\n",
-      'GITLAB_PAGES_VERSION'                 => "4.5.0\n",
-      'GITLAB_SHELL_VERSION'                 => "2.3.0\n",
-      'GITLAB_WORKHORSE_VERSION'             => "3.4.0\n",
-      'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => "9.9.9\n",
-      'VERSION'                              => "1.2.0\n"
+      'GITALY_SERVER_VERSION'    => "5.6.0\n",
+      'GITLAB_PAGES_VERSION'     => "4.5.0\n",
+      'GITLAB_SHELL_VERSION'     => "2.3.0\n",
+      'GITLAB_WORKHORSE_VERSION' => "3.4.0\n",
+      'VERSION'                  => "1.2.0\n"
     )
 
     repository.checkout("#{branch_prefix}master")
@@ -73,11 +71,10 @@ class OmnibusReleaseFixture
   def build_fixture(options = {})
     commit_blob(path: 'README.md', content: '', message: 'Add empty README.md')
     commit_blobs(
-      'GITLAB_SHELL_VERSION'                 => "2.2.2\n",
-      'GITLAB_WORKHORSE_VERSION'             => "3.3.3\n",
-      'GITALY_SERVER_VERSION'                => "5.5.5\n",
-      'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => "6.6.6\n",
-      'VERSION'                              => "1.9.24\n"
+      'GITLAB_SHELL_VERSION'     => "2.2.2\n",
+      'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
+      'GITALY_SERVER_VERSION'    => "5.5.5\n",
+      'VERSION'                  => "1.9.24\n"
     )
 
     create_prefixed_master
@@ -86,11 +83,10 @@ class OmnibusReleaseFixture
     repository.branches.create("#{branch_prefix}1-9-stable-ee", 'HEAD')
 
     commit_blobs(
-      'GITLAB_PAGES_VERSION'                 => "master\n",
-      'GITLAB_SHELL_VERSION'                 => "2.2.2\n",
-      'GITLAB_WORKHORSE_VERSION'             => "3.3.3\n",
-      'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => "9.9.9\n",
-      'VERSION'                              => "1.9.24\n"
+      'GITLAB_PAGES_VERSION'     => "master\n",
+      'GITLAB_SHELL_VERSION'     => "2.2.2\n",
+      'GITLAB_WORKHORSE_VERSION' => "3.3.3\n",
+      'VERSION'                  => "1.9.24\n"
     )
 
     repository.branches.create("#{branch_prefix}9-1-stable",    'HEAD')
@@ -98,11 +94,10 @@ class OmnibusReleaseFixture
 
     # Bump the versions in master
     commit_blobs(
-      'GITLAB_PAGES_VERSION'                 => "master\n",
-      'GITLAB_SHELL_VERSION'                 => "master\n",
-      'GITLAB_WORKHORSE_VERSION'             => "master\n",
-      'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => "master\n",
-      'VERSION'                              => "master\n"
+      'GITLAB_PAGES_VERSION'     => "master\n",
+      'GITLAB_SHELL_VERSION'     => "master\n",
+      'GITLAB_WORKHORSE_VERSION' => "master\n",
+      'VERSION'                  => "master\n"
     )
   end
 end

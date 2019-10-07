@@ -8,8 +8,7 @@ module ReleaseTools
       Project::Gitaly.version_file,
       Project::GitlabPages.version_file,
       'GITLAB_SHELL_VERSION',
-      'GITLAB_WORKHORSE_VERSION',
-      'GITLAB_ELASTICSEARCH_INDEXER_VERSION'
+      'GITLAB_WORKHORSE_VERSION'
     ].freeze
 
     def self.get(project, commit_id)
