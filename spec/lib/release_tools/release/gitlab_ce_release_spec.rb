@@ -25,6 +25,8 @@ describe ReleaseTools::Release::GitlabCeRelease do
   let(:security_release) { false }
 
   before do
+    cleanup!
+
     fixture    = ReleaseFixture.new
     ob_fixture = OmnibusReleaseFixture.new
 
@@ -49,6 +51,10 @@ describe ReleaseTools::Release::GitlabCeRelease do
   end
 
   after do
+    cleanup!
+  end
+
+  def cleanup!
     # Manually perform the cleanup we disabled in the `before` block
     FileUtils.rm_rf(repo_path,    secure: true) if File.exist?(repo_path)
     FileUtils.rm_rf(ob_repo_path, secure: true) if File.exist?(ob_repo_path)
