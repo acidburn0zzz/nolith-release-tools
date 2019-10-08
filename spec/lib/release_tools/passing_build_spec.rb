@@ -189,7 +189,7 @@ describe ReleaseTools::PassingBuild do
       expect(fake_ops_client)
         .to have_received(:create_tag)
         .with(
-          ReleaseTools::Project::Deployer,
+          ReleaseTools::Project::Deployer.path,
           tag_name,
           "master",
           "Auto-deploy tag-name\n\nVERSION: 1.2.3"
