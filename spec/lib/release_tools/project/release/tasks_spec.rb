@@ -12,7 +12,8 @@ describe ReleaseTools::Project::Release::Tasks do
 
   describe '.dev_path' do
     it 'raises an exception' do
-      expect { described_class.dev_path }.to raise_error("Invalid remote: dev")
+      expect { described_class.dev_path }
+        .to raise_error("Invalid remote for gitlab-org/release/tasks: dev")
     end
   end
 
@@ -22,7 +23,8 @@ describe ReleaseTools::Project::Release::Tasks do
 
   describe '.dev_group' do
     it 'raises an exception' do
-      expect { described_class.dev_group }.to raise_error("Invalid remote: dev")
+      expect { described_class.dev_group }
+        .to raise_error("Invalid remote for gitlab-org/release/tasks: dev")
     end
   end
 end
