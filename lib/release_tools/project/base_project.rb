@@ -48,9 +48,9 @@ module ReleaseTools
       end
 
       def self.extract_path_from_remote(remote_key)
-        raise "Invalid remote: #{remote_key}" unless self::REMOTES.key?(remote_key)
-
-        remote = self::REMOTES[remote_key]
+        remote = self::REMOTES.fetch(remote_key) do |name|
+          raise "Invalid remote for #{self}: #{name}"
+        end
 
         if remote =~ REMOTE_PATTERN
           $LAST_MATCH_INFO

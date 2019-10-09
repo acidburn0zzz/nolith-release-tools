@@ -114,7 +114,7 @@ module ReleaseTools
       logger.info('Creating project tag', project: project, name: name)
 
       ReleaseTools::GitlabOpsClient
-        .create_tag(project, name, ref, message)
+        .create_tag(project.path, name, ref, message)
     end
 
     def trigger_branch_build
