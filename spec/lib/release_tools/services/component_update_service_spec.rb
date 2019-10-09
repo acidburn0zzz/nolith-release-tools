@@ -11,16 +11,17 @@ describe ReleaseTools::Services::ComponentUpdateService do
   let(:target_branch) { 'test-auto-deploy-001' }
   let(:component_versions) do
     {
+      'GITALY_SERVER_VERSION' => 'v4',
       'GITLAB_PAGES_VERSION' => 'v1',
-      'GITLAB_WORKHORSE_VERSION' => 'v2',
       'GITLAB_SHELL_VERSION' => 'v3',
-      'GITALY_SERVER_VERSION' => 'v4'
+      'GITLAB_WORKHORSE_VERSION' => 'v2'
     }
   end
 
   subject(:service) { described_class.new(target_branch) }
 
   before do
+    enable_all_features
     allow(service).to receive(:gitlab_client).and_return(internal_client)
     allow(ReleaseTools::ComponentVersions).to receive(:get)
                                                 .with(ReleaseTools::Project::GitlabEe, target_branch)
@@ -52,12 +53,12 @@ describe ReleaseTools::Services::ComponentUpdateService do
         'a project path',
         target_branch,
         'Update component versions',
-        [
+        match_array([
           { action: 'update', file_path: '/GITLAB_PAGES_VERSION', content: "#{last_pages_commit}\n" },
           { action: 'update', file_path: '/GITLAB_WORKHORSE_VERSION', content: "#{last_workhorse_commit}\n" },
           { action: 'update', file_path: '/GITALY_SERVER_VERSION', content: "#{last_gitaly_commit}\n" },
           { action: 'update', file_path: '/GITLAB_SHELL_VERSION', content: "#{last_shell_commit}\n" }
-        ]
+        ])
       )
 
       without_dry_run do
