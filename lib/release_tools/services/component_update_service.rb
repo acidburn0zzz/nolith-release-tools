@@ -5,7 +5,12 @@ module ReleaseTools
     class ComponentUpdateService
       include ::SemanticLogger::Loggable
 
-      COMPONENTS = [Project::GitlabPages].freeze
+      COMPONENTS = [
+        Project::Gitaly,
+        Project::GitlabPages,
+        Project::GitlabShell,
+        Project::GitlabWorkhorse
+      ].freeze
 
       attr_reader :target_branch
 
@@ -40,6 +45,8 @@ module ReleaseTools
 
       def find_versions
         COMPONENTS.each_with_object({}) do |component, versions|
+          next unless ::ReleaseTools::Feature.enabled?(:"auto_deploy_#{component.name.demodulize.underscore}")
+
           versions[component.version_file] = latest_successful_ref(component)
         end
       end

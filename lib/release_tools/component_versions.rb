@@ -7,8 +7,8 @@ module ReleaseTools
     FILES = [
       Project::Gitaly.version_file,
       Project::GitlabPages.version_file,
-      'GITLAB_SHELL_VERSION',
-      'GITLAB_WORKHORSE_VERSION'
+      Project::GitlabShell.version_file,
+      Project::GitlabWorkhorse.version_file
     ].freeze
 
     def self.get(project, commit_id)
