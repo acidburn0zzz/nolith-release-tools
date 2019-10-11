@@ -5,7 +5,8 @@ module ReleaseTools
     class GitlabShell < BaseProject
       REMOTES = {
         canonical: 'git@gitlab.com:gitlab-org/gitlab-shell.git',
-        dev: 'git@dev.gitlab.org:gitlab/gitlab-shell.git'
+        dev:       'git@dev.gitlab.org:gitlab/gitlab-shell.git',
+        security:  'git@gitlab.com:gitlab-org/security/gitlab-shell.git'
       }.freeze
 
       def self.version_file
