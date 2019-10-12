@@ -7,6 +7,7 @@ module ReleaseTools
 
       COMPONENTS = [
         Project::Gitaly,
+        Project::GitlabElasticsearchIndexer,
         Project::GitlabPages,
         Project::GitlabShell,
         Project::GitlabWorkhorse

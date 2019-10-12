@@ -34,6 +34,7 @@ describe ReleaseTools::ComponentVersions do
     let(:version_map) do
       {
         'GITALY_SERVER_VERSION' => '1.33.0',
+        'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => '1.3.0',
         'GITLAB_PAGES_VERSION' => '1.5.0',
         'GITLAB_SHELL_VERSION' => '9.0.0',
         'GITLAB_WORKHORSE_VERSION' => '8.6.0',

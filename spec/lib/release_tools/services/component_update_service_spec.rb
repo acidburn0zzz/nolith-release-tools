@@ -8,10 +8,12 @@ describe ReleaseTools::Services::ComponentUpdateService do
   let(:last_workhorse_commit) { 'bbc123f' }
   let(:last_shell_commit)     { 'cbc123f' }
   let(:last_gitaly_commit)    { 'dbc123f' }
+  let(:last_indexer_commit)   { 'ebc123f' }
   let(:target_branch) { 'test-auto-deploy-001' }
   let(:component_versions) do
     {
       'GITALY_SERVER_VERSION' => 'v4',
+      'GITLAB_ELASTICSEARCH_INDEXER_VERSION' => 'v5',
       'GITLAB_PAGES_VERSION' => 'v1',
       'GITLAB_SHELL_VERSION' => 'v3',
       'GITLAB_WORKHORSE_VERSION' => 'v2'
@@ -46,6 +48,10 @@ describe ReleaseTools::Services::ComponentUpdateService do
                            .with(ReleaseTools::Project::GitlabWorkhorse)
                            .and_return(last_workhorse_commit)
                            .once
+      expect(service).to receive(:latest_successful_ref)
+                           .with(ReleaseTools::Project::GitlabElasticsearchIndexer)
+                           .and_return(last_indexer_commit)
+                           .once
       expect(internal_client).to receive(:project_path)
                                    .with(ReleaseTools::Project::GitlabEe)
                                    .and_return('a project path')
@@ -57,7 +63,8 @@ describe ReleaseTools::Services::ComponentUpdateService do
           { action: 'update', file_path: '/GITLAB_PAGES_VERSION', content: "#{last_pages_commit}\n" },
           { action: 'update', file_path: '/GITLAB_WORKHORSE_VERSION', content: "#{last_workhorse_commit}\n" },
           { action: 'update', file_path: '/GITALY_SERVER_VERSION', content: "#{last_gitaly_commit}\n" },
-          { action: 'update', file_path: '/GITLAB_SHELL_VERSION', content: "#{last_shell_commit}\n" }
+          { action: 'update', file_path: '/GITLAB_SHELL_VERSION', content: "#{last_shell_commit}\n" },
+          { action: 'update', file_path: '/GITLAB_ELASTICSEARCH_INDEXER_VERSION', content: "#{last_indexer_commit}\n" }
         ])
       )
 
@@ -83,6 +90,10 @@ describe ReleaseTools::Services::ComponentUpdateService do
         expect(service).to receive(:latest_successful_ref)
                              .with(ReleaseTools::Project::GitlabShell)
                              .and_return(component_versions['GITLAB_SHELL_VERSION'])
+                             .once
+        expect(service).to receive(:latest_successful_ref)
+                             .with(ReleaseTools::Project::GitlabElasticsearchIndexer)
+                             .and_return(component_versions['GITLAB_ELASTICSEARCH_INDEXER_VERSION'])
                              .once
         expect(internal_client).not_to receive(:create_commit)
 
