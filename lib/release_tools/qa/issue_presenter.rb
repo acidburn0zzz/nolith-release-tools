@@ -264,7 +264,9 @@ module ReleaseTools
       def due_date
         utc_date = DateTime.now.new_offset(0)
 
-        if utc_date.friday? || utc_date.saturday?
+        if utc_date.friday?
+          utc_date + 72.hours
+        elsif utc_date.saturday?
           utc_date + 48.hours
         else
           utc_date + 24.hours
