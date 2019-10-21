@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe ReleaseTools::Project::GitlabElasticsearchIndexer do
-  it_behaves_like 'project #remotes'
-  it_behaves_like 'project #to_s'
+  it_behaves_like 'project .remotes'
+  it_behaves_like 'project .to_s'
 
   describe '.path' do
     it { expect(described_class.path).to eq 'gitlab-org/gitlab-elasticsearch-indexer' }
