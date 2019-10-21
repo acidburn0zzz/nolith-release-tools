@@ -1,6 +1,7 @@
 ## Packaging
 
 - [ ] [Sync stable branches from  the latest successful auto-deploy branch](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md) to `dev`
+- [ ] Create our stable branches - if first RC of the month
 
    ```sh
    # In Slack:
@@ -19,26 +20,11 @@
 
 ## Deploy
 
-### staging.gitlab.com
+### pre.gitlab.com
 
-- Staging deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
+- Pre deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
   [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>)
   reaches the `gitlab_com:upload_deploy` stage of the pipeline.
-
-### canary stage gitlab.com
-
-- Canary deploys via the [deployer pipeline](https://ops.gitlab.net/gitlab-com/gl-infra/deployer) happen automatically as soon as the
-  QA jobs have completed successfully
-- [ ] Confirm that there are no errors on canary
-  - [canary errors on sentry.gitlab.net](https://sentry.gitlab.net/gitlab/gitlabcom/?query=server_name%3A%22web-cny-01-sv-gprd%22)
-  - [canary dashboard](https://dashboards.gitlab.net/d/llfd4b2ik/canary)
-
-**If there are issues on canary you should immediately stop sending traffic to it by issuing the following chatops command**:
-
-```
-/chatops run canary --drain --production
-
-```
 
 - This package shall not reach the rest of the production environment as we want to keep production on the auto-devops process
 

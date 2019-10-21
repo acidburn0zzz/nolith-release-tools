@@ -72,7 +72,7 @@ namespace :release do
   task :stable_branch, [:version, :source] do |_t, args|
     version = get_version(args)
 
-    if version.monthly?
+    if version.rc?
       service = ReleaseTools::Services::MonthlyPreparationService.new(version)
       service.create_stable_branches(source)
     end
