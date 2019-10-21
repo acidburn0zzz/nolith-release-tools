@@ -41,7 +41,7 @@ module ReleaseTools
           GITLAB_WORKHORSE_VERSION
         ].each { |key| components[key] = version_string_from_file(key) }
 
-        result
+        components
       end
 
       def version_string(version)
