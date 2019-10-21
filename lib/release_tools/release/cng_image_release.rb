@@ -35,7 +35,7 @@ module ReleaseTools
 
         # These components specify their versions independently
         %w[
-          GITALY_VERSION
+          GITALY_SERVER_VERSION
           GITLAB_ELASTICSEARCH_INDEXER_VERSION
           GITLAB_SHELL_VERSION
           GITLAB_WORKHORSE_VERSION
