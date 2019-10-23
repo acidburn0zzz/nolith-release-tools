@@ -11,6 +11,14 @@ module ReleaseTools
         .collect(&:version)
     end
 
+    # Returns the last version for the given major version, or `nil` if none
+    # could be found.
+    def self.last_version_for_major(major)
+      current.find do |version|
+        version.start_with?("#{major}.")
+      end
+    end
+
     # Given an Array of version numbers, return the next patch versions
     #
     # Example:

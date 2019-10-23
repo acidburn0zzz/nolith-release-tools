@@ -78,7 +78,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
       end
 
       expect(internal_client).to have_received(:create_branch)
-        .with('12-1-stable', 'master', ReleaseTools::Project::GitlabCe)
+        .with('12-1-stable', '12-0-stable', ReleaseTools::Project::GitlabCe)
     end
 
     it 'creates the Omnibus stable branches' do
