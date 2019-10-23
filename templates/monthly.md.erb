@@ -4,14 +4,16 @@
 - [ ] Set the channel topic to `RMs: https://about.gitlab.com/release-managers`
 - [ ] Invite all current release managers
 - [ ] Inside the old release slack channel, notify about `<%= Slack::Channel.for(version) %>`
-
      ```
      Hello :wave:
      We are starting <%= version.to_minor %> into <%= Slack::Channel.for(version) %>
      Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
      ```
-- [ ] Determine latest day of the month where we'd create the stable branch: __________________
-  - This will be known as the [freeze date]
+- [ ] Prepare the release (this will create the necessary labels) using chatops:
+     ```
+     # In Slack
+     /chatops run release prepare <%= version.to_patch %>
+     ```
 
 ## Monitor
 
@@ -40,6 +42,33 @@ If the final RC isn't tagged and deployed by this time, notify the
 If the final RC still isn't tagged and deployed by this time, notify the
 [VP of Engineering][getting help].
 
+## 20th
+
+If this date is on the weekend, do this work on the last Friday before the 20th.
+
+- [ ] Determine what the last green auto deploy branch is and add it here: `BRANCH`
+- [ ] Create the stable branches using chatops by running the following in Slack:
+      ```
+      # Replace AUTO_DEPLOY_BRANCH with the latest green auto deploy branch
+      /chatops run release stable_branch <%= version.to_patch %> AUTO_DEPLOY_BRANCH
+      ```
+- [ ] Verify that the [CE stable branch] contains the right commits
+  - There should be at least two commits: the last commit from the previous
+    stable branch (usually a version update), and the sync commit created by the
+    merge train.
+  - The sync commit will have the message "Add latest changes from gitlab-org/gitlab@<%= version.stable_branch(ee: true) %>"
+
+For releases prior to 12.5 the [CE stable branch] is not synced automatically,
+so this needs to be done manually:
+
+- Create the [CE stable branch] based on the previous stable branch. You can
+  do this using the GitLab UI on GitLab.com.
+- Trigger a FOSS sync in the [Merge Train](https://ops.gitlab.net/gitlab-org/merge-train/pipelines/new)
+  - Set the variable `MERGE_FOSS` to `1`
+  - Set the variable `SOURCE_BRANCH` to `<%= version.stable_branch(ee: true) %>`
+  - Set the variable `TARGET_BRANCH` to `<%= version.stable_branch %>`
+  - Run the pipeline
+
 ## 22nd: release day
 
 No new code can be added to the release that was not included in the final RC.
@@ -57,14 +86,14 @@ No new code can be added to the release that was not included in the final RC.
     /chatops run release tag <%= version.to_patch %>
     ```
   - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>)
-- Before 12:00 UTC:
-  - [ ] Ensure that `<%= version.to_patch %>` is deployed to the preprod environment - https://pre.gitlab.com/help
-    - If not, deploy manually with the following ChatOps command:
+- At 12:00 UTC:
+  - [ ] Post an update about the package building status in `<%= Slack::Channel.for(version) %>`
+  - [ ] If `<%= version.to_patch %>` has not been deployed to the [preprod environment](https://pre.gitlab.com/help) already, deploy it manually with the following ChatOps command:
       ```sh
       # In Slack:
       /chatops run deploy <%= version.to_patch %>-ee.0 --pre
       ```
-
+- [ ] At 13:00 UTC, post an update about the package building status in `<%= Slack::Channel.for(version) %>`
 - At 13:30 UTC:
   - :warning: **Make sure that neither packages nor the blog post get published earlier than 13:30UTC
     without approval by the
@@ -82,6 +111,7 @@ No new code can be added to the release that was not included in the final RC.
   - [ ] Verify that packages appear on `packages.gitlab.com`: [EE](https://packages.gitlab.com/app/gitlab/gitlab-ee/search?q=<%= version.to_patch %>) / [CE](https://packages.gitlab.com/app/gitlab/gitlab-ce/search?q=<%= version.to_patch %>)
   - [ ] Verify that Docker images appear on `hub.docker.com`: [EE](https://hub.docker.com/r/gitlab/gitlab-ee/tags) / [CE](https://hub.docker.com/r/gitlab/gitlab-ce/tags)
   - [ ] Create the `<%= version.to_patch %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version.to_patch %>)
+  - [ ] Post an update about the status in `<%= Slack::Channel.for(version) %>`
   - [ ] Once all packages are available publicly and GitLab.com is up and running on the release version,
   ping the [release post manager](https://about.gitlab.com/handbook/marketing/blog/release-posts/managers/)
   on Slack ([#release-post channel]) to give them a go to merge the release post at ~14:20 UTC, so that it will be live at 15:00 UTC
@@ -92,7 +122,6 @@ No new code can be added to the release that was not included in the final RC.
 [Deploy]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 [staging.gitlab.com]: https://staging.gitlab.com/
 [getting help]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/monthly.md#getting-help
-[freeze date]: https://gitlab.com/gitlab-org/release/docs/blob/master/general/faq.md#feature-freeze-date
 [#release-post channel]: https://gitlab.slack.com/messages/C3TRESYPJ
 
 /milestone %"<%= version.to_minor %>"
