@@ -271,6 +271,11 @@ describe ReleaseTools::Changelog::Manager do
         expect(ee_stable_commit.message).to eq(ee_message)
       end
     end
+
+    it 'does not work with non-prefixed branches' do
+      expect(repository.branches)
+        .to all(satisfy { |b| b.name.start_with?('security/') })
+    end
   end
 
   def reset_fixture!
