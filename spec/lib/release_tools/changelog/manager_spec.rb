@@ -203,6 +203,76 @@ describe ReleaseTools::Changelog::Manager do
     end
   end
 
+  describe '#release', 'with a security release' do
+    let(:version) { ReleaseTools::Version.new('8.10.5-ee') }
+
+    let(:master) { repository.branches['security/master'] }
+    let(:stable) { repository.branches["security/#{version.stable_branch}"] }
+
+    # The EE release performs the process on `X-Y-stable-ee` and `master`,
+    # updating the EE changelog _and then_ the CE changelog, so to verify the
+    # entire run, we need the latest commit from both branches as well as those
+    # commits' parents.
+    let(:ce_master_commit) { master.target }
+    let(:ce_stable_commit) { stable.target }
+    let(:ee_master_commit) { ce_master_commit.parents.first }
+    let(:ee_stable_commit) { ce_stable_commit.parents.first }
+
+    before do
+      allow(ReleaseTools::SharedStatus).to receive(:security_release?)
+        .and_return(true)
+      enable_feature(:security_remote)
+
+      reset_fixture!
+
+      described_class.new(repository).release(version)
+    end
+
+    it 'updates both changelog files' do
+      aggregate_failures do
+        expect(ce_master_commit).to have_modified(config.ce_log)
+        expect(ee_master_commit).to have_modified(config.ee_log)
+
+        expect(ce_stable_commit).to have_modified(config.ce_log)
+        expect(ee_stable_commit).to have_modified(config.ee_log)
+      end
+    end
+
+    it 'removes only the changelog files picked into stable' do
+      ee_picked = File.join(config.ee_paths[0], 'protect-branch-missing-param.yml')
+      ee_picked_legacy = File.join(config.ee_paths[1], 'refactor-application-controller.yml')
+      ce_picked = File.join(config.ce_path, 'fix-cycle-analytics-commits.yml')
+      unpicked  = File.join(config.ce_path, 'group-specific-lfs.yml')
+
+      aggregate_failures do
+        expect(repository).to have_blob(unpicked).for(master.name)
+        expect(ce_master_commit).to have_deleted(ce_picked)
+
+        expect(ee_master_commit).to have_deleted(ee_picked)
+        expect(ee_master_commit).to have_deleted(ee_picked_legacy)
+        expect(repository).to have_blob(unpicked).for(ee_master_commit.oid)
+
+        expect(ee_stable_commit).to have_deleted(ee_picked)
+        expect(ee_stable_commit).to have_deleted(ee_picked_legacy)
+        expect(ee_stable_commit).not_to have_deleted(unpicked)
+        expect(repository).not_to have_blob(unpicked).for(ee_stable_commit.oid)
+      end
+    end
+
+    it 'adds sensible commit messages' do
+      ce_message = "Update #{config.ce_log}"
+      ee_message = "Update #{config.ee_log} for #{version}\n\n[ci skip]"
+
+      aggregate_failures do
+        expect(ce_master_commit.message).to start_with(ce_message)
+        expect(ce_stable_commit.message).to start_with(ce_message)
+
+        expect(ee_master_commit.message).to eq(ee_message)
+        expect(ee_stable_commit.message).to eq(ee_message)
+      end
+    end
+  end
+
   def reset_fixture!
     ChangelogFixture.new.rebuild_fixture!
   end
