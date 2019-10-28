@@ -27,7 +27,6 @@ module ReleaseTools
         gitlab_client.merge_requests(
           project,
           per_page: 100,
-          labels: 'security',
           state: 'opened',
           assignee_id: release_tools_bot.id
         )

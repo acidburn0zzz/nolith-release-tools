@@ -30,6 +30,9 @@ module ReleaseTools
       # request is valid.
       ALLOWED_TARGET_BRANCHES = /^(master|\d+-\d+-stable(-ee)?)$/.freeze
 
+      # The label that must be applied to all security merge requests.
+      SECURITY_LABEL = 'security'
+
       # @param [Gitlab::ObjectifiedHash] merge_request
       # @param [ReleaseTools::Security::Client] client
       def initialize(merge_request, client)
@@ -48,6 +51,7 @@ module ReleaseTools
         validate_reviewed
         validate_target_branch
         validate_discussions
+        validate_labels
       end
 
       def validate_pipeline_status
@@ -170,6 +174,19 @@ module ReleaseTools
               break
             end
           end
+      end
+
+      def validate_labels
+        unless @merge_request.labels.include?(SECURITY_LABEL)
+          error(%{The merge request is missing the ~#{SECURITY_LABEL} label}, <<~ERROR)
+            This merge request is missing the ~#{SECURITY_LABEL} label. This
+            label is added automatically when using the security release merge
+            request template. The lack of this label suggests the template may
+            not have been used (correctly).
+
+            Merge requests without this label will not be merged.
+          ERROR
+        end
       end
 
       # @param [String] summary
