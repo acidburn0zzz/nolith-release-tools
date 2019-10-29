@@ -44,8 +44,8 @@ module ReleaseTools
         @unreleased_entries = nil
         @version = version
 
-        perform_release(stable_branch)
-        perform_release('master')
+        perform_release(prefixed_branch(stable_branch))
+        perform_release(prefixed_branch('master'))
 
         # Recurse to perform the CE release if we're on EE
         if version.ee?
@@ -57,6 +57,14 @@ module ReleaseTools
       private
 
       attr_reader :ref, :commit, :tree, :index
+
+      def prefixed_branch(name)
+        if SharedStatus.security_release? && Feature.enabled?(:security_remote)
+          "security/#{name}"
+        else
+          name
+        end
+      end
 
       def changelog_file
         @changelog_file || Config.log(ee: version.ee?)

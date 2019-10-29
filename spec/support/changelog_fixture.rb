@@ -14,25 +14,30 @@ class ChangelogFixture
     'changelog'
   end
 
+  # rubocop:disable Metrics/MethodLength
   def build_fixture(options = {})
     build_master
 
-    branches = {}
-    merges   = {}
+    # Create stable branches off of `master`
+    #
+    # NOTE: We must create these before the merges below, otherwise
+    # cherry-picking will be a no-op.
+    branches = {
+      # These branches have no entries
+      '8-2-stable'    => build_stable_branch(ReleaseTools::Version.new('8.2.0')),
+      '8-2-stable-ee' => build_stable_branch(ReleaseTools::Version.new('8.2.0-ee')),
 
-    # These branches have no entries
-    branches['8-2-stable']    = build_stable_branch(ReleaseTools::Version.new('8.2.0'))
-    branches['8-2-stable-ee'] = build_stable_branch(ReleaseTools::Version.new('8.2.0-ee'))
+      # These branches have CE entries but not EE entries
+      '8-3-stable'    => build_stable_branch(ReleaseTools::Version.new('8.3.0')),
+      '8-3-stable-ee' => build_stable_branch(ReleaseTools::Version.new('8.3.0-ee')),
 
-    # These branches have CE entries but not EE entries
-    branches['8-3-stable']    = build_stable_branch(ReleaseTools::Version.new('8.3.0'))
-    branches['8-3-stable-ee'] = build_stable_branch(ReleaseTools::Version.new('8.3.0-ee'))
-
-    # These branches have CE entries and EE entries
-    branches['8-10-stable']    = build_stable_branch(ReleaseTools::Version.new('8.10.0'))
-    branches['8-10-stable-ee'] = build_stable_branch(ReleaseTools::Version.new('8.10.0-ee'))
+      # These branches have CE entries and EE entries
+      '8-10-stable'    => build_stable_branch(ReleaseTools::Version.new('8.10.0')),
+      '8-10-stable-ee' => build_stable_branch(ReleaseTools::Version.new('8.10.0-ee'))
+    }
 
     # Merge some changelog entries into `master` that will be cherry-picked
+    merges = {}
     merges['feature'] = merge_branch_with_changelog_entry(
       changelog_path: config.ce_path,
       changelog_name: 'group-specific-lfs'
@@ -50,16 +55,17 @@ class ChangelogFixture
       changelog_name: 'refactor-application-controller'
     )
 
-    cherry_pick_to_branch(branches['8-3-stable'],     sha: merges['bugfix'])
-    cherry_pick_to_branch(branches['8-3-stable-ee'],  sha: merges['bugfix'])
+    cherry_pick_to_branch(branches['8-3-stable'], sha: merges['bugfix'])
+    cherry_pick_to_branch(branches['8-3-stable-ee'], sha: merges['bugfix'])
 
-    cherry_pick_to_branch(branches['8-10-stable'],    sha: merges['bugfix'])
+    cherry_pick_to_branch(branches['8-10-stable'], sha: merges['bugfix'])
     cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['bugfix'])
     cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['ee'])
     cherry_pick_to_branch(branches['8-10-stable-ee'], sha: merges['ee-legacy'])
 
-    repository.checkout('master')
+    repository.checkout(master_branch)
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
@@ -104,24 +110,26 @@ class ChangelogFixture
         message: "Add #{File.join(ee_path, '.gitkeep')}"
       )
     end
+
+    create_prefixed_master
   end
 
   # "Release" a version by creating its stable branch off of `master`
   #
   # Returns the Rugged::Branch object for the stable branch
   def build_stable_branch(version)
-    branch = repository.branches.create(version.stable_branch, 'HEAD')
+    branch_name = "#{branch_prefix}#{version.stable_branch}"
 
-    repository.checkout(branch.name)
+    repository.branches.create(branch_name, 'HEAD').tap do |branch|
+      repository.checkout(branch.name)
 
-    # Update VERSION and commit
-    commit_blob(
-      path: 'VERSION',
-      content: "#{version}\n",
-      message: "Update VERSION to #{version}"
-    )
-
-    branch
+      # Update VERSION and commit
+      commit_blob(
+        path: 'VERSION',
+        content: "#{version}\n",
+        message: "Update VERSION to #{version}"
+      )
+    end
   end
 
   # Create a branch and merge it to `master`, then delete the branch
@@ -134,7 +142,7 @@ class ChangelogFixture
   #
   # Returns the resulting Rugged::Branch object
   def merge_branch_with_changelog_entry(changelog_path:, changelog_name:)
-    repository.checkout('master')
+    repository.checkout(master_branch)
 
     # Create a feature branch off of master
     branch = repository.branches.create(changelog_name, 'HEAD')
@@ -151,8 +159,8 @@ class ChangelogFixture
     )
 
     # Merge branch into master
-    merge_commit = merge(branch.name, 'master', message: <<~MSG)
-      Merge branch '#{branch.name}' into 'master'
+    merge_commit = merge(branch.name, master_branch, message: <<~MSG)
+      Merge branch '#{branch.name}' into '#{master_branch}'
 
       #{entry['title']}
 
@@ -160,7 +168,7 @@ class ChangelogFixture
     MSG
 
     # Delete the merged branch
-    repository.checkout('master')
+    repository.checkout(master_branch)
     repository.branches.delete(branch.name)
 
     merge_commit
@@ -209,6 +217,10 @@ class ChangelogFixture
     repository.checkout_head(strategy: :force)
 
     commit
+  end
+
+  def master_branch
+    "#{branch_prefix}master"
   end
 
   def read_fixture(filename)
