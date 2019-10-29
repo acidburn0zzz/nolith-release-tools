@@ -7,7 +7,8 @@ module ReleaseTools
   module AutoDeploy
     class Version < ::ReleaseTools::Version
       def self.from_branch(branch_name)
-        version = branch_name.sub(/\A(\d+)-(\d+)-auto-deploy.*/, '\1.\2')
+        version = branch_name
+          .sub(/\A(?:security\/)?(\d+)-(\d+)-auto-deploy.*/, '\1.\2')
 
         new(version).tap do |instance|
           instance.stable_branch = branch_name
