@@ -39,7 +39,7 @@ module ReleaseTools
         logger.info("Preparing repository...")
 
         repository.pull_from_all_remotes(master_branch)
-        repository.ensure_branch_exists(stable_branch)
+        repository.ensure_branch_exists(stable_branch, base: master_branch)
         repository.pull_from_all_remotes(stable_branch)
       end
 
