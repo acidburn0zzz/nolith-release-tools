@@ -71,7 +71,7 @@ module ReleaseTools
 
       def self.extract_path_from_remote(remote_key)
         remote = self::REMOTES.fetch(remote_key) do |name|
-          raise "Invalid remote for #{self}: #{name}"
+          raise "Invalid remote for #{path}: #{name}"
         end
 
         if remote =~ REMOTE_PATTERN
