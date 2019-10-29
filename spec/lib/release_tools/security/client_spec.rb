@@ -19,7 +19,6 @@ describe ReleaseTools::Security::Client do
         .with(
           'foo/foo',
           per_page: 100,
-          labels: 'security',
           state: 'opened',
           assignee_id: 1
         )

@@ -21,6 +21,7 @@ describe ReleaseTools::Security::MergeRequestValidator do
         validate_reviewed
         validate_target_branch
         validate_discussions
+        validate_labels
       ]
 
       validation_methods.each do |method|
@@ -321,6 +322,29 @@ describe ReleaseTools::Security::MergeRequestValidator do
       validator = described_class.new(merge_request, client)
 
       validator.validate_discussions
+
+      expect(validator.errors).to be_empty
+    end
+  end
+
+  describe '#validate_labels' do
+    it 'adds an error when the security label is missing' do
+      merge_request = double(:merge_request, labels: [])
+      client = double(:client)
+      validator = described_class.new(merge_request, client)
+
+      validator.validate_labels
+
+      expect(validator.errors.first)
+        .to include('The merge request is missing the ~security label')
+    end
+
+    it 'does not add an error when the security label is present' do
+      merge_request = double(:merge_request, labels: %w[security])
+      client = double(:client)
+      validator = described_class.new(merge_request, client)
+
+      validator.validate_labels
 
       expect(validator.errors).to be_empty
     end
