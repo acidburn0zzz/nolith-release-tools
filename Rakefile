@@ -31,23 +31,6 @@ task :close_expired_qa_issues do
   ReleaseTools::Qa::IssueCloser.new.execute
 end
 
-namespace :helm do
-  desc "Create a chart release by passing in chart_version,gitlab_version"
-  task :tag_chart, [:version, :gitlab_version] do |_t, args|
-    version = ReleaseTools::HelmChartVersion.new(args[:version]) if args[:version] && !args[:version].empty?
-    gitlab_version = ReleaseTools::HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version] && !args[:gitlab_version].empty?
-
-    # At least one of the versions must be provided in order to tag
-    if (!version && !gitlab_version) || (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
-      $stdout.puts "Version number must be in the following format: X.Y.Z".colorize(:red)
-      exit 1
-    end
-
-    $stdout.puts 'Chart release'.colorize(:blue)
-    ReleaseTools::Release::HelmGitlabRelease.new(version, gitlab_version).execute
-  end
-end
-
 desc "Publish packages, tags, stable branches, and CNG images for a specified version"
 task :publish, [:version] do |_t, args|
   version = get_version(args)
@@ -70,7 +53,7 @@ task :publish, [:version] do |_t, args|
 
   # Tag the Helm chart
   begin
-    Rake::Task['helm:tag_chart'].invoke(nil, version.to_ce)
+    Rake::Task['release:helm:tag'].invoke(nil, version.to_ce)
   rescue StandardError => ex
     Raven.capture_exception(ex)
   end
