@@ -85,7 +85,7 @@ GEM
     rubocop-rspec (1.33.0)
       rubocop (>= 0.60.0)
     ruby-progressbar (1.10.1)
-    rugged (0.28.1)
+    rugged (0.28.3.1)
     safe_yaml (1.0.4)
     semantic_logger (4.5.0)
       concurrent-ruby (~> 1.0)
