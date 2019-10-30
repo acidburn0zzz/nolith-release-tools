@@ -54,10 +54,10 @@ module ReleaseTools
       self.remotes = remotes
     end
 
-    def ensure_branch_exists(branch)
+    def ensure_branch_exists(branch, base: 'master')
       fetch(branch)
 
-      checkout_branch(branch) || checkout_new_branch(branch)
+      checkout_branch(branch) || checkout_new_branch(branch, base: base)
     end
 
     def fetch(ref, remote: canonical_remote.name, depth: global_depth)
