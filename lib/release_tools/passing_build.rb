@@ -33,7 +33,7 @@ module ReleaseTools
     end
 
     def trigger_build
-      if ref.match?(/\A\d+-\d+-auto-deploy-\d+\z/)
+      if ref.match?(/\A(?:security\/)?\d+-\d+-auto-deploy-\d+\z/)
         update_omnibus_for_autodeploy
       else
         trigger_branch_build

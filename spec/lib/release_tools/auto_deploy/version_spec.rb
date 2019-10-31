@@ -20,6 +20,16 @@ describe ReleaseTools::AutoDeploy::Version do
       expect(version.stable_branch.branch_name)
         .to eq(branch_name)
     end
+
+    context 'with a `security/` prefix' do
+      it 'extracts version number from branch name' do
+        branch_name = 'security/12-3-auto-deploy-20191015'
+
+        version = described_class.from_branch(branch_name)
+
+        expect(version.to_patch).to eq('12.3.0')
+      end
+    end
   end
 
   describe '#stable_branch=' do
