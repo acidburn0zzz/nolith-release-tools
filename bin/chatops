@@ -60,6 +60,10 @@ case $1 in
     require_version
     bundle exec rake "$1[$RELEASE_VERSION]"
     ;;
+  "release:helm:tag")
+    require_version
+    auth_rake "$1[$CHARTS_VERSION,$RELEASE_VERSION]"
+    ;;
 
   # security namespace
 
