@@ -141,22 +141,22 @@ namespace :release do
 
   namespace :helm do
     desc 'Tag a new release'
-    task :tag, [:version, :gitlab_version] do |_t, args|
-      version = ReleaseTools::HelmChartVersion.new(args[:version]) if args[:version] && !args[:version].empty?
+    task :tag, [:charts_version, :gitlab_version] do |_t, args|
+      charts_version = ReleaseTools::HelmChartVersion.new(args[:charts_version]) if args[:charts_version] && !args[:charts_version].empty?
       gitlab_version = ReleaseTools::HelmGitlabVersion.new(args[:gitlab_version]) if args[:gitlab_version] && !args[:gitlab_version].empty?
 
       # At least one of the versions must be provided in order to tag
-      if (!version && !gitlab_version) || (version && !version.valid?) || (gitlab_version && !gitlab_version.valid?)
+      if (!charts_version && !gitlab_version) || (charts_version && !charts_version.valid?) || (gitlab_version && !gitlab_version.valid?)
         ReleaseTools.logger.warn('Version number must be in the following format: X.Y.Z')
         exit 1
       end
 
       ReleaseTools.logger.info(
         'Chart release',
-        charts_version: version,
+        charts_version: charts_version,
         gitlab_version: gitlab_version
       )
-      ReleaseTools::Release::HelmGitlabRelease.new(version, gitlab_version).execute
+      ReleaseTools::Release::HelmGitlabRelease.new(charts_version, gitlab_version).execute
     end
   end
 end
