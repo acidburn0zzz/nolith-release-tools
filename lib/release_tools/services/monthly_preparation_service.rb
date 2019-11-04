@@ -25,7 +25,7 @@ module ReleaseTools
         ee_branch = @version.stable_branch(ee: true)
 
         create_branch_from_ref(Project::GitlabEe, ee_branch, source)
-        create_branch_from_ref(Project::GitlabCe, ce_branch, source)
+        create_ce_stable_branch(ce_branch)
         create_branch_from_ref(Project::OmnibusGitlab, ce_branch, source)
         # CNG and Charts doesn't have an auto-deploy dependency, hence they
         # get created from master.
@@ -34,6 +34,18 @@ module ReleaseTools
 
         # Helm charts follow different branching scheme
         create_helm_branch('master')
+      end
+
+      # For CE we want to base the stable branch on the previous stable branch.
+      # This way we don't end up with commits from "master" that are
+      # useless/reverted once we perform a FOSS sync from EE to CE. Including
+      # those commits may lead one to believe unrelated changes are in CE, when
+      # this is not the case.
+      def create_ce_stable_branch(branch)
+        source =
+          Version.new(@version.previous_minor).stable_branch(ee: false)
+
+        create_branch_from_ref(Project::GitlabCe, branch, source)
       end
 
       def create_helm_branch(source = 'master')

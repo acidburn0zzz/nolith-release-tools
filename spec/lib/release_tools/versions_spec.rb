@@ -31,4 +31,10 @@ RSpec.describe ReleaseTools::Versions do
         .to contain_exactly('11.7.6', '11.6.10', '11.5.11')
     end
   end
+
+  describe '.last_version_for_major' do
+    it 'returns the last version for a major version', vcr: { cassette_name: 'versions/list' } do
+      expect(described_class.last_version_for_major(11)).to eq('11.7.5')
+    end
+  end
 end

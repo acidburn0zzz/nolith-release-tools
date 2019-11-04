@@ -98,6 +98,26 @@ module ReleaseTools
       "#{major}.#{minor + 1}.0"
     end
 
+    def previous_minor
+      version_string =
+        if minor.positive?
+          "#{major}.#{minor - 1}.0"
+        else
+          # When we are creating a new major release, we can not retrieve the
+          # previous stable branch from the current version. Instead we must
+          # find the last minor version of the previous major release.
+          version = Versions.last_version_for_major(major - 1)
+
+          unless version
+            raise "The last version before #{self} could not be found"
+          end
+
+          version
+        end
+
+      version_string
+    end
+
     def previous_patch
       return unless patch?
 

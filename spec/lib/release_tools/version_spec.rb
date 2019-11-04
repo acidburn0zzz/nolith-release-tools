@@ -382,4 +382,34 @@ describe ReleaseTools::Version do
     it { expect(version('1.2.3.4')).not_to be_valid }
     it { expect(version('wow')).not_to be_valid }
   end
+
+  describe '#previous_minor' do
+    it 'returns the version of the previous minor release' do
+      ver = version('12.4.0')
+
+      expect(ver.previous_minor).to eq('12.3.0')
+    end
+
+    it 'retrieves the previous minor version from the API for a .0 minor release' do
+      ver = version('12.0.0')
+
+      expect(ReleaseTools::Versions)
+        .to receive(:last_version_for_major)
+        .with(11)
+        .and_return('11.11.8')
+
+      expect(ver.previous_minor).to eq('11.11.8')
+    end
+
+    it 'raises if no minor version could be determined' do
+      ver = version('12.0.0')
+
+      expect(ReleaseTools::Versions)
+        .to receive(:last_version_for_major)
+        .with(11)
+        .and_return(nil)
+
+      expect { ver.previous_minor }.to raise_error(RuntimeError)
+    end
+  end
 end
