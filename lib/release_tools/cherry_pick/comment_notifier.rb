@@ -14,6 +14,8 @@ module ReleaseTools
       def comment(pick_result)
         if pick_result.success?
           successful_comment(pick_result)
+        elsif pick_result.denied?
+          denied_comment(pick_result)
         else
           failure_comment(pick_result)
         end
@@ -82,13 +84,8 @@ module ReleaseTools
       end
 
       def failure_comment(pick_result)
-        author = pick_result
-          .merge_request
-          .author
-          .username
-
         comment = <<~MSG
-          @#{author} This merge request could not automatically be picked into
+          @#{author_handle(pick_result.merge_request)} This merge request could not automatically be picked into
           `#{version.stable_branch}` for `#{version}` and will need manual
           intervention. You can either:
 
@@ -96,6 +93,21 @@ module ReleaseTools
             and assign to release managers, or
           * Solve the conflicts against #{target.pick_destination}, and reassign
             the #{PickIntoLabel.reference(version)} label to this merge request.
+
+          /unlabel #{PickIntoLabel.reference(version)}
+        MSG
+
+        create_merge_request_comment(pick_result.merge_request, comment)
+      end
+
+      def denied_comment(pick_result)
+        comment = <<~MSG
+          #{author_handle(pick_result.merge_request)} This merge request could not automatically be picked into
+          `#{version.stable_branch}` for `#{version}` and will need manual
+          intervention.
+
+          Please refer to
+          [GitLab.com releases](https://about.gitlab.com/handbook/engineering/releases/#gitlabcom-releases-2)
 
           /unlabel #{PickIntoLabel.reference(version)}
         MSG
@@ -121,6 +133,12 @@ module ReleaseTools
           merge_request.iid,
           comment
         )
+      end
+
+      def author_handle(authorable)
+        username = authorable&.author&.username
+
+        "@#{username}" if username
       end
     end
   end

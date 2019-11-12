@@ -119,6 +119,53 @@ describe ReleaseTools::CherryPick::Service do
           .to have_received(:cancel_redundant_pipelines)
           .with(target.project, ref: target.branch_name)
       end
+
+      context 'when picking for auto-deploy' do
+        let(:version) do
+          ReleaseTools::AutoDeploy::Version
+            .from_branch('12-5-auto-deploy-20191110')
+            .to_ee
+        end
+
+        let(:target) do
+          double(
+            branch_name: version.auto_deploy_branch.branch_name,
+            exists?: true,
+            project: ReleaseTools::Project::GitlabEe
+          )
+        end
+
+        let(:picks) do
+          Gitlab::PaginatedResponse.new(
+            [
+              double(iid: 1, project_id: 13_083, merge_commit_sha: 'success-a', labels: %w[P1 bug]).as_null_object,
+              double(iid: 2, project_id: 13_083, merge_commit_sha: 'success-b', labels: %w[P2]).as_null_object,
+              double(iid: 3, project_id: 13_083, merge_commit_sha: 'success-c', labels: []).as_null_object,
+
+              double(iid: 4, project_id: 13_083, merge_commit_sha: 'failure-a', labels: %w[P3]).as_null_object,
+              double(iid: 5, project_id: 13_083, merge_commit_sha: 'failure-b', labels: %w[P1 S1]).as_null_object,
+              double(iid: 6, project_id: 13_083, merge_commit_sha: 'failure-c', labels: []).as_null_object,
+            ]
+          )
+        end
+
+        it 'attempts to cherry pick only P1 S1 merge requests' do
+          stub_picking
+
+          expect(internal_client).to receive(:cherry_pick).exactly(3).times
+
+          without_dry_run do
+            results = subject.execute
+
+            success = results.select(&:success?)
+            expect(success.size).to be(2)
+            expect(success[0].merge_request.iid).to eql(picks[0].iid)
+            expect(success[1].merge_request.iid).to eql(picks[1].iid)
+            expect(results.select(&:denied?).size).to be(3)
+            expect(results.select(&:failure?).size).to be(4)
+          end
+        end
+      end
     end
   end
 end
