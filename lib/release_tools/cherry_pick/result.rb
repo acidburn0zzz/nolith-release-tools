@@ -17,6 +17,10 @@ module ReleaseTools
         @status == :success
       end
 
+      def denied?
+        @status == :denied
+      end
+
       def failure?
         !success?
       end

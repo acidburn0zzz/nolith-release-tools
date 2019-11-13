@@ -58,6 +58,20 @@ describe ReleaseTools::CherryPick::CommentNotifier do
       end
     end
 
+    context 'with a denied pick' do
+      it 'posts a failure comment' do
+        pick_result = ReleaseTools::CherryPick::Result.new(merge_request, :denied)
+
+        subject.comment(pick_result)
+
+        expect(client).to have_received(:create_merge_request_comment).with(
+          merge_request.project_id,
+          merge_request.iid,
+          DeniedMessageArgument.new(version, merge_request.author)
+        )
+      end
+    end
+
     context 'with a failed pick' do
       it 'posts a failure comment' do
         pick_result = ReleaseTools::CherryPick::Result.new(merge_request, :failure)
@@ -165,6 +179,22 @@ class FailureMessageArgument
     other.include?("@#{@author.username}") &&
       other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
       other.include?("for `#{@version}`") &&
+      other.include?("You can either:") &&
+      other.include?("/unlabel #{ReleaseTools::PickIntoLabel.reference(@version)}")
+  end
+end
+
+class DeniedMessageArgument
+  def initialize(version, author)
+    @version = version
+    @author = author
+  end
+
+  def ===(other)
+    other.include?("@#{@author.username}") &&
+      other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
+      other.include?("for `#{@version}`") &&
+      other.include?('https://about.gitlab.com/handbook/engineering/releases/#gitlabcom-releases-2') &&
       other.include?("/unlabel #{ReleaseTools::PickIntoLabel.reference(@version)}")
   end
 end

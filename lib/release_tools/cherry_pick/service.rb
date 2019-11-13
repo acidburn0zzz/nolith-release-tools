@@ -89,21 +89,34 @@ module ReleaseTools
       def cherry_pick(merge_request)
         result = nil
 
-        unless SharedStatus.dry_run?
-          client.cherry_pick(
-            project,
-            ref: merge_request.merge_commit_sha,
-            target: @target_branch
-          )
-        end
+        if allowed?(merge_request)
+          unless SharedStatus.dry_run?
+            client.cherry_pick(
+              project,
+              ref: merge_request.merge_commit_sha,
+              target: @target_branch
+            )
+          end
 
-        result = Result.new(merge_request, :success)
+          result = Result.new(merge_request, :success)
+        else
+          result = Result.new(merge_request, :denied)
+        end
       rescue Gitlab::Error::Error => ex
         result = Result.new(merge_request, :failure)
 
         Raven.capture_exception(ex) unless ex.is_a?(Gitlab::Error::BadRequest)
       ensure
         record_result(result)
+      end
+
+      def allowed?(merge_request)
+        case version
+        when ReleaseTools::AutoDeploy::Version
+          merge_request.labels.include?('P1') || merge_request.labels.include?('P2')
+        else
+          true
+        end
       end
 
       def record_result(result)
