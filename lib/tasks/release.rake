@@ -74,7 +74,7 @@ namespace :release do
 
     if version.monthly?
       service = ReleaseTools::Services::MonthlyPreparationService.new(version)
-      service.create_stable_branches(source)
+      service.create_stable_branches(args[:source])
     end
   end
 
