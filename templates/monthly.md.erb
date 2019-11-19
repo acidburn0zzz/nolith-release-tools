@@ -17,6 +17,33 @@
 - Try to push any successful deploy to canary into production after some time has passed, preferrably after all QA tasks are accounted and checked
 - Monitor for any blockers to production and determine if canary should be disabled
 
+## 17th
+
+If this date is on a weekend, do this work on the next working day
+
+- [ ] [Find the latest `sha`](https://gitlab.com/gitlab-org/release/docs/blob/master/general/deploy/auto-deploy.md#auto-deploy-status) that made it into production successfully: `sha`
+- [ ] Notify Engineering Managers that this is the `sha` that is guaranteed to be released on the 22nd, in `#releases`:
+    ```
+    :mega: This is the latest commit running on GitLab.com and this is guaranteed to be released on the 22nd.
+    https://gitlab.com/gitlab-org/gitlab/commits/SHA
+    The stable branch for the release will be created on the 18th (pending weekend).
+    ```
+- [ ] Link the above message to additional channels: `#development`, `#backend`, and `#frontend`
+
+## 18th
+
+If this date is on a weekend, do this work on the last Friday before the 18th.
+
+- [ ] Proceed to cut a new auto-deploy branch
+    - [ ] Execute the `Auto-deploy branch creation` here: https://gitlab.com/gitlab-org/release-tools/pipeline_schedules
+- [ ] Ensure this build makes it through into production
+- [ ] Grab the `sha` from this new auto-deploy branch and notify Engineering Managers that this is the candidate `sha` for the release, in `#releases`:
+    ```
+    :mega: This is the _candidate_ commit to be released on the 22nd.
+    https://gitlab.com/gitlab-org/gitlab/commits/SHA
+    ```
+- [ ] Link the above message to additional channels: `#development`, `#backend`, and `#frontend`
+
 ## Release Candidate
 
 - Follow instructions in the release candidate issue using the below dates as a guideline.
