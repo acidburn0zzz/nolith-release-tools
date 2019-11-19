@@ -9,11 +9,6 @@
      We are starting <%= version.to_minor %> into <%= Slack::Channel.for(version) %>
      Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
      ```
-- [ ] Prepare the release (this will create the necessary labels) using chatops:
-     ```
-     # In Slack
-     /chatops run release prepare <%= version.to_patch %>
-     ```
 
 ## Monitor
 
