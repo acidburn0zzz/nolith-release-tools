@@ -44,26 +44,6 @@ If this date is on a weekend, do this work on the last Friday before the 18th.
     ```
 - [ ] Link the above message to additional channels: `#development`, `#backend`, and `#frontend`
 
-## Release Candidate
-
-- Follow instructions in the release candidate issue using the below dates as a guideline.
-
-Keep in mind that:
-
-1. After the creation of the RC only regression, security, and documentation fixes should be
-   cherry-picked into stable branches.
-2. The final RC should point to the same commit as the final release.
-
-### At 15:00 UTC
-
-If the final RC isn't tagged and deployed by this time, notify the
-[Distribution Lead][getting help].
-
-### At 20:00 UTC
-
-If the final RC still isn't tagged and deployed by this time, notify the
-[VP of Engineering][getting help].
-
 ## 20th
 
 If this date is on the weekend, do this work on the last Friday before the 20th.
@@ -90,6 +70,13 @@ so this needs to be done manually:
   - Set the variable `SOURCE_BRANCH` to `<%= version.stable_branch(ee: true) %>`
   - Set the variable `TARGET_BRANCH` to `<%= version.stable_branch %>`
   - Run the pipeline
+
+- [ ] Create a RC version to ensure that the final version builds correctly
+
+   ```sh
+   # In Slack:
+   /chatops run release tag <%= version %>-rc42
+   ```
 
 ## 22nd: release day
 
