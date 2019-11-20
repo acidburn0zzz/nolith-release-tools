@@ -72,7 +72,10 @@ module ReleaseTools
       end
 
       def version_string(version)
-        "v#{version}"
+        # Prepend 'v' if version is semver
+        return "v#{version}" if /^\d+\.\d+\.\d+(-rc\d+)?(-ee)?$/.match?(version)
+
+        version
       end
 
       def read_file_from_gitlab_repo(file_name)
