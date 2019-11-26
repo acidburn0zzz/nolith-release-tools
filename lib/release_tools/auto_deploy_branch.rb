@@ -6,6 +6,11 @@ module ReleaseTools
     attr_reader :version
     attr_reader :branch_name
 
+    # Return the current auto-deploy branch name from environment variable
+    def self.current
+      ENV.fetch('AUTO_DEPLOY_BRANCH')
+    end
+
     def initialize(version, branch_name)
       @version = version
       @branch_name = branch_name

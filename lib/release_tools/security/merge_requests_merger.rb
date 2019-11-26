@@ -51,6 +51,10 @@ module ReleaseTools
           .from_array(valid: tuples.flatten(1), invalid: invalid)
 
         Slack::ChatopsNotification.merged_security_merge_requests(merge_result)
+
+        CherryPicker.new(merge_result.merged).execute if @merge_master
+
+        merge_result
       end
 
       def validated_merge_requests

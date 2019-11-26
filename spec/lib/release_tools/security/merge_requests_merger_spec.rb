@@ -38,6 +38,29 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         merger.execute
       end
     end
+
+    it 'performs cherry-picking when `merge_master` is true' do
+      picker = spy(:CherryPicker)
+      master_mr = double(:merge_request, target_branch: 'master', web_url: 'example.com')
+      backport = double(:merge_request, target_branch: '11-8-stable', web_url: 'example.com')
+
+      stub_const('ReleaseTools::Slack::ChatopsNotification', spy)
+      stub_const('ReleaseTools::Security::CherryPicker', picker)
+
+      described_class.new(merge_master: true).tap do |instance|
+        allow(instance).to receive(:merge)
+          .and_return(true)
+        allow(instance).to receive(:validated_merge_requests)
+          .and_return([[master_mr], [backport]])
+
+        without_dry_run do
+          instance.execute
+        end
+      end
+
+      expect(picker).to have_received(:new).with([master_mr])
+      expect(picker).to have_received(:execute)
+    end
   end
 
   describe '#validated_merge_requests' do

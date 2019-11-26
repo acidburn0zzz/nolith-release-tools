@@ -18,6 +18,8 @@ module ReleaseTools
         new(merged: merged, not_merged: not_merged, invalid: invalid)
       end
 
+      attr_reader :merged, :not_merged, :invalid
+
       def initialize(merged: [], not_merged: [], invalid: [])
         @merged = merged
         @not_merged = not_merged
