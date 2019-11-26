@@ -35,9 +35,7 @@ namespace :auto_deploy do
 
   desc 'Pick commits into the auto deploy branches'
   task pick: :check_enabled do
-    auto_deploy_branch = ENV.fetch('AUTO_DEPLOY_BRANCH') do |name|
-      abort("`#{name}` must be set for this rake task".colorize(:red))
-    end
+    auto_deploy_branch = ReleaseTools::AutoDeployBranch.current
 
     version = ReleaseTools::AutoDeploy::Version
       .from_branch(auto_deploy_branch)
@@ -52,6 +50,6 @@ namespace :auto_deploy do
 
   desc "Tag the auto-deploy branches from the latest passing builds"
   task tag: :check_enabled do
-    Rake::Task['passing_build:ee'].invoke(ENV['AUTO_DEPLOY_BRANCH'], true)
+    Rake::Task['passing_build:ee'].invoke(ReleaseTools::AutoDeployBranch.current, true)
   end
 end
