@@ -96,7 +96,9 @@ module ReleaseTools
         charts = Dir.glob(File.join(repository.path, '**', 'Chart.yaml'))
         version_mappings = Dir.glob(File.join(repository.path, '**', 'version_mappings.md'))
 
-        repository.commit(charts + version_mappings, message: message.join("\n"))
+        files_to_be_committed = charts + version_mappings
+
+        repository.commit(files_to_be_committed, message: message.join("\n")) unless files_to_be_committed.empty?
       end
 
       def commit_master_versions
