@@ -29,13 +29,15 @@ module RepositoryFixture
     @repository ||= Rugged::Repository.init_at(fixture_path)
   end
 
+  # When performing a Security Release, protected branches should be
+  # prefixed with `security/`. For the 1st iteration, we're moving
+  # the security development as-is to GitLab.com, so this change is
+  # not included.
+  #
+  # Code was not deleted so it can be easily introduced in upcoming
+  # iterations.
   def branch_prefix
-    @branch_prefix ||=
-      if ReleaseTools::SharedStatus.security_release? && ReleaseTools::Feature.enabled?(:security_remote)
-        'security/'
-      else
-        ''
-      end
+    ''
   end
 
   private

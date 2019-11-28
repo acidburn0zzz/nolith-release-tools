@@ -206,8 +206,8 @@ describe ReleaseTools::Changelog::Manager do
   describe '#release', 'with a security release' do
     let(:version) { ReleaseTools::Version.new('8.10.5-ee') }
 
-    let(:master) { repository.branches['security/master'] }
-    let(:stable) { repository.branches["security/#{version.stable_branch}"] }
+    let(:master) { repository.branches['master'] }
+    let(:stable) { repository.branches[version.stable_branch] }
 
     # The EE release performs the process on `X-Y-stable-ee` and `master`,
     # updating the EE changelog _and then_ the CE changelog, so to verify the
@@ -270,11 +270,6 @@ describe ReleaseTools::Changelog::Manager do
         expect(ee_master_commit.message).to eq(ee_message)
         expect(ee_stable_commit.message).to eq(ee_message)
       end
-    end
-
-    it 'does not work with non-prefixed branches' do
-      expect(repository.branches)
-        .to all(satisfy { |b| b.name.start_with?('security/') })
     end
   end
 

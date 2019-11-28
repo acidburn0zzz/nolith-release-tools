@@ -58,12 +58,15 @@ module ReleaseTools
 
       attr_reader :ref, :commit, :tree, :index
 
+      # When performing a Security Release, protected branches should be
+      # prefixed with `security/`. For the 1st iteration, we're moving
+      # the security development as-is to GitLab.com, so this change is
+      # not included.
+      #
+      # Code was not deleted so it can be easily introduced in upcoming
+      # iterations.
       def prefixed_branch(name)
-        if SharedStatus.security_release? && Feature.enabled?(:security_remote)
-          "security/#{name}"
-        else
-          name
-        end
+        name
       end
 
       def changelog_file
