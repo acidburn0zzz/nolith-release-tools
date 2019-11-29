@@ -67,19 +67,11 @@ module ReleaseTools
       end
 
       def master_branch
-        if SharedStatus.security_release? && Feature.enabled?(:security_remote)
-          'security/master'
-        else
-          'master'
-        end
+        'master'
       end
 
       def stable_branch
-        if SharedStatus.security_release? && Feature.enabled?(:security_remote)
-          "security/#{version.stable_branch}"
-        else
-          version.stable_branch
-        end
+        version.stable_branch
       end
 
       # Overridable

@@ -87,22 +87,24 @@ describe ReleaseTools::Release::GitlabCeRelease do
         let(:version) { "9.1.24#{suffix}" }
         let(:ob_version) { "9.1.24+#{edition}.0" }
 
-        it "prefixes all branches" do
-          branch = "security/9-1-stable#{suffix}"
+        it "does not prefix all branches" do
+          branch = "9-1-stable#{suffix}"
 
           execute(version, branch)
 
           aggregate_failures do
             expect(repository.branches.collect(&:name))
-              .not_to include('master', branch.sub('security/', ''))
+              .to include('master', branch)
             expect(repository.head.name).to eq "refs/heads/#{branch}"
-            expect(repository.branches['security/master']).not_to be_nil
+            expect(repository.branches['master']).not_to be_nil
+            expect(repository.branches['security/master']).to be_nil
             expect(repository.tags["v#{version}"]).not_to be_nil
 
             expect(ob_repository.branches.collect(&:name))
-              .not_to include('master', branch.sub('security/', ''))
+              .to include('master', branch)
             expect(ob_repository.head.name).to eq "refs/heads/#{branch}"
-            expect(ob_repository.branches['security/master']).not_to be_nil
+            expect(ob_repository.branches['master']).not_to be_nil
+            expect(ob_repository.branches['security/master']).to be_nil
             expect(ob_repository.tags[ob_version]).not_to be_nil
           end
         end
