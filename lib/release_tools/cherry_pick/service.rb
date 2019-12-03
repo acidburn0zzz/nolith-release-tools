@@ -100,7 +100,7 @@ module ReleaseTools
 
           result = Result.new(merge_request, :success)
         else
-          result = Result.new(merge_request, :denied)
+          result = Result.new(merge_request, :denied, 'Merge request does not have P1 or P2 label')
         end
       rescue Gitlab::Error::Error => ex
         result = Result.new(merge_request, :failure)
