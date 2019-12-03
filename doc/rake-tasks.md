@@ -165,6 +165,14 @@ start that build.
 When running `passing_build:all`, it will run both the CE and EE builds
 synchronously.  Keep this in mind if on a time constraint.
 
+### `security:validate`
+
+This task is executed via CI schedule. It validates security merge requests
+on different remotes.
+
+- If `security_remote` is enabled, validates merge requests on Security and Dev.
+- If `security_remote` is disabled, validates merge requests only on Dev
+
 ### Examples
 
 ```sh

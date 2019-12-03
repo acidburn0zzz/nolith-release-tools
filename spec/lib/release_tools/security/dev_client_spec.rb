@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Security::Client do
+describe ReleaseTools::Security::DevClient do
   let(:client) { described_class.new }
 
   it_behaves_like 'security_client #open_security_merge_requests'
@@ -12,6 +12,6 @@ describe ReleaseTools::Security::Client do
   it_behaves_like 'security_client #respond_to?'
 
   describe '#security_remote?' do
-    it { is_expected.to be_security_remote }
+    it { is_expected.not_to be_security_remote }
   end
 end

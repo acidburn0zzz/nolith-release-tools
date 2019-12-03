@@ -6,25 +6,6 @@ module ReleaseTools
     class MergeRequestsValidator
       include ::SemanticLogger::Loggable
 
-      PROJECTS_TO_VERIFY =
-        if ReleaseTools::Feature.enabled?(:security_remote)
-          %w[
-            gitlab-org/security/gitlab
-            gitlab-org/security/gitlab-foss
-            gitlab-org/security/gitaly
-            gitlab-org/security/gitlab-workhorse
-            gitlab-org/security/omnibus-gitlab
-          ]
-        else
-          %w[
-            gitlab/gitlabhq
-            gitlab/gitlab-ee
-            gitlab/gitaly
-            gitlab/gitlab-workhorse
-            gitlab/omnibus-gitlab
-          ]
-        end
-
       ERROR_FOOTNOTE = <<~FOOTNOTE.strip
         <hr>
 
@@ -56,8 +37,9 @@ module ReleaseTools
         #{ERROR_FOOTNOTE}
       TEMPLATE
 
-      def initialize
-        @client = Client.new
+      # @param [ReleaseTools::Security::Client,ReleaseTools::Security::DevClient] client
+      def initialize(client)
+        @client = client
       end
 
       # Validates all security merge requests, returning those that were valid.
@@ -75,7 +57,7 @@ module ReleaseTools
         valid = []
         invalid = []
 
-        PROJECTS_TO_VERIFY.each do |project|
+        projects_to_verify.each do |project|
           logger.info('Verifying security MRs', project: project)
 
           merge_requests = @client.open_security_merge_requests(project)
@@ -140,6 +122,24 @@ module ReleaseTools
         )
 
         @client.update_merge_request(project_id, iid, assignee_id: mr.author.id)
+      end
+
+      private
+
+      def projects_to_verify
+        if @client.security_remote?
+          %w[
+            gitlab-org/security/gitlab
+          ]
+        else
+          %w[
+            gitlab/gitlabhq
+            gitlab/gitlab-ee
+            gitlab/gitaly
+            gitlab/gitlab-workhorse
+            gitlab/omnibus-gitlab
+          ]
+        end
       end
     end
   end
