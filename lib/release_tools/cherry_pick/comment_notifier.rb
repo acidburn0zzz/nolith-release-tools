@@ -101,10 +101,16 @@ module ReleaseTools
       end
 
       def denied_comment(pick_result)
+        reason =
+          if pick_result.reason
+            ":\n\n* #{pick_result.reason}\n\n"
+          else
+            ". "
+          end
+
         comment = <<~MSG
           #{author_handle(pick_result.merge_request)} This merge request could not automatically be picked into
-          `#{version.stable_branch}` for `#{version}` and will need manual
-          intervention.
+          `#{version.stable_branch}` for `#{version}`#{reason}This requires manual intervention.
 
           Please refer to
           [GitLab.com releases](https://about.gitlab.com/handbook/engineering/releases/#gitlabcom-releases-2)

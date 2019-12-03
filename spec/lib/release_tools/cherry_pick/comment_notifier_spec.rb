@@ -70,6 +70,19 @@ describe ReleaseTools::CherryPick::CommentNotifier do
           DeniedMessageArgument.new(version, merge_request.author)
         )
       end
+
+      it 'posts a failure comment with a reason' do
+        reason = 'Merge request does not have P1 or P2 label'
+        pick_result = ReleaseTools::CherryPick::Result.new(merge_request, :denied, reason)
+
+        subject.comment(pick_result)
+
+        expect(client).to have_received(:create_merge_request_comment).with(
+          merge_request.project_id,
+          merge_request.iid,
+          DeniedMessageArgument.new(version, merge_request.author, reason)
+        )
+      end
     end
 
     context 'with a failed pick' do
@@ -185,17 +198,28 @@ class FailureMessageArgument
 end
 
 class DeniedMessageArgument
-  def initialize(version, author)
+  def initialize(version, author, reason = nil)
     @version = version
     @author = author
+    @reason = reason
   end
 
   def ===(other)
     other.include?("@#{@author.username}") &&
       other.include?("could not automatically be picked into\n`#{@version.stable_branch}`") &&
-      other.include?("for `#{@version}`") &&
+      other.include?(denied_details) &&
       other.include?('https://about.gitlab.com/handbook/engineering/releases/#gitlabcom-releases-2') &&
       other.include?("/unlabel #{ReleaseTools::PickIntoLabel.reference(@version)}")
+  end
+
+  private
+
+  def denied_details
+    if @reason.blank?
+      "for `#{@version}`. This requires manual intervention.\n\n"
+    else
+      "for `#{@version}`:\n\n* #{@reason}\n\nThis requires manual intervention.\n\n"
+    end
   end
 end
 

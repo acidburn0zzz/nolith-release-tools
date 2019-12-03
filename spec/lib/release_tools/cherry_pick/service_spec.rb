@@ -161,7 +161,9 @@ describe ReleaseTools::CherryPick::Service do
             expect(success.size).to be(2)
             expect(success[0].merge_request.iid).to eql(picks[0].iid)
             expect(success[1].merge_request.iid).to eql(picks[1].iid)
-            expect(results.select(&:denied?).size).to be(3)
+            denied = results.select(&:denied?)
+            expect(denied.size).to be(3)
+            expect(denied.map(&:reason).uniq).to eq(['Merge request does not have P1 or P2 label'])
             expect(results.select(&:failure?).size).to be(4)
           end
         end
