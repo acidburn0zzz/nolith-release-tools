@@ -3,19 +3,17 @@
 require 'spec_helper'
 
 describe ReleaseTools::Security::MergeRequestsValidator do
-  let(:validator) { described_class.new }
   let(:client) { double(:client) }
-
-  before do
-    allow(ReleaseTools::Security::Client)
-      .to receive(:new)
-      .and_return(client)
-  end
+  let(:validator) { described_class.new(client) }
 
   describe '#execute' do
     it 'returns the valid merge requests' do
       merge_request1 = double(:merge_request, web_url: 'example.com')
       merge_request2 = double(:merge_request, web_url: 'example.com')
+
+      allow(client)
+        .to receive(:security_remote?)
+        .and_return(false)
 
       allow(client)
         .to receive(:open_security_merge_requests)

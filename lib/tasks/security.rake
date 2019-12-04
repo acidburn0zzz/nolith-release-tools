@@ -68,8 +68,14 @@ namespace :security do
   # Undocumented; executed via CI schedule
   task validate: :force_security do
     ReleaseTools::Security::MergeRequestsValidator
-      .new
+      .new(ReleaseTools::Security::DevClient.new)
       .execute
+
+    if ReleaseTools::Feature.enabled?(:security_remote)
+      ReleaseTools::Security::MergeRequestsValidator
+        .new(ReleaseTools::Security::Client.new)
+        .execute
+    end
   end
 
   namespace :gitaly do

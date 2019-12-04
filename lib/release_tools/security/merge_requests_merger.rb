@@ -58,7 +58,7 @@ module ReleaseTools
       end
 
       def validated_merge_requests
-        valid, invalid = MergeRequestsValidator.new.execute
+        valid, invalid = MergeRequestsValidator.new(@client).execute
 
         if @merge_master
           [valid, invalid]

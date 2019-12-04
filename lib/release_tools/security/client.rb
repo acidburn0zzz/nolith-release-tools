@@ -2,7 +2,7 @@
 
 module ReleaseTools
   module Security
-    # A GitLab API client to use when validating security merge requests.
+    # A GitLab API client to use when validating security merge requests on Security.
     class Client
       # The username of the release tools bot that is responsible for verifying
       # security merge requests.
@@ -10,13 +10,9 @@ module ReleaseTools
 
       attr_reader :gitlab_client
 
+      # Overriden by Security::DevClient
       def initialize
-        @gitlab_client =
-          if ReleaseTools::Feature.enabled?(:security_remote)
-            ReleaseTools::GitlabClient.client
-          else
-            ReleaseTools::GitlabDevClient.client
-          end
+        @gitlab_client = ReleaseTools::GitlabClient.client
       end
 
       # @param [String] project The full project path, such as
@@ -62,6 +58,11 @@ module ReleaseTools
 
       def respond_to_missing?(name, include_private = false)
         gitlab_client.respond_to?(name, include_private)
+      end
+
+      # Overriden by Security::DevClient
+      def security_remote?
+        true
       end
     end
   end
