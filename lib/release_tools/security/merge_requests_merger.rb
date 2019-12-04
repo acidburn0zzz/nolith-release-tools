@@ -19,11 +19,12 @@ module ReleaseTools
         #{MergeRequestsValidator::ERROR_FOOTNOTE}
       ERROR
 
+      # @param [ReleaseTools::Security::Client|ReleaseTools::Security::DevClient] client
       # @param [TrueClass|FalseClass] merge_master If merge requests that target
       # `master` should also be merged.
-      def initialize(merge_master: false)
+      def initialize(client, merge_master: false)
         @merge_master = merge_master
-        @client = Client.new
+        @client = client
       end
 
       # Merges all valid security merge requests.

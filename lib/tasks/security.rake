@@ -22,9 +22,19 @@ namespace :security do
         false
       end
 
+    client = ReleaseTools::Security::DevClient.new
+
     ReleaseTools::Security::MergeRequestsMerger
-      .new(merge_master: merge_master)
+      .new(client, merge_master: merge_master)
       .execute
+
+    if ReleaseTools::Feature.enabled?(:security_remote)
+      client = ReleaseTools::Security::Client.new
+
+      ReleaseTools::Security::MergeRequestsMerger
+        .new(client, merge_master: merge_master)
+        .execute
+    end
   end
 
   desc 'Prepare for a new security release'
@@ -65,7 +75,7 @@ namespace :security do
     Rake::Task['release:tag'].invoke(*args)
   end
 
-  # Undocumented; executed via CI schedule
+  desc 'Validates security merge requests'
   task validate: :force_security do
     ReleaseTools::Security::MergeRequestsValidator
       .new(ReleaseTools::Security::DevClient.new)

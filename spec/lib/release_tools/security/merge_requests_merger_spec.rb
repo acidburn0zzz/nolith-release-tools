@@ -3,9 +3,11 @@
 require 'spec_helper'
 
 describe ReleaseTools::Security::MergeRequestsMerger do
+  let(:client) { double(:client) }
+
   describe '#execute' do
     it 'merges valid merge requests' do
-      merger = described_class.new
+      merger = described_class.new(client)
       mr1 = double(:merge_request, target_branch: 'foo', web_url: 'example.com')
       mr2 = double(:merge_request, target_branch: 'bar', web_url: 'example.com')
       mr3 = double(:merge_request, target_branch: 'invalid', web_url: 'example.com')
@@ -47,7 +49,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
       stub_const('ReleaseTools::Slack::ChatopsNotification', spy)
       stub_const('ReleaseTools::Security::CherryPicker', picker)
 
-      described_class.new(merge_master: true).tap do |instance|
+      described_class.new(client, merge_master: true).tap do |instance|
         allow(instance).to receive(:merge)
           .and_return(true)
         allow(instance).to receive(:validated_merge_requests)
@@ -76,7 +78,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
       it 'includes merge requests that target master' do
         master_mr = double(:merge_request, target_branch: 'master')
         backport = double(:merge_request, target_branch: '11-8-stable')
-        merger = described_class.new(merge_master: true)
+        merger = described_class.new(client, merge_master: true)
 
         allow(validator)
           .to receive(:execute)
@@ -91,7 +93,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
         master_mr = double(:merge_request, target_branch: 'master')
         backport = double(:merge_request, target_branch: '11-8-stable')
         invalid = double(:merge_request, target_branch: 'invalid')
-        merger = described_class.new(merge_master: false)
+        merger = described_class.new(client, merge_master: false)
 
         allow(validator)
           .to receive(:execute)
@@ -105,10 +107,10 @@ describe ReleaseTools::Security::MergeRequestsMerger do
   describe '#merge' do
     it 'returns true when the merge request is merged' do
       mr = double(:merge_request, project_id: 1, iid: 2, web_url: 'example.com')
-      merger = described_class.new
+      merger = described_class.new(client)
       response = double(:response, merge_commit_sha: '123')
 
-      allow(merger.client)
+      allow(client)
         .to receive(:accept_merge_request)
         .with(1, 2)
         .and_return(response)
@@ -120,7 +122,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
     it 'reassigns the MR when the merge commit SHA is empty' do
       mr = double(:merge_request, project_id: 1, iid: 2, web_url: 'example.com')
-      merger = described_class.new
+      merger = described_class.new(client)
       response = double(:response, merge_commit_sha: nil)
 
       allow(merger.client)
@@ -139,7 +141,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
     it 'reassigns the MR when the merge commit SHA is missing' do
       mr = double(:merge_request, project_id: 1, iid: 2, web_url: 'example.com')
-      merger = described_class.new
+      merger = described_class.new(client)
 
       allow(merger.client)
         .to receive(:accept_merge_request)
@@ -158,7 +160,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
   describe '#reassign_merge_request' do
     it 'reassigns the merge request and notifies the author' do
-      merger = described_class.new
+      merger = described_class.new(client)
       mr = double(
         :merge_request,
         project_id: 1,
