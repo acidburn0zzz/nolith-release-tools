@@ -37,7 +37,7 @@ module ReleaseTools
         #{ERROR_FOOTNOTE}
       TEMPLATE
 
-      # @param [ReleaseTools::Security::Client,ReleaseTools::Security::DevClient] client
+      # @param [ReleaseTools::Security::Client|ReleaseTools::Security::DevClient] client
       def initialize(client)
         @client = client
       end
