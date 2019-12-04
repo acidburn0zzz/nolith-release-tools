@@ -13,11 +13,7 @@ module ReleaseTools
 
       def self.remotes
         if SharedStatus.security_release?
-          if Feature.enabled?(:security_remote)
-            self::REMOTES.slice(:security, :dev)
-          else
-            self::REMOTES.slice(:dev)
-          end
+          self::REMOTES.slice(:dev)
         else
           self::REMOTES.except(:security)
         end
