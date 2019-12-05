@@ -61,7 +61,18 @@ module ReleaseTools
     end
 
     def success?(commit)
-      @client.commit(@project, ref: commit.id).status == 'success'
+      result = @client.commit(@project, ref: commit.id)
+
+      return false if result.status != 'success'
+      return true if @project != ReleaseTools::Project::GitlabEe
+
+      # Prevent false positive on docs-only pipelines
+      #
+      # A gitlab full pipeline has over 200 jobs, but isn't necessarily consistent
+      # about the order, so we're only checking size
+      @client
+        .pipeline_jobs(@project, result.last_pipeline.id, per_page: 50)
+        .has_next_page?
     end
   end
 end

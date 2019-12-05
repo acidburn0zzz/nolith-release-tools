@@ -47,4 +47,83 @@ describe ReleaseTools::Commits do
       end
     end
   end
+
+  describe '#success?' do
+    let(:project) { ReleaseTools::Project::Gitaly }
+    let(:client) { double('ReleaseTools::GitlabClient') }
+
+    def success?(commit)
+      described_class.new(project, client: client).send(:success?, commit)
+    end
+
+    it 'returns true when status is success' do
+      commit = double('commit', id: 'abc', status: 'success')
+
+      expect(client).to receive(:commit)
+                          .with(project, ref: commit.id)
+                          .and_return(commit)
+                          .once
+      expect(client).not_to receive(:pipeline_jobs)
+
+      expect(success?(commit)).to be true
+    end
+
+    it 'returns false when status is not success' do
+      commit = double('commit', id: 'abc', status: 'skipped')
+
+      expect(client).to receive(:commit)
+                          .with(project, ref: commit.id)
+                          .and_return(commit)
+                          .once
+      expect(client).not_to receive(:pipeline_jobs)
+
+      expect(success?(commit)).to be false
+    end
+
+    context 'when the project is GitLab' do
+      let(:project) { ReleaseTools::Project::GitlabEe }
+
+      it 'also checks # of jobs when status is success' do
+        commit = double('commit', id: 'abc', status: 'success', last_pipeline: double('pipeline', id: 1))
+
+        expect(client).to receive(:commit)
+                            .with(project, ref: commit.id)
+                            .and_return(commit)
+                            .once
+        expect(client).to receive(:pipeline_jobs)
+                            .with(project, 1, per_page: 50)
+                            .and_return(double('jobs', has_next_page?: true))
+                            .once
+
+        expect(success?(commit)).to be true
+      end
+
+      it 'returns false when the # of jobs < 50' do
+        commit = double('commit', id: 'abc', status: 'success', last_pipeline: double('pipeline', id: 1))
+
+        expect(client).to receive(:commit)
+                            .with(project, ref: commit.id)
+                            .and_return(commit)
+                            .once
+        expect(client).to receive(:pipeline_jobs)
+                            .with(project, 1, per_page: 50)
+                            .and_return(double('jobs', has_next_page?: false))
+                            .once
+
+        expect(success?(commit)).to be false
+      end
+
+      it 'does not check the # of jobs when status is not success' do
+        commit = double('commit', id: 'abc', status: 'skipped')
+
+        expect(client).to receive(:commit)
+                            .with(project, ref: commit.id)
+                            .and_return(commit)
+                            .once
+        expect(client).not_to receive(:pipeline_jobs)
+
+        expect(success?(commit)).to be false
+      end
+    end
+  end
 end
