@@ -62,9 +62,9 @@ module ReleaseTools
 
     def success?(commit)
       result = @client.commit(@project, ref: commit.id)
-      success = result.status == 'success'
 
-      return success if !success || @project != ReleaseTools::Project::GitlabEe
+      return false if result.status != 'success'
+      return true if @project != ReleaseTools::Project::GitlabEe
 
       # Prevent false positive on docs-only pipelines
       #
