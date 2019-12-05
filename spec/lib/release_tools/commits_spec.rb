@@ -7,7 +7,7 @@ describe ReleaseTools::Commits do
 
   before do
     # Reduce our fixture payload
-    stub_const('ReleaseTools::Commits::MAX_COMMITS_TO_CHECK', 5)
+    stub_const('ReleaseTools::Commits::MAX_COMMITS_TO_CHECK', 10)
   end
 
   describe '#latest_successful' do
@@ -17,7 +17,7 @@ describe ReleaseTools::Commits do
       VCR.use_cassette('commits/list') do
         commit = instance.latest_successful
 
-        expect(commit.id).to eq 'a5f13e591f617931434d66263418a2f26abe3abe'
+        expect(commit.id).to eq 'c384315ae1ea48df2a741874b326581ded0a97e1'
       end
     end
   end
