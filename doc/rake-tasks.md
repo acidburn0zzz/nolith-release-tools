@@ -240,29 +240,6 @@ $ bundle exec rake "publish[11.1.0-rc5]"
     Raspberry-Pi-2-Jessie-release: https://dev.gitlab.org/gitlab/omnibus-gitlab/-/jobs/2600310
 ```
 
-## `sync`
-
-This task ensures that the `master` branches for both CE and EE are in sync
-between all the remotes.
-
-If you manually [push to multiple remotes](push-to-multiple-remotes.md) during
-the release process, you can safely skip this task.
-
-### Configuration
-
-| Option      | Purpose                        |
-| ------      | -------                        |
-| `CE=false`  | Skip CE repository             |
-| `EE=false`  | Skip EE repository             |
-| `OG=false`  | Skip omnibus-gitlab repository |
-| `TEST=true` | Don't push anything to remotes |
-
-### Examples
-
-```bash
-bundle exec rake sync
-```
-
 ---
 
 [Return to Documentation](../README.md#documentation)

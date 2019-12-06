@@ -5,27 +5,6 @@ require_relative 'lib/release_tools/support/tasks_helper'
 
 Dir.glob('lib/tasks/*.rake').each { |task| import(task) }
 
-desc "Sync master branch in remotes"
-task :sync do
-  if skip?('ee')
-    $stdout.puts 'Skipping sync for EE'.colorize(:yellow)
-  else
-    ReleaseTools::Sync.new(ReleaseTools::Project::GitlabEe.remotes).execute
-  end
-
-  if skip?('ce')
-    $stdout.puts 'Skipping sync for CE'.colorize(:yellow)
-  else
-    ReleaseTools::Sync.new(ReleaseTools::Project::GitlabCe.remotes).execute
-  end
-
-  if skip?('og')
-    $stdout.puts 'Skipping sync for Omnibus Gitlab'.colorize(:yellow)
-  else
-    ReleaseTools::Sync.new(ReleaseTools::Project::OmnibusGitlab.remotes).execute
-  end
-end
-
 # Undocumented; executed via CI schedule
 task :close_expired_qa_issues do
   ReleaseTools::Qa::IssueCloser.new.execute
