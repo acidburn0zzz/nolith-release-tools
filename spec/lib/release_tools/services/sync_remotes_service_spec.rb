@@ -60,20 +60,57 @@ describe ReleaseTools::Services::SyncRemotesService do
 
   describe '#sync_tags' do
     let(:fake_repo) { instance_double(ReleaseTools::RemoteRepository) }
+    let(:tag) { 'v1.2.3' }
 
     before do
       enable_feature(:publish_git)
+      disable_feature(:security_remote)
     end
 
     it 'fetches tags and pushes' do
-      tag = 'v1.2.3'
-
       allow(ReleaseTools::RemoteRepository).to receive(:get).and_return(fake_repo)
 
       expect(fake_repo).to receive(:fetch).with("refs/tags/#{tag}", remote: :dev)
       expect(fake_repo).to receive(:push_to_all_remotes).with(tag)
 
       described_class.new(version).sync_tags(spy, tag)
+    end
+
+    context 'when security_remote is disabled' do
+      it 'uses canonical and dev remotes' do
+        project = ReleaseTools::Project::GitlabEe
+        project_remotes = project::REMOTES.slice(:canonical, :dev)
+
+        allow(fake_repo).to receive(:fetch).and_return(nil)
+        allow(fake_repo).to receive(:push_to_all_remotes).and_return(nil)
+
+        expect(ReleaseTools::RemoteRepository).to receive(:get)
+          .with(
+            a_hash_including(project_remotes),
+            a_hash_including(global_depth: 1)
+          ).and_return(fake_repo)
+
+        described_class.new(version).sync_tags(project, tag)
+      end
+    end
+
+    context 'when security_remote is enabled' do
+      it 'uses canonical, dev and security remotes' do
+        enable_feature(:security_remote)
+
+        project = ReleaseTools::Project::GitlabEe
+
+        allow(fake_repo).to receive(:fetch).and_return(nil)
+        allow(fake_repo).to receive(:push_to_all_remotes).and_return(nil)
+
+        expect(ReleaseTools::RemoteRepository).to receive(:get)
+          .with(
+            a_hash_including(project::REMOTES),
+            a_hash_including(global_depth: 1)
+          ).and_return(fake_repo)
+
+        described_class.new(version).sync_tags(project, tag)
+      end
     end
   end
 
@@ -82,6 +119,7 @@ describe ReleaseTools::Services::SyncRemotesService do
     let(:project) { ReleaseTools::Project::GitlabEe }
 
     before do
+      disable_feature(:security_remote)
       enable_feature(:publish_git)
     end
 
@@ -134,6 +172,51 @@ describe ReleaseTools::Services::SyncRemotesService do
           .with(anything, a_hash_including(output: 'output'))
 
         service.sync_branches(project, branch)
+      end
+    end
+
+    context 'when security_remote is disabled' do
+      it 'uses canonical and dev remotes' do
+        branch = '1-2-stable-ee'
+        remotes = project::REMOTES.slice(:canonical, :dev)
+        successful_merge = double(status: double(success?: true))
+
+        allow(fake_repo).to receive(:merge)
+          .with("dev/#{branch}", branch, no_ff: true)
+          .and_return(successful_merge)
+
+        allow(fake_repo).to receive(:push_to_all_remotes).with(branch)
+
+        expect(ReleaseTools::RemoteRepository).to receive(:get)
+          .with(
+            a_hash_including(remotes),
+            a_hash_including(branch: branch)
+          ).and_return(fake_repo)
+
+        described_class.new(version).sync_branches(project, branch)
+      end
+    end
+
+    context 'with security_remote is enabled' do
+      it 'uses canonical, dev and security' do
+        enable_feature(:security_remote)
+
+        branch = '1-2-stable-ee'
+        successful_merge = double(status: double(success?: true))
+
+        allow(fake_repo).to receive(:merge)
+          .with("dev/#{branch}", branch, no_ff: true)
+          .and_return(successful_merge)
+
+        allow(fake_repo).to receive(:push_to_all_remotes).with(branch)
+
+        expect(ReleaseTools::RemoteRepository).to receive(:get)
+          .with(
+            a_hash_including(project::REMOTES),
+            a_hash_including(branch: branch)
+          ).and_return(fake_repo)
+
+        described_class.new(version).sync_branches(project, branch)
       end
     end
   end

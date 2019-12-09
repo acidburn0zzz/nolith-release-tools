@@ -28,39 +28,60 @@ module ReleaseTools
       end
 
       def sync_tags(project, *tags)
-        repository = RemoteRepository.get(project.remotes, global_depth: 1)
+        sync_remotes = remotes_to_sync(project).fetch(:remotes)
+        repository = RemoteRepository.get(sync_remotes, global_depth: 1)
 
         tags.each do |tag|
           logger.info('Fetching tag', project: project, name: tag)
           repository.fetch("refs/tags/#{tag}", remote: :dev)
 
-          logger.info('Pushing tag to remotes', project: project, name: tag, remotes: project.remotes.keys)
+          logger.info('Pushing tag to remotes', project: project, name: tag, remotes: sync_remotes.keys)
           repository.push_to_all_remotes(tag)
         end
       end
 
+      # Sync project stable branches across all remotes.
+      #
+      # If security_remote is enabled it uses all the project remotes
+      # (Canonical, Dev and Security), if not it only uses Canonical and Dev.
+      #
+      # Iterates over stable branches and for each of them:
+      # 1. It clones from Canonical.
+      # 2. Fetches stable branch from Dev
+      # 3. Merges Dev stable branch into Canonical
+      # 4. If the merge is successful pushes the changes to all remotes.
       def sync_branches(project, *branches)
-        # Clone from canonical first
-        remotes = project.remotes.slice(:canonical, :dev)
+        sync_remotes = remotes_to_sync(project).fetch(:remotes)
+        remotes_size = remotes_to_sync(project).fetch(:size)
 
-        if remotes.size < 2
-          logger.fatal("Expected at least 2 remotes, got #{remotes.size}", project: project, remotes: remotes)
+        if sync_remotes.size < remotes_size
+          logger.fatal("Expected at least #{remotes_size} remotes, got #{sync_remotes.size}", project: project, remotes: sync_remotes)
           return
         end
 
         branches.each do |branch|
-          repository = RemoteRepository.get(remotes, global_depth: 50, branch: branch)
+          repository = RemoteRepository.get(sync_remotes, global_depth: 50, branch: branch)
 
           repository.fetch(branch, remote: :dev)
 
           result = repository.merge("dev/#{branch}", branch, no_ff: true)
 
           if result.status.success?
-            logger.info('Pushing branch to remotes', project: project, name: branch, remotes: remotes.keys)
+            logger.info('Pushing branch to remotes', project: project, name: branch, remotes: sync_remotes.keys)
             repository.push_to_all_remotes(branch)
           else
             logger.fatal('Failed to sync branch', project: project, name: branch, output: result.output)
           end
+        end
+      end
+
+      private
+
+      def remotes_to_sync(project)
+        if Feature.enabled?(:security_remote)
+          { remotes: project::REMOTES.slice(:canonical, :dev, :security), size: 3 }
+        else
+          { remotes: project.remotes.slice(:canonical, :dev), size: 2 }
         end
       end
     end
