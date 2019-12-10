@@ -65,7 +65,7 @@ module ReleaseTools
       def compile_changelog
         app_version = gitlab_version || version_manager.parse_chart_file.app_version
         return if app_version.rc?
-        return if Feature.enabled?(:security_remote) && Feature.disabled?(:security_changelog)
+        return if Feature.enabled?(:security_release_test)
 
         logger.info('Compiling changelog', version: version)
 

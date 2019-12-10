@@ -148,7 +148,7 @@ module ReleaseTools
       def validate_target_branch
         # NOTE: Temporary feature check while we test Security MR verification
         # See https://gitlab.com/gitlab-org/release-tools/issues/348#note_256210914
-        return if Feature.enabled?(:security_remote) && Feature.disabled?(:security_validate_branch)
+        return if Feature.enabled?(:security_release_test)
 
         unless @merge_request.target_branch.match?(ALLOWED_TARGET_BRANCHES)
           error('The target branch is invalid', <<~ERROR)

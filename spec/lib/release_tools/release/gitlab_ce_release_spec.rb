@@ -5,10 +5,6 @@ require 'spec_helper'
 describe ReleaseTools::Release::GitlabCeRelease do
   include RuggedMatchers
 
-  before do
-    enable_feature(:security_changelog)
-  end
-
   # NOTE (rspeicher): There is some "magic" here that can be confusing.
   #
   # The release process checks out a remote to `/tmp/some_folder`, where
@@ -37,6 +33,8 @@ describe ReleaseTools::Release::GitlabCeRelease do
     enable_feature(:security_remote)
     allow(ReleaseTools::SharedStatus).to receive(:security_release?)
       .and_return(security_release)
+
+    disable_feature(:security_release_test)
 
     fixture.rebuild_fixture!
     ob_fixture.rebuild_fixture!
