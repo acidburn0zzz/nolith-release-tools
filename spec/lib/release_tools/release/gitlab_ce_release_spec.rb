@@ -34,6 +34,8 @@ describe ReleaseTools::Release::GitlabCeRelease do
     allow(ReleaseTools::SharedStatus).to receive(:security_release?)
       .and_return(security_release)
 
+    disable_feature(:security_release_test)
+
     fixture.rebuild_fixture!
     ob_fixture.rebuild_fixture!
 
