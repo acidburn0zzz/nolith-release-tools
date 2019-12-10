@@ -5,6 +5,10 @@ require 'spec_helper'
 describe ReleaseTools::Release::GitlabCeRelease do
   include RuggedMatchers
 
+  before do
+    enable_feature(:security_changelog)
+  end
+
   # NOTE (rspeicher): There is some "magic" here that can be confusing.
   #
   # The release process checks out a remote to `/tmp/some_folder`, where

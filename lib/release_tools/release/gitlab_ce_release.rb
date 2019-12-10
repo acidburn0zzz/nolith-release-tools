@@ -38,6 +38,7 @@ module ReleaseTools
 
       def compile_changelog
         return if version.rc?
+        return if Feature.enabled?(:security_remote) && Feature.disabled?(:security_changelog)
 
         logger.info('Compiling changelog', version: version)
 
