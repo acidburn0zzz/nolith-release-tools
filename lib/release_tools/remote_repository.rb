@@ -218,8 +218,14 @@ module ReleaseTools
 
         true
       else
-        _, status = run_git(cmd)
-        status.success?
+        output, status = run_git(cmd)
+
+        if status.success?
+          true
+        else
+          logger.warn('Failed to push', remote: remote, ref: ref, output: output)
+          false
+        end
       end
     end
 
