@@ -16,28 +16,15 @@ module ReleaseTools
           return
         end
 
-        sync_tags(Project::GitlabEe, @version.tag(ee: true))
-        sync_tags(Project::GitlabCe, @version.tag(ee: false))
-        sync_tags(Project::OmnibusGitlab, @omnibus.to_ee.tag, @omnibus.to_ce.tag)
-
         sync_branches(Project::GitlabEe, @version.stable_branch(ee: true))
         sync_branches(Project::GitlabCe, @version.stable_branch(ee: false))
         sync_branches(Project::OmnibusGitlab, *[
           @omnibus.to_ee.stable_branch, @omnibus.to_ce.stable_branch
         ].uniq) # Omnibus uses a single branch post-12.2
-      end
 
-      def sync_tags(project, *tags)
-        sync_remotes = remotes_to_sync(project).fetch(:remotes)
-        repository = RemoteRepository.get(sync_remotes, global_depth: 1)
-
-        tags.each do |tag|
-          logger.info('Fetching tag', project: project, name: tag)
-          repository.fetch("refs/tags/#{tag}", remote: :dev)
-
-          logger.info('Pushing tag to remotes', project: project, name: tag, remotes: sync_remotes.keys)
-          repository.push_to_all_remotes(tag)
-        end
+        sync_tags(Project::GitlabEe, @version.tag(ee: true))
+        sync_tags(Project::GitlabCe, @version.tag(ee: false))
+        sync_tags(Project::OmnibusGitlab, @omnibus.to_ee.tag, @omnibus.to_ce.tag)
       end
 
       # Sync project stable branches across all remotes.
@@ -72,6 +59,19 @@ module ReleaseTools
           else
             logger.fatal('Failed to sync branch', project: project, name: branch, output: result.output)
           end
+        end
+      end
+
+      def sync_tags(project, *tags)
+        sync_remotes = remotes_to_sync(project).fetch(:remotes)
+        repository = RemoteRepository.get(sync_remotes, global_depth: 1)
+
+        tags.each do |tag|
+          logger.info('Fetching tag', project: project, name: tag)
+          repository.fetch("refs/tags/#{tag}", remote: :dev)
+
+          logger.info('Pushing tag to remotes', project: project, name: tag, remotes: sync_remotes.keys)
+          repository.push_to_all_remotes(tag)
         end
       end
 

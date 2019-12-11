@@ -58,62 +58,6 @@ describe ReleaseTools::Services::SyncRemotesService do
     end
   end
 
-  describe '#sync_tags' do
-    let(:fake_repo) { instance_double(ReleaseTools::RemoteRepository) }
-    let(:tag) { 'v1.2.3' }
-
-    before do
-      enable_feature(:publish_git)
-      disable_feature(:security_remote)
-    end
-
-    it 'fetches tags and pushes' do
-      allow(ReleaseTools::RemoteRepository).to receive(:get).and_return(fake_repo)
-
-      expect(fake_repo).to receive(:fetch).with("refs/tags/#{tag}", remote: :dev)
-      expect(fake_repo).to receive(:push_to_all_remotes).with(tag)
-
-      described_class.new(version).sync_tags(spy, tag)
-    end
-
-    context 'when security_remote is disabled' do
-      it 'uses canonical and dev remotes' do
-        project = ReleaseTools::Project::GitlabEe
-        project_remotes = project::REMOTES.slice(:canonical, :dev)
-
-        allow(fake_repo).to receive(:fetch).and_return(nil)
-        allow(fake_repo).to receive(:push_to_all_remotes).and_return(nil)
-
-        expect(ReleaseTools::RemoteRepository).to receive(:get)
-          .with(
-            a_hash_including(project_remotes),
-            a_hash_including(global_depth: 1)
-          ).and_return(fake_repo)
-
-        described_class.new(version).sync_tags(project, tag)
-      end
-    end
-
-    context 'when security_remote is enabled' do
-      it 'uses canonical, dev and security remotes' do
-        enable_feature(:security_remote)
-
-        project = ReleaseTools::Project::GitlabEe
-
-        allow(fake_repo).to receive(:fetch).and_return(nil)
-        allow(fake_repo).to receive(:push_to_all_remotes).and_return(nil)
-
-        expect(ReleaseTools::RemoteRepository).to receive(:get)
-          .with(
-            a_hash_including(project::REMOTES),
-            a_hash_including(global_depth: 1)
-          ).and_return(fake_repo)
-
-        described_class.new(version).sync_tags(project, tag)
-      end
-    end
-  end
-
   describe '#sync_branches' do
     let(:fake_repo) { instance_double(ReleaseTools::RemoteRepository).as_null_object }
     let(:project) { ReleaseTools::Project::GitlabEe }
@@ -217,6 +161,62 @@ describe ReleaseTools::Services::SyncRemotesService do
           ).and_return(fake_repo)
 
         described_class.new(version).sync_branches(project, branch)
+      end
+    end
+  end
+
+  describe '#sync_tags' do
+    let(:fake_repo) { instance_double(ReleaseTools::RemoteRepository) }
+    let(:tag) { 'v1.2.3' }
+
+    before do
+      enable_feature(:publish_git)
+      disable_feature(:security_remote)
+    end
+
+    it 'fetches tags and pushes' do
+      allow(ReleaseTools::RemoteRepository).to receive(:get).and_return(fake_repo)
+
+      expect(fake_repo).to receive(:fetch).with("refs/tags/#{tag}", remote: :dev)
+      expect(fake_repo).to receive(:push_to_all_remotes).with(tag)
+
+      described_class.new(version).sync_tags(spy, tag)
+    end
+
+    context 'when security_remote is disabled' do
+      it 'uses canonical and dev remotes' do
+        project = ReleaseTools::Project::GitlabEe
+        project_remotes = project::REMOTES.slice(:canonical, :dev)
+
+        allow(fake_repo).to receive(:fetch).and_return(nil)
+        allow(fake_repo).to receive(:push_to_all_remotes).and_return(nil)
+
+        expect(ReleaseTools::RemoteRepository).to receive(:get)
+          .with(
+            a_hash_including(project_remotes),
+            a_hash_including(global_depth: 1)
+          ).and_return(fake_repo)
+
+        described_class.new(version).sync_tags(project, tag)
+      end
+    end
+
+    context 'when security_remote is enabled' do
+      it 'uses canonical, dev and security remotes' do
+        enable_feature(:security_remote)
+
+        project = ReleaseTools::Project::GitlabEe
+
+        allow(fake_repo).to receive(:fetch).and_return(nil)
+        allow(fake_repo).to receive(:push_to_all_remotes).and_return(nil)
+
+        expect(ReleaseTools::RemoteRepository).to receive(:get)
+          .with(
+            a_hash_including(project::REMOTES),
+            a_hash_including(global_depth: 1)
+          ).and_return(fake_repo)
+
+        described_class.new(version).sync_tags(project, tag)
       end
     end
   end
