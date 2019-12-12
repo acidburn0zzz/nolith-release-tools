@@ -6,13 +6,59 @@
 
 ## Preparation
 
+- [ ] If this is a critical security release replace the all the `Merge security merge requests using chatops` tasks with ` Merge security merge requests using gitlab UI`
 - [ ] Merge security merge requests using chatops:
    ```sh
    # In Slack:
    /chatops run release merge --security
    ```
 - [ ] If any merge requests could not be merged, investigate what needs to be done to resolve this issues. Do **not** proceed unless it has been determined safe to do so.
-- [ ] Merge `ce/<%= version.stable_branch %>` into `ee/<%= version.stable_branch(ee: true) %>`
+
+### Auto-Deploy - only for the latest version
+
+The following steps should ideally be completed w/i 1 day
+
+- [ ] Notify `#development` that auto-deploy will be disabled until the security release is out
+- [ ] Ensure latest auto-deploy branches are sync'd across .com and dev
+- [ ] Disable auto-deploy [pipeline schedules]:
+    - [ ] Disable the `Auto-deploy MR picker` job
+    - [ ] Disable the `Auto-deploy tagging` job
+    - [ ] Disable the `Auto-deploy branch creation` job
+- [ ]  Merge security merge requests using chatops:
+   ```sh
+   # In Slack:
+   /chatops run release merge --security --master
+   ```
+- [ ] manually cherry pick EACH security fix into the CURRENT auto-deploy branch, both gitlab and omnibus
+   ```sh
+   # fetch both remotes
+   git fetch origin
+   git fetch dev
+
+   # sync current auto-deploy branch on dev
+   git checkout -b CURRENT_AUTO_DEPLOY_BRANCH --track dev/CURRENT_AUTO_DEPLOY_BRANCH
+   git pull origin CURRENT_AUTO_DEPLOY_BRANCH
+   git push dev
+
+   # get a list of all the merge commits on dev/master not available on origin/master
+   git log origin/master..dev/master --merges | grep "^commit"
+
+   # cherry-pick each commit on that list in the current auto-deploy branch
+   git cherry-pick -m 1 -x COMMIT_ID
+
+   # push to dev
+   git push dev
+   ```
+- [ ] Modify the `Auto-deploy tagging` job - add `ENV` variable `SECURITY` set to `true` on [pipeline schedules]
+
+- [ ] Manually kick off `Auto-deploy tagging` job from [pipeline schedules]
+
+- This will automatically deploy to staging, if successful this will also create a QA issue
+- [ ] Ensure this makes it through to canary
+
+- [ ] Modify the `Auto-deploy tagging` job - remove `ENV` variable `SECURITY` on [pipeline schedules]
+- [ ] After the QA deadline has passed, proceed to push this to production
+
 
 ## Packaging
 
@@ -71,17 +117,22 @@ is manually generated, you can do so as follows:
   ```
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
 - [ ] In the `#content-updates` channel, share a link to the blog post:
-    ```
-    :tada: GitLab <%= version %> has been released: BLOG_POST_URL
-    ```
-- [ ] Merge security MRs targeting master:
-   ```sh
-   # In Slack:
-   /chatops run release merge --security --master
+   ```
+   :tada: GitLab <%= version %> has been released: BLOG_POST_URL
    ```
 - [ ] Push `ce/master` to all remotes
 - [ ] Push `ee/master` to all remotes
 - [ ] Push `omnibus/master` to all remotes
+
+### Auto-Deploy - only for the latest version
+
+- [ ] Enable auto-deploy [pipeline schedules]:
+    - [ ] Enable the `Auto-deploy MR picker` job
+    - [ ] Enable the `Auto-deploy tagging` job
+    - [ ] Enable the `Auto-deploy branch creation` job
+- [ ] Manually kick off creating a new auto-deploy branch from [pipeline schedules]
+      This will bring auto-deploy back online and contain our security fixes plus
+      any new merge requests since auto-deploy was paused.
 ---
 
 For references:
@@ -91,11 +142,10 @@ For references:
 
 [tests are green in CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
 [green in EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
 
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch(ee: true) %>
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
+
+[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>
+[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus %>
 
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
@@ -106,3 +156,4 @@ For references:
 [GitLab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
 
 [publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
+[pipeline schedules]: https://gitlab.com/gitlab-org/release-tools/pipeline_schedules
