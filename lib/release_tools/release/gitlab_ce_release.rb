@@ -38,7 +38,6 @@ module ReleaseTools
 
       def compile_changelog
         return if version.rc?
-        return if Feature.enabled?(:security_release_test)
 
         logger.info('Compiling changelog', version: version)
 

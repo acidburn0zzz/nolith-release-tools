@@ -10,8 +10,6 @@ module ReleaseTools
       end
 
       def before_execute_hook
-        return if Feature.enabled?(:security_release_test)
-
         unless version.rc?
           ReleaseTools::Changelog::Manager.new(repository.path, 'CHANGELOG.md', include_date: false).release(version)
         end

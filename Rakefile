@@ -18,11 +18,9 @@ task :publish, [:version] do |_t, args|
     .new(version)
     .execute
 
-  unless ReleaseTools::Feature.enabled?(:security_release_test)
-    ReleaseTools::Services::CNGPublishService
-      .new(version)
-      .execute
-  end
+  ReleaseTools::Services::CNGPublishService
+    .new(version)
+    .execute
 
   # Ensure any exceptions raised by this new service don't fail the build, since
   # all destructive behaviors are behind feature flags.
@@ -33,12 +31,10 @@ task :publish, [:version] do |_t, args|
   end
 
   # Tag the Helm chart
-  unless ReleaseTools::Feature.enabled?(:security_release_test)
-    begin
-      Rake::Task['release:helm:tag'].invoke(nil, version.to_ce)
-    rescue StandardError => ex
-      Raven.capture_exception(ex)
-    end
+  begin
+    Rake::Task['release:helm:tag'].invoke(nil, version.to_ce)
+  rescue StandardError => ex
+    Raven.capture_exception(ex)
   end
 end
 

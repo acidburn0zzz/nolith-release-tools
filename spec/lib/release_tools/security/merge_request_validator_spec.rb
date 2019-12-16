@@ -277,18 +277,6 @@ describe ReleaseTools::Security::MergeRequestValidator do
 
       expect(validator.errors).to be_empty
     end
-
-    it 'does not add an error when `security_release_test` is enabled' do
-      enable_feature(:security_release_test)
-
-      merge_request = double(:merge_request, target_branch: 'foo')
-      client = double(:client)
-      validator = described_class.new(merge_request, client)
-
-      validator.validate_target_branch
-
-      expect(validator.errors).to be_empty
-    end
   end
 
   describe '#validate_discussions' do
