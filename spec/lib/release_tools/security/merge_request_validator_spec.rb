@@ -277,19 +277,6 @@ describe ReleaseTools::Security::MergeRequestValidator do
 
       expect(validator.errors).to be_empty
     end
-
-    it 'does not add an error when `security_validate_branch` is disabled' do
-      enable_feature(:security_remote)
-      disable_feature(:security_validate_branch)
-
-      merge_request = double(:merge_request, target_branch: 'foo')
-      client = double(:client)
-      validator = described_class.new(merge_request, client)
-
-      validator.validate_target_branch
-
-      expect(validator.errors).to be_empty
-    end
   end
 
   describe '#validate_discussions' do
