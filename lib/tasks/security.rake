@@ -22,16 +22,19 @@ namespace :security do
         false
       end
 
-    client =
-      if ReleaseTools::Feature.enabled?(:security_remote)
-        ReleaseTools::Security::Client.new
-      else
-        ReleaseTools::Security::DevClient.new
-      end
+    client = ReleaseTools::Security::DevClient.new
 
     ReleaseTools::Security::MergeRequestsMerger
       .new(client, merge_master: merge_master)
       .execute
+
+    if ReleaseTools::Feature.enabled?(:security_remote)
+      client = ReleaseTools::Security::Client.new
+
+      ReleaseTools::Security::MergeRequestsMerger
+        .new(client, merge_master: merge_master)
+        .execute
+    end
   end
 
   desc 'Prepare for a new security release'
@@ -74,13 +77,13 @@ namespace :security do
 
   desc 'Validates security merge requests'
   task validate: :force_security do
+    ReleaseTools::Security::MergeRequestsValidator
+      .new(ReleaseTools::Security::DevClient.new)
+      .execute
+
     if ReleaseTools::Feature.enabled?(:security_remote)
       ReleaseTools::Security::MergeRequestsValidator
         .new(ReleaseTools::Security::Client.new)
-        .execute
-    else
-      ReleaseTools::Security::MergeRequestsValidator
-        .new(ReleaseTools::Security::DevClient.new)
         .execute
     end
   end
