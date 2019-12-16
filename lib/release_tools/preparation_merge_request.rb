@@ -7,7 +7,7 @@ module ReleaseTools
     end
 
     def labels
-      'Delivery'
+      'team::Delivery'
     end
 
     def source_branch

@@ -58,7 +58,6 @@ module ReleaseTools
       'master:broken',
       'master:flaky',
       'CE upstream',
-      'Delivery',
       'development guidelines',
       'static analysis',
       'rails5',
