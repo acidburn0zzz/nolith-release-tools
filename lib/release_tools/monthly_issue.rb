@@ -7,7 +7,7 @@ module ReleaseTools
     end
 
     def labels
-      'Monthly Release,Delivery'
+      'Monthly Release,team::Delivery'
     end
 
     def project

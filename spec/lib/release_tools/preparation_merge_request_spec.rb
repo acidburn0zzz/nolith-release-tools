@@ -22,7 +22,7 @@ describe ReleaseTools::PreparationMergeRequest do
 
   describe '#labels' do
     it 'are set correctly on the MR' do
-      expect(merge_request.labels).to eq 'Delivery'
+      expect(merge_request.labels).to eq 'team::Delivery'
     end
   end
 

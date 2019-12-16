@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Frelease%2Ftasks/issues?labels=Monthly%20Release,Delivery&milestone=11.7&search=Release%2011.7
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Frelease%2Ftasks/issues?labels=Monthly%20Release,team::Delivery&milestone=11.7&search=Release%2011.7
     body:
       encoding: US-ASCII
       string: ''
