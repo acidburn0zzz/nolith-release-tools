@@ -6,8 +6,14 @@ module ReleaseTools
       include ::SemanticLogger::Loggable
       include BranchCreation
 
+      GITLAB_COM_GPRD_ENVIRONMENT_ID = 1_178_942
+
       def initialize(version)
         @version = version
+      end
+
+      def gitlab_client
+        ReleaseTools::GitlabClient
       end
 
       def create_label
@@ -23,10 +29,22 @@ module ReleaseTools
       def create_stable_branches(source = 'master')
         ce_branch = @version.stable_branch(ee: false)
         ee_branch = @version.stable_branch(ee: true)
+        omnibus_souce = source
+
+        if source.nil?
+          logger.info('Creating stable branch from last deployment production deployment')
+
+          deployment = gitlab_client.last_deployment(Project::GitlabEe, GITLAB_COM_GPRD_ENVIRONMENT_ID)
+
+          logger.info('Last deployment', ref: deployment.ref, sha: deployment.sha, date: deployment.created_at)
+
+          source = deployment.sha
+          omnibus_souce = deployment.ref
+        end
 
         create_branch_from_ref(Project::GitlabEe, ee_branch, source)
         create_ce_stable_branch(ce_branch)
-        create_branch_from_ref(Project::OmnibusGitlab, ce_branch, source)
+        create_branch_from_ref(Project::OmnibusGitlab, ce_branch, omnibus_souce)
         # CNG and Charts doesn't have an auto-deploy dependency, hence they
         # get created from master.
         create_branch_from_ref(Project::CNGImage, ce_branch, 'master')

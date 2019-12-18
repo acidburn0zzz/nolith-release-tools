@@ -353,5 +353,9 @@ module ReleaseTools
       Date.parse(milestone.start_date) <= Date.today &&
         Date.parse(milestone.due_date) >= Date.today
     end
+
+    def self.last_deployment(project, environment)
+      client.environment(project, environment)&.last_deployment
+    end
   end
 end

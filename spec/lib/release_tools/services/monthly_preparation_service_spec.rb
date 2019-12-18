@@ -14,7 +14,7 @@ describe ReleaseTools::Services::MonthlyPreparationService do
     allow(service).to receive(:gitlab_client).and_return(internal_client)
     allow(ReleaseTools::RemoteRepository).to receive(:get).with(ReleaseTools::Project::HelmGitlab.remotes).and_return(remote_repo)
     allow(ReleaseTools::Helm::VersionManager).to receive(:new).with(remote_repo).and_return(version_manager)
-    allow(version_manager).to receive(:next_version).with("12.1.0").and_return(ReleaseTools::HelmChartVersion.new("4.3.0"))
+    allow(version_manager).to receive(:next_version).with(version.to_s).and_return(ReleaseTools::HelmChartVersion.new("4.3.0"))
   end
 
   describe '#create_label' do
@@ -108,6 +108,35 @@ describe ReleaseTools::Services::MonthlyPreparationService do
 
       expect(internal_client).to have_received(:create_branch)
         .with('4-3-stable', 'master', ReleaseTools::Project::HelmGitlab)
+    end
+
+    context 'when source is nil' do
+      let(:version) { ReleaseTools::Version.new('12.6.0') }
+
+      before do
+        last_deployment = double('deployment', sha: '123abc', ref: '12-6-auto-deploy-20191215', created_at: '2019-12-17')
+        allow(internal_client).to receive(:last_deployment)
+                                    .with(ReleaseTools::Project::GitlabEe, 1_178_942)
+                                    .and_return(last_deployment)
+      end
+
+      it 'creates the EE stable branch from SHA' do
+        without_dry_run do
+          service.create_stable_branches(nil)
+        end
+
+        expect(internal_client).to have_received(:create_branch)
+                                     .with('12-6-stable-ee', '123abc', ReleaseTools::Project::GitlabEe)
+      end
+
+      it 'creates the Omnibus stable branches from branch name' do
+        without_dry_run do
+          service.create_stable_branches(nil)
+        end
+
+        expect(internal_client).to have_received(:create_branch)
+                                     .with('12-6-stable', '12-6-auto-deploy-20191215', ReleaseTools::Project::OmnibusGitlab)
+      end
     end
   end
 end
