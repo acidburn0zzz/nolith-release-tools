@@ -137,6 +137,8 @@ describe ReleaseTools::Security::Pipeline do
     end
 
     it 'returns false if a job failed that is allowed to fail on dev.gitlab.org' do
+      disable_feature(:security_remote)
+
       pipeline = described_class
         .new(double(:client), 1, double(:pipeline, status: 'failed'))
 
@@ -148,7 +150,28 @@ describe ReleaseTools::Security::Pipeline do
         .to receive(:latest_jobs)
         .and_return([double(:job, name: 'ee_compat_check', status: 'failed')])
 
+      stub_const('ReleaseTools::Security::Pipeline::ALLOWED_FAILURES', %w[ee_compat_check])
+
       expect(pipeline).not_to be_failed
+    end
+
+    it 'returns true if a job failed that is not allowed to fail on gitlab-org/security' do
+      enable_feature(:security_remote)
+
+      pipeline = described_class
+        .new(double(:client), 1, double(:pipeline, status: 'failed'))
+
+      allow(pipeline)
+        .to receive(:allowed_failures)
+        .and_return(Set.new(%w[]))
+
+      allow(pipeline)
+        .to receive(:latest_jobs)
+        .and_return([double(:job, name: 'downtime_check', status: 'failed')])
+
+      stub_const('ReleaseTools::Security::Pipeline::ALLOWED_FAILURES', %w[])
+
+      expect(pipeline).to be_failed
     end
   end
 
