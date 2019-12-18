@@ -21,14 +21,34 @@ RSpec.shared_examples 'project .to_s' do
     expect(described_class.to_s).to eq(described_class.path)
   end
 
-  it 'returns `dev_path` during a security release' do
-    skip 'No dev remote' unless described_class::REMOTES.key?(:dev)
+  context 'with a security release' do
+    before do
+      allow(ReleaseTools::SharedStatus)
+        .to receive(:security_release?)
+        .and_return(true)
+    end
 
-    expect(ReleaseTools::SharedStatus)
-      .to receive(:security_release?)
-      .and_return(true)
+    it 'returns dev path with `security_remote` flag disabled' do
+      skip 'No dev remote' unless described_class::REMOTES.key?(:dev)
 
-    expect(described_class.to_s).to eq(described_class.dev_path)
+      disable_feature(:security_remote)
+
+      expect(described_class.to_s).to eq(described_class.dev_path)
+    end
+
+    it 'returns security path with `security_remote` flag enabled' do
+      skip 'No security remote' unless described_class::REMOTES.key?(:security)
+
+      enable_feature(:security_remote)
+
+      expect(described_class.to_s).to eq(described_class.security_path)
+    end
+  end
+
+  context 'with a regular release' do
+    it 'returns project path' do
+      expect(described_class.to_s).to eq(described_class.path)
+    end
   end
 end
 

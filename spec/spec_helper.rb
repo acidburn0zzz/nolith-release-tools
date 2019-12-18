@@ -3,6 +3,9 @@
 # This ensures we don't push to the repo during tests
 ENV['TEST'] = 'true'
 
+# Don't let production feature flags affect a test run
+ENV.delete('FEATURE_INSTANCE_ID')
+
 # Stub API tokens
 ENV['DEV_API_PRIVATE_TOKEN'] = 'test'
 ENV['GITLAB_API_APPROVAL_TOKEN'] = 'test'
