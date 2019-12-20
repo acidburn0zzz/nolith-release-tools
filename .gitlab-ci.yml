@@ -5,6 +5,12 @@ stages:
   - deploy
   - automation
   - chatops
+  - env:gstg
+  - env:gstg:tasks
+  - env:gprd-cny
+  - env:gprd-cny:tasks
+  - env:gprd
+  - env:gprd:tasks
 
 cache: &global-cache
   key: "ruby-25"
@@ -204,3 +210,51 @@ ce-green-master-build-trigger:
   only:
     variables:
       - $CE_GREEN_MASTER_BUILD_TRIGGER == "true"
+
+# environment tracking ------------------------------------------------------
+
+.env_job:
+  variables:
+    TEST: '1'
+  # only:
+  #   - tags
+
+.gate:
+  extends: .env_job
+  allow_failure: false  # this forces the job to block downstream jobs
+  when: manual
+  script: "echo Done"
+
+gstg:
+  extends: .gate
+  stage: env:gstg
+
+gstg QA:
+  <<: *with-bundle
+  extends: .env_job
+  stage: env:gstg:tasks
+  variables:
+    TEST: '1'
+    RELEASE_VERSION: "#{version_tag(previous)},#{version_tag(current)}"
+    RELEASE_USER: RELEASE_TOOLS_BOT
+    RELEASE_ENVIRONMENT: 'gstg'
+    NOTIFY_DEPLOYMENTS: '1'
+  script:
+    - source scripts/setup_ssh.sh
+    - source scripts/setup_git.sh
+    - bundle exec rake "release:qa"
+  cache:
+    <<: *global-cache
+    policy: pull
+
+gstg track:
+  extends: .env_job
+  stage: env:gstg:tasks
+  
+gprd-cny:
+  extends: .gate
+  stage: env:gprd-cny
+
+gprd:
+  extends: .gate
+  stage: env:gprd
