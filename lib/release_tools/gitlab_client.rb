@@ -341,7 +341,7 @@ module ReleaseTools
       )
     end
 
-    # Overriden by GitLabDevClient
+    # Overridden by GitLabDevClient
     def self.project_path(project)
       project.path
     end

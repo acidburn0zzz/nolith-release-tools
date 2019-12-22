@@ -79,7 +79,7 @@ describe ReleaseTools::Services::SyncRemotesService do
       end
     end
 
-    context 'with a succesful merge' do
+    context 'with a successful merge' do
       it 'merges branch and pushes' do
         branch = '1-2-stable-ee'
 

@@ -19,7 +19,7 @@ describe ReleaseTools::GitlabClient do
 
   describe '.current_user' do
     after do
-      # HACK: Prevent cross-test polution with the `.approve_merge_request` spec
+      # HACK: Prevent cross-test pollution with the `.approve_merge_request` spec
       described_class.instance_variable_set(:@current_user, nil)
     end
 
