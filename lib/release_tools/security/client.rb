@@ -10,7 +10,7 @@ module ReleaseTools
 
       attr_reader :gitlab_client
 
-      # Overriden by Security::DevClient
+      # Overridden by Security::DevClient
       def initialize
         @gitlab_client = ReleaseTools::GitlabClient.client
       end
@@ -60,7 +60,7 @@ module ReleaseTools
         gitlab_client.respond_to?(name, include_private)
       end
 
-      # Overriden by Security::DevClient
+      # Overridden by Security::DevClient
       def security_remote?
         true
       end
