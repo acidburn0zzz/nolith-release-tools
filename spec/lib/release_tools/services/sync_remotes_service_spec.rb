@@ -37,6 +37,8 @@ describe ReleaseTools::Services::SyncRemotesService do
           .with(ReleaseTools::Project::GitlabCe, 'v1.2.3')
         expect(service).to receive(:sync_tags)
           .with(ReleaseTools::Project::OmnibusGitlab, '1.2.3+ee.0', '1.2.3+ce.0')
+        expect(service).to receive(:sync_tags)
+          .with(ReleaseTools::Project::CNGImage, 'v1.2.3', 'v1.2.3-ee', 'v1.2.3-ubi8')
 
         service.execute
       end
@@ -52,6 +54,8 @@ describe ReleaseTools::Services::SyncRemotesService do
           .with(ReleaseTools::Project::GitlabCe, '1-2-stable')
         expect(service).to receive(:sync_branches)
           .with(ReleaseTools::Project::OmnibusGitlab, '1-2-stable-ee', '1-2-stable')
+        expect(service).to receive(:sync_branches)
+          .with(ReleaseTools::Project::CNGImage, '1-2-stable', '1-2-stable-ee')
 
         service.execute
       end
