@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe ReleaseTools::Qa::SecurityIssue do
   let(:version) { ReleaseTools::Version.new('10.8.0-rc1') }
-  let(:project) { ReleaseTools::Project::GitlabCe }
+  let(:project) { ReleaseTools::Project::GitlabEe }
   let(:mr1) do
     double(
       "title" => "Resolve \"Import/Export (import) is broken due to the addition of a CI table\"",
@@ -19,7 +19,7 @@ describe ReleaseTools::Qa::SecurityIssue do
       ],
       "sha" => "4f04aeec80bbfcb025e321693e6ca99b01244bb4",
       "merge_commit_sha" => "0065c449ff95cf6e0643bab17ed236c23207b537",
-      "web_url" => "https://dev.gitlab.org/gitlabhq/gitlabhq/merge_requests/612",
+      "web_url" => "https://dev.gitlab.org/gitlab/gitlab/merge_requests/612",
       "merged_by" => double("username" => "merger")
     )
   end
@@ -61,7 +61,7 @@ describe ReleaseTools::Qa::SecurityIssue do
 
       it "includes the MR information" do
         expect(@content).to include('Import/Export (import) is broken due to the addition of a CI table')
-        expect(@content).to include('https://dev.gitlab.org/gitlabhq/gitlabhq/merge_requests/612')
+        expect(@content).to include('https://dev.gitlab.org/gitlab/gitlab/merge_requests/612')
       end
 
       it "includes the test endpoint" do

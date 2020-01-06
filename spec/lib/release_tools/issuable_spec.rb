@@ -22,15 +22,15 @@ describe ReleaseTools::Issuable do
   end
 
   describe '#project' do
-    it 'returns ReleaseTools::Project::GitlabCe by default' do
-      expect(subject.project).to eq(ReleaseTools::Project::GitlabCe)
+    it 'returns ReleaseTools::Project::GitlabEe by default' do
+      expect(subject.project).to eq(ReleaseTools::Project::GitlabEe)
     end
 
     context 'when a project is set' do
-      subject { described_class.new(project: ReleaseTools::Project::GitlabEe) }
+      subject { described_class.new(project: ReleaseTools::Project::OmnibusGitlab) }
 
       it 'returns the given project' do
-        expect(subject.project).to eq(ReleaseTools::Project::GitlabEe)
+        expect(subject.project).to eq(ReleaseTools::Project::OmnibusGitlab)
       end
     end
   end
