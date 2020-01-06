@@ -76,13 +76,5 @@ module ReleaseTools
     def template_path
       File.expand_path('../../templates/preparation_merge_request.md.erb', __dir__)
     end
-
-    def default_project
-      if self[:version].ee?
-        Project::GitlabEe
-      else
-        Project::GitlabCe
-      end
-    end
   end
 end
