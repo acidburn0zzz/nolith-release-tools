@@ -198,7 +198,7 @@ describe ReleaseTools::Services::SyncRemotesService do
         expect(ReleaseTools::RemoteRepository).to receive(:get)
           .with(
             a_hash_including(project_remotes),
-            a_hash_including(global_depth: 1)
+            a_hash_including(global_depth: 50)
           ).and_return(fake_repo)
 
         described_class.new(version).sync_tags(project, tag)
@@ -217,7 +217,7 @@ describe ReleaseTools::Services::SyncRemotesService do
         expect(ReleaseTools::RemoteRepository).to receive(:get)
           .with(
             a_hash_including(project::REMOTES),
-            a_hash_including(global_depth: 1)
+            a_hash_including(global_depth: 50)
           ).and_return(fake_repo)
 
         described_class.new(version).sync_tags(project, tag)
