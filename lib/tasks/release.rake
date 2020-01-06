@@ -14,18 +14,26 @@ namespace :release do
 
   desc 'Merges valid merge requests into preparation branches'
   task :merge, [:version] do |_t, args|
-    ee_version = get_version(args).to_ee
-    ee_target = ReleaseTools::PreparationMergeRequest.new(version: ee_version)
+    pick = ->(project, version) do
+      target = ReleaseTools::PreparationMergeRequest
+        .new(project: project, version: version)
 
-    ReleaseTools.logger.info(
-      'Picking into preparation merge requests',
-      version: ee_version,
-      target: ee_target.branch_name
-    )
+      ReleaseTools.logger.info(
+        'Picking into preparation merge requests',
+        project: project,
+        version: version,
+        target: target.branch_name
+      )
 
-    ReleaseTools::CherryPick::Service
-      .new(ReleaseTools::Project::GitlabEe, ee_version, ee_target)
-      .execute
+      ReleaseTools::CherryPick::Service
+        .new(project, version, target)
+        .execute
+    end
+
+    version = get_version(args).to_ee
+
+    pick[ReleaseTools::Project::GitlabEe, version]
+    pick[ReleaseTools::Project::OmnibusGitlab, version.to_ce]
   end
 
   desc 'Prepare for a new release'
@@ -39,8 +47,17 @@ namespace :release do
 
       service.create_label
     else
+      # GitLab EE
       version = version.to_ee
-      merge_request = ReleaseTools::PreparationMergeRequest.new(version: version)
+      merge_request = ReleaseTools::PreparationMergeRequest
+        .new(project: ReleaseTools::Project::GitlabEe, version: version)
+      merge_request.create_branch!
+      create_or_show_merge_request(merge_request)
+
+      # Omnibus
+      version = version.to_ce
+      merge_request = ReleaseTools::PreparationMergeRequest
+        .new(project: ReleaseTools::Project::OmnibusGitlab, version: version)
       merge_request.create_branch!
       create_or_show_merge_request(merge_request)
     end
