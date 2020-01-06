@@ -71,7 +71,7 @@ module ReleaseTools
 
       def sync_tags(project, *tags)
         sync_remotes = remotes_to_sync(project).fetch(:remotes)
-        repository = RemoteRepository.get(sync_remotes, global_depth: 1)
+        repository = RemoteRepository.get(sync_remotes, global_depth: 50)
 
         tags.each do |tag|
           logger.info('Fetching tag', project: project, name: tag)
