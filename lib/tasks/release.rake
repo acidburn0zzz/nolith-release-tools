@@ -14,7 +14,7 @@ namespace :release do
 
   desc 'Merges valid merge requests into preparation branches'
   task :merge, [:version] do |_t, args|
-    pick = ->(project, version) do
+    pick = lambda do |project, version|
       target = ReleaseTools::PreparationMergeRequest
         .new(project: project, version: version)
 
