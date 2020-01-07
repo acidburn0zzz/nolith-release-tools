@@ -22,7 +22,7 @@ describe ReleaseTools::Commits do
     end
   end
 
-  describe '#latest_dev_green_build_commit' do
+  describe '#latest_successful_on_build' do
     it 'handles a missing commit on dev' do
       allow(ReleaseTools::GitlabDevClient)
         .to receive(:commit)
@@ -31,7 +31,7 @@ describe ReleaseTools::Commits do
       instance = described_class.new(project)
 
       VCR.use_cassette('commits/list') do
-        expect(instance.latest_dev_green_build_commit).to be_nil
+        expect(instance.latest_successful_on_build).to be_nil
       end
     end
 
@@ -43,7 +43,7 @@ describe ReleaseTools::Commits do
       instance = described_class.new(project)
 
       VCR.use_cassette('commits/list') do
-        expect(instance.latest_dev_green_build_commit).not_to be_nil
+        expect(instance.latest_successful_on_build).not_to be_nil
       end
     end
   end

@@ -20,7 +20,7 @@ module ReleaseTools
           # release we'll just use the latest commit on the branch
           commits.latest
         else
-          commits.latest_dev_green_build_commit
+          commits.latest_successful_on_build
         end
 
       if commit.nil?
