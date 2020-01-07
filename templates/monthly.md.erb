@@ -1,13 +1,13 @@
 ## First steps
 
 - [ ] Create a new slack channel `<%= Slack::Channel.for(version) %>`
-- [ ] Set the channel topic to `RMs: https://about.gitlab.com/release-managers`
+- [ ] Set the channel topic to `Issue: <link_to_this_issue>`
 - [ ] Invite all current release managers
 - [ ] Inside the old release slack channel, notify about `<%= Slack::Channel.for(version) %>`
      ```
      Hello :wave:
      We are starting <%= version.to_minor %> into <%= Slack::Channel.for(version) %>
-     Please archive this channel and join <%= Slack::Channel.for(version) %> if interested
+     Please join <%= Slack::Channel.for(version) %> if interested
      ```
 
 ## Monitor
