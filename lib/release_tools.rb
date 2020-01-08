@@ -49,7 +49,6 @@ require 'release_tools/project/omnibus_gitlab'
 require 'release_tools/project/release/tasks'
 require 'release_tools/project/release_tools'
 
-require 'release_tools/auto_deploy/merge_request_notifier'
 require 'release_tools/auto_deploy/naming'
 require 'release_tools/auto_deploy/version'
 require 'release_tools/auto_deploy_branch'

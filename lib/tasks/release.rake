@@ -95,15 +95,6 @@ namespace :release do
     end
   end
 
-  desc 'Records the merge requests that have been deployed'
-  task :record_deploy, [:from, :to] do |_, args|
-    version = get_version(version: args[:to].sub(/\Av/, ''))
-
-    ReleaseTools::AutoDeploy::MergeRequestNotifier
-      .new(from: args[:from], to: args[:to], version: version)
-      .notify_all
-  end
-
   desc "Check a release's build status"
   task :status, [:version] do |t, args|
     version = get_version(args)

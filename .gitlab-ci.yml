@@ -154,22 +154,6 @@ auto-deploy:trigger:
     variables:
       - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
 
-notify-deployments:
-  <<: *with-bundle
-  stage: automation
-  script:
-    - source scripts/setup_ssh.sh
-    - source scripts/setup_git.sh
-    - bundle exec rake "release:record_deploy[$RELEASE_VERSION]"
-  only:
-    refs:
-      - triggers
-    variables:
-      - $NOTIFY_DEPLOYMENTS
-  cache:
-    <<: *global-cache
-    policy: pull
-
 # chatops ---------------------------------------------------------------------
 
 chatops:
