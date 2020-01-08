@@ -343,7 +343,11 @@ module ReleaseTools
 
     # Overridden by GitLabDevClient
     def self.project_path(project)
-      project.path
+      if project.respond_to?(:path)
+        project.path
+      else
+        project
+      end
     end
 
     def self.current_milestone?(milestone)

@@ -402,5 +402,11 @@ describe ReleaseTools::GitlabClient do
 
       expect(described_class.project_path(project)).to eq 'foo/bar'
     end
+
+    it 'returns a String unmodified' do
+      project = 'gitlab-org/security/gitlab'
+
+      expect(described_class.project_path(project)).to eq(project)
+    end
   end
 end
