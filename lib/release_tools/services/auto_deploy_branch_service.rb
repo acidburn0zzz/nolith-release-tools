@@ -18,10 +18,12 @@ module ReleaseTools
         # Find passing commits before creating branches
         ref_ee = latest_successful_ref(Project::GitlabEe)
         ref_omnibus = latest_successful_ref(Project::OmnibusGitlab)
+        ref_cng = latest_successful_ref(Project::CNGImage)
 
         results = [
           create_branch_from_ref(Project::GitlabEe, branch_name, ref_ee),
-          create_branch_from_ref(Project::OmnibusGitlab, branch_name, ref_omnibus)
+          create_branch_from_ref(Project::OmnibusGitlab, branch_name, ref_omnibus),
+          create_branch_from_ref(Project::CNGImage, branch_name, ref_cng)
         ]
 
         update_auto_deploy_ci
