@@ -5,7 +5,11 @@ module ReleaseTools
     DEV_API_ENDPOINT = 'https://dev.gitlab.org/api/v4'
 
     def self.project_path(project)
-      project.dev_path
+      if project.respond_to?(:dev_path)
+        project.dev_path
+      else
+        project
+      end
     end
 
     def self.client

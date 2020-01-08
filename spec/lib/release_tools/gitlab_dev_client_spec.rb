@@ -9,5 +9,11 @@ describe ReleaseTools::GitlabDevClient do
 
       expect(described_class.project_path(project)).to eq 'foo/bar'
     end
+
+    it 'returns a String unmodified' do
+      project = 'gitlabhq/gitlab'
+
+      expect(described_class.project_path(project)).to eq(project)
+    end
   end
 end
