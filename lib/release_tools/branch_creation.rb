@@ -23,7 +23,8 @@ module ReleaseTools
     end
 
     def create_branch_from_ref(project, branch, ref, client = gitlab_client)
-      logger&.info("Creating `#{branch}` from `#{ref}` on `#{project.path}`")
+      logger&.warn('Branch creation will be ignored because of TEST env') if dry_run?
+      logger&.info('Creating branch', name: branch, from: ref, project: project.path)
 
       return if dry_run?
 
