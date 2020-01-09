@@ -17,7 +17,7 @@ describe ReleaseTools::PassingBuild do
     end
 
     it 'raises an error without a dev commit' do
-      expect(fake_commits).to receive(:latest_dev_green_build_commit)
+      expect(fake_commits).to receive(:latest_successful_on_build)
         .and_return(nil)
 
       expect { service.execute(nil) }
@@ -25,7 +25,7 @@ describe ReleaseTools::PassingBuild do
     end
 
     it 'fetches component versions' do
-      expect(fake_commits).to receive(:latest_dev_green_build_commit)
+      expect(fake_commits).to receive(:latest_successful_on_build)
         .and_return(fake_commit)
 
       expect(ReleaseTools::ComponentVersions)
@@ -38,7 +38,7 @@ describe ReleaseTools::PassingBuild do
     end
 
     it 'triggers a build when specified' do
-      expect(fake_commits).to receive(:latest_dev_green_build_commit)
+      expect(fake_commits).to receive(:latest_successful_on_build)
         .and_return(fake_commit)
 
       expect(ReleaseTools::ComponentVersions)

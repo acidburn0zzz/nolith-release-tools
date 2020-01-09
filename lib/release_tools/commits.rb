@@ -31,17 +31,23 @@ module ReleaseTools
     end
 
     # Find a commit with a passing build on production that also exists on dev
-    def latest_dev_green_build_commit
+    def latest_successful_on_build
       commit_list.detect do |commit|
         next unless success?(commit)
 
         begin
           # Hit the dev API with the specified commit to see if it even exists
           ReleaseTools::GitlabDevClient.commit(project, ref: commit.id)
+
+          logger.info(
+            'Passing commit found on Build',
+            project: project,
+            commit: commit.id
+          )
         rescue Gitlab::Error::Error
           logger.debug(
-            'Commit passed on production, missing on dev',
-            project: project.to_s,
+            'Commit passed on Canonical, missing on Build',
+            project: project,
             commit: commit.id
           )
 
