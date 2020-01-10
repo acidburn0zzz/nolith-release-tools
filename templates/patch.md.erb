@@ -21,21 +21,24 @@
 
 ## Packaging
 
-- [ ] [Check if mirroring synced stable branches to dev](https://gitlab.com/gitlab-org/release/docs/blob/master/general/push-to-multiple-remotes.md)
-    - [ ] [CE](https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>)
-    - [ ] [EE](https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>)
-    - [ ] [Omnibus](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>)
+- [ ] Check if mirroring synced stable branches to dev. If the output is :white_check_mark: for every repo, we can proceed to tag.
+
+  ```
+  # In Slack
+  /chatops run mirror status
+  ```
+
 - [ ] Tag `<%= version %>`:
 
   ```sh
   # In Slack:
   /chatops run release tag <%= version %>
   ```
+
 - [ ] While waiting for packages to build, now is a good time to [prepare the blog post]. Look at previous MRs for examples. => BLOG_POST_MR
 - [ ] Check progress of [EE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages build](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: false) %>).
     - This might take a while (around 80 min).
     - We only need the EE packages to finish to continue with next steps.
-
 
 [prepare the blog post]: https://about.gitlab.com/handbook/marketing/blog/release-posts/#release-posts
 
@@ -56,13 +59,14 @@ manually run a deployment, you can do so as follows:
 #### QA
 
 The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
-is generated automatically when deploying to staging. If you need to
-manually generate the QA task, you can do so as follows:
+needs to be manually generated, you can do so as follows:
 
 ```sh
 # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
 /chatops run release qa vLAST_DEPLOYED_VERSION v<%= version %>
 ```
+
+QA issue: <QA_issue_link>
 
 ## Release
 
