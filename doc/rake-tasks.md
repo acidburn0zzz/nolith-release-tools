@@ -154,16 +154,23 @@ to verify changes in a release.
 
 Tag the specified version as a security release.
 
-## `passing_build:<ee|ce|all>[ref, trigger_build]`
+## `passing_build:ee[ref, trigger_build]`
 
 This task will show us the SHA from `ref` that had a successful pipeline run
 _and exists on dev.gitlab.org_.
 
 When `trigger_build` is `true`, it will send the signal to `omnibus-gitlab` to
-start that build.
+start a package build for that SHA.
 
-When running `passing_build:all`, it will run both the CE and EE builds
-synchronously.  Keep this in mind if on a time constraint.
+### Examples
+
+```sh
+# Information gathering only
+% bundle exec rake 'passing_build:ee[11-10-stable]'
+
+# Trigger a build
+% bundle exec rake 'passing_build:ee[master, true]'
+```
 
 ### `security:validate`
 
@@ -172,18 +179,6 @@ on different remotes.
 
 - If `security_remote` is enabled, validates merge requests on Security and Dev.
 - If `security_remote` is disabled, validates merge requests only on Dev
-
-### Examples
-
-```sh
-# Information gathering only
-% bundle exec rake 'passing_build:ce'
-% bundle exec rake 'passing_build:all[11-10-stable]'
-
-# Trigger a build
-% bundle exec rake 'passing_build:ee[master, true]'
-% bundle exec rake 'passing_build:all[11-10-stable, true]'
-```
 
 ## `publish[version]`
 
