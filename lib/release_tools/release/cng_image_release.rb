@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../support/ubi_helper'
-
 module ReleaseTools
   module Release
     class CNGImageRelease < BaseRelease
-      include ReleaseTools::Support::UbiHelper
-
       class VersionFileDoesNotExistError < StandardError; end
       class VersionNotFoundError < StandardError; end
       def remotes
@@ -28,10 +24,6 @@ module ReleaseTools
         logger.trace("#{gem_name} version", version: version)
 
         version
-      end
-
-      def tag
-        options[:ubi] && ubi?(version) ? ubi_tag(version, options[:ubi_version]) : super
       end
 
       private
