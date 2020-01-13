@@ -98,7 +98,6 @@ RSpec/AnyInstance:
   Exclude:
     - 'spec/lib/release_tools/preparation_merge_request_spec.rb'
     - 'spec/lib/release_tools/release/gitlab_ce_release_spec.rb'
-    - 'spec/lib/release_tools/release/gitlab_ee_release_spec.rb'
     - 'spec/lib/release_tools/release/helm_gitlab_release_spec.rb'
     - 'spec/lib/release_tools/remote_repository_spec.rb'
 

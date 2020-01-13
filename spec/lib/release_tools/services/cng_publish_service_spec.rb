@@ -17,7 +17,7 @@ describe ReleaseTools::Services::CNGPublishService do
 
     context 'when one pipeline exists' do
       context 'and there are manual jobs', vcr: { cassette_name: 'pipelines/cng/pending' } do
-        let(:version) { ReleaseTools::Version.new('12.6.0-rc32') }
+        let(:version) { ReleaseTools::Version.new('12.1.0') }
 
         it 'plays all jobs in a release stage' do
           service = described_class.new(version)
@@ -26,8 +26,8 @@ describe ReleaseTools::Services::CNGPublishService do
           allow(client).to receive(:pipelines).and_call_original
           allow(client).to receive(:pipeline_jobs).and_call_original
 
-          # EE and CE  each have 1 manual job and UBI has 2 manual jobs
-          expect(client).to receive(:job_play).exactly(4).times
+          # EE and CE each have 1 manual job
+          expect(client).to receive(:job_play).twice
 
           without_dry_run do
             service.execute
@@ -47,14 +47,6 @@ describe ReleaseTools::Services::CNGPublishService do
           service.execute
         end
       end
-    end
-  end
-
-  describe '#release_versions' do
-    let(:version) { ReleaseTools::Version.new('1.1.1') }
-
-    it 'contains UBI tag' do
-      expect(described_class.new(version).release_versions).to eq %w(v1.1.1 v1.1.1-ee v1.1.1-ubi8)
     end
   end
 end

@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../support/ubi_helper'
-
 module ReleaseTools
   module Services
     class SyncRemotesService
       include ::SemanticLogger::Loggable
-      include ReleaseTools::Support::UbiHelper
 
       def initialize(version)
         @version = version.to_ce
@@ -25,13 +22,9 @@ module ReleaseTools
           @omnibus.to_ee.stable_branch, @omnibus.to_ce.stable_branch
         ].uniq) # Omnibus uses a single branch post-12.2
 
-        # There's no need for a separate CNG UBI stable branch. It is the same as EE branch.
-        sync_branches(Project::CNGImage, @version.to_ce.stable_branch, @version.to_ee.stable_branch)
-
         sync_tags(Project::GitlabEe, @version.tag(ee: true))
         sync_tags(Project::GitlabCe, @version.tag(ee: false))
         sync_tags(Project::OmnibusGitlab, @omnibus.to_ee.tag, @omnibus.to_ce.tag)
-        sync_tags(Project::CNGImage, @version.to_ce.tag, @version.to_ee.tag, ubi_tag(@version.to_ee))
       end
 
       # Sync project stable branches across all remotes.
