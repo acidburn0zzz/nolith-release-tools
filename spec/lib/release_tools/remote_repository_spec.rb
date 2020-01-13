@@ -525,6 +525,31 @@ describe ReleaseTools::RemoteRepository do
     end
   end
 
+  describe '#changes?' do
+    subject { described_class.get(repo_remotes) }
+
+    before do
+      subject.ensure_branch_exists('branch-1')
+    end
+
+    it 'returns false when no changes' do
+      expect(subject.changes?).to be(false)
+    end
+
+    it 'returns true when there is untracked work' do
+      subject.write_file('README.md', 'Cool')
+      subject.write_file('CONTRIBUTING.md', 'Be nice!')
+      expect(subject.changes?).to be(true)
+    end
+
+    it 'returns true when there is staged work' do
+      subject.write_file('README.md', 'Cool')
+      subject.write_file('CONTRIBUTING.md', 'Be nice!')
+      subject.send(:run_git, ['add', %w[README.md CONTRIBUTING.md]])
+      expect(subject.changes?).to be(true)
+    end
+  end
+
   describe described_class::GitCommandError do
     it 'adds indented output to the error message' do
       error = described_class.new("Foo", "bar\nbaz")

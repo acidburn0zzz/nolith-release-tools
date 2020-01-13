@@ -241,6 +241,13 @@ module ReleaseTools
       FileUtils.rm_rf(path, secure: true)
     end
 
+    def changes?
+      in_path do
+        output = `git status --porcelain`
+        return !output.empty?
+      end
+    end
+
     def self.run_git(args)
       final_args = ['git', *args].join(' ')
 

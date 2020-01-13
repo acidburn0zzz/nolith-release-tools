@@ -47,6 +47,9 @@ module ReleaseTools
           f.write(YAML.dump(yaml_contents))
         end
 
+        # It's expected that the UBI image tag will have nothing to commit
+        return if options[:ubi] && !repository.changes?
+
         repository.commit(target_file, message: "Update #{target_file} for #{version}")
       end
 
