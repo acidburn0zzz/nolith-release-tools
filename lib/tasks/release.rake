@@ -137,6 +137,13 @@ namespace :release do
     end
   end
 
+  desc 'Tracks a deployment using the GitLab API'
+  task :track_deployment, [:environment, :status, :version] do |_, args|
+    ReleaseTools::Deployments::DeploymentTracker
+      .new
+      .track(args[:environment], args[:status], args[:version])
+  end
+
   namespace :gitaly do
     desc 'Tag a new release'
     task :tag, [:version] do |_, args|

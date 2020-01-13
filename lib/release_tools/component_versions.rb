@@ -16,14 +16,18 @@ module ReleaseTools
       versions = { 'VERSION' => commit_id }
 
       FILES.each_with_object(versions) do |file, memo|
-        memo[file] = client
-          .file_contents(client.project_path(project), file, commit_id)
-          .chomp
+        memo[file] = get_component(project, commit_id, file)
       end
 
       logger.info({ project: project }.merge(versions))
 
       versions
+    end
+
+    def self.get_component(project, commit_id, file)
+      client
+        .file_contents(client.project_path(project), file, commit_id)
+        .chomp
     end
 
     def self.update_omnibus(target_branch, version_map)
