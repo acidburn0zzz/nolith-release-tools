@@ -539,6 +539,7 @@ describe ReleaseTools::RemoteRepository do
     it 'returns true when there is untracked work' do
       subject.write_file('README.md', 'Cool')
       subject.write_file('CONTRIBUTING.md', 'Be nice!')
+
       expect(subject.changes?).to be(true)
     end
 
@@ -546,6 +547,7 @@ describe ReleaseTools::RemoteRepository do
       subject.write_file('README.md', 'Cool')
       subject.write_file('CONTRIBUTING.md', 'Be nice!')
       subject.send(:run_git, ['add', %w[README.md CONTRIBUTING.md]])
+
       expect(subject.changes?).to be(true)
     end
   end
