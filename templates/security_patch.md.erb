@@ -1,35 +1,49 @@
 **General guidelines**
 
 - Be sure to follow the [Security Releases general information](https://gitlab.com/gitlab-org/release/docs/blob/master/general/security/process.md) and [Security Releases as Release Manager](https://gitlab.com/gitlab-org/release/docs/blob/master/general/security/release-manager.md).
-- Always work on [https://dev.gitlab.org/](https://dev.gitlab.org/). Do not push anything to [https://gitlab.com](https://gitlab.com)
+- Always work on [GitLab Security](https://gitlab.com/gitlab-org/security/gitlab) and [dev.gitlab.org](https://dev.gitlab.org/). Do not push anything to [GitLab Canonical](https://gitlab.com/gitlab-org/gitlab)
 - Deployment tasks (staging, production canary VMs, and production) should be done only if the patch is for the latest version. Feel free to delete those sections if they don't apply.
 
 ## Preparation
 
-- [ ] If this is a critical security release replace the all the `Merge security merge requests using chatops` tasks with ` Merge security merge requests using gitlab UI`
+- [ ] If this is a critical security release replace all the "merge security merge requests using chatops" tasks with "Merge security merge requests using GitLab UI"
+      * There's one step on "Preparation" and another one on "Auto Deploy" that needs to be updated.
 - [ ] Merge security merge requests using chatops:
    ```sh
    # In Slack:
    /chatops run release merge --security
    ```
+
+   If you're merging using GitLab UI, due to a critical security release, do not merge the one targeting `master`.
+
 - [ ] If any merge requests could not be merged, investigate what needs to be done to resolve this issues. Do **not** proceed unless it has been determined safe to do so.
 
 ### Auto-Deploy - only for the latest version
 
 The following steps should ideally be completed w/i 1 day
 
-- [ ] Notify `#development` that auto-deploy will be disabled until the security release is out
-- [ ] Ensure latest auto-deploy branches are sync'd across .com and dev
+- [ ] Notify `#development` that auto-deploy will be disabled until the security release is out.
+- [ ] Ensure latest auto-deploy branches are sync'd across Canonical, Dev and Security with:
+
+```sh
+# In slack
+/chatops run mirror status
+```
+
 - [ ] Disable auto-deploy [pipeline schedules]:
     - [ ] Disable the `Auto-deploy MR picker` job
     - [ ] Disable the `Auto-deploy tagging` job
     - [ ] Disable the `Auto-deploy branch creation` job
-- [ ]  Merge security merge requests using chatops:
+    * This will break repositories mirroring until the security release is out.
+- [ ] If this is a regular security release, merge security merge requests using chatops:
    ```sh
    # In Slack:
    /chatops run release merge --security --master
    ```
-- [ ] manually cherry pick EACH security fix into the CURRENT auto-deploy branch, both gitlab and omnibus
+
+   If you're merging using GitLab UI, due to a critical security release, manually merge the one targeting `master`.
+
+- [ ] Manually cherry pick EACH security fix into the CURRENT auto-deploy branch, both GitLab and Omnibus
    ```sh
    # fetch both remotes
    git fetch origin
@@ -52,13 +66,10 @@ The following steps should ideally be completed w/i 1 day
 - [ ] Modify the `Auto-deploy tagging` job - add `ENV` variable `SECURITY` set to `true` on [pipeline schedules]
 
 - [ ] Manually kick off `Auto-deploy tagging` job from [pipeline schedules]
-
-- This will automatically deploy to staging, if successful this will also create a QA issue
+   - This will automatically deploy to staging, if successful this will also create a QA issue
 - [ ] Ensure this makes it through to canary
 
-- [ ] Modify the `Auto-deploy tagging` job - remove `ENV` variable `SECURITY` on [pipeline schedules]
 - [ ] After the QA deadline has passed, proceed to push this to production
-
 
 ## Packaging
 
@@ -81,19 +92,16 @@ The following steps should ideally be completed w/i 1 day
 
 ###  Deploy to Pre for QA testing
 
+Deployment is automatically performed from tagging the auto-deploy branch.
+
 - [ ] Verify that pre.gitlab.com is running the latest patch version
   - Check in Slack `#announcements` channel
   - Go to https://pre.gitlab.com/help
 
-#### QA
+### QA
 
 The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
-is manually generated, you can do so as follows:
-
-```sh
-# In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
-/chatops run release qa --security vLAST_DEPLOYED_VERSION v<%= version %>
-```
+is automatically generated, one for the auto-deploy build and another one for the tagged release.
 
 - [ ] Notify @appsec-team that packages are ready for QA
   ```sh
@@ -120,19 +128,32 @@ is manually generated, you can do so as follows:
    ```
    :tada: GitLab <%= version %> has been released: BLOG_POST_URL
    ```
-- [ ] Push `ce/master` to all remotes
-- [ ] Push `ee/master` to all remotes
-- [ ] Push `omnibus/master` to all remotes
+
+### Sync
+
+- [ ] Push `security/gitlab` `master` and `auto-deploy` branches to all remotes.
+- [ ] Push `security/gitlab-foss` `master` and `auto-deploy` branches to all remotes.
+- [ ] Push `security/omnibus-gitlab` `master` and `auto-deploy` branches to all remotes.
+- [ ] Verify all remotes are synced:
+
+```sh
+# In slack
+/chatops run mirror status
+```
 
 ### Auto-Deploy - only for the latest version
 
+- [ ] Modify the `Auto-deploy tagging` job - remove `ENV` variable `SECURITY` on [pipeline schedules]
 - [ ] Enable auto-deploy [pipeline schedules]:
     - [ ] Enable the `Auto-deploy MR picker` job
     - [ ] Enable the `Auto-deploy tagging` job
     - [ ] Enable the `Auto-deploy branch creation` job
+
 - [ ] Manually kick off creating a new auto-deploy branch from [pipeline schedules]
       This will bring auto-deploy back online and contain our security fixes plus
       any new merge requests since auto-deploy was paused.
+
+- [ ] Notify `#development` that auto-deploy has been enabled.
 ---
 
 For references:
@@ -143,7 +164,6 @@ For references:
 [tests are green in CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
 [green in EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 
-
 [EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>
 [CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus %>
 
@@ -152,8 +172,4 @@ For references:
 
 [`security_qa_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#security_qa_issuefromtoversion
 
-[staging.gitlab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
-[GitLab.com]: https://gitlab.com/gitlab-org/takeoff#deploying-gitlab
-
-[publicly acknowledged]: https://about.gitlab.com/vulnerability-acknowledgements/
 [pipeline schedules]: https://gitlab.com/gitlab-org/release-tools/pipeline_schedules
