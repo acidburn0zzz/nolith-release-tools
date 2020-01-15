@@ -47,21 +47,21 @@ The following steps should ideally be completed w/i 1 day
    ```sh
    # fetch both remotes
    git fetch origin
-   git fetch dev
+   git fetch security
 
-   # sync current auto-deploy branch on dev
-   git checkout -b CURRENT_AUTO_DEPLOY_BRANCH --track dev/CURRENT_AUTO_DEPLOY_BRANCH
+   # sync current auto-deploy branch on security
+   git checkout -b CURRENT_AUTO_DEPLOY_BRANCH --track security/CURRENT_AUTO_DEPLOY_BRANCH
    git pull origin CURRENT_AUTO_DEPLOY_BRANCH
-   git push dev
+   git push security
 
-   # get a list of all the merge commits on dev/master not available on origin/master
-   git log origin/master..dev/master --merges | grep "^commit"
+   # get a list of all the merge commits on security/master not available on origin/master
+   git log origin/master..security/master --merges | grep "^commit"
 
    # cherry-pick each commit on that list in the current auto-deploy branch
    git cherry-pick -m 1 -x COMMIT_ID
 
-   # push to dev
-   git push dev
+   # push to security
+   git push security
    ```
 - [ ] Modify the `Auto-deploy tagging` job - add `ENV` variable `SECURITY` set to `true` on [pipeline schedules]
 
