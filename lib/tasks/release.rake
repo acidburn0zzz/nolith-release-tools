@@ -139,9 +139,13 @@ namespace :release do
 
   desc 'Tracks a deployment using the GitLab API'
   task :track_deployment, [:environment, :status, :version] do |_, args|
-    ReleaseTools::Deployments::DeploymentTracker
+    deployments = ReleaseTools::Deployments::DeploymentTracker
       .new
       .track(args[:environment], args[:status], args[:version])
+
+    ReleaseTools::Deployments::MergeRequestLabeler
+      .new
+      .label_merge_requests(args[:environment], deployments)
   end
 
   namespace :gitaly do

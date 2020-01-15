@@ -380,5 +380,13 @@ module ReleaseTools
       )
     end
     # rubocop: enable Metrics/ParameterLists
+
+    def self.deployed_merge_requests(project, deployment_id)
+      project_path = client.url_encode(project_path(project))
+
+      client.get(
+        "/projects/#{project_path}/deployments/#{deployment_id}/merge_requests"
+      )
+    end
   end
 end
