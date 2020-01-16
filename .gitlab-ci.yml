@@ -125,7 +125,7 @@ validate-security-merge-requests:
     variables:
       - $VALIDATE_SECURITY_MERGE_REQUESTS
 
-auto-deploy:prepare:
+auto_deploy:prepare:
   <<: *with-bundle
   stage: automation
   script:
@@ -136,7 +136,7 @@ auto-deploy:prepare:
     variables:
       - $CREATE_AUTO_DEPLOY_BRANCH_SCHEDULE == "true"
 
-auto-deploy:pick:
+auto_deploy:pick:
   <<: *with-bundle
   stage: automation
   script:
@@ -145,7 +145,7 @@ auto-deploy:pick:
     variables:
       - $CHERRY_PICK_AUTO_DEPLOY_BRANCH_SCHEDULE == "true"
 
-auto-deploy:trigger:
+auto_deploy:tag:
   <<: *with-bundle
   stage: automation
   script:
