@@ -35,6 +35,10 @@ module ReleaseTools
       #    If so, we are releasing a new minor version
       # 3. Else, we are releasing a new major version
       def next_version(gitlab_version)
+        # For 12.7.0 we bump the chart version from 2.6.x to 3.0.0 as it includes
+        # several backwards incompatible changes. Upgrade epic: https://gitlab.com/groups/gitlab-org/charts/-/epics/6
+        return HelmChartVersion.new('3.0.0') if gitlab_version == HelmGitlabVersion.new('12.7.0')
+
         tag_messages = repository.tag_messages
 
         raise "Tag messages could not be extracted from the repository to compute next tag. Aborting." unless tag_messages
