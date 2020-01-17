@@ -41,6 +41,7 @@ module ReleaseTools
       'group::memory',
       'Ecosystem [DEPRECATED]',
       'group::ecosystem',
+      'group::search',
       'frontend',
       'database'
     ].freeze
