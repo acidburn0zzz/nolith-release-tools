@@ -35,6 +35,8 @@ sast:
 
 dependency_scanning:
   <<: *except-automation
+  variables:
+    DS_EXCLUDED_PATHS: "spec/fixtures/**/*"
 
 rubocop:
   <<: *except-automation
