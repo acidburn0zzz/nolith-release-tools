@@ -52,8 +52,7 @@ If this date is on the weekend, do this work on the last Friday before the 20th.
 - [ ] Determine what the last green auto deploy branch is and add it here: `BRANCH`
 - [ ] Create the stable branches using chatops by running the following in Slack:
       ```
-      # Replace AUTO_DEPLOY_BRANCH with the latest green auto deploy branch
-      /chatops run release stable_branch <%= version.to_patch %> AUTO_DEPLOY_BRANCH
+      /chatops run release stable_branch <%= version.to_patch %>
       ```
 - [ ] Verify that the [CE stable branch] contains the right commits
   - There should be at least two commits: the last commit from the previous
