@@ -8,6 +8,10 @@ module ReleaseTools
       ENV['TEST'].present?
     end
 
+    def critical_security_release?
+      ENV['SECURITY'] == 'critical'
+    end
+
     def security_release?
       ENV['SECURITY'].present?
     end
