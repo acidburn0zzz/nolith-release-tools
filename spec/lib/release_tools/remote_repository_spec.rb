@@ -550,6 +550,42 @@ describe ReleaseTools::RemoteRepository do
 
       expect(subject.changes?).to be(true)
     end
+
+    context 'with paths provided' do
+      it 'returns false when no changes' do
+        expect(subject.changes?(paths: 'README.md')).to be(false)
+      end
+
+      it 'returns true when there is referenced untracked work' do
+        subject.write_file('README.md', 'Cool')
+        subject.write_file('CONTRIBUTING.md', 'Be nice!')
+
+        expect(subject.changes?(paths: %w[README.md CONTRIBUTING.md])).to be(true)
+      end
+
+      it 'returns false when there is untracked work outside the path' do
+        subject.write_file('README.md', 'Cool')
+        subject.write_file('CONTRIBUTING.md', 'Be nice!')
+
+        expect(subject.changes?(paths: 'libs')).to be(false)
+      end
+
+      it 'returns true when there is referenced staged work' do
+        subject.write_file('README.md', 'Cool')
+        subject.write_file('CONTRIBUTING.md', 'Be nice!')
+        subject.send(:run_git, ['add', %w[README.md CONTRIBUTING.md]])
+
+        expect(subject.changes?(paths: %w[README.md CONTRIBUTING.md])).to be(true)
+      end
+
+      it 'returns false when there is staged work outside the path' do
+        subject.write_file('README.md', 'Cool')
+        subject.write_file('CONTRIBUTING.md', 'Be nice!')
+        subject.send(:run_git, ['add', %w[README.md CONTRIBUTING.md]])
+
+        expect(subject.changes?(paths: 'libs')).to be(false)
+      end
+    end
   end
 
   describe described_class::GitCommandError do

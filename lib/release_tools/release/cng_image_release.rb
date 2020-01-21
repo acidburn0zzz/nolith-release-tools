@@ -48,7 +48,7 @@ module ReleaseTools
         end
 
         # It's expected that the UBI image tag will have nothing to commit
-        return if options[:ubi] && !repository.changes?
+        return if options[:ubi] && !repository.changes?(paths: 'ci_files/variables.yml')
 
         repository.commit(target_file, message: "Update #{target_file} for #{version}")
       end
