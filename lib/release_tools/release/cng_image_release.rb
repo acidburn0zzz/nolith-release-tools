@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative '../support/ubi_helper'
+
 module ReleaseTools
   module Release
     class CNGImageRelease < BaseRelease
+      include ReleaseTools::Support::UbiHelper
+
       class VersionFileDoesNotExistError < StandardError; end
       class VersionNotFoundError < StandardError; end
       def remotes
@@ -26,6 +30,10 @@ module ReleaseTools
         version
       end
 
+      def tag
+        options[:ubi] && ubi?(version) ? ubi_tag(version, options[:ubi_version]) : super
+      end
+
       private
 
       def bump_versions
@@ -38,6 +46,9 @@ module ReleaseTools
         File.open(target_file, 'w') do |f|
           f.write(YAML.dump(yaml_contents))
         end
+
+        # It's expected that the UBI image tag will have nothing to commit
+        return if options[:ubi] && !repository.changes?(paths: 'ci_files/variables.yml')
 
         repository.commit(target_file, message: "Update #{target_file} for #{version}")
       end

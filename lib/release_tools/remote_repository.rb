@@ -241,6 +241,19 @@ module ReleaseTools
       FileUtils.rm_rf(path, secure: true)
     end
 
+    def changes?(paths: nil)
+      cmd = %w[status --porcelain]
+
+      if paths
+        cmd << '--'
+        cmd += Array(paths)
+      end
+
+      output, = run_git(cmd)
+
+      !output.empty?
+    end
+
     def self.run_git(args)
       final_args = ['git', *args].join(' ')
 
