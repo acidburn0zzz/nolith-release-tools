@@ -361,5 +361,24 @@ module ReleaseTools
     def self.last_deployment(project, environment)
       client.environment(project, environment)&.last_deployment
     end
+
+    def self.tag(project, tag:)
+      client.tag(project_path(project), tag)
+    end
+
+    # rubocop: disable Metrics/ParameterLists
+    def self.create_deployment(project, environment, ref, sha, status, tag: false)
+      client.post(
+        "/projects/#{client.url_encode(project_path(project))}/deployments",
+        body: {
+          ref: ref,
+          sha: sha,
+          tag: tag,
+          status: status,
+          environment: environment
+        }
+      )
+    end
+    # rubocop: enable Metrics/ParameterLists
   end
 end

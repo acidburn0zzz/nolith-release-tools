@@ -156,6 +156,15 @@ auto_deploy:tag:
     variables:
       - $PASSING_BUILD_AUTO_DEPLOY_SCHEDULE == "true"
 
+track-deployment:
+  <<: *with-bundle
+  stage: automation
+  script:
+    - bundle exec rake 'release:track_deployment[$DEPLOY_ENVIRONMENT, $DEPLOY_STATUS, $DEPLOY_VERSION]'
+  only:
+    variables:
+      - $TRACK_DEPLOYMENT == "true"
+
 # chatops ---------------------------------------------------------------------
 
 chatops:
