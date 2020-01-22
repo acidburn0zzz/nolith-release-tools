@@ -85,7 +85,7 @@ module ReleaseTools
 
       def failure_comment(pick_result)
         comment = <<~MSG
-          @#{author_handle(pick_result.merge_request)} This merge request could not automatically be picked into
+          #{author_handle(pick_result.merge_request)} This merge request could not automatically be picked into
           `#{version.stable_branch}` for `#{version}` and will need manual
           intervention. You can either:
 
