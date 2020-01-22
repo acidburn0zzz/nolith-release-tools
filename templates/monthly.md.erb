@@ -60,17 +60,6 @@ If this date is on the weekend, do this work on the last Friday before the 20th.
     merge train.
   - The sync commit will have the message "Add latest changes from gitlab-org/gitlab@<%= version.stable_branch(ee: true) %>"
 
-For releases prior to 12.5 the [CE stable branch] is not synced automatically,
-so this needs to be done manually:
-
-- Create the [CE stable branch] based on the previous stable branch. You can
-  do this using the GitLab UI on GitLab.com.
-- Trigger a FOSS sync in the [Merge Train](https://ops.gitlab.net/gitlab-org/merge-train/pipelines/new)
-  - Set the variable `MERGE_FOSS` to `1`
-  - Set the variable `SOURCE_BRANCH` to `<%= version.stable_branch(ee: true) %>`
-  - Set the variable `TARGET_BRANCH` to `<%= version.stable_branch %>`
-  - Run the pipeline
-
 - [ ] Create a RC version to ensure that the final version builds correctly
 
    ```sh
