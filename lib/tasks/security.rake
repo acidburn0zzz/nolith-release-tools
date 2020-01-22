@@ -29,7 +29,7 @@ namespace :security do
       .execute
 
     if ReleaseTools::Feature.enabled?(:security_remote)
-      if Feature.enabled?(:security_mirror_toggle)
+      if ReleaseTools::Feature.enabled?(:security_mirror_toggle)
         ReleaseTools::Security::Mirrors.disable
       end
 
