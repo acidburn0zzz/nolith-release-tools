@@ -37,7 +37,7 @@ task :publish, [:version] do |_t, args|
     Raven.capture_exception(ex)
   end
 
-  if Feature.enabled?(:security_mirror_toggle)
+  if ReleaseTools::Feature.enabled?(:security_mirror_toggle)
     ReleaseTools::Security::Mirrors.enable
   end
 end
