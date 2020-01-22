@@ -6,9 +6,9 @@
 
 ## Preparation
 
-- [ ] If this is a critical security release replace all the "merge security merge requests using chatops" tasks with "Merge security merge requests using GitLab UI"
+- [ ] If this is a critical security release replace all the "merge security merge requests using ChatOps" tasks with "Merge security merge requests using GitLab UI"
       * There's one step on "Preparation" and another one on "Auto Deploy" that needs to be updated.
-- [ ] Merge security merge requests using chatops:
+- [ ] Merge security merge requests using ChatOps:
    ```sh
    # In Slack:
    /chatops run release merge --security
@@ -20,22 +20,19 @@
 
 ### Auto-Deploy - only for the latest version
 
-The following steps should ideally be completed w/i 1 day
+The following steps should ideally be completed within one day.
 
-- [ ] Notify `#releases` that auto-deploy will be disabled until the security release is out.
-- [ ] Ensure latest auto-deploy branches are sync'd across Canonical, Dev and Security with:
-
-```sh
-# In slack
-/chatops run mirror status
-```
-
-- [ ] Disable auto-deploy [pipeline schedules]:
-    - [ ] Disable the `Auto-deploy MR picker` job
-    - [ ] Disable the `Auto-deploy tagging` job
-    - [ ] Disable the `Auto-deploy branch creation` job
-    * This will break repositories mirroring until the security release is out.
-- [ ] If this is a regular security release, merge security merge requests using chatops:
+- [ ] Temporarily disable the scheduled auto-deploy tasks via ChatOps:
+   ```sh
+   # In Slack
+   /chatops run auto_deploy pause
+   ```
+- [ ] Ensure latest auto-deploy branches are synced across Canonical, Security, and Build:
+   ```sh
+   # In slack
+   /chatops run mirror status
+   ```
+- [ ] If this is a regular security release, merge security merge requests via ChatOps:
    ```sh
    # In Slack:
    /chatops run release merge --security --master
@@ -103,7 +100,7 @@ Deployment is automatically performed from tagging the auto-deploy branch.
 The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
 is automatically generated, one for the auto-deploy build and another one for the tagged release.
 
-- [ ] Notify @appsec-team that packages are ready for QA
+- [ ] Notify `@appsec-team` that packages are ready for QA
   ```sh
   # In Slack
   @appsec-team - Security release packages are available for QA.
@@ -143,17 +140,15 @@ is automatically generated, one for the auto-deploy build and another one for th
 
 ### Auto-Deploy - only for the latest version
 
-- [ ] Modify the `Auto-deploy tagging` job - remove `ENV` variable `SECURITY` on [pipeline schedules]
-- [ ] Enable auto-deploy [pipeline schedules]:
-    - [ ] Enable the `Auto-deploy MR picker` job
-    - [ ] Enable the `Auto-deploy tagging` job
-    - [ ] Enable the `Auto-deploy branch creation` job
-
+- [ ] Re-enable the scheduled auto-deploy tasks via ChatOps:
+   ```sh
+   # In Slack
+   /chatops run auto_deploy unpause
+   ```
 - [ ] Manually kick off creating a new auto-deploy branch from [pipeline schedules]
       This will bring auto-deploy back online and contain our security fixes plus
       any new merge requests since auto-deploy was paused.
 
-- [ ] Notify `#releases` that auto-deploy has been enabled.
 ---
 
 For references:
