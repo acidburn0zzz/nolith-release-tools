@@ -64,6 +64,8 @@ module ReleaseTools
 
         create_tag(tag)
         push_ref('tag', tag)
+
+        Slack::TagNotification.release(version) unless SharedStatus.dry_run?
       end
 
       def master_branch

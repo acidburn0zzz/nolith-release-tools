@@ -98,7 +98,6 @@ namespace :security do
       version = get_version(args)
 
       ReleaseTools::Release::GitalyRelease.new(version).execute
-      ReleaseTools::Slack::TagNotification.release(version) unless dry_run?
     end
   end
 end

@@ -123,7 +123,6 @@ namespace :release do
 
       ReleaseTools.logger.info('Starting EE release')
       ReleaseTools::Release::GitlabEeRelease.new(ee_version).execute
-      ReleaseTools::Slack::TagNotification.release(ee_version) unless dry_run?
     end
 
     if skip?('ce')
@@ -133,7 +132,6 @@ namespace :release do
 
       ReleaseTools.logger.info('Starting CE release')
       ReleaseTools::Release::GitlabCeRelease.new(ce_version).execute
-      ReleaseTools::Slack::TagNotification.release(ce_version) unless dry_run?
     end
   end
 
@@ -150,7 +148,6 @@ namespace :release do
       version = get_version(args)
 
       ReleaseTools::Release::GitalyRelease.new(version).execute
-      ReleaseTools::Slack::TagNotification.release(version) unless dry_run?
     end
   end
 
