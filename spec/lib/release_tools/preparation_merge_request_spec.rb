@@ -94,13 +94,17 @@ describe ReleaseTools::PreparationMergeRequest do
     it 'creates the preparation branch in the correct project' do
       merge_request = described_class.new(version: ReleaseTools::Version.new('9.4.99'))
 
-      branch = merge_request.create_branch!
+      without_dry_run do
+        branch = merge_request.create_branch!
 
-      expect(branch.name).to eq '9-4-stable-patch-99'
+        expect(branch.name).to eq '9-4-stable-patch-99'
+      end
     end
 
     it "doesn't throw error when the branch exists", vcr: { cassette_name: 'branches/create_existing' } do
-      expect { merge_request.create_branch! }.not_to raise_error
+      without_dry_run do
+        expect { merge_request.create_branch! }.not_to raise_error
+      end
     end
   end
 end
