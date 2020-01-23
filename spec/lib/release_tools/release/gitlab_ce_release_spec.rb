@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Release::GitlabCeRelease do
+describe ReleaseTools::Release::GitlabCeRelease, :slow do
   include RuggedMatchers
 
   # NOTE (rspeicher): There is some "magic" here that can be confusing.
