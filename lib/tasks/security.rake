@@ -1,7 +1,9 @@
 namespace :security do
   # Undocumented; should be a pre-requisite for every task in this namespace!
   task :force_security do
-    ENV['SECURITY'] = 'true'
+    unless ReleaseTools::SharedStatus.critical_security_release?
+      ENV['SECURITY'] = 'true'
+    end
   end
 
   desc 'Create a security release task issue'
