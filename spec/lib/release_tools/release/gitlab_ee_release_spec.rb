@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ReleaseTools::Release::GitlabEeRelease do
+describe ReleaseTools::Release::GitlabEeRelease, :slow do
   include RuggedMatchers
 
   # Fixtures are copied from CE spec
