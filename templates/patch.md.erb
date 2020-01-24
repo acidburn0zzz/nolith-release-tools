@@ -48,25 +48,36 @@ For patch releases, the only available environment for deploys is `pre.gitlab.co
 
 ### pre.gitlab.com
 
-Deployments to pre.gitlab.com are performed automatically. If you need to
-manually run a deployment, you can do so as follows:
+Deployments to pre.gitlab.com are performed automatically.
+
+<details>
+  <summary>Instructions to manually deploy if required.</summary>
+
+If you need to manually run a deployment, you can do so as follows:
 
 ```sh
 # In Slack:
 /chatops run deploy <%= version %>-ee.0 --pre
 ```
 
+</details>
+
 #### QA
 
-The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
+The QA issue is created automatically, and linked as a related issue.
+
+<details>
+  <summary>Instructions to manually generate QA issue if required.</summary>
+
+If the [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
 needs to be manually generated, you can do so as follows:
 
 ```sh
 # In Slack, replacing LAST_DEPLOYED_VERSION with the appropriate value:
 /chatops run release qa vLAST_DEPLOYED_VERSION v<%= version %>
 ```
+</details>
 
-QA issue: <QA_issue_link>
 
 ## Release
 
