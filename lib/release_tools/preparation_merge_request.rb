@@ -2,6 +2,8 @@
 
 module ReleaseTools
   class PreparationMergeRequest < MergeRequest
+    include ::SemanticLogger::Loggable
+
     def title
       "WIP: Prepare #{version} release"
     end
@@ -56,9 +58,27 @@ module ReleaseTools
 
     def create_branch!
       Branch.new(name: source_branch, project: default_project).tap do |branch|
-        branch.create(ref: stable_branch) unless SharedStatus.dry_run?
+        unless SharedStatus.dry_run?
+          logger.info(
+            'Creating preparation branch',
+            name: source_branch,
+            target: stable_branch,
+            project: default_project
+          )
+
+          branch.create(ref: target_branch)
+        end
       end
-    rescue Gitlab::Error::BadRequest # 400 Branch already exists
+    rescue Gitlab::Error::BadRequest => ex # 400 Branch already exists
+      logger.warn(
+        'Failed to create preparation branch',
+        name: source_branch,
+        target: target_branch,
+        project: default_project,
+        error_code: ex.response_status,
+        error_message: ex.response_message
+      )
+
       nil
     end
 

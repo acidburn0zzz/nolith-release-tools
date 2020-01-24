@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/branches?branch=9-4-stable-patch-99&ref=9-4-stable
+    uri: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/branches?branch=9-4-stable-patch-99&ref=9-4-stable
     body:
       encoding: UTF-8
       string: ''
