@@ -24,6 +24,12 @@ auth_rake()
 setup_env
 
 case $1 in
+  # auto_deploy namespace
+
+  "auto_deploy:prepare")
+    auth_rake "$1"
+    ;;
+
   # release namespace
 
   "release:issue")
