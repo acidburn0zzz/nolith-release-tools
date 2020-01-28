@@ -47,6 +47,7 @@ describe ReleaseTools::Deployments::DeploymentTracker do
             'success',
             tag: false
           )
+          .and_return(double(:deployment, id: 1, status: 'success'))
 
         expect(ReleaseTools::GitlabClient)
           .to receive(:create_deployment)
@@ -57,8 +58,13 @@ describe ReleaseTools::Deployments::DeploymentTracker do
             '94b8fd8d152680445ec14241f14d1e4c04b0b5ab',
             'success'
           )
+          .and_return(double(:deployment, id: 2, status: 'success'))
 
-        tracker.track('staging', 'success', version)
+        deployments = tracker.track('staging', 'success', version)
+
+        expect(deployments.length).to eq(2)
+        expect(deployments[0].id).to eq(1)
+        expect(deployments[1].id).to eq(2)
       end
 
       it 'does not track the Gitaly deployment when Gitaly uses a tag version' do
@@ -81,6 +87,7 @@ describe ReleaseTools::Deployments::DeploymentTracker do
             'success',
             tag: false
           )
+          .and_return(double(:deployment, id: 1, status: 'success'))
 
         expect(ReleaseTools::GitlabClient)
           .not_to receive(:create_deployment)
@@ -92,7 +99,10 @@ describe ReleaseTools::Deployments::DeploymentTracker do
             'success'
           )
 
-        tracker.track('staging', 'success', version)
+        deployments = tracker.track('staging', 'success', version)
+
+        expect(deployments.length).to eq(1)
+        expect(deployments[0].id).to eq(1)
       end
     end
 

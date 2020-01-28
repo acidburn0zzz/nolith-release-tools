@@ -16,6 +16,13 @@ module ReleaseTools
       # The ref to use for recording Gitaly deployments
       GITALY_DEPLOY_REF = 'master'
 
+      # A deployment created using the GitLab API
+      Deployment = Struct.new(:project, :id, :status) do
+        def success?
+          status == 'success'
+        end
+      end
+
       # environment - The name of the environment that was deployed to.
       # status - The status of the deployment, such as "success" or "failed".
       # raw_version - The raw deployment version.
@@ -36,8 +43,13 @@ module ReleaseTools
 
         version = DeploymentVersionParser.new.parse(raw_version)
 
-        track_gitlab_deployment(environment, status, version)
-        track_gitaly_deployment(environment, status, version.sha)
+        gitlab_deployment =
+          track_gitlab_deployment(environment, status, version)
+
+        gitaly_deployment =
+          track_gitaly_deployment(environment, status, version.sha)
+
+        [gitlab_deployment, gitaly_deployment].compact
       end
 
       private
@@ -51,7 +63,7 @@ module ReleaseTools
           ref: version.ref
         )
 
-        GitlabClient.create_deployment(
+        data = GitlabClient.create_deployment(
           Project::GitlabEe,
           environment,
           version.ref,
@@ -59,6 +71,8 @@ module ReleaseTools
           status,
           tag: version.tag?
         )
+
+        Deployment.new(Project::GitlabEe, data.id, data.status)
       end
 
       def track_gitaly_deployment(environment, status, gitlab_sha)
@@ -78,13 +92,15 @@ module ReleaseTools
           ref: GITALY_DEPLOY_REF
         )
 
-        GitlabClient.create_deployment(
+        data = GitlabClient.create_deployment(
           Project::Gitaly,
           environment,
           GITALY_DEPLOY_REF,
           sha,
           status
         )
+
+        Deployment.new(Project::Gitaly, data.id, data.status)
       end
     end
   end

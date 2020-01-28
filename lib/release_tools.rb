@@ -28,6 +28,7 @@ require 'stringio'
 require 'time'
 require 'uri'
 require 'yaml'
+require 'retriable'
 
 $LOAD_PATH.unshift(__dir__)
 
@@ -70,6 +71,7 @@ require 'release_tools/commits'
 require 'release_tools/component_versions'
 require 'release_tools/deployments/deployment_version_parser'
 require 'release_tools/deployments/deployment_tracker'
+require 'release_tools/deployments/merge_request_labeler'
 require 'release_tools/feature'
 require 'release_tools/gitlab_client'
 require 'release_tools/gitlab_dev_client'
