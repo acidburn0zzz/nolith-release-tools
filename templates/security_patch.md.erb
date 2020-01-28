@@ -29,7 +29,7 @@ The following steps should ideally be completed within one day.
    ```
 - [ ] Ensure latest auto-deploy branches are synced across Canonical, Security, and Build:
    ```sh
-   # In slack
+   # In Slack
    /chatops run mirror status
    ```
 - [ ] If this is a regular security release, merge security merge requests via ChatOps:
@@ -60,9 +60,12 @@ The following steps should ideally be completed within one day.
    # push to security
    git push security
    ```
-- [ ] Modify the `Auto-deploy tagging` job - add `ENV` variable `SECURITY` set to `true` on [pipeline schedules]
+- [ ] Trigger an auto-deploy tagging via ChatOps:
+   ```sh
+   # In Slack
+   /chatops run auto_deploy tag --security
+   ```
 
-- [ ] Manually kick off `Auto-deploy tagging` job from [pipeline schedules]
    - This will automatically deploy to staging, if successful this will also create a QA issue
 - [ ] Ensure this makes it through to canary
 
@@ -133,10 +136,10 @@ is automatically generated, one for the auto-deploy build and another one for th
 - [ ] Push `security/omnibus-gitlab` `master` and `auto-deploy` branches to all remotes.
 - [ ] Verify all remotes are synced:
 
-```sh
-# In slack
-/chatops run mirror status
-```
+   ```sh
+   # In Slack
+   /chatops run mirror status
+   ```
 
 ### Auto-Deploy - only for the latest version
 
@@ -145,9 +148,11 @@ is automatically generated, one for the auto-deploy build and another one for th
    # In Slack
    /chatops run auto_deploy unpause
    ```
-- [ ] Manually kick off creating a new auto-deploy branch from [pipeline schedules]
-      This will bring auto-deploy back online and contain our security fixes plus
-      any new merge requests since auto-deploy was paused.
+- [ ] Create a new auto-deploy branch from `master` via ChatOps:
+   ```sh
+   # In Slack
+   /chatops run auto_deploy prepare
+   ```
 
 ---
 
