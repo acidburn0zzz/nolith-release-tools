@@ -69,3 +69,22 @@ def cherry_pick_result(result)
     "✗ #{result.url}"
   end
 end
+
+def build_qa_issue(version, from, to)
+  issue = ReleaseTools::Qa::Services::BuildQaIssueService.new(
+    version: version,
+    from: from,
+    to: to,
+    issue_project: ReleaseTools::Qa::ISSUE_PROJECT,
+    projects: ReleaseTools::Qa::PROJECTS
+  ).execute
+
+  create_or_show_issue(issue)
+
+  return unless ENV['RELEASE_ENVIRONMENT'] && issue.status == :exists
+
+  issue.add_comment(<<~MSG)
+    :robot: The changes listed in this issue have been deployed
+    to `#{ENV['RELEASE_ENVIRONMENT']}`.
+  MSG
+end

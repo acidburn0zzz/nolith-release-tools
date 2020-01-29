@@ -3,10 +3,60 @@
 require 'spec_helper'
 
 describe ReleaseTools::Deployments::DeploymentTracker do
+  describe '#qa_commit_range' do
+    let(:version) { '12.7.202001101501-94b8fd8d152.6fea3031ec9' }
+
+    context 'when deploying failed' do
+      it 'returns an empty Array' do
+        tracker = described_class.new('gstg', 'failed', version)
+
+        expect(tracker.qa_commit_range).to be_empty
+      end
+    end
+
+    context 'when deploying to a QA environment with deployments' do
+      it 'returns the current and previous deployment SHAs' do
+        tracker = described_class.new('gstg', 'success', version)
+
+        allow(ReleaseTools::GitlabClient)
+          .to receive(:deployments)
+          .and_return([
+            double(:deployment, sha: 'foo'),
+            double(:deployment, sha: 'bar')
+          ])
+
+        expect(tracker.qa_commit_range).to eq(%w[foo bar])
+      end
+    end
+
+    context 'when deploying to a QA environment with for the first time' do
+      it 'does not return the previous deployment SHA' do
+        tracker = described_class.new('gstg', 'success', version)
+
+        allow(ReleaseTools::GitlabClient)
+          .to receive(:deployments)
+          .and_return([double(:deployment, sha: 'foo')])
+
+        expect(tracker.qa_commit_range).to eq([nil, 'foo'])
+      end
+    end
+
+    context 'when deploying to a non-QA environment' do
+      it 'returns an empty Array' do
+        tracker = described_class.new('foo', 'success', version)
+
+        allow(ReleaseTools::GitlabClient)
+          .to receive(:deployments)
+          .and_return([])
+
+        expect(tracker.qa_commit_range).to be_empty
+      end
+    end
+  end
+
   describe '#track' do
     context 'when using a valid status' do
       let(:version) { '12.7.202001101501-94b8fd8d152.6fea3031ec9' }
-      let(:tracker) { described_class.new }
       let(:parser) do
         instance_double(ReleaseTools::Deployments::DeploymentVersionParser)
       end
@@ -60,7 +110,7 @@ describe ReleaseTools::Deployments::DeploymentTracker do
           )
           .and_return(double(:deployment, id: 2, status: 'success'))
 
-        deployments = tracker.track('staging', 'success', version)
+        deployments = described_class.new('staging', 'success', version).track
 
         expect(deployments.length).to eq(2)
         expect(deployments[0].id).to eq(1)
@@ -99,7 +149,7 @@ describe ReleaseTools::Deployments::DeploymentTracker do
             'success'
           )
 
-        deployments = tracker.track('staging', 'success', version)
+        deployments = described_class.new('staging', 'success', version).track
 
         expect(deployments.length).to eq(1)
         expect(deployments[0].id).to eq(1)
@@ -108,10 +158,9 @@ describe ReleaseTools::Deployments::DeploymentTracker do
 
     context 'when using an invalid status' do
       it 'raises ArgumentError' do
-        tracker = described_class.new
         version = '12.7.202001101501-94b8fd8d152.6fea3031ec9'
 
-        expect { tracker.track('staging', 'foo', version) }
+        expect { described_class.new('staging', 'foo', version).track }
           .to raise_error(ArgumentError)
       end
     end
