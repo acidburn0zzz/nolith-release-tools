@@ -67,22 +67,7 @@ namespace :release do
   task :qa, [:from, :to] do |_t, args|
     version = get_version(version: args[:to].sub(/\Av/, ''))
 
-    issue = ReleaseTools::Qa::Services::BuildQaIssueService.new(
-      version: version,
-      from: args[:from],
-      to: args[:to],
-      issue_project: ReleaseTools::Qa::ISSUE_PROJECT,
-      projects: ReleaseTools::Qa::PROJECTS
-    ).execute
-
-    create_or_show_issue(issue)
-
-    if ENV['RELEASE_ENVIRONMENT'] && issue.status == :exists
-      issue.add_comment(<<~MSG)
-        :robot: The changes listed in this issue have been deployed
-        to `#{ENV['RELEASE_ENVIRONMENT']}`.
-      MSG
-    end
+    build_qa_issue(version, args[:from], args[:to])
   end
 
   desc 'Create stable branches for a new release'
@@ -137,13 +122,22 @@ namespace :release do
 
   desc 'Tracks a deployment using the GitLab API'
   task :track_deployment, [:environment, :status, :version] do |_, args|
-    deployments = ReleaseTools::Deployments::DeploymentTracker
-      .new
-      .track(args[:environment], args[:status], args[:version])
+    env = args[:environment]
+    version = args[:version]
+    tracker = ReleaseTools::Deployments::DeploymentTracker
+      .new(env, args[:status], version)
+
+    deployments = tracker.track
 
     ReleaseTools::Deployments::MergeRequestLabeler
       .new
-      .label_merge_requests(args[:environment], deployments)
+      .label_merge_requests(env, deployments)
+
+    previous, latest = tracker.qa_commit_range
+
+    if previous && latest
+      build_qa_issue(get_version(version: version), previous, latest)
+    end
   end
 
   namespace :gitaly do

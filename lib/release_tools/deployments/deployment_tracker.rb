@@ -23,59 +23,81 @@ module ReleaseTools
         end
       end
 
+      # The name of the staging environment of GitLab.com.
+      STAGING = 'gstg'
+
       # environment - The name of the environment that was deployed to.
       # status - The status of the deployment, such as "success" or "failed".
-      # raw_version - The raw deployment version.
-      def track(environment, status, raw_version)
+      # version - The raw deployment version, as passed from the deployer.
+      def initialize(environment, status, version)
+        @environment = environment
+        @status = status
+        @version = version
+      end
+
+      def qa_commit_range
+        unless @environment == STAGING && @status == 'success'
+          return []
+        end
+
+        shas = GitlabClient
+          .deployments(Project::GitlabEe, @environment)
+          .first(2)
+          .map(&:sha)
+
+        return shas if shas.length == 2
+
+        # The first time we deploy to an environment we won't have a previous
+        # SHA to compare to.
+        [nil, shas.first]
+      end
+
+      def track
         logger.info(
           'Recording GitLab deployment',
-          environment: environment,
-          status: status,
-          version: raw_version
+          environment: @environment,
+          status: @status,
+          version: @version
         )
 
-        unless DEPLOYMENT_STATUSES.include?(status)
+        unless DEPLOYMENT_STATUSES.include?(@status)
           raise(
             ArgumentError,
-            "The deployment status #{status} is not supported"
+            "The deployment status #{@status} is not supported"
           )
         end
 
-        version = DeploymentVersionParser.new.parse(raw_version)
-
-        gitlab_deployment =
-          track_gitlab_deployment(environment, status, version)
-
-        gitaly_deployment =
-          track_gitaly_deployment(environment, status, version.sha)
+        version = DeploymentVersionParser.new.parse(@version)
+        gitlab_deployment = track_gitlab_deployment(version)
+        gitaly_deployment = track_gitaly_deployment(version.sha)
 
         [gitlab_deployment, gitaly_deployment].compact
       end
 
       private
 
-      def track_gitlab_deployment(environment, status, version)
+      def track_gitlab_deployment(version)
         logger.info(
           'Recording GitLab Rails deployment',
-          environment: environment,
-          status: status,
+          environment: @environment,
+          status: @status,
           sha: version.sha,
           ref: version.ref
         )
 
         data = GitlabClient.create_deployment(
           Project::GitlabEe,
-          environment,
+          @environment,
           version.ref,
           version.sha,
-          status,
+          @status,
           tag: version.tag?
         )
 
         Deployment.new(Project::GitlabEe, data.id, data.status)
       end
 
-      def track_gitaly_deployment(environment, status, gitlab_sha)
+      def track_gitaly_deployment(gitlab_sha)
         sha = ComponentVersions.get_component(
           Project::GitlabEe,
           gitlab_sha,
@@ -86,18 +108,18 @@ module ReleaseTools
 
         logger.info(
           'Recording Gitaly deployment',
-          environment: environment,
-          status: status,
+          environment: @environment,
+          status: @status,
           sha: sha,
           ref: GITALY_DEPLOY_REF
         )
 
         data = GitlabClient.create_deployment(
           Project::Gitaly,
-          environment,
+          @environment,
           GITALY_DEPLOY_REF,
           sha,
-          status
+          @status
         )
 
         Deployment.new(Project::Gitaly, data.id, data.status)
