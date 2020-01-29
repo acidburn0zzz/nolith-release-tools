@@ -112,7 +112,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
       allow(client)
         .to receive(:accept_merge_request)
-        .with(1, 2)
+        .with(1, 2, squash: true)
         .and_return(response)
 
       without_dry_run do
@@ -127,7 +127,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
       allow(merger.client)
         .to receive(:accept_merge_request)
-        .with(1, 2)
+        .with(1, 2, squash: true)
         .and_return(response)
 
       allow(merger)
@@ -145,7 +145,7 @@ describe ReleaseTools::Security::MergeRequestsMerger do
 
       allow(merger.client)
         .to receive(:accept_merge_request)
-        .with(1, 2)
+        .with(1, 2, squash: true)
         .and_return(double(:response))
 
       allow(merger)

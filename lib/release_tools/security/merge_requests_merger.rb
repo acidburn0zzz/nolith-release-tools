@@ -77,7 +77,11 @@ module ReleaseTools
 
         return if SharedStatus.dry_run?
 
-        merged_mr = client.accept_merge_request(mr.project_id, mr.iid)
+        merged_mr = client.accept_merge_request(
+          mr.project_id,
+          mr.iid,
+          squash: true
+        )
 
         if merged_mr.respond_to?(:merge_commit_sha) && merged_mr.merge_commit_sha
           true
