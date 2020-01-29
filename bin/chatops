@@ -29,6 +29,9 @@ case $1 in
   "auto_deploy:prepare")
     auth_rake "$1"
     ;;
+  "auto_deploy:tag")
+    auth_rake "$1"
+    ;;
 
   # release namespace
 
