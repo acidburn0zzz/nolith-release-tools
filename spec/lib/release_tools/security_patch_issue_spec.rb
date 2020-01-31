@@ -27,7 +27,7 @@ describe ReleaseTools::SecurityPatchIssue do
 
       content = issue.description
 
-      expect(content).to include 'Ping the Security Engineers so they can get started with the blog post. The blog post should also be done on https://dev.gitlab.org/ in a **private snippet'
+      expect(content).to include 'Ping the Security Engineers so they can get started with the blog post.'
     end
 
     it 'includes a step to perform a security release' do
