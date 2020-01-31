@@ -10,6 +10,10 @@ module ReleaseTools
       super + ',security'
     end
 
+    def critical?
+      ReleaseTools::SharedStatus.critical_security_release?
+    end
+
     protected
 
     def template_path
