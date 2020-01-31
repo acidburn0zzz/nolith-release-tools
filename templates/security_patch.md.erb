@@ -6,17 +6,17 @@
 
 ## Preparation
 
-- [ ] If this is a critical security release replace all the "merge security merge requests using ChatOps" tasks with "Merge security merge requests using GitLab UI"
-      * There's one step on "Preparation" and another one on "Auto Deploy" that needs to be updated.
+<% if critical? -%>
+- [ ] Merge critical security merge requests using the UI. *Do not merge any targeting `master`.*
+<% else -%>
 - [ ] Merge security merge requests using ChatOps:
    ```sh
    # In Slack:
    /chatops run release merge --security
    ```
+<% end -%>
 
-   If you're merging using GitLab UI, due to a critical security release, do not merge the one targeting `master`.
-
-- [ ] If any merge requests could not be merged, investigate what needs to be done to resolve this issues. Do **not** proceed unless it has been determined safe to do so.
+- [ ] If any merge requests could not be merged, investigate what needs to be done to resolve the issues. Do **not** proceed unless it has been determined safe to do so.
 
 ### Auto-Deploy - only for the latest version
 
@@ -32,14 +32,15 @@ The following steps should ideally be completed within one day.
    # In Slack
    /chatops run mirror status
    ```
-- [ ] If this is a regular security release, merge security merge requests via ChatOps:
+<% if critical? -%>
+- [ ] Merge critical security merge requests using the UI, *including the one targeting `master`.*
+<% else -%>
+- [ ] Merge security merge requests using ChatOps:
    ```sh
    # In Slack:
    /chatops run release merge --security --master
    ```
-
-   If you're merging using GitLab UI, due to a critical security release, manually merge the one targeting `master`.
-
+<% end -%>
 - [ ] Manually cherry pick EACH security fix into the CURRENT auto-deploy branch, both GitLab and Omnibus
    ```sh
    # fetch both remotes
