@@ -6,6 +6,10 @@
 
 ## Preparation
 
+- [ ] Validate issues and merge requests on the Security issue.
+   - Per security issue, ensure all related merge requests are valid and assigned to the `@gitlab-release-tools-bot`
+   - If any merge request is not valid, unassign all the related merge requests and notify the author.
+
 <% if critical? -%>
 - [ ] Merge critical security merge requests using the UI. *Do not merge any targeting `master`.*
 <% else -%>
@@ -67,15 +71,27 @@ The following steps should ideally be completed within one day.
    /chatops run auto_deploy tag --security
    ```
 
-   - This will automatically deploy to staging, if successful this will also create a QA issue
-- [ ] Ensure this makes it through to canary
+   - This will trigger a deployer pipeline that automatically deploys to
+     staging. If successful this will also create a QA issue.
 
-- [ ] After the QA deadline has passed, proceed to push this to production
+## QA
+
+- [ ] On the deployer pipeline, manually cancel the `gprd-cny-warmup` from the deployer pipeline. This will prevent the automatic promotion to Canary.
+
+- [ ] Once the deploy to staging is completed, notify the `@appsec-team` member so they can validate the security fixes on staging.
+
+- [ ] Once the security fixes been validated on staging, manually promote to Canary.
+
+- [ ] Once the deploy to canary is completed, notify the `@appsec-team` member so they can validate the security fixes on canary.
+  - It's recommended to wait for this confirmation, but not a strict requirement to continue the process.
+
+- [ ] If there are no objections, proceed to push this to production.
 
 ## Packaging
 
-- [ ] **Push `omnibus-gitlab/<%= version.stable_branch %>` to `dev` only: `git push dev <%= version.stable_branch %>`**
-- [ ] Ping the Security Engineers so they can get started with the blog post. The blog post should also be done on https://dev.gitlab.org/ in a **private snippet**: BLOG_POST_SNIPPET
+- [ ] If security fixes on Omnibus were included in this release, push `dev` `omnibus-gitlab/<%= version.stable_branch %>` to `Security` only: `git push security <%= version.stable_branch %>`**
+
+- [ ] Ping the Security Engineers so they can get started with the blog post. The blog post should be done on `https://dev.gitlab.org/gitlab/www-gitlab-com`
 
 - [ ] Ensure [tests are green in CE] and [green in EE]
    ```sh
@@ -91,25 +107,9 @@ The following steps should ideally be completed within one day.
 
 ## Deploy
 
-###  Deploy to Pre for QA testing
-
-Deployment is automatically performed from tagging the auto-deploy branch.
-
 - [ ] Verify that pre.gitlab.com is running the latest patch version
   - Check in Slack `#announcements` channel
   - Go to https://pre.gitlab.com/help
-
-### QA
-
-The [QA task issue](https://gitlab.com/gitlab-org/release/tasks/issues?label_name%5B%5D=QA+task)
-is automatically generated, one for the auto-deploy build and another one for the tagged release.
-
-- [ ] Notify `@appsec-team` that packages are ready for QA
-  ```sh
-  # In Slack
-  @appsec-team - Security release packages are available for QA.
-  ```
-- [ ] Wait for the QA tasks deadline to pass.
 
 ## Release
 
@@ -125,23 +125,20 @@ is automatically generated, one for the auto-deploy build and another one for th
   /chatops run publish <%= version %>
   ```
 - [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
-- [ ] In the `#content-updates` channel, share a link to the blog post:
-   ```
-   :tada: GitLab <%= version %> has been released: BLOG_POST_URL
-   ```
+- [ ] Merge the blog post on `https://gitlab.com/gitlab-com/www-gitlab-com`
+- [ ] In the `#content-updates` channel, share a link to the blog post.
 
 ### Sync
 
-- [ ] Push `security/gitlab` `master` and `auto-deploy` branches to all remotes.
-- [ ] Push `security/gitlab-foss` `master` and `auto-deploy` branches to all remotes.
-- [ ] Push `security/omnibus-gitlab` `master` and `auto-deploy` branches to all remotes.
+- [ ] Push `security/gitlab` `master`, `auto-deploy` and `stable` branches to all remotes.
+- [ ] Push `security/gitlab-foss` `master`, `auto-deploy` and `stable`  branches to all remotes.
+- [ ] Push `security/omnibus-gitlab` `master`, `auto-deploy` and `stable`  branches to all remotes.
 - [ ] Verify all remotes are synced:
 
    ```sh
    # In Slack
    /chatops run mirror status
    ```
-
 ### Auto-Deploy - only for the latest version
 
 - [ ] Re-enable the scheduled auto-deploy tasks via ChatOps:
@@ -154,14 +151,7 @@ is automatically generated, one for the auto-deploy build and another one for th
    # In Slack
    /chatops run auto_deploy prepare
    ```
-
 ---
-
-For references:
-- https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-- https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-- https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.stable_branch %>
-
 [tests are green in CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
 [green in EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
 
@@ -170,7 +160,5 @@ For references:
 
 [`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
 [`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
-
-[`security_qa_issue` task]: https://gitlab.com/gitlab-org/release-tools/blob/master/doc%2Frake-tasks.md#security_qa_issuefromtoversion
 
 [pipeline schedules]: https://gitlab.com/gitlab-org/release-tools/pipeline_schedules
