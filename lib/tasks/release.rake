@@ -129,9 +129,16 @@ namespace :release do
 
     deployments = tracker.track
 
-    ReleaseTools::Deployments::MergeRequestLabeler
-      .new
-      .label_merge_requests(env, deployments)
+    Raven.capture do
+      ReleaseTools::Deployments::MergeRequestLabeler
+        .new
+        .label_merge_requests(env, deployments)
+    end
+
+    Raven.capture do
+      ReleaseTools::Deployments::ReleaseNotifier
+        .notify(environment, deployments, version)
+    end
 
     previous, latest = tracker.qa_commit_range
 

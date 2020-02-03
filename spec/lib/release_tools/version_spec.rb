@@ -378,6 +378,7 @@ describe ReleaseTools::Version do
     it { expect(version('11.22.33')).to be_valid }
     it { expect(version('2.2.3-rc1')).to be_valid }
     it { expect(version('12.0.2019-123.456')).to be_valid }
+    it { expect(version('12.5.0-rc43.ee.0')).to be_valid }
     it { expect(version('2.2.3.rc1')).not_to be_valid }
     it { expect(version('1.2.3.4')).not_to be_valid }
     it { expect(version('wow')).not_to be_valid }

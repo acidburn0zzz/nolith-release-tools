@@ -8,7 +8,7 @@ module ReleaseTools
       (\.(?<patch>\d+))?
       (-(?<rc>rc(?<rc_number>\d*)))?
       (-\h+\.\h+)?
-      (-ee)?\z
+      (-ee|\.ee\.\d+)?\z
     }x.freeze
 
     def initialize(version_string)
