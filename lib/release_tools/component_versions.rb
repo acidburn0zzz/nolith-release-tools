@@ -68,6 +68,13 @@ module ReleaseTools
         'Update component versions',
         actions
       )
+    rescue ::Gitlab::Error::Error => ex
+      logger.fatal(
+        'Failed to commit Omnibus version changes',
+        target: target_branch,
+        error_code: ex.response_status,
+        error_message: ex.response_message
+      )
     end
 
     def self.omnibus_version_changes?(target_branch, version_map)
@@ -78,6 +85,15 @@ module ReleaseTools
           target_branch
         ).chomp != contents
       end
+    rescue ::Gitlab::Error::Error => ex
+      logger.warn(
+        'Failed to find Omnibus version file',
+        target: target_branch,
+        error_code: ex.response_status,
+        error_message: ex.response_message
+      )
+
+      false
     end
 
     def self.client
