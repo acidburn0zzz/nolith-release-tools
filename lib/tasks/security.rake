@@ -7,10 +7,8 @@ namespace :security do
   end
 
   desc 'Create a security release task issue'
-  task :issue, [:version] => :force_security do |_t, args|
-    version = get_version(args)
-
-    issue = ReleaseTools::SecurityPatchIssue.new(version: version)
+  task issue: :force_security do |_t, args|
+    issue = ReleaseTools::SecurityPatchIssue.new(versions: args[:versions])
 
     create_or_show_issue(issue)
   end
@@ -44,12 +42,15 @@ namespace :security do
   end
 
   desc 'Prepare for a new security release'
-  task :prepare, [:version] => :force_security do |_t, _args|
+  task prepare: :force_security do |_t, _args|
     issue_task = Rake::Task['security:issue']
+    versions = []
 
     ReleaseTools::Versions.next_security_versions.each do |version|
-      issue_task.execute(version: version)
+      versions << get_version(version: version)
     end
+
+    issue_task.execute(versions: versions)
   end
 
   desc 'Create a security QA issue'
