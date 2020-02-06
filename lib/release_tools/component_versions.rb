@@ -73,7 +73,7 @@ module ReleaseTools
         'Failed to commit Omnibus version changes',
         target: target_branch,
         error_code: ex.response_status,
-        error_message: ex.response_message
+        error_message: ex.message
       )
     end
 
@@ -90,7 +90,7 @@ module ReleaseTools
         'Failed to find Omnibus version file',
         target: target_branch,
         error_code: ex.response_status,
-        error_message: ex.response_message
+        error_message: ex.message
       )
 
       false

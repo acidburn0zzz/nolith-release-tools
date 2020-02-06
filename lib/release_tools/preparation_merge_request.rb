@@ -76,7 +76,7 @@ module ReleaseTools
         target: target_branch,
         project: default_project,
         error_code: ex.response_status,
-        error_message: ex.response_message
+        error_message: ex.message
       )
 
       nil
