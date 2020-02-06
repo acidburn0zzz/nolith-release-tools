@@ -91,21 +91,31 @@ The following steps should ideally be completed within one day.
 
 ## Packaging
 
-- [ ] If security fixes on Omnibus were included in this release, push `dev` `omnibus-gitlab/<%= version.stable_branch %>` to `Security` only: `git push security <%= version.stable_branch %>`**
+- [ ] If security fixes on Omnibus were included in this release, ensure stable branches from Dev are synced to Security:
+  <% versions.each do |version| -%>
+  - push `dev` `omnibus-gitlab/<%= version.stable_branch %>` to `Security` only: `git push security <%= version.stable_branch %>`
+  <% end %>
 
 - [ ] Ping the Security Engineers so they can get started with the blog post. The blog post should be done on `https://dev.gitlab.org/gitlab/www-gitlab-com`
 
-- [ ] Ensure [tests are green in CE] and [green in EE]
+- [ ] Ensure tests are green in CE and green in EE
    ```sh
    # In Slack:
    /chatops run release status --security
    ```
-- [ ] Tag `<%= version.to_patch %>`:
-   ```sh
-   # In Slack:
-   /chatops run release tag --security <%= version.to_patch %>
-   ```
-- [ ] Check that [EE packages are built] and [CE packages are built]
+
+- [ ] Tag the security release:
+  ```sh
+  # In Slack:
+  <% versions.each do |version| -%>
+  /chatops run release tag --security <%= version.to_patch %>
+  <% end %>
+  ```
+
+- [ ] Check that EE and CE packages are built:
+  <% versions.each do |version| -%>
+  - <%= version.to_patch %>: [EE packages](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>) and [CE packages](https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus %>)
+  <% end %>
 
 ## Deploy
 
@@ -122,11 +132,19 @@ The following steps should ideally be completed within one day.
   ```
 
 - [ ] Publish the packages via ChatOps:
-  ```
-  # In Slack:
+
+  ```sh
+   # In Slack:
+  <% versions.each do |version| -%>
   /chatops run publish <%= version %>
+  <% end %>
   ```
-- [ ] Create the `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
+
+- [ ] Create the versions:
+  <% versions.each do |version| -%>
+  - `<%= version %>` version on [version.gitlab.com](https://version.gitlab.com/versions/new?version=<%= version %>). **Be sure to mark it as a security release.**
+  <% end %>
+
 - [ ] Merge the blog post on `https://gitlab.com/gitlab-com/www-gitlab-com`
 - [ ] In the `#content-updates` channel, share a link to the blog post.
 
@@ -154,13 +172,4 @@ The following steps should ideally be completed within one day.
    /chatops run auto_deploy prepare
    ```
 ---
-[tests are green in CE]: https://dev.gitlab.org/gitlab/gitlabhq/commits/<%= version.stable_branch %>
-[green in EE]: https://dev.gitlab.org/gitlab/gitlab-ee/commits/<%= version.stable_branch(ee: true) %>
-
-[EE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus(ee: true) %>
-[CE packages are built]: https://dev.gitlab.org/gitlab/omnibus-gitlab/commits/<%= version.to_omnibus %>
-
-[`gitlab/gitlab-ee`]: https://packages.gitlab.com/gitlab/gitlab-ee
-[`gitlab/gitlab-ce`]: https://packages.gitlab.com/gitlab/gitlab-ce
-
 [pipeline schedules]: https://gitlab.com/gitlab-org/release-tools/pipeline_schedules

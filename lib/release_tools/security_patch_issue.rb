@@ -2,6 +2,10 @@
 
 module ReleaseTools
   class SecurityPatchIssue < PatchIssue
+    def title
+      "Security patch release: #{versions_title}"
+    end
+
     def confidential?
       true
     end
@@ -18,6 +22,10 @@ module ReleaseTools
 
     def template_path
       File.expand_path('../../templates/security_patch.md.erb', __dir__)
+    end
+
+    def versions_title
+      versions.join(', ')
     end
   end
 end
