@@ -4,7 +4,7 @@ require_relative '../support/ubi_helper'
 
 module ReleaseTools
   module Release
-    class CNGImageRelease < BaseRelease
+    class CNGImageRelease < GitlabBasedRelease
       include ReleaseTools::Support::UbiHelper
 
       def remotes
@@ -68,14 +68,6 @@ module ReleaseTools
         return "v#{version}" if /^\d+\.\d+\.\d+(-rc\d+)?(-ee)?$/.match?(version)
 
         version
-      end
-
-      def read_file_from_gitlab_repo(file_name)
-        logger.trace('reading file', file: file_name)
-        gitlab_file_path = File.join(options[:gitlab_repo_path], file_name)
-        ensure_version_file_exists!(gitlab_file_path)
-
-        File.read(gitlab_file_path).strip
       end
 
       def version_string_from_file(file_name)
