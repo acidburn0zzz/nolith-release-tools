@@ -154,7 +154,7 @@ module ReleaseTools
     #
     # Returns a Gitlab::ObjectifiedHash object
     def self.create_issue(issue, project = Project::GitlabCe)
-      milestone = milestone(project, title: issue.version.milestone_name)
+      milestone = milestone(project, title: issue.milestone_name)
 
       assignees =
         if issue.respond_to?(:assignees)
@@ -186,7 +186,7 @@ module ReleaseTools
     #
     # Returns a Gitlab::ObjectifiedHash object
     def self.update_issue(issue, project = Project::GitlabCe)
-      milestone = milestone(project, title: issue.version.milestone_name)
+      milestone = milestone(project, title: issue.milestone_name)
 
       client.edit_issue(
         project_path(project),
@@ -299,7 +299,7 @@ module ReleaseTools
     def self.find_issue(issue, project = Project::GitlabCe)
       opts = {
         labels: issue.labels,
-        milestone: issue.version.milestone_name,
+        milestone: issue.milestone_name,
         search: issue.title
       }
 

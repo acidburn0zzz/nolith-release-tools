@@ -18,6 +18,10 @@ module ReleaseTools
       ReleaseTools::SharedStatus.critical_security_release?
     end
 
+    def milestone_name
+      versions.first.milestone_name
+    end
+
     protected
 
     def template_path

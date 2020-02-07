@@ -66,4 +66,12 @@ describe ReleaseTools::SecurityPatchIssue do
       expect(content).to include '/chatops run publish 12.5.9'
     end
   end
+
+  describe '#milestone_name' do
+    it 'returns milestone from the highest version' do
+      issue = described_class.new(versions: versions)
+
+      expect(issue.milestone_name).to eq('12.7')
+    end
+  end
 end

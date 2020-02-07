@@ -91,4 +91,8 @@ describe ReleaseTools::Issuable do
   describe '#create?' do
     it { expect(subject.create?).to eq(true) }
   end
+
+  describe '#milestone_name?' do
+    it { expect { subject.milestone_name }.to raise_error(NotImplementedError) }
+  end
 end
