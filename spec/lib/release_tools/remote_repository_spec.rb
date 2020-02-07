@@ -299,11 +299,25 @@ describe ReleaseTools::RemoteRepository do
     end
 
     it 'commits the given files with the given message in the current branch' do
-      expect(subject.merge('branch-2', 'branch-1', no_ff: true).status).to be_success
+      expect(subject.merge('branch-2', no_ff: true).status).to be_success
       log = subject.log(format: :message)
 
       expect(log).to start_with("Merge branch 'branch-2' into branch-1\n")
       expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Nice'
+    end
+
+    it 'performs an octopus merge with an array of commits' do
+      subject.write_file('foo', 'bar')
+      subject.commit('foo', message: 'Add foo')
+
+      subject.ensure_branch_exists('branch-3')
+
+      expect(subject.merge(['branch-1', 'branch-2'], no_ff: true).status).to be_success
+      log = subject.log(format: :message)
+
+      expect(File.read(File.join(repo_path, 'README.md'))).to eq 'Nice'
+      expect(File.read(File.join(repo_path, 'foo'))).to eq 'bar'
+      expect(log).to start_with("Merge branches 'branch-1' and 'branch-2' into branch-3\n")
     end
   end
 
@@ -372,7 +386,7 @@ describe ReleaseTools::RemoteRepository do
       subject.write_file('README.md', 'Nice')
       subject.commit('README.md', message: 'Update README.md')
       subject.ensure_branch_exists('branch-1')
-      subject.merge('branch-2', 'branch-1', no_ff: true)
+      subject.merge('branch-2', no_ff: true)
     end
 
     it 'shows commits' do
