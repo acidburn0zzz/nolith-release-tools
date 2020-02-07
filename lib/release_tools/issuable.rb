@@ -59,10 +59,6 @@ module ReleaseTools
       remote_issuable.web_url
     end
 
-    def milestone_name
-      raise NotImplementedError
-    end
-
     private
 
     def default_project

@@ -11,13 +11,4 @@ describe ReleaseTools::Issue do
   describe '#confidential?' do
     it { expect(subject).not_to be_confidential }
   end
-
-  describe '#milestone_name' do
-    it 'returns milestone name from version' do
-      version = ReleaseTools::Version.new('12.7.4')
-      issue = described_class.new(version: version)
-
-      expect(issue.milestone_name).to eq('12.7')
-    end
-  end
 end
