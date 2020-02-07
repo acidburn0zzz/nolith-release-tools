@@ -2,8 +2,7 @@
 
 module ReleaseTools
   module Release
-    class OmnibusGitlabRelease < BaseRelease
-      class VersionFileDoesNotExistError < StandardError; end
+    class OmnibusGitlabRelease < GitlabBasedRelease
       class TemplateFileDoesNotExistError < StandardError; end
       class VersionStringNotFoundError < StandardError; end
 
@@ -46,7 +45,10 @@ module ReleaseTools
 
       def bump_versions
         version_files.each do |file|
-          bump_version(file, version_from_gitlab_repo(file))
+          file_path = File.join(repository.path, file)
+          ensure_version_file_exists!(file_path)
+
+          bump_version(file, read_file_from_gitlab_repo(file))
         end
       end
 
@@ -60,26 +62,6 @@ module ReleaseTools
         ]
 
         files << 'VERSION' # Always update VERSION last
-      end
-
-      def version_from_gitlab_repo(file_name)
-        file_path = File.join(repository.path, file_name)
-
-        unless File.exist?(file_path)
-          raise VersionFileDoesNotExistError.new(file_path)
-        end
-
-        read_file_from_gitlab_repo(file_name)
-      end
-
-      def read_file_from_gitlab_repo(file_name)
-        gitlab_file_path = File.join(options[:gitlab_repo_path], file_name)
-
-        unless File.exist?(gitlab_file_path)
-          raise VersionFileDoesNotExistError.new(gitlab_file_path)
-        end
-
-        File.read(gitlab_file_path).strip
       end
     end
   end

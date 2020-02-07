@@ -3,9 +3,11 @@
 require 'spec_helper'
 
 describe ReleaseTools::Release::CNGImageRelease do
+  required_opts = { gitlab_repo_path: '/tmp' }
+
   describe '#tag' do
     context 'when CE and UBI is enabled' do
-      let(:opts) { { ubi: true } }
+      let(:opts) { { ubi: true }.merge(required_opts) }
       let(:release) { described_class.new('1.1.1', opts) }
 
       it 'returns the CE tag' do
@@ -14,7 +16,7 @@ describe ReleaseTools::Release::CNGImageRelease do
     end
 
     context 'when EE and UBI is disabled' do
-      let(:opts) { { ubi: false } }
+      let(:opts) { { ubi: false }.merge(required_opts) }
       let(:release) { described_class.new('1.1.1-ee', opts) }
 
       it 'returns the EE tag' do
@@ -23,7 +25,7 @@ describe ReleaseTools::Release::CNGImageRelease do
     end
 
     context 'when EE and UBI is enabled' do
-      let(:opts) { { ubi: true } }
+      let(:opts) { { ubi: true }.merge(required_opts) }
       let(:release) { described_class.new('1.1.1-ee', opts) }
 
       it 'returns the UBI tag' do
@@ -32,7 +34,7 @@ describe ReleaseTools::Release::CNGImageRelease do
     end
 
     context 'when EE and UBI is enabled and UBI version is specified' do
-      let(:opts) { { ubi: true, ubi_version: '7' } }
+      let(:opts) { { ubi: true, ubi_version: '7' }.merge(required_opts) }
       let(:release) { described_class.new('1.1.1-ee', opts) }
 
       it 'returns the specified UBI tag' do
