@@ -96,7 +96,7 @@ describe ReleaseTools::Services::SyncRemotesService do
           ).and_return(fake_repo)
 
         expect(fake_repo).to receive(:merge)
-          .with("dev/#{branch}", branch, no_ff: true)
+          .with("dev/#{branch}", no_ff: true)
           .and_return(successful_merge)
         expect(fake_repo).to receive(:push_to_all_remotes).with(branch)
 
@@ -130,7 +130,7 @@ describe ReleaseTools::Services::SyncRemotesService do
         successful_merge = double(status: double(success?: true))
 
         allow(fake_repo).to receive(:merge)
-          .with("dev/#{branch}", branch, no_ff: true)
+          .with("dev/#{branch}", no_ff: true)
           .and_return(successful_merge)
 
         allow(fake_repo).to receive(:push_to_all_remotes).with(branch)
@@ -153,7 +153,7 @@ describe ReleaseTools::Services::SyncRemotesService do
         successful_merge = double(status: double(success?: true))
 
         allow(fake_repo).to receive(:merge)
-          .with("dev/#{branch}", branch, no_ff: true)
+          .with("dev/#{branch}", no_ff: true)
           .and_return(successful_merge)
 
         allow(fake_repo).to receive(:push_to_all_remotes).with(branch)

@@ -104,10 +104,10 @@ module ReleaseTools
       status.success? || raise(CannotCommitError.new(output))
     end
 
-    def merge(upstream, into, no_ff: false)
+    def merge(commits, no_ff: false)
       cmd = %w[merge --no-edit --no-log]
       cmd << '--no-ff' if no_ff
-      cmd += [upstream, into]
+      cmd += Array(commits)
 
       GitCommandResult.new(*run_git(cmd))
     end

@@ -58,7 +58,7 @@ module ReleaseTools
 
           repository.fetch(branch, remote: :dev)
 
-          result = repository.merge("dev/#{branch}", branch, no_ff: true)
+          result = repository.merge("dev/#{branch}", no_ff: true)
 
           if result.status.success?
             logger.info('Pushing branch to remotes', project: project, name: branch, remotes: sync_remotes.keys)
