@@ -67,11 +67,27 @@ describe ReleaseTools::SecurityPatchIssue do
     end
   end
 
-  describe '#milestone_name' do
-    it 'returns milestone from the highest version' do
+  describe '#version' do
+    it 'returns the highest version' do
       issue = described_class.new(versions: versions)
 
-      expect(issue.milestone_name).to eq('12.7')
+      expect(issue.version).to eq('12.7.4')
+    end
+
+    context 'with unsorted versions' do
+      let(:versions) do
+        [
+          ReleaseTools::Version.new('12.6.6'),
+          ReleaseTools::Version.new('12.7.4'),
+          ReleaseTools::Version.new('12.5.9')
+        ]
+      end
+
+      it 'returns the highest version' do
+        issue = described_class.new(versions: versions)
+
+        expect(issue.version).to eq('12.7.4')
+      end
     end
   end
 end

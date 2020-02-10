@@ -18,8 +18,8 @@ module ReleaseTools
       ReleaseTools::SharedStatus.critical_security_release?
     end
 
-    def milestone_name
-      versions.first.milestone_name
+    def version
+      ReleaseTools::Versions.latest(versions, 1).first
     end
 
     protected

@@ -17,9 +17,5 @@ module ReleaseTools
     def confidential?
       false
     end
-
-    def milestone_name
-      version.milestone_name
-    end
   end
 end

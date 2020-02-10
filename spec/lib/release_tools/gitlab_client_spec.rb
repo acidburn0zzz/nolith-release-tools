@@ -270,7 +270,8 @@ describe ReleaseTools::GitlabClient do
   describe '.find_issue' do
     context 'when issue is open' do
       it 'finds issues by title', vcr: { cassette_name: 'issues/release-8-7' } do
-        issue = double(title: 'Release 8.7', labels: 'Release', milestone_name: '8.7')
+        version = double(milestone_name: '8.7')
+        issue = double(title: 'Release 8.7', labels: 'Release', version: version)
 
         expect(described_class.find_issue(issue)).not_to be_nil
       end
@@ -278,7 +279,8 @@ describe ReleaseTools::GitlabClient do
 
     context 'when issue is closed' do
       it 'finds issues by title', vcr: { cassette_name: 'issues/regressions-8-5' } do
-        issue = double(title: '8.5 Regressions', labels: 'Release', state_filter: nil, milestone_name: '8.5')
+        version = double(milestone_name: '8.5')
+        issue = double(title: '8.5 Regressions', labels: 'Release', state_filter: nil, version: version)
 
         expect(described_class.find_issue(issue)).not_to be_nil
       end
@@ -286,7 +288,8 @@ describe ReleaseTools::GitlabClient do
 
     context 'when issue cannot be found' do
       it 'does not find non-matching issues', vcr: { cassette_name: 'issues/release-7-14' } do
-        issue = double(title: 'Release 7.14', labels: 'Release', milestone_name: '7.14')
+        version = double(milestone_name: '7.14')
+        issue = double(title: 'Release 7.14', labels: 'Release', version: version)
 
         expect(described_class.find_issue(issue)).to be_nil
       end
