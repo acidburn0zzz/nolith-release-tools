@@ -70,6 +70,7 @@ specs:
   needs: [ "sast" ]
   dependencies: []
   script:
+    - source scripts/setup_ssh.sh
     - git config --global user.email "you@example.com"
     - git config --global user.name "Dry Run"
     - ./scripts/dry_run_release 42.0.0

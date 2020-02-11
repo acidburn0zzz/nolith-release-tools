@@ -4,13 +4,6 @@ set -e
 
 tag=${1:-42.0.0}
 
-if [ -n "${CI}" ]; then
-    mkdir -p ~/.ssh
-    chmod 700 ~/.ssh
-    cp config/known_hosts ~/.ssh/known_hosts
-    chmod 644 ~/.ssh/known_hosts
-fi
-
 export TEST="true"
 bundle exec rake "release:tag[$tag]" > log/release.log
 
