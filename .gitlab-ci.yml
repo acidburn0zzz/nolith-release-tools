@@ -67,7 +67,7 @@ specs:
   stage: dry run
   variables:
     TEST: "true"
-  needs: [ "specs" ]
+  needs: [ "sast" ]
   dependencies: []
   script:
     - git config --global user.email "you@example.com"
