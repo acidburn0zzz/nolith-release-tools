@@ -70,14 +70,9 @@ specs:
   needs: [ "specs" ]
   dependencies: []
   script:
-    - source scripts/setup_ssh.sh
     - git config --global user.email "you@example.com"
     - git config --global user.name "Dry Run"
-    - bundle exec rake "release:tag[42.0.0]" > log/release.log
-    - |
-      if grep $'\\[31m' log/release.log ; then
-        echo ""; echo "Failure detected"; exit 1
-      fi
+    - scripts/dry_run_release 42.0.0
   artifacts:
     when: always
     expire_in: 2 weeks
