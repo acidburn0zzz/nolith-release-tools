@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -15,7 +15,7 @@ export TEST="true"
 bundle exec rake "release:tag[$tag]" > log/release.log
 
 # grep red lines (fatal errors)
-if grep $'\\[31m' log/release.log; then
+if grep '\\[31m' log/release.log; then
     echo ""
     echo "Failure detected"
     exit 1
