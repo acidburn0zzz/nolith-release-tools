@@ -73,6 +73,7 @@ specs:
     - source scripts/setup_ssh.sh
     - git config --global user.email "you@example.com"
     - git config --global user.name "Dry Run"
+    - cp config/git-hook-pre-push /usr/share/git-core/templates/hooks/pre-push
     - ./scripts/dry_run_release 42.0.0
   artifacts:
     when: always
